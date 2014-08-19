@@ -1,0 +1,11 @@
+﻿Name: OShop
+AntiForgery: enabled
+Author: Codinlab
+Website: https://oshop.codeplex.com/
+Version: 1.0
+OrchardVersion: 1.8
+Category: Commerce
+Description: E-commerce module for Orchard CMS
+Features:
+    OShop:
+        Description: Core features.
