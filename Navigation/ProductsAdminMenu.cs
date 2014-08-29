@@ -1,12 +1,14 @@
-﻿using Orchard.Localization;
+﻿using Orchard.Environment.Extensions;
+using Orchard.Localization;
 using Orchard.UI.Navigation;
 using OShop.Permissions;
 
 namespace OShop.Navigation {
-    public class AdminMenu : INavigationProvider {
+    [OrchardFeature("OShop.Products")]
+    public class ProductsAdminMenu : INavigationProvider {
         public Localizer T { get; set; }
 
-        public AdminMenu() {
+        public ProductsAdminMenu() {
             T = NullLocalizer.Instance;
         }
 
@@ -14,16 +16,12 @@ namespace OShop.Navigation {
 
         public void GetNavigation(NavigationBuilder builder) {
             builder
-                .AddImageSet("oshop")
                 .Add(menu => menu
                     .Caption(T("OShop"))
-                    .Position("4")
-                    .LinkToFirstChild(false)
-                    .Permission(OShopPermissions.AccessShopPanel)
                     .Add(subMenu => subMenu
-                        .Caption(T("Settings"))
-                        .Position("10")
-                        .Action("Index", "Settings", new { area = "OShop"})
+                        .Caption(T("Products"))
+                        .Position("1")
+                        .Action("List", "ProductsAdmin", new { area = "OShop" })
                         .Permission(OShopPermissions.ManageShopSettings)
                     )
                 );
