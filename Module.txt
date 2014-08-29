@@ -8,12 +8,12 @@ Category: Commerce
 Description: E-commerce module for Orchard CMS.
 Features:
     OShop.Products:
-		Name: Products
+		Name: OShop Products
 		Category: Commerce
         Description: Provides product part.
 		Dependencies: OShop
     OShop.VAT:
-		Name: VAT
+		Name: OShop VAT
 		Category: Commerce
         Description: Provides VAT management.
 		Dependencies: OShop
