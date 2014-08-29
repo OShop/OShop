@@ -1,0 +1,9 @@
+﻿<Placement>
+  <!-- Products -->
+  <Place Parts_Product_Edit="Content:3" />
+  <Match DisplayType="Detail">
+    <Place Parts_Product_Sku="Content:3" />
+    <Place Parts_Product_Price="Content:3.1" />
+  </Match>
+
+</Placement>

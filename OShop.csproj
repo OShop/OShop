@@ -85,17 +85,37 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\SettingsController.cs" />
+    <Compile Include="Drivers\ProductPartDriver.cs" />
     <Compile Include="Handlers\OShopSettingsPartHandler.cs" />
+    <Compile Include="Handlers\ProductPartHandler.cs" />
+    <Compile Include="Migrations\ProductsMigrations.cs" />
+    <Compile Include="Migrations\VatMigrations.cs" />
     <Compile Include="Models\OShopSettingsPart.cs" />
+    <Compile Include="Models\ProductPart.cs" />
+    <Compile Include="Models\ProductPartRecord.cs" />
+    <Compile Include="Models\VatRecord.cs" />
     <Compile Include="Navigation\AdminMenu.cs" />
     <Compile Include="Permissions\OShopPermissions.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-    <Folder Include="Views\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Styles\menu.oshop-admin.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\EditorTemplates\Parts\Product.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Placement.info" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Parts\Product.Price.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Parts\Product.Sku.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Settings\Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

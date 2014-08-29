@@ -1,0 +1,15 @@
+﻿@model OShop.Models.ProductPart
+
+<fieldset>
+    <legend>@T("Product")</legend>
+    <div>
+        @Html.LabelFor(m => m.SKU, T("SKU"))
+        @Html.TextBoxFor(m => m.SKU, new { @class = "text medium" })
+        @Html.ValidationMessageFor(m => m.SKU)
+    </div>
+    <div>
+        @Html.LabelFor(m => m.UnitPrice, T("Unit Price"))
+        @Html.TextBoxFor(m => m.UnitPrice, new { @class = "text small" })
+        @Html.ValidationMessageFor(m => m.UnitPrice, "*")
+    </div>
+</fieldset>

@@ -5,10 +5,15 @@ Website: https://oshop.codeplex.com/
 Version: 1.0
 OrchardVersion: 1.8
 Category: Commerce
-Description: E-commerce module for Orchard CMS
+Description: E-commerce module for Orchard CMS.
 Features:
     OShop.Products:
 		Name: Products
 		Category: Commerce
         Description: Provides product part.
+		Dependencies: OShop
+    OShop.VAT:
+		Name: VAT
+		Category: Commerce
+        Description: Provides VAT management.
 		Dependencies: OShop

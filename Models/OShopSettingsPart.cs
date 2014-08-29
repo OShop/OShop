@@ -2,6 +2,5 @@
 
 namespace OShop.Models {
     public class OShopSettingsPart : ContentPart {
-
     }
 }
