@@ -87,6 +87,7 @@
   <ItemGroup>
     <Compile Include="Controllers\ProductsAdminController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
+    <Compile Include="Controllers\VatAdminController.cs" />
     <Compile Include="Drivers\ProductPartDriver.cs" />
     <Compile Include="Handlers\OShopSettingsPartHandler.cs" />
     <Compile Include="Handlers\ProductPartHandler.cs" />
@@ -97,8 +98,12 @@
     <Compile Include="Models\ProductPartRecord.cs" />
     <Compile Include="Models\VatRecord.cs" />
     <Compile Include="Navigation\AdminMenu.cs" />
+    <Compile Include="Navigation\VatAdminMenu.cs" />
     <Compile Include="Navigation\ProductsAdminMenu.cs" />
     <Compile Include="Permissions\OShopPermissions.cs" />
+    <Compile Include="Services\IVatService.cs" />
+    <Compile Include="Services\VatService.cs" />
+    <Compile Include="ViewModels\VatCreateViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Content.ProductsSummaryAdmin.cshtml" />
@@ -129,6 +134,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Parts\Product.Sku.SummaryAdmin.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\VatAdmin\Create.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\VatAdmin\List.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\VatAdmin\Edit.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -1,0 +1,27 @@
+﻿@model OShop.Models.VatRecord
+@{
+    Layout.Title = T("Edit VAT");
+}
+
+@using (Html.BeginFormAntiForgeryPost()) {
+    @Html.ValidationSummary()
+
+<fieldset>
+    @Html.HiddenFor(m=>m.Id)
+    <div>
+        @Html.LabelFor(m => m.Name, T("Name"))
+        @Html.TextBoxFor(m => m.Name, new { @class = "text medium" })
+        @Html.ValidationMessageFor(m => m.Name, "*")
+    </div>
+    <div>
+        @Html.LabelFor(m => m.Rate, T("Rate"))
+        @Html.TextBoxFor(m => m.Rate, new { @class = "text small" })
+        @Html.ValidationMessageFor(m => m.Rate, "*")
+    </div>
+</fieldset>
+
+<div>
+    <button type="submit" name="submit.Save" value="create">@T("Save")</button>
+    @Html.ActionLink(T("Cancel").Text, "List", "VatAdmin", new { area = "OShop" }, new { @class = "button primaryAction" })
+</div>
+}
