@@ -100,7 +100,9 @@
     <Compile Include="Navigation\ProductsAdminMenu.cs" />
     <Compile Include="Permissions\OShopPermissions.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Views\Content.ProductsSummaryAdmin.cshtml" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Styles\menu.oshop-admin.css" />
   </ItemGroup>
@@ -121,6 +123,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\ProductsAdmin\List.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Parts\Product.Price.SummaryAdmin.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Parts\Product.Sku.SummaryAdmin.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
