@@ -22,7 +22,7 @@ namespace OShop.Navigation {
                         .Caption(T("Products"))
                         .Position("1")
                         .Action("List", "ProductsAdmin", new { area = "OShop" })
-                        .Permission(OShopPermissions.ManageShopSettings)
+                        .Permission(OShopPermissions.AccessShopPanel)
                     )
                 );
         }
