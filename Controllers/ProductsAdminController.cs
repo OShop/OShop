@@ -54,6 +54,9 @@ namespace OShop.Controllers
 
         public ActionResult List(ListContentsViewModel model, PagerParameters pagerParameters)
         {
+            if (!Services.Authorizer.Authorize(Permissions.OShopPermissions.AccessShopPanel, T("Not allowed to manage products")))
+                return new HttpUnauthorizedResult();
+
             var pager = new Pager(_siteService.GetSiteSettings(), pagerParameters);
 
             var versionOptions = VersionOptions.Latest;
