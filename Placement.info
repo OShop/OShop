@@ -13,6 +13,9 @@
       Fields_Common_Text="-"/>
     <Place Parts_Product_Sku="Content:3;Alternate=Parts_Product_Sku_SummaryAdmin" />
     <Place Parts_Product_Price="Content:3.1;Alternate=Parts_Product_Price_SummaryAdmin" />
+    <Place Parts_Product_Vat="Content:3.2;Alternate=Parts_Product_Vat_SummaryAdmin" />
   </Match>
+  <!-- VAT -->
+  <Place Parts_Product_Vat_Edit="Content:3.1" />
 
 </Placement>

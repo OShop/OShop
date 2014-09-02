@@ -89,8 +89,10 @@
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Controllers\VatAdminController.cs" />
     <Compile Include="Drivers\ProductPartDriver.cs" />
+    <Compile Include="Drivers\VatProductPartDriver.cs" />
     <Compile Include="Handlers\OShopSettingsPartHandler.cs" />
     <Compile Include="Handlers\ProductPartHandler.cs" />
+    <Compile Include="Helpers\VatExtensions.cs" />
     <Compile Include="Migrations\ProductsMigrations.cs" />
     <Compile Include="Migrations\VatMigrations.cs" />
     <Compile Include="Models\OShopSettingsPart.cs" />
@@ -103,6 +105,7 @@
     <Compile Include="Permissions\OShopPermissions.cs" />
     <Compile Include="Services\IVatService.cs" />
     <Compile Include="Services\VatService.cs" />
+    <Compile Include="ViewModels\ProductVatEditViewModel.cs" />
     <Compile Include="ViewModels\VatCreateViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -143,6 +146,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\VatAdmin\Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\EditorTemplates\Parts\Product.Vat.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\ProductsAdmin\Create.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Parts\Product.Vat.SummaryAdmin.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

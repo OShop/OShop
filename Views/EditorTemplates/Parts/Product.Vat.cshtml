@@ -1,0 +1,21 @@
+﻿@model OShop.ViewModels.ProductVatEditViewModel
+@using System.Globalization
+@using OShop.Helpers
+
+@{
+    CultureInfo cultureInfo = new CultureInfo(WorkContext.CurrentCulture);
+}
+
+<fieldset>
+    <div>
+        @Html.LabelFor(m => m.SelectedVatId, T("VAT rate"))
+        @Html.DropDownListFor(m => m.SelectedVatId,
+            Model.VatRates.Select(v=> new SelectListItem {
+                Selected = v.Id.ToString() == Model.SelectedVatId,
+                Text = v.DisplayName(cultureInfo),
+                Value = v.Id.ToString()
+            }),
+            T("Choose VAT rate...").Text)
+        @Html.ValidationMessageFor(m => m.SelectedVatId)
+    </div>
+</fieldset>

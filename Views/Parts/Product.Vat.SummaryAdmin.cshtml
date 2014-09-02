@@ -1,0 +1,10 @@
+﻿@using System.Globalization
+@using OShop.Models
+@using OShop.Helpers
+
+@{
+    CultureInfo cultureInfo = new CultureInfo(WorkContext.CurrentCulture);
+    VatRecord vat = Model.Vat;
+}
+
+@T(" | ")<span class="vat">@T("VAT : ")@(vat != null ? vat.DisplayName(cultureInfo) : T("None").Text)</span>
