@@ -16,7 +16,9 @@
     <Place Parts_Product_Vat="Content:3.2;Alternate=Parts_Product_Vat_SummaryAdmin" />
   </Match>
   <!-- VAT -->
-  <Place Parts_Product_Vat="Content:3.2" />
   <Place Parts_Product_Vat_Edit="Content:3.2" />
+  <Match DisplayType="Detail">
+    <Place Parts_Product_Vat="Content:3.2" />
+  </Match>
 
 </Placement>

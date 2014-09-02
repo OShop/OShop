@@ -12,7 +12,7 @@
         @Html.DropDownListFor(m => m.SelectedVatId,
             Model.VatRates.Select(v=> new SelectListItem {
                 Selected = v.Id.ToString() == Model.SelectedVatId,
-                Text = v.DisplayName(cultureInfo),
+                Text = v.DisplayName(T).Text,
                 Value = v.Id.ToString()
             }),
             T("Choose VAT rate...").Text)
