@@ -14,5 +14,6 @@ namespace OShop.Migrations {
 
             return 1;
         }
+
     }
 }

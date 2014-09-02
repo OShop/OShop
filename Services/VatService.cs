@@ -1,4 +1,6 @@
-﻿using Orchard.Data;
+﻿using Orchard.ContentManagement;
+using Orchard.Data;
+using Orchard.Environment.Extensions;
 using OShop.Models;
 using System;
 using System.Collections.Generic;
@@ -6,13 +8,17 @@ using System.Linq;
 using System.Web;
 
 namespace OShop.Services {
+    [OrchardFeature("OShop.VAT")]
     public class VatService : IVatService {
         private readonly IRepository<VatRecord> _vatRepository;
+        private readonly IContentManager _contentManager;
 
         public VatService(
-            IRepository<VatRecord> vatRepository
+            IRepository<VatRecord> vatRepository,
+            IContentManager contentManager
             ) {
-                _vatRepository = vatRepository;
+            _vatRepository = vatRepository;
+            _contentManager = contentManager;
         }
 
         public void AddVat(VatRecord record) {
@@ -28,7 +34,18 @@ namespace OShop.Services {
         }
 
         public void DeleteVat(VatRecord record) {
-            _vatRepository.Delete(record);
+            if (record != null) {
+                // Remove deleted VatRecord references from ProductParts
+                var query = _contentManager.Query<ProductPart, ProductPartRecord>(VersionOptions.AllVersions)
+                    .Where(p => p.VatRecord.Id == record.Id);
+
+                foreach (var product in query.List()) {
+                    product.VAT = null;
+                }
+
+                // Delete VatRecord
+                _vatRepository.Delete(record);
+            }
         }
 
         public VatRecord GetVat(int Id) {
