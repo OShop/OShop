@@ -2,17 +2,23 @@
 @{
     var typeDisplayName = Model.TypeDisplayName;
     var pageTitle = T("Manage Products");
-    var createLinkText = T("Create New Content");
+    var createLinkText = T("Create New Product");
+
     if (!string.IsNullOrWhiteSpace(typeDisplayName)) {
         pageTitle = T("Manage {0} products", typeDisplayName);
         createLinkText = T("Create New {0}", typeDisplayName);
     }
-
+        
     Layout.Title = pageTitle;
 }
 
 <div class="manage">
-    @Html.ActionLink(createLinkText.Text, "Create", new { Area = "Contents", Id = (string)Model.Options.SelectedFilter }, new { @class = "button primaryAction" })
+    @if (!string.IsNullOrWhiteSpace(typeDisplayName)) {
+        @Html.ActionLink(createLinkText.Text, "Create", "Admin", new { Area = "Contents", Id = (string)Model.Options.SelectedFilter }, new { @class = "button primaryAction" })
+    }
+    else {
+        @Html.ActionLink(createLinkText.Text, "Create", "ProductsAdmin", new { Area = "OShop", Id = (string)Model.Options.SelectedFilter }, new { @class = "button primaryAction" })
+    }
 </div>
 @using (Html.BeginFormAntiForgeryPost()) {
     <fieldset class="bulk-actions">

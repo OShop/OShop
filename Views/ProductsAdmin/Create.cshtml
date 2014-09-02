@@ -1,0 +1,8 @@
+﻿@model IEnumerable<Orchard.ContentManagement.MetaData.Models.ContentTypeDefinition>
+@{
+    Layout.Title = T("Create new products");
+}
+
+@foreach (var productType in Model) {
+    <p>@Html.ActionLink(productType.DisplayName, "Create", "Admin", new { Area = "Contents", Id = productType.Name }, new { })</p>
+}

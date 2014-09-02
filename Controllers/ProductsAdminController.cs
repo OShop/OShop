@@ -75,7 +75,14 @@ namespace OShop.Controllers
                     break;
             }
 
-            var query = _contentManager.Query(versionOptions, GetProductTypes().Select(ctd => ctd.Name).ToArray());
+            var productTypes = GetProductTypes();
+
+            if (productTypes.Count() == 0) {
+                Services.Notifier.Information(T("There is no product enabled content type. Please create one."));
+                return RedirectToAction("Index", "Admin", new { Area = "Orchard.ContentTypes" });
+            }
+
+            var query = _contentManager.Query(versionOptions, productTypes.Select(ctd => ctd.Name).ToArray());
 
             if (!string.IsNullOrEmpty(model.TypeName)) {
                 var contentTypeDefinition = _contentDefinitionManager.GetTypeDefinition(model.TypeName);
@@ -185,6 +192,26 @@ namespace OShop.Controllers
             }
 
             return this.RedirectLocal(returnUrl, () => RedirectToAction("List"));
+        }
+
+        public ActionResult Create() {
+            if (!Services.Authorizer.Authorize(Permissions.OShopPermissions.AccessShopPanel, T("Not allowed to manage products")))
+                return new HttpUnauthorizedResult();
+
+            var productTypes = GetProductTypes();
+            int productTypesCount = productTypes.Count();
+
+            if (productTypesCount == 0) {
+                Services.Notifier.Information(T("There is no product enabled content type. Please create one."));
+                return RedirectToAction("Index", "Admin", new { Area = "Orchard.ContentTypes" });
+            }
+            else if (productTypesCount == 1) {
+                ContentTypeDefinition ctdProduct = productTypes.First();
+                return RedirectToAction("Create", "Admin", new { Area = "Contents", Id = ctdProduct.Name });
+            }
+            else {
+                return View(productTypes);
+            }
         }
 
         private IEnumerable<ContentTypeDefinition> GetProductTypes() {
