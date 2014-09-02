@@ -9,6 +9,5 @@
 }
 
 @if (vat != null) {
-    @T(" | ")<span class="vat">@T("VAT : ")@vat.DisplayName(cultureInfo)</span>
-    @T(" | ")<span class="vat">@T("VAT Included price : ")@String.Format(cultureInfo, "{0:C}", vat.GetVatIncludedPrice(product.UnitPrice))</span>
+    <span class="vatprice">@String.Format(cultureInfo, "{0:C}", vat.GetVatIncludedPrice(product.UnitPrice))</span>
 }
