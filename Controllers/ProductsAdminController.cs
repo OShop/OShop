@@ -7,6 +7,7 @@ using Orchard.Core.Contents.ViewModels;
 using Orchard.Data;
 using Orchard.DisplayManagement;
 using Orchard.Environment.Extensions;
+using Orchard.Environment.Features;
 using Orchard.Localization;
 using Orchard.Mvc;
 using Orchard.Mvc.Extensions;
@@ -14,6 +15,9 @@ using Orchard.Settings;
 using Orchard.UI.Admin;
 using Orchard.UI.Navigation;
 using Orchard.UI.Notify;
+using OShop.Models;
+using OShop.Services;
+using OShop.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,21 +30,27 @@ namespace OShop.Controllers
     [OrchardFeature("OShop.Products")]
     public class ProductsAdminController : Controller
     {
+        private readonly ICurrencyProvider _currencyProvider;
         private readonly IContentManager _contentManager;
         private readonly IContentDefinitionManager _contentDefinitionManager;
+        private readonly IFeatureManager _featureManager;
         private readonly ITransactionManager _transactionManager;
         private readonly ISiteService _siteService;
 
         public ProductsAdminController(
+            ICurrencyProvider currencyProvider,
             IOrchardServices orchardServices,
             IContentManager contentManager,
             IContentDefinitionManager contentDefinitionManager,
+            IFeatureManager featureManager,
             ITransactionManager transactionManager,
             ISiteService siteService,
             IShapeFactory shapeFactory) {
+            _currencyProvider = currencyProvider;
             Services = orchardServices;
             _contentManager = contentManager;
             _contentDefinitionManager = contentDefinitionManager;
+            _featureManager = featureManager;
             _transactionManager = transactionManager;
             _siteService = siteService;
 
@@ -52,7 +62,7 @@ namespace OShop.Controllers
         public IOrchardServices Services { get; private set; }
         public Localizer T { get; set; }
 
-        public ActionResult List(ListContentsViewModel model, PagerParameters pagerParameters)
+        public ActionResult List(ProductListViewModel model, PagerParameters pagerParameters)
         {
             if (!Services.Authorizer.Authorize(Permissions.OShopPermissions.AccessShopPanel, T("Not allowed to manage products")))
                 return new HttpUnauthorizedResult();
@@ -115,14 +125,15 @@ namespace OShop.Controllers
             var pagerShape = Shape.Pager(pager).TotalItemCount(query.Count());
             var pageOfContentItems = query.Slice(pager.GetStartIndex(), pager.PageSize).ToList();
 
-            var list = Shape.List();
-            list.AddRange(pageOfContentItems.Select(ci => _contentManager.BuildDisplay(ci, "ProductsSummaryAdmin")));
-
-            var viewModel = Shape.ViewModel()
-                .ContentItems(list)
-                .Pager(pagerShape)
-                .Options(model.Options)
-                .TypeDisplayName(model.TypeDisplayName ?? "");
+            var viewModel = new ProductListViewModel() {
+                Products = pageOfContentItems,
+                Pager = pagerShape,
+                Options = model.Options,
+                NumberFormat = _currencyProvider.NumberFormat,
+                TypeDisplayName = model.TypeDisplayName ?? "",
+                // Optional features
+                VatEnabled = _featureManager.GetEnabledFeatures().Where(f=>f.Id == "OShop.VAT").Any()
+            };
 
             return View(viewModel);
         }
@@ -132,8 +143,8 @@ namespace OShop.Controllers
         public ActionResult ListFilterPOST(ContentOptions options) {
             var routeValues = ControllerContext.RouteData.Values;
             if (options != null) {
-                routeValues["Options.OrderBy"] = options.OrderBy; //todo: don't hard-code the key
-                routeValues["Options.ContentsStatus"] = options.ContentsStatus; //todo: don't hard-code the key
+                routeValues["Options.OrderBy"] = options.OrderBy;
+                routeValues["Options.ContentsStatus"] = options.ContentsStatus;
                 if (GetProductTypes().Any(ctd => string.Equals(ctd.Name, options.SelectedFilter, StringComparison.OrdinalIgnoreCase))) {
                     routeValues["id"] = options.SelectedFilter;
                 }

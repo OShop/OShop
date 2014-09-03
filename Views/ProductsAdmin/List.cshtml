@@ -1,19 +1,24 @@
-﻿@using Orchard.Core.Contents.ViewModels;
+﻿@model OShop.ViewModels.ProductListViewModel
+@using OShop.Helpers
+@using OShop.Models
+@using Orchard.ContentManagement
+@using Orchard.Core.Contents.ViewModels;
 @{
-    var typeDisplayName = Model.TypeDisplayName;
+    Style.Require("OShopAdmin");
+
     var pageTitle = T("Manage Products");
     var createLinkText = T("Create New Product");
 
-    if (!string.IsNullOrWhiteSpace(typeDisplayName)) {
-        pageTitle = T("Manage {0} products", typeDisplayName);
-        createLinkText = T("Create New {0}", typeDisplayName);
+    if (!string.IsNullOrWhiteSpace(Model.TypeDisplayName)) {
+        pageTitle = T("Manage {0} products", Model.TypeDisplayName);
+        createLinkText = T("Create New {0}", Model.TypeDisplayName);
     }
         
     Layout.Title = pageTitle;
 }
 
 <div class="manage">
-    @if (!string.IsNullOrWhiteSpace(typeDisplayName)) {
+    @if (!string.IsNullOrWhiteSpace(Model.TypeDisplayName)) {
         @Html.ActionLink(createLinkText.Text, "Create", "Admin", new { Area = "Contents", Id = (string)Model.Options.SelectedFilter }, new { @class = "button primaryAction" })
     }
     else {
@@ -54,8 +59,48 @@
         </select>
         <button type="submit" name="submit.Filter" value="yes please">@T("Apply")</button>
     </fieldset>
-    <fieldset class="contentItems bulk-items">
-        @Display(Model.ContentItems)
+    <fieldset>
+        <table class="items products">
+            <thead>
+                <tr>
+                    <th scope="col"><input type="checkbox" class="check-all" /></th>
+                    <th scope="col">@T("SKU")</th>
+                    <th scope="col" style="width: 100%;">@T("Name")</th>
+                    <th scope="col">@T("Price")</th>
+                    @if (Model.VatEnabled) {
+                        <th scope="col">@T("VAT")</th>
+                        <th scope="col">@T("VAT Inc.")</th>
+                    }
+                </tr>
+
+            </thead>
+            @foreach (ContentItem contentItem in Model.Products) {
+                var productPart = contentItem.As<ProductPart>();
+                <tr>
+                    <td>
+                        <input type="checkbox" value="@contentItem.Id" name="itemIds" />
+                    </td>
+                    <td scope="col">@productPart.SKU</td>
+                    <td scope="col" class="name">
+                        <h3>@Html.ItemAdminLink(contentItem)</h3> - <span class="contentType">@contentItem.TypeDefinition.DisplayName</span>
+                    </td>
+                    <td scope="col" class="price">@String.Format(Model.NumberFormat, "{0:C}", productPart.UnitPrice)</td>
+                    @if (Model.VatEnabled) {
+                        if (productPart.VAT != null) {
+                            <td scope="col" class="percent" title="@productPart.VAT.Name">@T("{0:P}", productPart.VAT.Rate)</td>
+                            <td scope="col" class="price">
+                                @String.Format(Model.NumberFormat, "{0:C}", productPart.VAT.GetVatIncludedPrice(productPart.UnitPrice))
+                            </td>
+                        }
+                        else {
+                            <td scope="col" class="na">-</td>
+                            <td scope="col" class="price">@String.Format(Model.NumberFormat, "{0:C}", productPart.UnitPrice)</td>
+                        }
+                    }
+                </tr>
+            }
+        </table>
+
     </fieldset>
     @Display(Model.Pager)
 }

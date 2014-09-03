@@ -118,6 +118,7 @@
     <Compile Include="Services\IVatService.cs" />
     <Compile Include="Services\VatService.cs" />
     <Compile Include="ViewModels\OShopSettingsViewsModel.cs" />
+    <Compile Include="ViewModels\ProductListViewModel.cs" />
     <Compile Include="ViewModels\ProductVatEditViewModel.cs" />
     <Compile Include="ViewModels\VatCreateViewModel.cs" />
   </ItemGroup>
@@ -146,12 +147,6 @@
     <Content Include="Views\ProductsAdmin\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Parts\Product.Price.SummaryAdmin.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Parts\Product.Sku.SummaryAdmin.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\VatAdmin\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -167,11 +162,9 @@
     <Content Include="Views\ProductsAdmin\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Parts\Product.Vat.SummaryAdmin.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Parts\Product.Vat.cshtml" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

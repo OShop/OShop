@@ -2,3 +2,16 @@
   float: left;
   margin-right: 1.5em;
 }
+table.products td {
+  white-space: nowrap;
+}
+table.products td.price,
+table.products td.percent {
+  text-align: right;
+}
+table.products td.na {
+  text-align: center;
+}
+table.products h3 {
+  display: inline;
+}
