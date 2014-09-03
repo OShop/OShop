@@ -68,6 +68,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Styles\Images\menu.oshop.png" />
+    <None Include="Styles\oshop-admin.less" />
+    <Content Include="Styles\oshop-admin.css">
+      <DependentUpon>oshop-admin.less</DependentUpon>
+    </Content>
+    <Content Include="Styles\oshop-admin.min.css">
+      <DependentUpon>oshop-admin.css</DependentUpon>
+    </Content>
     <Content Include="Web.config" />
     <Content Include="Scripts\Web.config" />
     <Content Include="Styles\Web.config" />
@@ -95,6 +102,8 @@
     <Compile Include="Helpers\VatExtensions.cs" />
     <Compile Include="Migrations\ProductsMigrations.cs" />
     <Compile Include="Migrations\VatMigrations.cs" />
+    <Compile Include="Models\ICurrencySettings.cs" />
+    <Compile Include="Models\NumberFormats.cs" />
     <Compile Include="Models\OShopSettingsPart.cs" />
     <Compile Include="Models\ProductPart.cs" />
     <Compile Include="Models\ProductPartRecord.cs" />
@@ -103,8 +112,12 @@
     <Compile Include="Navigation\VatAdminMenu.cs" />
     <Compile Include="Navigation\ProductsAdminMenu.cs" />
     <Compile Include="Permissions\OShopPermissions.cs" />
+    <Compile Include="Resources\OShopResources.cs" />
+    <Compile Include="Services\DefaultCurrencyProvider.cs" />
+    <Compile Include="Services\ICurrencyProvider.cs" />
     <Compile Include="Services\IVatService.cs" />
     <Compile Include="Services\VatService.cs" />
+    <Compile Include="ViewModels\OShopSettingsViewsModel.cs" />
     <Compile Include="ViewModels\ProductVatEditViewModel.cs" />
     <Compile Include="ViewModels\VatCreateViewModel.cs" />
   </ItemGroup>

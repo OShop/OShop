@@ -3,12 +3,11 @@
 @using OShop.Helpers
 
 @{
-    CultureInfo cultureInfo = new CultureInfo(WorkContext.CurrentCulture);
     VatRecord vat = Model.Vat;
     ProductPart product = Model.ContentPart;
 }
 
 @if (vat != null) {
     @T(" | ")<span class="vat">@T("VAT : ")@vat.DisplayName(T)</span>
-    @T(" | ")<span class="vat">@T("VAT Included price : ")@String.Format(cultureInfo, "{0:C}", vat.GetVatIncludedPrice(product.UnitPrice))</span>
+    @T(" | ")<span class="vat">@T("VAT Included price : ")@String.Format(Model.NumberFormat, "{0:C}", vat.GetVatIncludedPrice(product.UnitPrice))</span>
 }

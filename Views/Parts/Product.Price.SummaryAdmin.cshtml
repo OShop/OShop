@@ -1,6 +1,2 @@
-﻿@using System.Globalization
-@{
-    CultureInfo cultureInfo = new CultureInfo(WorkContext.CurrentCulture);
-}
-
-@T(" | ")<span class="price">@T("Unit price : ")@String.Format(cultureInfo, "{0:C}", Model.UnitPrice)</span>
+﻿
+@T(" | ")<span class="price">@T("Unit price : ")@String.Format(Model.NumberFormat, "{0:C}", Model.UnitPrice)</span>

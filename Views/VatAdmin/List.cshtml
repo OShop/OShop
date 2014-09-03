@@ -3,7 +3,6 @@
 @using Orchard.Core.Contents.ViewModels;
 @using System.Globalization
 @{
-    CultureInfo cultureInfo = new CultureInfo(WorkContext.CurrentCulture);
     Layout.Title = T("Manage VAT");
 }
 
@@ -25,7 +24,7 @@
         @foreach (VatRecord record in Model) {
             <tr>
                 <td scope="col">@Html.ActionLink(record.Name, "Edit", "VatAdmin", new { Area = "OShop", id = record.Id }, new { })</td>
-                <td scope="col">@String.Format(cultureInfo, "{0:P}", record.Rate)</td>
+                <td scope="col">@T("{0:P}", record.Rate)</td>
                 <td scope="col">
                     @Html.ActionLink(T("Edit").Text, "Edit", "VatAdmin", new { Area = "OShop", id = record.Id }, new { })@T(" | ")
                     @Html.ActionLink(T("Delete").Text, "Delete", "VatAdmin", new { Area = "OShop", id = record.Id }, new { itemprop = "RemoveUrl UnsafeUrl" })

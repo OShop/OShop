@@ -1,4 +1,78 @@
-﻿
+﻿@model OShop.ViewModels.OShopSettingsViewsModel
+@using OShop.Models
 @{
+    Style.Require("OShopAdmin");
+    
     Layout.Title = T("OShop Settings");
+}
+
+@using (Html.BeginFormAntiForgeryPost()) {
+    @Html.ValidationSummary()
+
+
+    <fieldset>
+        <legend>@T("Currency")</legend>
+        <div>
+            @Html.LabelFor(m => m.CurrencySymbol, T("Symbol"))
+            @Html.TextBoxFor(m => m.CurrencySymbol, new { @class = "text small" })
+            @Html.ValidationMessageFor(m => m.CurrencySymbol, "*")
+        </div>
+        <div>
+            @Html.LabelFor(m => m.CurrencyIsoCode, T("Iso Code"))
+            @Html.TextBoxFor(m => m.CurrencyIsoCode, new { @class = "text small" })
+            @Html.ValidationMessageFor(m => m.CurrencyIsoCode, "*")
+        </div>
+    </fieldset>
+    <fieldset class="inline">
+        <legend>@T("Numbers")</legend>
+        <div>
+            @Html.LabelFor(m => m.CurrencyDecimalDigits, T("Decimal digits"))
+            @Html.DropDownListFor(m => m.CurrencyDecimalDigits,
+                new int[] { 0, 2, 3, 4 }.Select(v =>
+                    new SelectListItem {
+                        Selected = v == Model.CurrencyDecimalDigits,
+                        Text = v.ToString(),
+                        Value = v.ToString()
+                    }),
+                new { style = "min-width: 4em;" })
+            @Html.ValidationMessageFor(m => m.CurrencyDecimalDigits, "*")
+        </div>
+        <div>
+            @Html.LabelFor(m => m.CurrencyNumberFormat, T("Number format"))
+            @Html.DropDownListFor(m => m.CurrencyNumberFormat,
+                Model.CurrencyNumberFormats.Select(v =>
+                    new SelectListItem {
+                        Selected = v.Key == Model.CurrencyNumberFormat,
+                        Text = v.Value,
+                        Value = v.Key.ToString()
+                    }))
+            @Html.ValidationMessageFor(m => m.CurrencyNumberFormat, "*")
+        </div>
+        <div>
+            @Html.LabelFor(m => m.CurrencyPositivePattern, T("Positive pattern"))
+            @Html.DropDownListFor(m => m.CurrencyPositivePattern,
+                Model.CurrencyPositivePatterns.Select(v =>
+                    new SelectListItem {
+                        Selected = v.Key == Model.CurrencyPositivePattern,
+                        Text = v.Value,
+                        Value = v.Key.ToString()
+                    }))
+            @Html.ValidationMessageFor(m => m.CurrencyPositivePattern, "*")
+        </div>
+        <div>
+            @Html.LabelFor(m => m.CurrencyNegativePattern, T("Negative pattern"))
+            @Html.DropDownListFor(m => m.CurrencyNegativePattern,
+             Model.CurrencyNegativePatterns.Select(v =>
+                    new SelectListItem {
+                        Selected = v.Key == Model.CurrencyNegativePattern,
+                        Text = v.Value,
+                        Value = v.Key.ToString()
+                    }))
+            @Html.ValidationMessageFor(m => m.CurrencyNegativePattern, "*")
+        </div>
+    </fieldset>
+
+    <div>
+        <button type="submit" name="submit.Save" value="create">@T("Save")</button>
+    </div>
 }

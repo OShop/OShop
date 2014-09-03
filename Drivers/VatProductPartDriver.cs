@@ -13,17 +13,23 @@ namespace OShop.Drivers {
     [OrchardFeature("OShop.VAT")]
     public class VatProductPartDriver : ContentPartDriver<ProductPart> {
         private readonly IVatService _vatService;
+        private readonly ICurrencyProvider _currencyProvider;
 
         private const string TemplateName = "Parts/Product.Vat";
 
-        public VatProductPartDriver(IVatService vatService) {
+        public VatProductPartDriver(
+            IVatService vatService,
+            ICurrencyProvider currencyProvider
+            ) {
             _vatService = vatService;
+            _currencyProvider = currencyProvider;
         }
 
         protected override string Prefix { get { return "Product"; } }
 
         protected override DriverResult Display(ProductPart part, string displayType, dynamic shapeHelper) {
             return ContentShape("Parts_Product_Vat", () => shapeHelper.Parts_Product_Vat(
+                    NumberFormat: _currencyProvider.NumberFormat,
                     ContentPart: part,
                     Vat: part.VAT));
         }
