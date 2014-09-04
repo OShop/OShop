@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace OShop.Services {
-    interface IShoppingCart : IDependency {
+    public interface IShoppingCart {
         int Id { get; }
         int Guid { get; }
         DateTime ModifiedUtc { get; }
