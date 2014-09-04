@@ -21,4 +21,4 @@ Features:
 		Name: OShop Shopping Cart
 		Category: Commerce
         Description: Provides Shopping Cart service.
-		Dependencies: OShop, OShop.Products
+		Dependencies: OShop

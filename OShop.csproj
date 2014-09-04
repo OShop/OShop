@@ -101,12 +101,15 @@
     <Compile Include="Handlers\ProductPartHandler.cs" />
     <Compile Include="Helpers\VatExtensions.cs" />
     <Compile Include="Migrations\ProductsMigrations.cs" />
+    <Compile Include="Migrations\ShoppingCartMigrations.cs" />
     <Compile Include="Migrations\VatMigrations.cs" />
     <Compile Include="Models\ICurrencySettings.cs" />
     <Compile Include="Models\NumberFormats.cs" />
     <Compile Include="Models\OShopSettingsPart.cs" />
     <Compile Include="Models\ProductPart.cs" />
     <Compile Include="Models\ProductPartRecord.cs" />
+    <Compile Include="Models\ShoppingCartItem.cs" />
+    <Compile Include="Models\ShoppingCartRecord.cs" />
     <Compile Include="Models\VatRecord.cs" />
     <Compile Include="Navigation\AdminMenu.cs" />
     <Compile Include="Navigation\VatAdminMenu.cs" />
@@ -115,6 +118,8 @@
     <Compile Include="Resources\OShopResources.cs" />
     <Compile Include="Services\DefaultCurrencyProvider.cs" />
     <Compile Include="Services\ICurrencyProvider.cs" />
+    <Compile Include="Services\IShoppingCart.cs" />
+    <Compile Include="Services\IShoppingCartService.cs" />
     <Compile Include="Services\IVatService.cs" />
     <Compile Include="Services\VatService.cs" />
     <Compile Include="ViewModels\OShopSettingsViewsModel.cs" />
