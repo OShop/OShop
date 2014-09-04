@@ -1,4 +1,5 @@
 ﻿using Orchard;
+using OShop.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +8,10 @@ using System.Threading.Tasks;
 
 namespace OShop.Services {
     public interface IShoppingCartService : IDependency {
-        IShoppingCart GetCart();
-        IShoppingCart GetCart(int Id);
-        IShoppingCart GetCart(Guid Guid);
+        IEnumerable<ShoppingCartItem> ListItems();
+        void Add(int ItemId, string ItemType = "Product", int Quantity = 1);
+        void UpdateQuantity(int Id, int Quantity);
+        void Remove(int Id);
+        void Empty();
     }
 }
