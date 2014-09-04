@@ -89,7 +89,7 @@ namespace OShop.Services {
 
         #region IShoppingCartService members
 
-        IEnumerable<ShoppingCartItem> ListItems() {
+        public IEnumerable<ShoppingCartItem> ListItems() {
             var result = new List<ShoppingCartItem>();
             var cart = GetCart();
             if (cart != null) {
