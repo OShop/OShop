@@ -16,7 +16,7 @@ namespace OShop.Services {
             get { return 0; }
         }
 
-        public void GetItems(IEnumerable<ShoppingCartItem> CartItems, out IList<IShopItem> ShopItems) {
+        public void GetItems(IEnumerable<ShoppingCartItemRecord> CartRecord, out List<ShoppingCartItem> CartItems) {
             throw new NotImplementedException();
         }
     }
