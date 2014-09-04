@@ -110,6 +110,8 @@ namespace OShop.Services {
                 ItemId = ItemId,
                 Quantity = Quantity
             });
+
+            cart.ModifiedUtc = _clock.UtcNow;
         }
 
         public void UpdateQuantity(int Id, int Quantity) {
@@ -121,6 +123,7 @@ namespace OShop.Services {
 
             if (item != null) {
                 item.Quantity = Quantity;
+                item.ShoppingCartRecord.ModifiedUtc = _clock.UtcNow;
             }
         }
 
@@ -129,6 +132,8 @@ namespace OShop.Services {
 
             if (item != null) {
                 if (item.ShoppingCartRecord.Items.Where(r => r.Id != Id).Any()) {
+                    item.ShoppingCartRecord.ModifiedUtc = _clock.UtcNow;
+
                     _shoppingCartItemRepository.Delete(item);
                 }
                 else {
