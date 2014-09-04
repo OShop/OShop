@@ -13,16 +13,16 @@ namespace OShop.Migrations {
                  .Column<int>("Id", c => c.PrimaryKey().Identity())
                  .Column<string>("Guid", c => c.WithLength(36))
                  .Column<DateTime>("ModifiedUtc")
-                 .Column<int>("OwnerId"));
+                 .Column<int>("OwnerId", c => c.Nullable()));
 
-            SchemaBuilder.CreateTable("ShoppingCartItem", table => table
+            SchemaBuilder.CreateTable("ShoppingCartItemRecord", table => table
                  .Column<int>("Id", c => c.PrimaryKey().Identity())
                  .Column<int>("ShoppingCartRecord_Id", c => c.NotNull())
                  .Column<string>("ItemType")
                  .Column<int>("ItemId", c => c.NotNull())
                  .Column<int>("Quantity"));
 
-            SchemaBuilder.CreateForeignKey("FK_ShoppingCartItem_ShoppingCartRecord", "ShoppingCartItem", new[] { "ShoppingCartRecord_Id" }, "ShoppingCartRecord", new[] { "Id" });
+            SchemaBuilder.CreateForeignKey("FK_ShoppingCartItemRecord_ShoppingCartRecord", "ShoppingCartItemRecord", new[] { "ShoppingCartRecord_Id" }, "ShoppingCartRecord", new[] { "Id" });
 
             return 1;
         }

@@ -110,6 +110,7 @@
     <Compile Include="Models\ProductPart.cs" />
     <Compile Include="Models\ProductPartRecord.cs" />
     <Compile Include="Models\ShoppingCartItem.cs" />
+    <Compile Include="Models\ShoppingCartItemRecord.cs" />
     <Compile Include="Models\ShoppingCartRecord.cs" />
     <Compile Include="Models\VatRecord.cs" />
     <Compile Include="Navigation\AdminMenu.cs" />
@@ -120,11 +121,9 @@
     <Compile Include="Services\DefaultCurrencyProvider.cs" />
     <Compile Include="Services\ICurrencyProvider.cs" />
     <Compile Include="Services\IShopItemProvider.cs" />
-    <Compile Include="Services\IShoppingCart.cs" />
     <Compile Include="Services\IShoppingCartService.cs" />
     <Compile Include="Services\IVatService.cs" />
     <Compile Include="Services\ProductService.cs" />
-    <Compile Include="Services\ShoppingCart.cs" />
     <Compile Include="Services\ShoppingCartService.cs" />
     <Compile Include="Services\VatService.cs" />
     <Compile Include="ViewModels\OShopSettingsViewsModel.cs" />
