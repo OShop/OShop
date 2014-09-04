@@ -1,9 +1,10 @@
 ﻿using Orchard.ContentManagement;
+using Orchard.ContentManagement.Aspects;
 using OShop.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace OShop.Models {
-    public class ProductPart : ContentPart<ProductPartRecord> {
+    public class ProductPart : ContentPart<ProductPartRecord>, IShopItem {
         [Required]
         public decimal UnitPrice {
             get { return this.Retrieve(x => x.UnitPrice); }
@@ -18,6 +19,23 @@ namespace OShop.Models {
         public VatRecord VAT {
             get { return Record.VatRecord; }
             set { Record.VatRecord = value; }
+        }
+
+
+        public string Designation {
+            get { return this.As<ITitleAspect>().Title; }
+        }
+
+        public string Description {
+            get { return string.Empty; }
+        }
+
+        public string ItemType {
+            get { return "Product"; }
+        }
+
+        public decimal GetUnitPrice(int Quantity = 1) {
+            return this.UnitPrice;
         }
     }
 }
