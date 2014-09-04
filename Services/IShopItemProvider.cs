@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Orchard;
+using OShop.Models;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OShop.Services {
-    public interface IShopItemProvider {
+    public interface IShopItemProvider : IDependency {
         Int16 Priority { get; }
+        void GetItems(IEnumerable<ShoppingCartItem> CartItems, out IList<IShopItem> ShopItems);
     }
 }

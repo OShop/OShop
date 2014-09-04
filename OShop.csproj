@@ -123,6 +123,9 @@
     <Compile Include="Services\IShoppingCart.cs" />
     <Compile Include="Services\IShoppingCartService.cs" />
     <Compile Include="Services\IVatService.cs" />
+    <Compile Include="Services\ProductService.cs" />
+    <Compile Include="Services\ShoppingCart.cs" />
+    <Compile Include="Services\ShoppingCartService.cs" />
     <Compile Include="Services\VatService.cs" />
     <Compile Include="ViewModels\OShopSettingsViewsModel.cs" />
     <Compile Include="ViewModels\ProductListViewModel.cs" />

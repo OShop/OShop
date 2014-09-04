@@ -2,12 +2,9 @@
 using OShop.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OShop.Services {
-    public interface IShoppingCart {
+    public interface IShoppingCart : ITransientDependency {
         int Id { get; }
         int Guid { get; }
         DateTime ModifiedUtc { get; }
