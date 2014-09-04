@@ -104,6 +104,7 @@
     <Compile Include="Migrations\ShoppingCartMigrations.cs" />
     <Compile Include="Migrations\VatMigrations.cs" />
     <Compile Include="Models\ICurrencySettings.cs" />
+    <Compile Include="Models\IShopItem.cs" />
     <Compile Include="Models\NumberFormats.cs" />
     <Compile Include="Models\OShopSettingsPart.cs" />
     <Compile Include="Models\ProductPart.cs" />
@@ -118,6 +119,7 @@
     <Compile Include="Resources\OShopResources.cs" />
     <Compile Include="Services\DefaultCurrencyProvider.cs" />
     <Compile Include="Services\ICurrencyProvider.cs" />
+    <Compile Include="Services\IShopItemProvider.cs" />
     <Compile Include="Services\IShoppingCart.cs" />
     <Compile Include="Services\IShoppingCartService.cs" />
     <Compile Include="Services\IVatService.cs" />
