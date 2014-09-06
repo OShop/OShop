@@ -80,6 +80,8 @@
     <Content Include="Styles\Web.config" />
     <Content Include="Properties\AssemblyInfo.cs" />
     <Content Include="Module.txt" />
+    <Content Include="Views\Parts\Product.AddToCart.cshtml" />
+    <Content Include="Views\ShoppingCart\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Orchard.Core">
@@ -94,8 +96,10 @@
   <ItemGroup>
     <Compile Include="Controllers\ProductsAdminController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
+    <Compile Include="Controllers\ShoppingCartController.cs" />
     <Compile Include="Controllers\VatAdminController.cs" />
     <Compile Include="Drivers\ProductPartDriver.cs" />
+    <Compile Include="Drivers\ShoppingCartProductPartDriver.cs" />
     <Compile Include="Drivers\VatProductPartDriver.cs" />
     <Compile Include="Handlers\OShopSettingsPartHandler.cs" />
     <Compile Include="Handlers\ProductPartHandler.cs" />
@@ -129,6 +133,7 @@
     <Compile Include="ViewModels\OShopSettingsViewsModel.cs" />
     <Compile Include="ViewModels\ProductListViewModel.cs" />
     <Compile Include="ViewModels\ProductVatEditViewModel.cs" />
+    <Compile Include="ViewModels\ShoppingCartIndexViewModel.cs" />
     <Compile Include="ViewModels\VatCreateViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

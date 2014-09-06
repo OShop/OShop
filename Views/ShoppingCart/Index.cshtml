@@ -1,0 +1,31 @@
+﻿@model OShop.ViewModels.ShoppingCartIndexViewModel
+
+@{
+    Layout.Title = T("Your shopping cart");
+}
+
+<table class="cart-items">
+    <thead>
+        <tr>
+            <th>@T("SKU")</th>
+            <th>@T("Product")</th>
+            <th>@T("Unit Price")</th>
+            <th>@T("Qty.")</th>
+            <th>@T("Total")</th>
+        </tr>
+    </thead>
+    @foreach (var entry in Model) {
+        <tr>
+            <td>@entry.Item.SKU</td>
+            <td>
+                <div class="designation">@entry.Item.Designation</div>
+                @if (!String.IsNullOrWhiteSpace(entry.Item.Description)) {
+                    <div class="description">@entry.Item.Description</div>
+                }
+            </td>
+            <td>@entry.UnitPrice</td>
+            <td>@T("Qty.")</td>
+            <td>@T("Total")</td>
+        </tr>
+    }
+</table>

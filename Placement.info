@@ -10,5 +10,9 @@
   <Match DisplayType="Detail">
     <Place Parts_Product_Vat="Content:3.2" />
   </Match>
+  <!-- Shopping Cart -->
+  <Match DisplayType="Detail">
+    <Place Parts_Product_AddToCart="Content:4" />
+  </Match>
 
 </Placement>
