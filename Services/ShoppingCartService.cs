@@ -34,7 +34,11 @@ namespace OShop.Services {
         public IOrchardServices Services { get; set; }
 
         private ShoppingCartRecord GetCart(bool CreateIfNull = false) {
-            Guid shoppingCartGuid = (Guid)Services.WorkContext.HttpContext.Session[ShoppingCartKey];
+            Guid shoppingCartGuid = Guid.Empty;
+
+            if (Services.WorkContext.HttpContext.Session[ShoppingCartKey] != null) {
+                shoppingCartGuid = (Guid)Services.WorkContext.HttpContext.Session[ShoppingCartKey];
+            }
 
             ShoppingCartRecord cart = null;
 
@@ -105,11 +109,20 @@ namespace OShop.Services {
         public void Add(int ItemId, string ItemType = "Product", int Quantity = 1) {
             var cart = GetCart(CreateIfNull: true);
 
-            cart.Items.Add(new ShoppingCartItemRecord() {
-                ItemType = ItemType,
-                ItemId = ItemId,
-                Quantity = Quantity
-            });
+            var item = cart.Items.Where(i=>i.ItemId == ItemId && i.ItemType == ItemType).FirstOrDefault();
+            if (item != null) {
+                // Existing cart item
+                item.Quantity += Quantity;
+            }
+            else {
+                // New cart item
+                _shoppingCartItemRepository.Create(new ShoppingCartItemRecord() {
+                    ShoppingCartRecord = cart,
+                    ItemType = ItemType,
+                    ItemId = ItemId,
+                    Quantity = Quantity
+                });
+            }
 
             cart.ModifiedUtc = _clock.UtcNow;
         }
@@ -132,11 +145,12 @@ namespace OShop.Services {
 
             if (item != null) {
                 if (item.ShoppingCartRecord.Items.Where(r => r.Id != Id).Any()) {
-                    item.ShoppingCartRecord.ModifiedUtc = _clock.UtcNow;
-
+                    // cart still contains items
                     _shoppingCartItemRepository.Delete(item);
+                    item.ShoppingCartRecord.ModifiedUtc = _clock.UtcNow;
                 }
                 else {
+                    // cart will be empty
                     Empty();
                 }
             }
@@ -146,10 +160,8 @@ namespace OShop.Services {
             var cart = GetCart();
 
             if (cart != null) {
-                cart.Items.Clear();
+                _shoppingCartRepository.Delete(cart);
             }
-
-            _shoppingCartRepository.Delete(cart);
 
             // Unregister cart
             Services.WorkContext.HttpContext.Session.Remove(ShoppingCartKey);
