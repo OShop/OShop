@@ -10,11 +10,20 @@ namespace OShop.Helpers {
         }
 
         public static decimal GetVat(this VatRecord record, decimal price) {
-            return price * record.Rate;
+            return record != null ? price * record.Rate : 0;
         }
 
         public static decimal GetVatIncludedPrice(this VatRecord record, decimal price) {
             return price + GetVat(record, price);
         }
+
+        public static decimal VatIncludedUnitPrice(this ShoppingCartItem cartItem) {
+            return cartItem.Item.VAT.GetVatIncludedPrice(cartItem.UnitPrice());
+        }
+
+        public static decimal VatIncludedSubTotal(this ShoppingCartItem cartItem) {
+            return cartItem.Item.VAT.GetVatIncludedPrice(cartItem.SubTotal());
+        }
+
     }
 }
