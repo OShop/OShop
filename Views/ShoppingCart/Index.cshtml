@@ -34,8 +34,18 @@
                 }
             </td>
 
-            <td>@T("Qty.")</td>
-            <td>@T("Total")</td>
+            <td>@entry.Quantity</td>
+            <td>@String.Format(Model.NumberFormat, "{0:C}", entry.SubTotal)</td>
         </tr>
     }
+    <tfoot>
+        <tr class="total">
+            <td colspan="4">
+                @T("Total")
+            </td>
+            <td>
+                @String.Format(Model.NumberFormat, "{0:C}", Model.CartItems.Sum(ci => ci.SubTotal))
+            </td>
+        </tr>
+    </tfoot>
 </table>

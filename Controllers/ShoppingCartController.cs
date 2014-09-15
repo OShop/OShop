@@ -1,5 +1,7 @@
 ﻿using Orchard.Environment.Extensions;
+using Orchard.Environment.Features;
 using Orchard.Themes;
+using OShop.Models;
 using OShop.Services;
 using OShop.ViewModels;
 using System;
@@ -15,12 +17,15 @@ namespace OShop.Controllers
     {
         private readonly IShoppingCartService _shoppingCartService;
         private readonly ICurrencyProvider _currencyProvider;
+        private readonly IFeatureManager _featureManager;
 
         public ShoppingCartController(
             IShoppingCartService shoppingCartService,
-            ICurrencyProvider currencyProvider) {
+            ICurrencyProvider currencyProvider,
+            IFeatureManager featureManager) {
             _shoppingCartService = shoppingCartService;
             _currencyProvider = currencyProvider;
+            _featureManager = featureManager;
         }
 
         [Themed]
@@ -28,13 +33,15 @@ namespace OShop.Controllers
         {
             var model = new ShoppingCartIndexViewModel() {
                 CartItems = _shoppingCartService.ListItems(),
-                NumberFormat = _currencyProvider.NumberFormat
+                NumberFormat = _currencyProvider.NumberFormat,
+                // Optional features
+                VatEnabled = _featureManager.GetEnabledFeatures().Where(f => f.Id == "OShop.VAT").Any()
             };
 
             return View(model);
         }
 
-        public ActionResult Add(int id, int quantity = 1, string itemType = "Product", string returnUrl = null) {
+        public ActionResult Add(int id, int quantity = 1, string itemType = ProductPart.PartItemType, string returnUrl = null) {
 
             _shoppingCartService.Add(id, itemType, quantity);
 
