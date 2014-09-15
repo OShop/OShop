@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace OShop.Services {
     public interface IShoppingCartService : IDependency {
         IEnumerable<ShoppingCartItem> ListItems();
-        void Add(int ItemId, string ItemType = "Product", int Quantity = 1);
+        void Add(int ItemId, string ItemType = ProductPart.PartItemType, int Quantity = 1);
         void UpdateQuantity(int Id, int Quantity);
         void Remove(int Id);
         void Empty();

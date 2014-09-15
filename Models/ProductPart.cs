@@ -5,6 +5,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace OShop.Models {
     public class ProductPart : ContentPart<ProductPartRecord>, IShopItem {
+        public static const string PartItemType = "Product";
+
         [Required]
         public decimal UnitPrice {
             get { return this.Retrieve(x => x.UnitPrice); }
@@ -31,7 +33,7 @@ namespace OShop.Models {
         }
 
         public string ItemType {
-            get { return "Product"; }
+            get { return PartItemType; }
         }
 
         public decimal GetUnitPrice(int Quantity = 1) {

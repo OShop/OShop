@@ -22,6 +22,7 @@ namespace OShop.Services {
             IRepository<ShoppingCartRecord> shoppingCartRepository,
             IRepository<ShoppingCartItemRecord> shoppingCartItemRepository,
             IEnumerable<IShopItemProvider> shopItemProviders,
+
             IClock clock,
             IOrchardServices services) {
             _shoppingCartRepository = shoppingCartRepository;
@@ -106,7 +107,7 @@ namespace OShop.Services {
             return result;
         }
 
-        public void Add(int ItemId, string ItemType = "Product", int Quantity = 1) {
+        public void Add(int ItemId, string ItemType = ProductPart.PartItemType, int Quantity = 1) {
             var cart = GetCart(CreateIfNull: true);
 
             var item = cart.Items.Where(i=>i.ItemId == ItemId && i.ItemType == ItemType).FirstOrDefault();
