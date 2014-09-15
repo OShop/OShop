@@ -20,11 +20,17 @@ namespace OShop.Services {
         }
 
         public void GetItems(IEnumerable<ShoppingCartItemRecord> CartRecords, ref List<ShoppingCartItem> CartItems) {
+            var products = _contentManager.GetMany<ProductPart>(
+                CartRecords.Where(cr => cr.ItemType == ProductPart.PartItemType).Select(cr => cr.ItemId),
+                VersionOptions.Published,
+                QueryHints.Empty);
+
             foreach (var cartRecord in CartRecords.Where(cr=>cr.ItemType == ProductPart.PartItemType)) {
-                var product = _contentManager.Get<ProductPart>(cartRecord.ItemId, VersionOptions.Published);
+                var product = products.Where(p => p.Id == cartRecord.ItemId).FirstOrDefault();
 
                 if (product != null) {
                     CartItems.Add(new ShoppingCartItem {
+                        Id = cartRecord.Id,
                         Item = product,
                         Quantity = cartRecord.Quantity
                     });
