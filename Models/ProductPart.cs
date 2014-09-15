@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace OShop.Models {
     public class ProductPart : ContentPart<ProductPartRecord>, IShopItem {
-        public static const string PartItemType = "Product";
+        public const string PartItemType = "Product";
 
         [Required]
         public decimal UnitPrice {
