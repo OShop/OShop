@@ -6,46 +6,85 @@
     Layout.Title = T("Your shopping cart");
 }
 
-<table class="cart-items">
-    <thead>
-        <tr>
-            <th>@T("SKU")</th>
-            <th>@T("Product")</th>
-            <th>@T("Unit Price")</th>
-            <th>@T("Qty.")</th>
-            <th>@T("Total")</th>
-        </tr>
-    </thead>
-    @foreach (var entry in Model.CartItems) {
-        <tr>
-            <td>@entry.Item.SKU</td>
-            <td>
-                <div class="designation">@entry.Item.Designation</div>
-                @if (!String.IsNullOrWhiteSpace(entry.Item.Description)) {
-                    <div class="description">@entry.Item.Description</div>
+<div class="shopping-cart-container">
+    @if (Model.CartItems.Any()) {
+        using (Html.BeginFormAntiForgeryPost()) {
+            <table class="cart-items">
+                <thead>
+                    <tr>
+                        <th>@T("SKU")</th>
+                        <th>@T("Product")</th>
+                        <th>@T("Unit Price")</th>
+                        <th>@T("Qty.")</th>
+                        <th>@T("Total")</th>
+                    </tr>
+                </thead>
+                @{
+                    int i = 0;
                 }
-            </td>
-            <td>
-                @if (Model.VatEnabled && entry.Item.VAT != null) {
-                    @String.Format(Model.NumberFormat, "{0:C}", entry.Item.VAT.GetVatIncludedPrice(entry.UnitPrice))
-                }
-                else {
-                    @String.Format(Model.NumberFormat, "{0:C}", entry.UnitPrice)
-                }
-            </td>
+                @foreach (var entry in Model.CartItems) {
+                    <tr>
+                        <td>@entry.Item.SKU</td>
+                        <td>
+                            <div class="designation">
+                                @if (entry.Item.Content != null) {
+                                    @Html.ItemDisplayLink(entry.Item.Designation, entry.Item.Content)
+                                }
+                                else {
+                                    @entry.Item.Designation
+                                }
+                            </div>
+                            @if (!String.IsNullOrWhiteSpace(entry.Item.Description)) {
+                                <div class="description">@entry.Item.Description</div>
+                            }
+                        </td>
 
-            <td>@entry.Quantity</td>
-            <td>@String.Format(Model.NumberFormat, "{0:C}", entry.SubTotal)</td>
-        </tr>
+
+
+                        <td>
+                            @if (Model.VatEnabled) {
+                                @String.Format(Model.NumberFormat, "{0:C}", entry.VatIncludedUnitPrice())
+                            }
+                            else {
+                                @String.Format(Model.NumberFormat, "{0:C}", entry.UnitPrice())
+                            }
+                        </td>
+                        <td>
+                            <input type="hidden" name="@String.Format("CartItems[{0}].Id", i)" value="@entry.Id" />
+                            <input type="number" name="@String.Format("CartItems[{0}].Quantity", i)" value="@entry.Quantity" class="quantity" />
+                        </td>
+                        <td>
+                            @if (Model.VatEnabled && entry.Item.VAT != null) {
+                                @String.Format(Model.NumberFormat, "{0:C}", entry.VatIncludedSubTotal())
+                            }
+                            else {
+                                @String.Format(Model.NumberFormat, "{0:C}", entry.SubTotal())
+                            }
+                        </td>
+                    </tr>
+                    i++;
+                }
+                <tfoot>
+                    <tr class="total">
+                        <td colspan="4">
+                            @T("Total")
+                        </td>
+                        <td>
+                            @if (Model.VatEnabled) {
+                                @String.Format(Model.NumberFormat, "{0:C}", Model.CartItems.Sum(ci => ci.VatIncludedSubTotal()))
+                            }
+                            else {
+                                @String.Format(Model.NumberFormat, "{0:C}", Model.CartItems.Sum(ci => ci.SubTotal()))
+                            }
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        }
     }
-    <tfoot>
-        <tr class="total">
-            <td colspan="4">
-                @T("Total")
-            </td>
-            <td>
-                @String.Format(Model.NumberFormat, "{0:C}", Model.CartItems.Sum(ci => ci.SubTotal))
-            </td>
-        </tr>
-    </tfoot>
-</table>
+    else {
+        <p class="cart-empty">
+            @T("Your shopping cart is empty.")
+        </p>
+    }
+</div>
