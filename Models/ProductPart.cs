@@ -24,6 +24,10 @@ namespace OShop.Models {
         }
 
 
+        public IContent Content {
+            get { return this.As<IContent>(); }
+        }
+
         public string Designation {
             get { return this.As<ITitleAspect>().Title; }
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Orchard.ContentManagement;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +10,7 @@ namespace OShop.Models {
         int Id { get; }
         string ItemType { get; }
         string SKU { get; }
+        IContent Content { get; }
         string Designation { get; }
         string Description { get; }
         decimal GetUnitPrice(int Quantity = 1);
