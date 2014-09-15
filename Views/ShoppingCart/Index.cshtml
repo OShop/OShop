@@ -1,5 +1,7 @@
 ﻿@model OShop.ViewModels.ShoppingCartIndexViewModel
 
+@using OShop.Helpers
+
 @{
     Layout.Title = T("Your shopping cart");
 }
@@ -14,7 +16,7 @@
             <th>@T("Total")</th>
         </tr>
     </thead>
-    @foreach (var entry in Model) {
+    @foreach (var entry in Model.CartItems) {
         <tr>
             <td>@entry.Item.SKU</td>
             <td>
@@ -23,7 +25,15 @@
                     <div class="description">@entry.Item.Description</div>
                 }
             </td>
-            <td>@entry.UnitPrice</td>
+            <td>
+                @if (Model.VatEnabled && entry.Item.VAT != null) {
+                    @String.Format(Model.NumberFormat, "{0:C}", entry.Item.VAT.GetVatIncludedPrice(entry.UnitPrice))
+                }
+                else {
+                    @String.Format(Model.NumberFormat, "{0:C}", entry.UnitPrice)
+                }
+            </td>
+
             <td>@T("Qty.")</td>
             <td>@T("Total")</td>
         </tr>

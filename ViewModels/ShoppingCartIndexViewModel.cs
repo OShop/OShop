@@ -9,5 +9,8 @@ namespace OShop.ViewModels {
     public class ShoppingCartIndexViewModel {
         public IEnumerable<ShoppingCartItem> CartItems { get; set; }
         public NumberFormatInfo NumberFormat { get; set; }
+
+        // Optional features
+        public bool VatEnabled { get; set; }
     }
 }
