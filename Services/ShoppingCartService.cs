@@ -100,7 +100,7 @@ namespace OShop.Services {
             if (cart != null) {
                 var items = cart.Items;
                 foreach (IShopItemProvider provider in _shopItemProviders.OrderBy(p=>p.Priority)) {
-                    provider.GetItems(cart.Items, out result);
+                    provider.GetItems(cart.Items, ref result);
                 }
             }
 
