@@ -17,7 +17,7 @@ namespace OShop.Migrations {
 
             SchemaBuilder.CreateTable("ShoppingCartItemRecord", table => table
                  .Column<int>("Id", c => c.PrimaryKey().Identity())
-                 .Column<int>("ShoppingCartRecord_Id", c => c.NotNull())
+                 .Column<int>("ShoppingCartRecord_Id")
                  .Column<string>("ItemType")
                  .Column<int>("ItemId", c => c.NotNull())
                  .Column<int>("Quantity"));

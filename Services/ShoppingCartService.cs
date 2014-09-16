@@ -147,8 +147,10 @@ namespace OShop.Services {
             if (item != null) {
                 if (item.ShoppingCartRecord.Items.Where(r => r.Id != Id).Any()) {
                     // cart still contains items
-                    _shoppingCartItemRepository.Delete(item);
                     item.ShoppingCartRecord.ModifiedUtc = _clock.UtcNow;
+
+                    item.ShoppingCartRecord.Items.Remove(item);
+                    //_shoppingCartItemRepository.Delete(item);
                 }
                 else {
                     // cart will be empty
