@@ -48,6 +48,12 @@ namespace OShop.Controllers
             return ReturnOrIndex(returnUrl);
         }
 
+        public ActionResult Remove(int id) {
+            _shoppingCartService.Remove(id);
+
+            return RedirectToAction("Index");
+        }
+
         private RedirectResult ReturnOrIndex(string returnUrl = null) {
             var urlReferrer = Request.UrlReferrer != null ? Request.UrlReferrer.ToString() : Url.Action("Index");
 

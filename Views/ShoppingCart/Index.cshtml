@@ -17,6 +17,7 @@
                         <th>@T("Unit Price")</th>
                         <th>@T("Qty.")</th>
                         <th>@T("Total")</th>
+                        <th></th>
                     </tr>
                 </thead>
                 @{
@@ -60,6 +61,9 @@
                             else {
                                 @String.Format(Model.NumberFormat, "{0:C}", entry.SubTotal())
                             }
+                        </td>
+                        <td>
+                            @Html.ActionLink(T("Remove").Text, "Remove", "ShoppingCart", new { Area = "OShop", id = entry.Id }, new { })
                         </td>
                     </tr>
                     i++;
