@@ -41,6 +41,15 @@ namespace OShop.Controllers
             return View(model);
         }
 
+        [HttpPost]
+        public ActionResult Update(ShoppingCartUpdateViewModel[] CartItems) {
+            if (CartItems != null) {
+                UpdateCart(CartItems);
+            }
+
+            return RedirectToAction("Index");
+        }
+
         public ActionResult Add(int id, int quantity = 1, string itemType = ProductPart.PartItemType, string returnUrl = null) {
 
             _shoppingCartService.Add(id, itemType, quantity);
@@ -54,10 +63,27 @@ namespace OShop.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult Empty(string returnUrl = null) {
+            _shoppingCartService.Empty();
+
+            return ReturnOrIndex(returnUrl);
+        }
+
         private RedirectResult ReturnOrIndex(string returnUrl = null) {
             var urlReferrer = Request.UrlReferrer != null ? Request.UrlReferrer.ToString() : Url.Action("Index");
 
             return Redirect(string.IsNullOrWhiteSpace(returnUrl) ? urlReferrer : returnUrl);
+        }
+
+        private void UpdateCart(ShoppingCartUpdateViewModel[] CartItems) {
+            foreach (var item in CartItems) {
+                if (item.IsRemoved) {
+                    _shoppingCartService.Remove(item.Id);
+                }
+                else {
+                    _shoppingCartService.UpdateQuantity(item.Id, item.Quantity);
+                }
+            }
         }
     }
 }

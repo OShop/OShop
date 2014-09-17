@@ -8,7 +8,10 @@
 
 <div class="shopping-cart-container">
     @if (Model.CartItems.Any()) {
-        using (Html.BeginFormAntiForgeryPost()) {
+        using (Html.BeginFormAntiForgeryPost(Url.Action("Update", "ShoppingCart", new { area = "OShop" }))) {
+            <div class="cart-actions-head">
+                @Html.ActionLink(T("Empty cart").Text, "Empty", "ShoppingCart", new { Area = "OShop" }, new { })
+            </div>
             <table class="cart-items">
                 <thead>
                     <tr>
@@ -63,7 +66,7 @@
                             }
                         </td>
                         <td>
-                            @Html.ActionLink(T("Remove").Text, "Remove", "ShoppingCart", new { Area = "OShop", id = entry.Id }, new { })
+                            <button type="submit" name="@String.Format("CartItems[{0}].IsRemoved", i)" value="true">@T("Remove")</button>
                         </td>
                     </tr>
                     i++;
@@ -84,6 +87,9 @@
                     </tr>
                 </tfoot>
             </table>
+            <div class="cart-actions-foot">
+                <button type="submit" name="UpdateAll" value="true">@T("Update")</button>
+            </div>
         }
     }
     else {

@@ -136,7 +136,10 @@ namespace OShop.Services {
             var item = _shoppingCartItemRepository.Get(Id);
 
             if (item != null) {
-                item.Quantity = Quantity;
+                if (item.Quantity != Quantity) {
+                    item.Quantity = Quantity;
+                }
+
                 item.ShoppingCartRecord.ModifiedUtc = _clock.UtcNow;
             }
         }
