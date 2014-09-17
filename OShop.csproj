@@ -134,6 +134,7 @@
     <Compile Include="ViewModels\ProductListViewModel.cs" />
     <Compile Include="ViewModels\ProductVatEditViewModel.cs" />
     <Compile Include="ViewModels\ShoppingCartIndexViewModel.cs" />
+    <Compile Include="ViewModels\ShoppingCartUpdateViewModel.cs" />
     <Compile Include="ViewModels\VatCreateViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
