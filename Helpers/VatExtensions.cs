@@ -25,5 +25,9 @@ namespace OShop.Helpers {
             return cartItem.Item.VAT.GetVatIncludedPrice(cartItem.SubTotal());
         }
 
+        public static decimal VatSubTotal(this ShoppingCartItem cartItem) {
+            return cartItem.Item.VAT.GetVat(cartItem.SubTotal());
+        }
+
     }
 }
