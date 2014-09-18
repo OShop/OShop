@@ -82,6 +82,7 @@
     <Content Include="Module.txt" />
     <Content Include="Views\Parts\Product.AddToCart.cshtml" />
     <Content Include="Views\ShoppingCart\Index.cshtml" />
+    <Content Include="Views\Parts\ShoppingCartWidget.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Orchard.Core">
@@ -100,9 +101,11 @@
     <Compile Include="Controllers\VatAdminController.cs" />
     <Compile Include="Drivers\ProductPartDriver.cs" />
     <Compile Include="Drivers\ShoppingCartProductPartDriver.cs" />
+    <Compile Include="Drivers\ShoppingCartWidgetPartDriver.cs" />
     <Compile Include="Drivers\VatProductPartDriver.cs" />
     <Compile Include="Handlers\OShopSettingsPartHandler.cs" />
     <Compile Include="Handlers\ProductPartHandler.cs" />
+    <Compile Include="Helpers\ShoppingCartExtensions.cs" />
     <Compile Include="Helpers\VatExtensions.cs" />
     <Compile Include="Migrations\ProductsMigrations.cs" />
     <Compile Include="Migrations\ShoppingCartMigrations.cs" />
@@ -116,6 +119,7 @@
     <Compile Include="Models\ShoppingCartItem.cs" />
     <Compile Include="Models\ShoppingCartItemRecord.cs" />
     <Compile Include="Models\ShoppingCartRecord.cs" />
+    <Compile Include="Models\ShoppingCartWidgetPart.cs" />
     <Compile Include="Models\VatRecord.cs" />
     <Compile Include="Navigation\AdminMenu.cs" />
     <Compile Include="Navigation\VatAdminMenu.cs" />

@@ -14,5 +14,5 @@
   <Match DisplayType="Detail">
     <Place Parts_Product_AddToCart="Content:4" />
   </Match>
-
+  <Place Parts_ShoppingCartWidget="Content:0" />
 </Placement>

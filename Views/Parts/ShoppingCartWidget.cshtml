@@ -1,0 +1,10 @@
+﻿@using OShop.Helpers;
+@using OShop.Models;
+@{
+    var cartItems = (IEnumerable<ShoppingCartItem>)Model.CartItems;
+}
+
+<div>
+    <span>@T.Plural("1 item", "{0} items", cartItems.ItemsCount()) : @String.Format(Model.NumberFormat, "{0:C}", (Model.VatEnabled ? cartItems.VatIncludedTotal() : cartItems.Total()))</span><br/>
+    @Html.ActionLink(T("My cart").Text, "Index", "ShoppingCart", new { area = "OShop" }, new { })
+</div>

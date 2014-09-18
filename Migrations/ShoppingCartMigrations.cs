@@ -1,9 +1,7 @@
-﻿using Orchard.Data.Migration;
+﻿using Orchard.ContentManagement.MetaData;
+using Orchard.Data.Migration;
 using Orchard.Environment.Extensions;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace OShop.Migrations {
     [OrchardFeature("OShop.ShoppingCart")]
@@ -25,6 +23,18 @@ namespace OShop.Migrations {
             SchemaBuilder.CreateForeignKey("FK_ShoppingCartItemRecord_ShoppingCartRecord", "ShoppingCartItemRecord", new[] { "ShoppingCartRecord_Id" }, "ShoppingCartRecord", new[] { "Id" });
 
             return 1;
+        }
+
+        public int UpdateFrom1() {
+            ContentDefinitionManager.AlterTypeDefinition("ShoppingCartWidget", type => type
+                .WithPart("CommonPart")
+                .WithPart("ShoppingCartWidgetPart")
+                .WithPart("WidgetPart")
+                .WithSetting("Stereotype", "Widget")
+                );
+
+            return 2;
+
         }
     }
 }
