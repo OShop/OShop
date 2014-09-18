@@ -12,26 +12,30 @@
     @Html.ActionLink(T("Create VAT").Text, "Create", "VatAdmin", new { Area = "OShop" }, new { @class = "button primaryAction" })
 </div>
 
-<fieldset>
-    <table class="items">
-        <thead>
-            <tr>
-                <th scope="col">@T("Name")</th>
-                <th scope="col">@T("Rate")</th>
-                <th scope="col">@T("Actions")</th>
-            </tr>
-        </thead>
-        @foreach (VatRecord record in Model) {
-            <tr>
-                <td scope="col">@Html.ActionLink(record.Name, "Edit", "VatAdmin", new { Area = "OShop", id = record.Id }, new { })</td>
-                <td scope="col">@T("{0:P}", record.Rate)</td>
-                <td scope="col">
-                    @Html.ActionLink(T("Edit").Text, "Edit", "VatAdmin", new { Area = "OShop", id = record.Id }, new { })@T(" | ")
-                    @Html.ActionLink(T("Delete").Text, "Delete", "VatAdmin", new { Area = "OShop", id = record.Id }, new { itemprop = "RemoveUrl UnsafeUrl" })
-                </td>
-            </tr>
+    <fieldset>
+        @if (Model.Any()) {
+            <table class="items">
+                <thead>
+                    <tr>
+                        <th scope="col">@T("Name")</th>
+                        <th scope="col">@T("Rate")</th>
+                        <th scope="col">@T("Actions")</th>
+                    </tr>
+                </thead>
+                @foreach (VatRecord record in Model) {
+                    <tr>
+                        <td scope="col">@Html.ActionLink(record.Name, "Edit", "VatAdmin", new { Area = "OShop", id = record.Id }, new { })</td>
+                        <td scope="col">@T("{0:P}", record.Rate)</td>
+                        <td scope="col">
+                            @Html.ActionLink(T("Edit").Text, "Edit", "VatAdmin", new { Area = "OShop", id = record.Id }, new { })@T(" | ")
+                            @Html.ActionLink(T("Delete").Text, "Delete", "VatAdmin", new { Area = "OShop", id = record.Id }, new { itemprop = "RemoveUrl UnsafeUrl" })
+                        </td>
+                    </tr>
+                }
+            </table>
         }
-    </table>
-
-</fieldset>
+        else {
+            <p>@T("There is no VAT.")</p>
+        }
+    </fieldset>
 }
