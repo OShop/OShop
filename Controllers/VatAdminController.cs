@@ -1,17 +1,13 @@
 ﻿using Orchard;
 using Orchard.Environment.Extensions;
 using Orchard.Localization;
-using Orchard.Settings;
 using Orchard.UI.Admin;
-using OShop.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
 using Orchard.UI.Notify;
 using OShop.Models;
+using OShop.Services;
 using OShop.ViewModels;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace OShop.Controllers
 {
