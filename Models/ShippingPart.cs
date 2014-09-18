@@ -1,7 +1,7 @@
 ﻿using Orchard.ContentManagement;
 
 namespace OShop.Models {
-    public class ShippingPart : ContentPart<ProductPartRecord>, IShippingInfo {
+    public class ShippingPart : ContentPart<ShippingPartRecord>, IShippingInfo {
         public bool RequiresShipping {
             get { return this.Retrieve(x => x.RequiresShipping); }
             set { this.Store(x => x.RequiresShipping, value); }
