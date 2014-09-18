@@ -67,6 +67,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Scripts\admin-shipping.js" />
     <Content Include="Styles\Images\menu.oshop.png" />
     <None Include="Styles\oshop-admin.less" />
     <Content Include="Styles\oshop-admin.css">
@@ -83,6 +84,7 @@
     <Content Include="Views\Parts\Product.AddToCart.cshtml" />
     <Content Include="Views\ShoppingCart\Index.cshtml" />
     <Content Include="Views\Parts\ShoppingCartWidget.cshtml" />
+    <Content Include="Views\EditorTemplates\Parts\Shipping.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Orchard.Core">
@@ -100,22 +102,29 @@
     <Compile Include="Controllers\ShoppingCartController.cs" />
     <Compile Include="Controllers\VatAdminController.cs" />
     <Compile Include="Drivers\ProductPartDriver.cs" />
+    <Compile Include="Drivers\ShippingPartDriver.cs" />
     <Compile Include="Drivers\ShoppingCartProductPartDriver.cs" />
     <Compile Include="Drivers\ShoppingCartWidgetPartDriver.cs" />
     <Compile Include="Drivers\VatProductPartDriver.cs" />
     <Compile Include="Handlers\OShopSettingsPartHandler.cs" />
     <Compile Include="Handlers\ProductPartHandler.cs" />
+    <Compile Include="Handlers\ShippingPartHandler.cs" />
     <Compile Include="Helpers\ShoppingCartExtensions.cs" />
     <Compile Include="Helpers\VatExtensions.cs" />
     <Compile Include="Migrations\ProductsMigrations.cs" />
+    <Compile Include="Migrations\ShippingMigrations.cs" />
     <Compile Include="Migrations\ShoppingCartMigrations.cs" />
     <Compile Include="Migrations\VatMigrations.cs" />
     <Compile Include="Models\ICurrencySettings.cs" />
+    <Compile Include="Models\IShippingInfo.cs" />
     <Compile Include="Models\IShopItem.cs" />
+    <Compile Include="Models\ItemShippingInfo.cs" />
     <Compile Include="Models\NumberFormats.cs" />
     <Compile Include="Models\OShopSettingsPart.cs" />
     <Compile Include="Models\ProductPart.cs" />
     <Compile Include="Models\ProductPartRecord.cs" />
+    <Compile Include="Models\ShippingPart.cs" />
+    <Compile Include="Models\ShippingPartRecord.cs" />
     <Compile Include="Models\ShoppingCartItem.cs" />
     <Compile Include="Models\ShoppingCartItemRecord.cs" />
     <Compile Include="Models\ShoppingCartRecord.cs" />
@@ -128,6 +137,7 @@
     <Compile Include="Resources\OShopResources.cs" />
     <Compile Include="Services\DefaultCurrencyProvider.cs" />
     <Compile Include="Services\ICurrencyProvider.cs" />
+    <Compile Include="Services\IShippingInfoProvider.cs" />
     <Compile Include="Services\IShopItemProvider.cs" />
     <Compile Include="Services\IShoppingCartService.cs" />
     <Compile Include="Services\IVatService.cs" />

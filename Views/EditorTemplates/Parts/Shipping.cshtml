@@ -1,0 +1,33 @@
+﻿@model OShop.Models.ShippingPart
+
+@{
+    Script.Require("jQuery");
+    Script.Include("admin-shipping.js").AtFoot();
+}
+
+<fieldset>
+    <legend>@T("Shipping")</legend>
+    <div>
+        @Html.CheckBoxFor(m=>m.RequiresShipping)
+        @Html.LabelFor(m => m.RequiresShipping, T("Requires shipping").Text, new { @class = "forcheckbox" })
+        @Html.ValidationMessageFor(m => m.RequiresShipping)
+    </div>
+    <div id="shipping-details">
+        <div>
+            @Html.LabelFor(m => m.Weight, T("Weight"))
+            @Html.TextBoxFor(m => m.Weight, new { @class = "text small" })
+            @Html.ValidationMessageFor(m => m.Weight, "*")
+        </div>
+        <div>
+            @Html.LabelFor(m => m.Width, T("Size"))
+            @Html.TextBoxFor(m => m.Width, new { @class = "text small" })
+            @Html.ValidationMessageFor(m => m.Width, "*")
+            <span> X </span>
+            @Html.TextBoxFor(m => m.Lenght, new { @class = "text small" })
+            @Html.ValidationMessageFor(m => m.Lenght, "*")
+            <span> X </span>
+            @Html.TextBoxFor(m => m.Height, new { @class = "text small" })
+            @Html.ValidationMessageFor(m => m.Height, "*")
+        </div>
+    </div>
+</fieldset>
