@@ -10,7 +10,7 @@ namespace OShop.Models {
         public virtual string Name { get; set; }
         [Required]
         public virtual string IsoCode { get; set; }
-        public virtual ShippingZoneRecord ShippingZone { get; set; }
+        public virtual ShippingZoneRecord ShippingZoneRecord { get; set; }
 
         [CascadeAllDeleteOrphan]
         public virtual IList<LocationsStateRecord> States { get; set; }

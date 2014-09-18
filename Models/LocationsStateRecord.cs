@@ -9,6 +9,6 @@ namespace OShop.Models {
         [Required]
         public virtual string IsoCode { get; set; }
         public virtual LocationsCountryRecord Country { get; set; }
-        public virtual ShippingZoneRecord ShippingZone { get; set; }
+        public virtual ShippingZoneRecord ShippingZoneRecord { get; set; }
     }
 }
