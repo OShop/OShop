@@ -109,6 +109,7 @@
     <Compile Include="Handlers\OShopSettingsPartHandler.cs" />
     <Compile Include="Handlers\ProductPartHandler.cs" />
     <Compile Include="Handlers\ShippingPartHandler.cs" />
+    <Compile Include="Helpers\ShippingExtensions.cs" />
     <Compile Include="Helpers\ShoppingCartExtensions.cs" />
     <Compile Include="Helpers\VatExtensions.cs" />
     <Compile Include="Migrations\ProductsMigrations.cs" />
@@ -142,6 +143,7 @@
     <Compile Include="Services\IShoppingCartService.cs" />
     <Compile Include="Services\IVatService.cs" />
     <Compile Include="Services\ProductService.cs" />
+    <Compile Include="Services\ShippingInfoProvider.cs" />
     <Compile Include="Services\ShoppingCartService.cs" />
     <Compile Include="Services\VatService.cs" />
     <Compile Include="ViewModels\OShopSettingsViewsModel.cs" />

@@ -8,6 +8,6 @@ using System.Threading.Tasks;
 
 namespace OShop.Services {
     public interface IShippingInfoProvider : IDependency {
-        List<ItemShippingInfo> GetShippingInfos(IEnumerable<ShoppingCartItemRecord> CartRecords);
+        List<ItemShippingInfo> GetShippingInfos(IEnumerable<ShoppingCartItem> CartItems);
     }
 }
