@@ -1,7 +1,7 @@
-﻿using OShop.Models;
-using System.Globalization;
-using System;
-using Orchard.Localization;
+﻿using Orchard.Localization;
+using OShop.Models;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace OShop.Helpers {
     public static class VatExtensions {
@@ -27,6 +27,14 @@ namespace OShop.Helpers {
 
         public static decimal VatSubTotal(this ShoppingCartItem cartItem) {
             return cartItem.Item.VAT.GetVat(cartItem.SubTotal());
+        }
+
+        public static decimal VatTotal(this IEnumerable<ShoppingCartItem> Items) {
+            return Items.Sum(ci => ci.VatSubTotal());
+        }
+
+        public static decimal VatIncludedTotal(this IEnumerable<ShoppingCartItem> Items) {
+            return Items.Sum(ci => ci.VatIncludedSubTotal());
         }
 
     }
