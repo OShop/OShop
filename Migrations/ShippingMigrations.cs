@@ -18,7 +18,22 @@ namespace OShop.Migrations {
             ContentDefinitionManager.AlterPartDefinition("ShippingPart", part => part
                  .Attachable()
                  .WithDescription("Add shipping information to your products"));
-            return 1;
+
+            SchemaBuilder.CreateTable("ShippingZoneRecord", table => table
+                 .Column<int>("Id", c => c.PrimaryKey().Identity())
+                 .Column<bool>("Enabled")
+                 .Column<string>("Name"));
+
+            return 2;
+        }
+
+        public int UpdateFrom1() {
+            SchemaBuilder.CreateTable("ShippingZoneRecord", table => table
+                 .Column<int>("Id", c => c.PrimaryKey().Identity())
+                 .Column<bool>("Enabled")
+                 .Column<string>("Name"));
+
+            return 2;
         }
     }
 }

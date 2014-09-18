@@ -112,6 +112,7 @@
     <Compile Include="Helpers\ShippingExtensions.cs" />
     <Compile Include="Helpers\ShoppingCartExtensions.cs" />
     <Compile Include="Helpers\VatExtensions.cs" />
+    <Compile Include="Migrations\LocationsMigrations.cs" />
     <Compile Include="Migrations\ProductsMigrations.cs" />
     <Compile Include="Migrations\ShippingMigrations.cs" />
     <Compile Include="Migrations\ShoppingCartMigrations.cs" />
@@ -120,12 +121,15 @@
     <Compile Include="Models\IShippingInfo.cs" />
     <Compile Include="Models\IShopItem.cs" />
     <Compile Include="Models\ItemShippingInfo.cs" />
+    <Compile Include="Models\LocationsCountryRecord.cs" />
+    <Compile Include="Models\LocationsStateRecord.cs" />
     <Compile Include="Models\NumberFormats.cs" />
     <Compile Include="Models\OShopSettingsPart.cs" />
     <Compile Include="Models\ProductPart.cs" />
     <Compile Include="Models\ProductPartRecord.cs" />
     <Compile Include="Models\ShippingPart.cs" />
     <Compile Include="Models\ShippingPartRecord.cs" />
+    <Compile Include="Models\ShippingZoneRecord.cs" />
     <Compile Include="Models\ShoppingCartItem.cs" />
     <Compile Include="Models\ShoppingCartItemRecord.cs" />
     <Compile Include="Models\ShoppingCartRecord.cs" />

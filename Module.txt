@@ -22,8 +22,13 @@ Features:
 		Category: Commerce
         Description: Provides shopping Cart service.
 		Dependencies: OShop
+	OShop.Locations:
+		Name: OShop Locations
+		Category: Commerce
+        Description: Provides location management.
+		Dependencies: OShop
 	OShop.Shipping:
 		Name: OShop Shipping
 		Category: Commerce
         Description: Provides shipping service.
-		Dependencies: OShop
+		Dependencies: OShop, OShop.Locations
