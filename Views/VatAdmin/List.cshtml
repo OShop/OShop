@@ -3,6 +3,8 @@
 @using Orchard.Core.Contents.ViewModels;
 @using System.Globalization
 @{
+    Style.Require("OShopAdmin");
+    
     Layout.Title = T("Manage VAT");
 }
 
@@ -17,7 +19,7 @@
             <table class="items">
                 <thead>
                     <tr>
-                        <th scope="col">@T("Name")</th>
+                        <th scope="col" style="width:100%;">@T("Name")</th>
                         <th scope="col">@T("Rate")</th>
                         <th scope="col">@T("Actions")</th>
                     </tr>

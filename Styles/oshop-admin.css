@@ -2,7 +2,7 @@
   float: left;
   margin-right: 1.5em;
 }
-table.products td {
+table.items td {
   white-space: nowrap;
 }
 table.products td.price,
