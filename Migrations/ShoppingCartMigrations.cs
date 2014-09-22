@@ -11,7 +11,8 @@ namespace OShop.Migrations {
                  .Column<int>("Id", c => c.PrimaryKey().Identity())
                  .Column<string>("Guid", c => c.WithLength(36))
                  .Column<DateTime>("ModifiedUtc")
-                 .Column<int>("OwnerId", c => c.Nullable()));
+                 .Column<int>("OwnerId", c => c.Nullable())
+                 .Column<string>("Properties"));
 
             SchemaBuilder.CreateTable("ShoppingCartItemRecord", table => table
                  .Column<int>("Id", c => c.PrimaryKey().Identity())
@@ -22,10 +23,6 @@ namespace OShop.Migrations {
 
             SchemaBuilder.CreateForeignKey("FK_ShoppingCartItemRecord_ShoppingCartRecord", "ShoppingCartItemRecord", new[] { "ShoppingCartRecord_Id" }, "ShoppingCartRecord", new[] { "Id" });
 
-            return 1;
-        }
-
-        public int UpdateFrom1() {
             ContentDefinitionManager.AlterTypeDefinition("ShoppingCartWidget", type => type
                 .WithPart("CommonPart")
                 .WithPart("ShoppingCartWidgetPart")
@@ -33,8 +30,8 @@ namespace OShop.Migrations {
                 .WithSetting("Stereotype", "Widget")
                 );
 
-            return 2;
-
+            return 1;
         }
+
     }
 }

@@ -15,25 +15,40 @@ namespace OShop.Migrations {
                  .Column<double>("Height")
                  .Column<double>("Lenght"));
 
+            SchemaBuilder.CreateTable("ShippingProviderPartRecord", table => table
+                .ContentPartRecord());
+
+            SchemaBuilder.CreateTable("ShippingZoneRecord", table => table
+                 .Column<int>("Id", c => c.PrimaryKey().Identity())
+                 .Column<bool>("Enabled")
+                 .Column<string>("Name"));
+
+            SchemaBuilder.CreateTable("ShippingOptionRecord", table => table
+                 .Column<int>("Id", c => c.PrimaryKey().Identity())
+                 .Column<string>("Name")
+                 .Column<int>("ShippingZoneRecord_Id")
+                 .Column<int>("ShippingProviderPartRecord_Id")
+                 .Column<int>("Priority")
+                 .Column<string>("Data", c => c.Unlimited())
+                 .Column<decimal>("Price")
+                 .Column<int>("VatRecord_Id"));
+
             ContentDefinitionManager.AlterPartDefinition("ShippingPart", part => part
                  .Attachable()
                  .WithDescription("Add shipping information to your products"));
 
-            SchemaBuilder.CreateTable("ShippingZoneRecord", table => table
-                 .Column<int>("Id", c => c.PrimaryKey().Identity())
-                 .Column<bool>("Enabled")
-                 .Column<string>("Name"));
+            ContentDefinitionManager.AlterPartDefinition("ShippingProviderPart", part => part
+                 .Attachable()
+                 .WithDescription("Allows your content item to contain ShippingOptions."));
 
-            return 2;
+            ContentDefinitionManager.AlterTypeDefinition("ShippingProvider", cfg => cfg
+                .WithPart("CommonPart")
+                .WithPart("ShippingProviderPart")
+                .WithPart("TitlePart")
+                );
+
+            return 1;
         }
 
-        public int UpdateFrom1() {
-            SchemaBuilder.CreateTable("ShippingZoneRecord", table => table
-                 .Column<int>("Id", c => c.PrimaryKey().Identity())
-                 .Column<bool>("Enabled")
-                 .Column<string>("Name"));
-
-            return 2;
-        }
     }
 }
