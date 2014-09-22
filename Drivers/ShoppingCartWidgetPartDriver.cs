@@ -1,5 +1,6 @@
 ﻿using Orchard;
 using Orchard.ContentManagement.Drivers;
+using Orchard.Environment.Extensions;
 using Orchard.Environment.Features;
 using OShop.Models;
 using OShop.Services;
@@ -9,6 +10,7 @@ using System.Linq;
 using System.Web;
 
 namespace OShop.Drivers {
+    [OrchardFeature("OShop.ShoppingCart")]
     public class ShoppingCartWidgetPartDriver : ContentPartDriver<ShoppingCartWidgetPart> {
         private readonly IShoppingCartService _shoppingCartService;
         private readonly ICurrencyProvider _currencyProvider;
