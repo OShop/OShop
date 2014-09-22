@@ -23,6 +23,13 @@ namespace OShop.Navigation {
                         .Position("8")
                         .Permission(OShopPermissions.ManageShopSettings)
                         .Add(tab => tab
+                            .Caption(T("Providers"))
+                            .Position("1")
+                            .Action("Index", "ShippingProvidersAdmin", new { area = "OShop" })
+                            .Permission(OShopPermissions.ManageShopSettings)
+                            .LocalNav()
+                            )
+                        .Add(tab => tab
                             .Caption(T("Zones"))
                             .Position("5")
                             .Action("Index", "ShippingZonesAdmin", new { area = "OShop" })

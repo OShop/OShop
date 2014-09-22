@@ -8,6 +8,9 @@ namespace OShop.Models {
         public virtual Guid Guid { get; set; }
         public virtual DateTime ModifiedUtc { get; set; }
         public virtual int? OwnerId { get; set; }
+        public virtual LocationsCountryRecord LocationsCountryRecord { get; set; }
+        public virtual LocationsStateRecord LocationsStateRecord { get; set; }
+        public virtual ShippingProviderPartRecord ShippingProviderPartRecord { get; set; }
         [CascadeAllDeleteOrphan]
         public virtual IList<ShoppingCartItemRecord> Items { get; set; }
 

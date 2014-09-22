@@ -115,6 +115,7 @@
     <Compile Include="Controllers\LocationsAdminController.cs" />
     <Compile Include="Controllers\ProductsAdminController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
+    <Compile Include="Controllers\ShippingProvidersAdminController.cs" />
     <Compile Include="Controllers\ShippingZonesAdminController.cs" />
     <Compile Include="Controllers\ShoppingCartController.cs" />
     <Compile Include="Controllers\VatAdminController.cs" />
@@ -145,8 +146,11 @@
     <Compile Include="Models\OShopSettingsPart.cs" />
     <Compile Include="Models\ProductPart.cs" />
     <Compile Include="Models\ProductPartRecord.cs" />
+    <Compile Include="Models\ShippingOptionRecord.cs" />
     <Compile Include="Models\ShippingPart.cs" />
     <Compile Include="Models\ShippingPartRecord.cs" />
+    <Compile Include="Models\ShippingProviderPart.cs" />
+    <Compile Include="Models\ShippingProviderPartRecord.cs" />
     <Compile Include="Models\ShippingZoneRecord.cs" />
     <Compile Include="Models\ShoppingCartItem.cs" />
     <Compile Include="Models\ShoppingCartItemRecord.cs" />
@@ -233,7 +237,9 @@
   <ItemGroup>
     <Content Include="Views\Parts\Product.Vat.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Views\ShippingProvidersAdmin\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
