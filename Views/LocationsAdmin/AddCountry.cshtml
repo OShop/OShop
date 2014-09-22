@@ -1,0 +1,40 @@
+﻿@model OShop.ViewModels.LocationsCountriesAddViewModel
+@using OShop.Helpers
+@{
+    Layout.Title = T("Add Country");
+}
+
+@using (Html.BeginFormAntiForgeryPost()) {
+    @Html.ValidationSummary()
+
+    <fieldset>
+        <legend>@T("New country")</legend>
+        <div>
+            @Html.LabelFor(m => m.Name, T("Name"))
+            @Html.TextBoxFor(m => m.Name, new { @class = "text medium" })
+            @Html.ValidationMessageFor(m => m.Name, "*")
+        </div>
+        <div>
+            @Html.LabelFor(m => m.IsoCode, T("ISO Code"))
+            @Html.TextBoxFor(m => m.IsoCode, new { @class = "text small" })
+            @Html.ValidationMessageFor(m => m.IsoCode, "*")
+        </div>
+        <div>
+            @Html.CheckBoxFor(m => m.Enabled)
+            @Html.LabelFor(m => m.Enabled, T("Active").Text, new { @class = "forcheckbox" })
+            @Html.ValidationMessageFor(m => m.Enabled)
+        </div>
+        @if (Model.ShippingZones.Any()) {
+            <div>
+                @Html.LabelFor(m => m.ShippingZoneId, T("Shipping zone"))
+                @Html.DropDownListFor(m => m.ShippingZoneId, Model.ShippingZones.BuildZoneSelectList(true, T("Select zone...").Text))
+                @Html.ValidationMessageFor(m => m.ShippingZoneId)
+            </div>
+        }
+    </fieldset>
+
+    <div>
+        <button type="submit" name="submit.Save" value="create">@T("Save")</button>
+        @Html.ActionLink(T("Cancel").Text, "Index", "LocationsAdmin", new { area = "OShop" }, new { @class = "button primaryAction" })
+    </div>
+}

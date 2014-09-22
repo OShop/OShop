@@ -5,6 +5,15 @@
 table.items td {
   white-space: nowrap;
 }
+table.items td .icon {
+  vertical-align: text-bottom;
+  margin-right: .2em;
+}
+table.items .bulk-lfloor {
+  font-size: .8em;
+  margin: 0 .6em;
+  vertical-align: top;
+}
 table.products td.price,
 table.products td.percent {
   text-align: right;

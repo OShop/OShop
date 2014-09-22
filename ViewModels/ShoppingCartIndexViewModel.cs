@@ -12,5 +12,7 @@ namespace OShop.ViewModels {
 
         // Optional features
         public bool VatEnabled { get; set; }
+
+        public bool ShippingRequired { get; set; }
     }
 }

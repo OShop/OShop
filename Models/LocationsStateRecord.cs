@@ -8,7 +8,7 @@ namespace OShop.Models {
         public virtual string Name { get; set; }
         [Required]
         public virtual string IsoCode { get; set; }
-        public virtual LocationsCountryRecord Country { get; set; }
+        public virtual LocationsCountryRecord LocationsCountryRecord { get; set; }
         public virtual ShippingZoneRecord ShippingZoneRecord { get; set; }
     }
 }

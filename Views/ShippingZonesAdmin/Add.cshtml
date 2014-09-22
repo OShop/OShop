@@ -1,0 +1,28 @@
+﻿@model OShop.ViewModels.ShippingZonesAddViewModel
+
+@{
+    Layout.Title = T("Add Shipping zone");
+}
+
+@using (Html.BeginFormAntiForgeryPost()) {
+    @Html.ValidationSummary()
+
+    <fieldset>
+        <legend>@T("New shipping zone")</legend>
+        <div>
+            @Html.LabelFor(m => m.Name, T("Name"))
+            @Html.TextBoxFor(m => m.Name, new { @class = "text medium" })
+            @Html.ValidationMessageFor(m => m.Name, "*")
+        </div>
+        <div>
+            @Html.CheckBoxFor(m => m.Enabled)
+            @Html.LabelFor(m => m.Enabled, T("Active").Text, new { @class = "forcheckbox" })
+            @Html.ValidationMessageFor(m => m.Enabled)
+        </div>
+    </fieldset>
+
+    <div>
+        <button type="submit" name="submit.Save" value="create">@T("Save")</button>
+        @Html.ActionLink(T("Cancel").Text, "Index", "ShippingZonesAdmin", new { area = "OShop" }, new { @class = "button primaryAction" })
+    </div>
+}

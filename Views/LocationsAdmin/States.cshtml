@@ -1,0 +1,113 @@
+﻿@model OShop.ViewModels.LocationsStatesIndexViewModel
+@using OShop.Helpers
+@using OShop.ViewModels
+
+@{
+    Style.Require("OShopAdmin");
+
+    if (Model.CountryId > 0) {
+        Layout.Title = T("Manage {0} states", Model.Countries.Where(c => c.Id == Model.CountryId).Select(c => c.Name).FirstOrDefault());
+    }
+    else {
+        Layout.Title = T("Manage states");
+    }
+}
+
+@using (Html.BeginFormAntiForgeryPost(Url.Action("States", "LocationsAdmin", new { area = "OShop", returnUrl = Context.Request.RawUrl }))) {
+
+    <div class="manage">
+        @Html.ActionLink(T("Create State").Text, "AddState", "LocationsAdmin", new { Area = "OShop" }, new { @class = "button primaryAction" })
+    </div>
+    <fieldset class="bulk-actions">
+        <label for="publishActions">@T("Actions:")</label>
+        <select id="publishActions" name="BulkAction">
+            @Html.SelectOption((LocationsBulkAction)Model.BulkAction, LocationsBulkAction.None, T("Choose action...").ToString())
+            @Html.SelectOption((LocationsBulkAction)Model.BulkAction, LocationsBulkAction.Enable, T("Enable").ToString())
+            @Html.SelectOption((LocationsBulkAction)Model.BulkAction, LocationsBulkAction.Disable, T("Disable").ToString())
+            @Html.SelectOption((LocationsBulkAction)Model.BulkAction, LocationsBulkAction.Remove, T("Delete").ToString())
+        </select>
+        <button type="submit" name="submit.BulkEdit" value="yes">@T("Apply")</button>
+    </fieldset>
+    <fieldset class="bulk-actions">
+        <label for="contentResults" class="bulk-order">@T("Filter by")</label>
+        <select id="contentResults" name="Filter">
+            @Html.SelectOption((LocationsFilter)Model.Filter, LocationsFilter.All, T("All").ToString())
+            @Html.SelectOption((LocationsFilter)Model.Filter, LocationsFilter.Enabled, T("Enabled").ToString())
+            @Html.SelectOption((LocationsFilter)Model.Filter, LocationsFilter.Disabled, T("Disabled").ToString())
+        </select>
+        @Html.LabelFor(m => m.CountryId, T("For country"))
+        @Html.DropDownListFor(m => m.CountryId, Model.Countries.BuildCountrySelectList(true, T("All").Text))
+
+        @if (Model.ShippingZones.Any()) {
+            @Html.LabelFor(m => m.ZoneId, T("For zone"))
+            @Html.DropDownListFor(m => m.ZoneId, Model.ShippingZones.BuildZoneSelectList(true, T("All").Text))
+        }
+        <button type="submit" name="submit.Filter" value="yes please">@T("Apply")</button>
+    </fieldset>
+    <fieldset>
+        @if (Model.States.Any()) {
+            <table class="items">
+                <thead>
+                    <tr>
+                        <th scope="col"><input type="checkbox" class="check-all" /></th>
+                        <th scope="col" style="width:100%;">@T("Name")</th>
+                        <th scope="col">@T("ISO code")</th>
+                        <th scope="col">@T("Country")</th>
+                        @if (Model.ShippingEnabled) {
+                            <th scope="col">@T("Zone")</th>
+                        }
+                        <th scope="col">@T("Actions")</th>
+                    </tr>
+
+                </thead>
+                @foreach (var record in Model.States) {
+                    <tr>
+                        <td>
+                            <input type="checkbox" value="@record.Id" name="itemIds" />
+                        </td>
+                        <td scope="col">
+                            @if (!record.Enabled) {
+                                <img class="icon" src="@Href("~/Modules/OShop/Content/Admin/Images/Disabled.png")" alt="@T("Disabled")" title="@T("Disabled")" />
+                            }
+                            else {
+                                <img class="icon" src="@Href("~/Modules/OShop/Content/Admin/Images/Enabled.png")" alt="@T("Enabled")" title="@T("Enabled")" />
+                            }
+                            @Html.ActionLink(record.Name, "EditCountry", "LocationsAdmin", new { Area = "OShop", id = record.Id }, new { })
+                        </td>
+                        <td scope="col">@record.IsoCode</td>
+                        <td scope="col">@record.LocationsCountryRecord.Name</td>
+                        @if (Model.ShippingEnabled) {
+                            <td scope="col">@(record.ShippingZoneRecord != null ? record.ShippingZoneRecord.Name : "-")</td>
+                        }
+                        <td scope="col">
+                            @Html.ActionLink(T("Edit").Text, "EditState", "LocationsAdmin", new { Area = "OShop", id = record.Id }, new { })
+                            @T(" | ")@Html.ActionLink(T("Delete").Text, "DeleteState", "LocationsAdmin", new { Area = "OShop", id = record.Id, returnUrl = Context.Request.RawUrl }, new { itemprop = "RemoveUrl UnsafeUrl" })
+                            @if (!record.Enabled) {
+                                @T(" | ")@Html.ActionLink(T("Enable").Text, "EnableState", "LocationsAdmin", new { Area = "OShop", id = record.Id, returnUrl = Context.Request.RawUrl }, new { })
+                            }
+                            else {
+                                @T(" | ")@Html.ActionLink(T("Disable").Text, "DisableState", "LocationsAdmin", new { Area = "OShop", id = record.Id, returnUrl = Context.Request.RawUrl }, new { })
+                            }
+                        </td>
+                    </tr>
+                }
+                @if (Model.ShippingZones.Any()) {
+                <tfoot>
+                    <tr>
+                        <td colspan="@(Model.ShippingEnabled ? 5 : 4)" class="bulk-actions">
+                            <span class="bulk-lfloor">&lfloor;</span>
+                            @Html.LabelFor(m => m.BulkZoneId, T("Set zone"))
+                            @Html.DropDownListFor(m => m.BulkZoneId, Model.ShippingZones.BuildZoneSelectList(true, T("None").Text))
+                            <button type="submit" name="submit.BulkSetZone" value="SetZone">@T("Apply")</button>
+                        </td>
+                    </tr>
+                </tfoot>
+                }
+            </table>
+        }
+        else {
+            <p>@T("There is no State.")</p>
+        }
+    </fieldset>
+    @Display(Model.Pager)
+}

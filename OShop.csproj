@@ -67,8 +67,14 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Admin\Images\Disabled.png" />
+    <Content Include="Content\Admin\Images\Enabled.png" />
+    <Content Include="Content\Admin\Images\Default.png" />
     <Content Include="Scripts\admin-shipping.js" />
     <Content Include="Styles\Images\menu.oshop.png" />
+    <Content Include="Content\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Styles\oshop-admin.less" />
     <Content Include="Styles\oshop-admin.css">
       <DependentUpon>oshop-admin.less</DependentUpon>
@@ -85,6 +91,15 @@
     <Content Include="Views\ShoppingCart\Index.cshtml" />
     <Content Include="Views\Parts\ShoppingCartWidget.cshtml" />
     <Content Include="Views\EditorTemplates\Parts\Shipping.cshtml" />
+    <Content Include="Views\LocationsAdmin\Index.cshtml" />
+    <Content Include="Views\LocationsAdmin\EditCountry.cshtml" />
+    <Content Include="Views\LocationsAdmin\AddCountry.cshtml" />
+    <Content Include="Views\ShippingZonesAdmin\Index.cshtml" />
+    <Content Include="Views\ShippingZonesAdmin\Add.cshtml" />
+    <Content Include="Views\ShippingZonesAdmin\Edit.cshtml" />
+    <Content Include="Views\LocationsAdmin\States.cshtml" />
+    <Content Include="Views\LocationsAdmin\AddState.cshtml" />
+    <Content Include="Views\LocationsAdmin\EditState.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Orchard.Core">
@@ -97,8 +112,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\LocationsAdminController.cs" />
     <Compile Include="Controllers\ProductsAdminController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
+    <Compile Include="Controllers\ShippingZonesAdminController.cs" />
     <Compile Include="Controllers\ShoppingCartController.cs" />
     <Compile Include="Controllers\VatAdminController.cs" />
     <Compile Include="Drivers\ProductPartDriver.cs" />
@@ -109,6 +126,7 @@
     <Compile Include="Handlers\OShopSettingsPartHandler.cs" />
     <Compile Include="Handlers\ProductPartHandler.cs" />
     <Compile Include="Handlers\ShippingPartHandler.cs" />
+    <Compile Include="Helpers\LocationsExtensions.cs" />
     <Compile Include="Helpers\ShippingExtensions.cs" />
     <Compile Include="Helpers\ShoppingCartExtensions.cs" />
     <Compile Include="Helpers\VatExtensions.cs" />
@@ -136,23 +154,39 @@
     <Compile Include="Models\ShoppingCartWidgetPart.cs" />
     <Compile Include="Models\VatRecord.cs" />
     <Compile Include="Navigation\AdminMenu.cs" />
+    <Compile Include="Navigation\LocationsAdminMenu.cs" />
+    <Compile Include="Navigation\ShippingAdminMenu.cs" />
     <Compile Include="Navigation\VatAdminMenu.cs" />
     <Compile Include="Navigation\ProductsAdminMenu.cs" />
     <Compile Include="Permissions\OShopPermissions.cs" />
     <Compile Include="Resources\OShopResources.cs" />
     <Compile Include="Services\DefaultCurrencyProvider.cs" />
     <Compile Include="Services\ICurrencyProvider.cs" />
+    <Compile Include="Services\ILocationsService.cs" />
     <Compile Include="Services\IShippingInfoProvider.cs" />
+    <Compile Include="Services\IShippingZoneService.cs" />
     <Compile Include="Services\IShopItemProvider.cs" />
     <Compile Include="Services\IShoppingCartService.cs" />
     <Compile Include="Services\IVatService.cs" />
+    <Compile Include="Services\LocationsService.cs" />
     <Compile Include="Services\ProductService.cs" />
     <Compile Include="Services\ShippingInfoProvider.cs" />
+    <Compile Include="Services\ShippingZoneService.cs" />
     <Compile Include="Services\ShoppingCartService.cs" />
     <Compile Include="Services\VatService.cs" />
+    <Compile Include="ViewModels\LocationsBulkAction.cs" />
+    <Compile Include="ViewModels\LocationsStatesIndexViewModel.cs" />
+    <Compile Include="ViewModels\LocationsFilter.cs" />
+    <Compile Include="ViewModels\LocationsStatesEditViewModel.cs" />
+    <Compile Include="ViewModels\LocationsStatesAddViewModel.cs" />
+    <Compile Include="ViewModels\LocationsCountriesAddViewModel.cs" />
+    <Compile Include="ViewModels\LocationsCountriesEditViewModel.cs" />
+    <Compile Include="ViewModels\LocationsCountriesIndexViewModel.cs" />
     <Compile Include="ViewModels\OShopSettingsViewsModel.cs" />
     <Compile Include="ViewModels\ProductListViewModel.cs" />
     <Compile Include="ViewModels\ProductVatEditViewModel.cs" />
+    <Compile Include="ViewModels\ShippingZonesAddViewModel.cs" />
+    <Compile Include="ViewModels\ShippingZonesIndexViewModel.cs" />
     <Compile Include="ViewModels\ShoppingCartIndexViewModel.cs" />
     <Compile Include="ViewModels\ShoppingCartUpdateViewModel.cs" />
     <Compile Include="ViewModels\VatCreateViewModel.cs" />

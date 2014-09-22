@@ -52,5 +52,11 @@ namespace OShop.Models {
             get { return this.Retrieve(x => x.CurrencyPositivePattern, 0); }
             set { this.Store(x => x.CurrencyPositivePattern, value); }
         }
+
+        // Locations
+        public int DefaultCountryId {
+            get { return this.Retrieve(x => x.DefaultCountryId, 0); }
+            set { this.Store(x => x.DefaultCountryId, value); }
+        }
     }
 }

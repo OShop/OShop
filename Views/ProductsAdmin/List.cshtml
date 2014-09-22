@@ -25,7 +25,7 @@
         @Html.ActionLink(createLinkText.Text, "Create", "ProductsAdmin", new { Area = "OShop", Id = (string)Model.Options.SelectedFilter }, new { @class = "button primaryAction" })
     }
 </div>
-@using (Html.BeginFormAntiForgeryPost()) {
+@using (Html.BeginFormAntiForgeryPost(Url.Action("List", "ProductsAdmin", new { area = "OShop", returnUrl = Context.Request.RawUrl }))) {
     <fieldset class="bulk-actions">
         <label for="publishActions">@T("Actions:")</label>
         <select id="publishActions" name="Options.BulkAction">

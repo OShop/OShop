@@ -6,12 +6,8 @@ using System.Web;
 using System.Web.Mvc;
 
 namespace OShop.Helpers {
-    public static class ShippingExtensions {
-        public static bool IsShippingRequired(this IEnumerable<ItemShippingInfo> Items) {
-            return Items.Where(i => i.ShippingInfo.RequiresShipping).Any();
-        }
-
-        public static IEnumerable<SelectListItem> BuildZoneSelectList(this IEnumerable<ShippingZoneRecord> ZoneRecords, bool CreateEmpry = false, string EmptyString = "") {
+    public static class LocationsExtensions {
+        public static IEnumerable<SelectListItem> BuildCountrySelectList(this IEnumerable<LocationsCountryRecord> ZoneRecords, bool CreateEmpry = false, string EmptyString = "") {
             var result = new List<SelectListItem>();
 
             if (CreateEmpry) {

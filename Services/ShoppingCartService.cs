@@ -22,7 +22,6 @@ namespace OShop.Services {
             IRepository<ShoppingCartRecord> shoppingCartRepository,
             IRepository<ShoppingCartItemRecord> shoppingCartItemRepository,
             IEnumerable<IShopItemProvider> shopItemProviders,
-
             IClock clock,
             IOrchardServices services) {
             _shoppingCartRepository = shoppingCartRepository;
