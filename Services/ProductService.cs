@@ -16,7 +16,7 @@ namespace OShop.Services {
         }
 
         public short Priority {
-            get { return 0; }
+            get { return 100; }
         }
 
         public void GetItems(IEnumerable<ShoppingCartItemRecord> CartRecords, ref List<ShoppingCartItem> CartItems) {
