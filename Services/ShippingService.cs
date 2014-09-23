@@ -12,16 +12,20 @@ namespace OShop.Services {
         private readonly IRepository<ShippingZoneRecord> _zoneRepository;
         private readonly IRepository<LocationsCountryRecord> _countryRepository;
         private readonly IRepository<LocationsStateRecord> _stateRepository;
+        private readonly IRepository<ShippingOptionRecord> _optionRepository;
 
         public ShippingService(
             IRepository<ShippingZoneRecord> zoneRepository,
             IRepository<LocationsCountryRecord> countryRepository,
-            IRepository<LocationsStateRecord> stateRepository) {
+            IRepository<LocationsStateRecord> stateRepository,
+            IRepository<ShippingOptionRecord> optionRepository) {
             _zoneRepository = zoneRepository;
             _countryRepository = countryRepository;
             _stateRepository = stateRepository;
+            _optionRepository = optionRepository;
         }
 
+        #region Shipping zones
         public void CreateZone(ShippingZoneRecord record) {
             _zoneRepository.Create(record);
         }
@@ -36,11 +40,14 @@ namespace OShop.Services {
 
         public void DeleteZone(ShippingZoneRecord record) {
             if (record != null) {
-                foreach ( var country in _countryRepository.Fetch(c => c.ShippingZoneRecord != null && c.ShippingZoneRecord.Id == record.Id)) {
+                foreach (var country in _countryRepository.Fetch(c => c.ShippingZoneRecord != null && c.ShippingZoneRecord.Id == record.Id)) {
                     country.ShippingZoneRecord = null;
                 };
                 foreach (var state in _stateRepository.Fetch(s => s.ShippingZoneRecord != null && s.ShippingZoneRecord.Id == record.Id)) {
                     state.ShippingZoneRecord = null;
+                }
+                foreach (var option in _optionRepository.Fetch(o => o.ShippingZoneRecord != null && o.ShippingZoneRecord.Id == record.Id)) {
+                    option.ShippingZoneRecord = null;
                 }
 
                 _zoneRepository.Delete(record);
@@ -58,5 +65,36 @@ namespace OShop.Services {
         public IEnumerable<ShippingZoneRecord> GetEnabledZones() {
             return _zoneRepository.Fetch(z => z.Enabled).OrderBy(z => z.Name);
         }
+        
+        #endregion
+
+        #region Shipping options
+        public void CreateOption(ShippingOptionRecord record) {
+            _optionRepository.Create(record);
+        }
+
+        public void UpdateOption(ShippingOptionRecord record) {
+            _optionRepository.Update(record);
+        }
+
+        public void DeleteOption(int OptionId) {
+            DeleteOption(GetOption(OptionId));
+        }
+
+        public void DeleteOption(ShippingOptionRecord record) {
+            _optionRepository.Delete(record);
+        }
+
+        public ShippingOptionRecord GetOption(int Id) {
+            return _optionRepository.Get(Id);
+        }
+
+        public IEnumerable<ShippingOptionRecord> GetOptions(ShippingProviderPart part) {
+            return _optionRepository.Fetch(o => o.ShippingProviderPartRecord.Id == part.Id);
+        }
+        
+        #endregion
+
+
     }
 }

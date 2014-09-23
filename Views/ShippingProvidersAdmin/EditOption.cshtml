@@ -1,13 +1,16 @@
-﻿@model OShop.ViewModels.ShippingOptionAddViewModel
+﻿@model OShop.ViewModels.ShippingOptionEditViewModel
 
+@using Orchard.ContentManagement
+@using Orchard.ContentManagement.Aspects
 @using OShop.Helpers
 
 @{
-    Layout.Title = T("Add Shipping option to {0}", Model.ShippingProviderName);
+    Layout.Title = T("Edit Shipping option for {0}", Model.ShippingProviderName);
 }
 
 @using (Html.BeginFormAntiForgeryPost()) {
     @Html.ValidationSummary()
+    @Html.HiddenFor(m=>m.OptionId)
     @Html.HiddenFor(m=>m.ShippingProviderId)
     <fieldset>
         <legend>@T("New shipping zone")</legend>

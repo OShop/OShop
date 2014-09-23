@@ -5,7 +5,8 @@ using System.Linq;
 using System.Web;
 
 namespace OShop.ViewModels {
-    public class ShippingOptionAddViewModel {
+    public class ShippingOptionEditViewModel {
+        public int OptionId { get; set; }
         public int ShippingProviderId { get; set; }
         public string ShippingProviderName { get; set; }
         public string Name { get; set; }

@@ -1,10 +1,14 @@
 ﻿@model OShop.ViewModels.ShippingProviderPartEditViewModel
 @using OShop.Helpers
 
+@{
+    Style.Require("OShopAdmin");
+}
+
 <fieldset>
     <legend>@T("Shipping options")</legend>
     <div class="manage">
-        @Html.ActionLink(T("Add option").Text, "AddOption", "ShippingProviderAdmin", new { Area = "OShop", Id = Model.Part.Id }, new { @class = "button primaryAction" })
+        @Html.ActionLink(T("Add option").Text, "AddOption", "ShippingProvidersAdmin", new { Area = "OShop", Id = Model.Part.Id }, new { @class = "button primaryAction" })
     </div>
     <table class="items">
         <thead>
@@ -20,9 +24,17 @@
                 <th scope="col">@T("Actions")</th>
             </tr>
         </thead>
-        @foreach (var option in Model.Part.Options) {
+        @foreach (var option in Model.Part.Options.OrderByDescending(o => o.Priority)) {
             <tr>
-                <td scope="col">@option.Name</td>
+                <td scope="col">
+                    @if (!option.Enabled) {
+                        <img class="icon" src="@Href("~/Modules/OShop/Content/Admin/Images/Disabled.png")" alt="@T("Disabled")" title="@T("Disabled")" />
+                    }
+                    else {
+                        <img class="icon" src="@Href("~/Modules/OShop/Content/Admin/Images/Enabled.png")" alt="@T("Enabled")" title="@T("Enabled")" />
+                    }
+                    @Html.ActionLink(option.Name, "EditOption", "ShippingProvidersAdmin", new { Area = "OShop", id = option.Id }, new { })
+                </td>
                 <td scope="col">@(option.ShippingZoneRecord != null ? option.ShippingZoneRecord.Name : "-")</td>
                 <td scope="col">@option.Priority</td>
                 <td scope="col">@String.Format(Model.NumberFormat, "{0:C}", option.Price)</td>
@@ -39,9 +51,18 @@
                     }
                 }
                 <td scope="col">
-                    @Html.ActionLink(T("Edit").Text, "EditOption", "ShippingProviderAdmin", new { Area = "OShop", Id = option.Id }, new { @class = "button" })
-                    @Html.ActionLink(T("Delete").Text, "DeleteOption", "ShippingProviderAdmin", new { Area = "OShop", Id = option.Id }, new { @class = "button" })
+                    @if (option.Enabled) {
+                        @Html.ActionLink(T("Disable").Text, "DisableOption", "ShippingProvidersAdmin", new { Area = "OShop", Id = option.Id }, new { @class = "button" })
+                    }
+                    else {
+                        @Html.ActionLink(T("Enable").Text, "EnableOption", "ShippingProvidersAdmin", new { Area = "OShop", Id = option.Id }, new { @class = "button" })
+                    }
+                    @Html.ActionLink(T("Edit").Text, "EditOption", "ShippingProvidersAdmin", new { Area = "OShop", Id = option.Id }, new { @class = "button" })
+                    @Html.ActionLink(T("Delete").Text, "DeleteOption", "ShippingProvidersAdmin", new { Area = "OShop", Id = option.Id }, new { @class = "button", itemprop = "RemoveUrl UnsafeUrl" })
                 </td>
+
+
+
             </tr>
         }
     </table>

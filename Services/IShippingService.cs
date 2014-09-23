@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 namespace OShop.Services {
     public interface IShippingService : IDependency {
+        #region Shipping zones
         void CreateZone(ShippingZoneRecord record);
         void UpdateZone(ShippingZoneRecord record);
         void DeleteZone(int ZoneId);
@@ -11,5 +12,17 @@ namespace OShop.Services {
         ShippingZoneRecord GetZone(int Id);
         IEnumerable<ShippingZoneRecord> GetZones();
         IEnumerable<ShippingZoneRecord> GetEnabledZones();
+        
+        #endregion
+
+        #region Shipping options
+        void CreateOption(ShippingOptionRecord record);
+        void UpdateOption(ShippingOptionRecord record);
+        void DeleteOption(int OptionId);
+        void DeleteOption(ShippingOptionRecord record);
+        ShippingOptionRecord GetOption(int Id);
+        IEnumerable<ShippingOptionRecord> GetOptions(ShippingProviderPart part);
+
+        #endregion
     }
 }

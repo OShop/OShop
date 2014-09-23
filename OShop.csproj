@@ -103,6 +103,7 @@
     <Content Include="Views\ShippingProvidersAdmin\Index.cshtml" />
     <Content Include="Views\EditorTemplates\Parts\ShippingProvider.cshtml" />
     <Content Include="Views\ShippingProvidersAdmin\AddOption.cshtml" />
+    <Content Include="Views\ShippingProvidersAdmin\EditOption.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Orchard.Core">
@@ -194,6 +195,7 @@
     <Compile Include="ViewModels\LocationsCountriesIndexViewModel.cs" />
     <Compile Include="ViewModels\OShopSettingsViewsModel.cs" />
     <Compile Include="ViewModels\ProductListViewModel.cs" />
+    <Compile Include="ViewModels\ShippingOptionEditViewModel.cs" />
     <Compile Include="ViewModels\VatEditViewModel.cs" />
     <Compile Include="ViewModels\ShippingOptionAddViewModel.cs" />
     <Compile Include="ViewModels\ShippingProviderPartEditViewModel.cs" />
