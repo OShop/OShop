@@ -11,9 +11,9 @@ namespace OShop.Migrations {
                  .ContentPartVersionRecord()
                  .Column<bool>("RequiresShipping")
                  .Column<double>("Weight")
+                 .Column<double>("Length")
                  .Column<double>("Width")
-                 .Column<double>("Height")
-                 .Column<double>("Lenght"));
+                 .Column<double>("Height"));
 
             SchemaBuilder.CreateTable("ShippingProviderPartRecord", table => table
                 .ContentPartRecord()

@@ -19,12 +19,12 @@
             @Html.ValidationMessageFor(m => m.Weight, "*")
         </div>
         <div>
-            @Html.LabelFor(m => m.Width, T("Size"))
+            @Html.LabelFor(m => m.Length, T("Size"))
+            @Html.TextBoxFor(m => m.Length, new { @class = "text small" })
+            @Html.ValidationMessageFor(m => m.Length, "*")
+            <span> X </span>
             @Html.TextBoxFor(m => m.Width, new { @class = "text small" })
             @Html.ValidationMessageFor(m => m.Width, "*")
-            <span> X </span>
-            @Html.TextBoxFor(m => m.Lenght, new { @class = "text small" })
-            @Html.ValidationMessageFor(m => m.Lenght, "*")
             <span> X </span>
             @Html.TextBoxFor(m => m.Height, new { @class = "text small" })
             @Html.ValidationMessageFor(m => m.Height, "*")

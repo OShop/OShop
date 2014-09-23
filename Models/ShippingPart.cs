@@ -12,6 +12,11 @@ namespace OShop.Models {
             set { this.Store(x => x.Weight, value); }
         }
 
+        public double Length {
+            get { return this.Retrieve(x => x.Length); }
+            set { this.Store(x => x.Length, value); }
+        }
+
         public double Width {
             get { return this.Retrieve(x => x.Width); }
             set { this.Store(x => x.Width, value); }
@@ -20,11 +25,6 @@ namespace OShop.Models {
         public double Height {
             get { return this.Retrieve(x => x.Height); }
             set { this.Store(x => x.Height, value); }
-        }
-
-        public double Lenght {
-            get { return this.Retrieve(x => x.Lenght); }
-            set { this.Store(x => x.Lenght, value); }
         }
     }
 }

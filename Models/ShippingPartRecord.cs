@@ -6,8 +6,8 @@ namespace OShop.Models {
     public class ShippingPartRecord : ContentPartVersionRecord {
         public virtual bool RequiresShipping { get; set; }
         public virtual double Weight { get; set; }
+        public virtual double Length { get; set; }
         public virtual double Width { get; set; }
         public virtual double Height { get; set; }
-        public virtual double Lenght { get; set; } 
     }
 }

@@ -8,8 +8,8 @@ namespace OShop.Models {
     public interface IShippingInfo {
         bool RequiresShipping { get; }
         double Weight { get; }
+        double Length { get; }
         double Width { get; }
         double Height { get; }
-        double Lenght { get; }
     }
 }
