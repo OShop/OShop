@@ -11,13 +11,13 @@ using System.Web;
 
 namespace OShop.Drivers {
     [OrchardFeature("OShop.VAT")]
-    public class VatProductPartDriver : ContentPartDriver<ProductPart> {
+    public class VatShippingProviderPartDriver : ContentPartDriver<ShippingProviderPart> {
         private readonly IVatService _vatService;
         private readonly ICurrencyProvider _currencyProvider;
 
         private const string TemplateName = "Parts/Vat";
 
-        public VatProductPartDriver(
+        public VatShippingProviderPartDriver(
             IVatService vatService,
             ICurrencyProvider currencyProvider
             ) {
@@ -25,17 +25,10 @@ namespace OShop.Drivers {
             _currencyProvider = currencyProvider;
         }
 
-        protected override string Prefix { get { return "Product"; } }
-
-        protected override DriverResult Display(ProductPart part, string displayType, dynamic shapeHelper) {
-            return ContentShape("Parts_Product_Vat", () => shapeHelper.Parts_Product_Vat(
-                    NumberFormat: _currencyProvider.NumberFormat,
-                    ContentPart: part,
-                    Vat: part.VAT));
-        }
+        protected override string Prefix { get { return "ShippingProvider"; } }
 
         // GET
-        protected override DriverResult Editor(ProductPart part, dynamic shapeHelper) {
+        protected override DriverResult Editor(ShippingProviderPart part, dynamic shapeHelper) {
             return ContentShape("Parts_Vat_Edit",
                 () => shapeHelper.EditorTemplate(
                     TemplateName: TemplateName,
@@ -47,7 +40,7 @@ namespace OShop.Drivers {
         }
 
         // POST
-        protected override DriverResult Editor(ProductPart part, IUpdateModel updater, dynamic shapeHelper) {
+        protected override DriverResult Editor(ShippingProviderPart part, IUpdateModel updater, dynamic shapeHelper) {
             var model = new VatEditViewModel();
             if (updater.TryUpdateModel(model, Prefix, null, null)) {
                 if (model.SelectedVatId > 0) {

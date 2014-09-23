@@ -6,7 +6,7 @@
     <Place Parts_Product_Price="Content:3.1" />
   </Match>
   <!-- VAT -->
-  <Place Parts_Product_Vat_Edit="Content:3.1" />
+  <Place Parts_Vat_Edit="Content:3.1" />
   <Match DisplayType="Detail">
     <Place Parts_Product_Vat="Content:3.2" />
   </Match>
@@ -17,4 +17,5 @@
   <Place Parts_ShoppingCartWidget="Content:0" />
   <!-- Shipping -->
   <Place Parts_Shipping_Edit="Content:3.2" />
+  <Place Parts_ShippingProvider_Edit="Content:10" />
 </Placement>

@@ -10,7 +10,12 @@ namespace OShop.Models {
         [CascadeAllDeleteOrphan]
         public virtual IList<ShippingOptionRecord> Options { get; set; }
 
-        internal ShippingProviderPart() {
+        public VatRecord VAT {
+            get { return Record.VatRecord; }
+            set { Record.VatRecord = value; }
+        }
+
+        public ShippingProviderPart() {
             Options = new List<ShippingOptionRecord>();
         }
     }

@@ -16,7 +16,8 @@ namespace OShop.Migrations {
                  .Column<double>("Lenght"));
 
             SchemaBuilder.CreateTable("ShippingProviderPartRecord", table => table
-                .ContentPartRecord());
+                .ContentPartRecord()
+                .Column<int>("VatRecord_Id"));
 
             SchemaBuilder.CreateTable("ShippingZoneRecord", table => table
                  .Column<int>("Id", c => c.PrimaryKey().Identity())
@@ -26,12 +27,12 @@ namespace OShop.Migrations {
             SchemaBuilder.CreateTable("ShippingOptionRecord", table => table
                  .Column<int>("Id", c => c.PrimaryKey().Identity())
                  .Column<string>("Name")
+                 .Column<bool>("Enabled")
                  .Column<int>("ShippingZoneRecord_Id")
                  .Column<int>("ShippingProviderPartRecord_Id")
                  .Column<int>("Priority")
                  .Column<string>("Data", c => c.Unlimited())
-                 .Column<decimal>("Price")
-                 .Column<int>("VatRecord_Id"));
+                 .Column<decimal>("Price"));
 
             ContentDefinitionManager.AlterPartDefinition("ShippingPart", part => part
                  .Attachable()

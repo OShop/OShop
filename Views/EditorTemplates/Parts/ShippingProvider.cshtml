@@ -1,0 +1,32 @@
+﻿@model OShop.ViewModels.ShippingProviderPartEditViewModel
+
+<fieldset>
+    <legend>@T("Shipping options")</legend>
+    <div class="manage">
+        @Html.ActionLink(T("Add option").Text, "AddOption", "ShippingProviderAdmin", new { Area = "OShop", Id = Model.Id }, new { @class = "button primaryAction" })
+    </div>
+    <table class="items">
+        <thead>
+            <tr>
+                <th scope="col">@T("Name")</th>
+                <th scope="col">@T("Zone")</th>
+                <th scope="col">@T("Priority")</th>
+                <th scope="col">@T("Price")</th>
+                <th scope="col">@T("Actions")</th>
+            </tr>
+        </thead>
+        @foreach (var option in Model.Options) {
+            <tr>
+                <td scope="col">@option.Name</td>
+                <td scope="col">@(option.ShippingZoneRecord != null ? option.ShippingZoneRecord.Name : "-")</td>
+                <td scope="col">@option.Priority</td>
+                <td scope="col">@String.Format(Model.NumberFormat, "{0:C}", option.Price)</td>
+                <td scope="col">
+                    @Html.ActionLink(T("Edit").Text, "EditOption", "ShippingProviderAdmin", new { Area = "OShop", Id = option.Id }, new { @class = "button" })
+                    @Html.ActionLink(T("Delete").Text, "DeleteOption", "ShippingProviderAdmin", new { Area = "OShop", Id = option.Id }, new { @class = "button" })
+                </td>
+            </tr>
+        }
+    </table>
+
+</fieldset>

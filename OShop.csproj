@@ -100,6 +100,9 @@
     <Content Include="Views\LocationsAdmin\States.cshtml" />
     <Content Include="Views\LocationsAdmin\AddState.cshtml" />
     <Content Include="Views\LocationsAdmin\EditState.cshtml" />
+    <Content Include="Views\ShippingProvidersAdmin\Index.cshtml" />
+    <Content Include="Views\EditorTemplates\Parts\ShippingProvider.cshtml" />
+    <Content Include="Views\ShippingProvidersAdmin\AddOption.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Orchard.Core">
@@ -121,12 +124,15 @@
     <Compile Include="Controllers\VatAdminController.cs" />
     <Compile Include="Drivers\ProductPartDriver.cs" />
     <Compile Include="Drivers\ShippingPartDriver.cs" />
+    <Compile Include="Drivers\ShippingProviderPartDriver.cs" />
     <Compile Include="Drivers\ShoppingCartProductPartDriver.cs" />
     <Compile Include="Drivers\ShoppingCartWidgetPartDriver.cs" />
+    <Compile Include="Drivers\VatShippingProviderPartDriver.cs" />
     <Compile Include="Drivers\VatProductPartDriver.cs" />
     <Compile Include="Handlers\OShopSettingsPartHandler.cs" />
     <Compile Include="Handlers\ProductPartHandler.cs" />
     <Compile Include="Handlers\ShippingPartHandler.cs" />
+    <Compile Include="Handlers\ShippingProviderPartHandler.cs" />
     <Compile Include="Helpers\LocationsExtensions.cs" />
     <Compile Include="Helpers\ShippingExtensions.cs" />
     <Compile Include="Helpers\ShoppingCartExtensions.cs" />
@@ -188,7 +194,9 @@
     <Compile Include="ViewModels\LocationsCountriesIndexViewModel.cs" />
     <Compile Include="ViewModels\OShopSettingsViewsModel.cs" />
     <Compile Include="ViewModels\ProductListViewModel.cs" />
-    <Compile Include="ViewModels\ProductVatEditViewModel.cs" />
+    <Compile Include="ViewModels\VatEditViewModel.cs" />
+    <Compile Include="ViewModels\ShippingOptionAddViewModel.cs" />
+    <Compile Include="ViewModels\ShippingProviderPartEditViewModel.cs" />
     <Compile Include="ViewModels\ShippingZonesAddViewModel.cs" />
     <Compile Include="ViewModels\ShippingZonesIndexViewModel.cs" />
     <Compile Include="ViewModels\ShoppingCartIndexViewModel.cs" />
@@ -229,7 +237,7 @@
     <Content Include="Views\VatAdmin\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\EditorTemplates\Parts\Product.Vat.cshtml" />
+    <Content Include="Views\EditorTemplates\Parts\Vat.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\ProductsAdmin\Create.cshtml" />
@@ -237,9 +245,7 @@
   <ItemGroup>
     <Content Include="Views\Parts\Product.Vat.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\ShippingProvidersAdmin\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
