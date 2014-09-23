@@ -24,7 +24,7 @@ namespace OShop.Controllers
     public class LocationsAdminController : Controller
     {
         private readonly ILocationsService _locationService;
-        private readonly IShippingZoneService _shippingZoneService;
+        private readonly IShippingService _shippingService;
         private readonly ISiteService _siteService;
         private readonly IFeatureManager _featureManager;
 
@@ -34,14 +34,14 @@ namespace OShop.Controllers
             ISiteService siteService,
             IFeatureManager featureManager,
             IShapeFactory shapeFactory,
-            IShippingZoneService shippingZoneService = null
+            IShippingService shippingService = null
             ) {
             _locationService = locationService;
             _siteService = siteService;
             _featureManager = featureManager;
             Shape = shapeFactory;
 
-            _shippingZoneService = shippingZoneService;
+            _shippingService = shippingService;
 
             Services = services;
 
@@ -82,7 +82,7 @@ namespace OShop.Controllers
                 Pager = pagerShape,
                 BulkAction = LocationsBulkAction.None,
                 Filter = model.Filter,
-                ShippingZones = _shippingZoneService != null ? _shippingZoneService.GetZones() : new List<ShippingZoneRecord>(),
+                ShippingZones = _shippingService != null ? _shippingService.GetZones() : new List<ShippingZoneRecord>(),
                 ZoneId = model.ZoneId,
                 // Optional features
                 ShippingEnabled = _featureManager.GetEnabledFeatures().Where(f => f.Id == "OShop.Shipping").Any()
@@ -143,7 +143,7 @@ namespace OShop.Controllers
                 ShippingZoneRecord zone = null;
 
                 if (model.BulkZoneId > 0) {
-                    zone = _shippingZoneService.GetZone(model.BulkZoneId);
+                    zone = _shippingService.GetZone(model.BulkZoneId);
                     if (zone == null) {
                         Services.Notifier.Warning(T("Unknown zone : Unable to update contry zones"));
                         return this.RedirectLocal(returnUrl, () => RedirectToAction("Index"));
@@ -172,7 +172,7 @@ namespace OShop.Controllers
 
             var model = new LocationsCountriesAddViewModel();
 
-            model.ShippingZones = _shippingZoneService != null ? _shippingZoneService.GetZones() : new List<ShippingZoneRecord>();
+            model.ShippingZones = _shippingService != null ? _shippingService.GetZones() : new List<ShippingZoneRecord>();
 
             return View(model);
         }
@@ -189,8 +189,8 @@ namespace OShop.Controllers
                     Enabled = model.Enabled,
                 };
 
-                if (_shippingZoneService != null) {
-                    record.ShippingZoneRecord = _shippingZoneService.GetZone(model.ShippingZoneId);
+                if (_shippingService != null) {
+                    record.ShippingZoneRecord = _shippingService.GetZone(model.ShippingZoneId);
                 }
 
                 _locationService.AddCountry(record);
@@ -198,7 +198,7 @@ namespace OShop.Controllers
                 return RedirectToAction("Index");
             }
 
-            model.ShippingZones = _shippingZoneService != null ? _shippingZoneService.GetZones() : new List<ShippingZoneRecord>();
+            model.ShippingZones = _shippingService != null ? _shippingService.GetZones() : new List<ShippingZoneRecord>();
 
             return View(model);
         }
@@ -220,7 +220,7 @@ namespace OShop.Controllers
                 ShippingZoneId = record.ShippingZoneRecord != null ? record.ShippingZoneRecord.Id : 0
             };
 
-            model.ShippingZones = _shippingZoneService != null ? _shippingZoneService.GetZones() : new List<ShippingZoneRecord>();
+            model.ShippingZones = _shippingService != null ? _shippingService.GetZones() : new List<ShippingZoneRecord>();
 
             return View(model);
         }
@@ -241,14 +241,14 @@ namespace OShop.Controllers
                 record.IsoCode = model.IsoCode;
                 record.Enabled = model.Enabled;
 
-                if (_shippingZoneService != null) {
-                    record.ShippingZoneRecord = _shippingZoneService.GetZone(model.ShippingZoneId);
+                if (_shippingService != null) {
+                    record.ShippingZoneRecord = _shippingService.GetZone(model.ShippingZoneId);
                 }
 
                 Services.Notifier.Information(T("Country {0} successfully updated.", model.Name));
             }
 
-            model.ShippingZones = _shippingZoneService != null ? _shippingZoneService.GetZones() : new List<ShippingZoneRecord>();
+            model.ShippingZones = _shippingService != null ? _shippingService.GetZones() : new List<ShippingZoneRecord>();
 
             return View(model);
         }
@@ -357,7 +357,7 @@ namespace OShop.Controllers
                 Pager = pagerShape,
                 BulkAction = LocationsBulkAction.None,
                 Filter = model.Filter,
-                ShippingZones = _shippingZoneService != null ? _shippingZoneService.GetZones() : new List<ShippingZoneRecord>(),
+                ShippingZones = _shippingService != null ? _shippingService.GetZones() : new List<ShippingZoneRecord>(),
                 CountryId = model.CountryId,
                 ZoneId = model.ZoneId,
                 // Optional features
@@ -419,7 +419,7 @@ namespace OShop.Controllers
                 ShippingZoneRecord zone = null;
 
                 if (model.BulkZoneId > 0) {
-                    zone = _shippingZoneService.GetZone(model.BulkZoneId);
+                    zone = _shippingService.GetZone(model.BulkZoneId);
                     if (zone == null) {
                         Services.Notifier.Warning(T("Unknown zone : Unable to update state zones"));
                         return this.RedirectLocal(returnUrl, () => RedirectToAction("States"));
@@ -448,7 +448,7 @@ namespace OShop.Controllers
 
             var model = new LocationsStatesAddViewModel();
 
-            model.ShippingZones = _shippingZoneService != null ? _shippingZoneService.GetZones() : new List<ShippingZoneRecord>();
+            model.ShippingZones = _shippingService != null ? _shippingService.GetZones() : new List<ShippingZoneRecord>();
             model.Countries = _locationService.GetCountries();
 
             return View(model);
@@ -467,8 +467,8 @@ namespace OShop.Controllers
                     LocationsCountryRecord = _locationService.GetCountry(model.CountryId)
                 };
 
-                if (_shippingZoneService != null) {
-                    record.ShippingZoneRecord = _shippingZoneService.GetZone(model.ShippingZoneId);
+                if (_shippingService != null) {
+                    record.ShippingZoneRecord = _shippingService.GetZone(model.ShippingZoneId);
                 }
 
                 _locationService.AddState(record);
@@ -477,7 +477,7 @@ namespace OShop.Controllers
             }
 
             model.Countries = _locationService.GetCountries();
-            model.ShippingZones = _shippingZoneService != null ? _shippingZoneService.GetZones() : new List<ShippingZoneRecord>();
+            model.ShippingZones = _shippingService != null ? _shippingService.GetZones() : new List<ShippingZoneRecord>();
 
             return View(model);
         }
@@ -501,7 +501,7 @@ namespace OShop.Controllers
             };
 
             model.Countries = _locationService.GetCountries();
-            model.ShippingZones = _shippingZoneService != null ? _shippingZoneService.GetZones() : new List<ShippingZoneRecord>();
+            model.ShippingZones = _shippingService != null ? _shippingService.GetZones() : new List<ShippingZoneRecord>();
 
             return View(model);
         }
@@ -523,15 +523,15 @@ namespace OShop.Controllers
                 record.Enabled = model.Enabled;
                 record.LocationsCountryRecord = model.CountryId > 0 ? _locationService.GetCountry(model.CountryId) : null;
 
-                if (_shippingZoneService != null) {
-                    record.ShippingZoneRecord = _shippingZoneService.GetZone(model.ShippingZoneId);
+                if (_shippingService != null) {
+                    record.ShippingZoneRecord = _shippingService.GetZone(model.ShippingZoneId);
                 }
 
                 Services.Notifier.Information(T("State {0} successfully updated.", model.Name));
             }
 
             model.Countries = _locationService.GetCountries();
-            model.ShippingZones = _shippingZoneService != null ? _shippingZoneService.GetZones() : new List<ShippingZoneRecord>();
+            model.ShippingZones = _shippingService != null ? _shippingService.GetZones() : new List<ShippingZoneRecord>();
 
             return View(model);
         }

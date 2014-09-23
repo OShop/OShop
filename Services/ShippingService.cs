@@ -8,12 +8,12 @@ using System.Web;
 
 namespace OShop.Services {
     [OrchardFeature("OShop.Shipping")]
-    public class ShippingZoneService : IShippingZoneService {
+    public class ShippingService : IShippingService {
         private readonly IRepository<ShippingZoneRecord> _zoneRepository;
         private readonly IRepository<LocationsCountryRecord> _countryRepository;
         private readonly IRepository<LocationsStateRecord> _stateRepository;
 
-        public ShippingZoneService(
+        public ShippingService(
             IRepository<ShippingZoneRecord> zoneRepository,
             IRepository<LocationsCountryRecord> countryRepository,
             IRepository<LocationsStateRecord> stateRepository) {

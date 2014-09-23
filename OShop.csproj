@@ -174,14 +174,14 @@
     <Compile Include="Services\ICurrencyProvider.cs" />
     <Compile Include="Services\ILocationsService.cs" />
     <Compile Include="Services\IShippingInfoProvider.cs" />
-    <Compile Include="Services\IShippingZoneService.cs" />
+    <Compile Include="Services\IShippingService.cs" />
     <Compile Include="Services\IShopItemProvider.cs" />
     <Compile Include="Services\IShoppingCartService.cs" />
     <Compile Include="Services\IVatService.cs" />
     <Compile Include="Services\LocationsService.cs" />
     <Compile Include="Services\ProductService.cs" />
     <Compile Include="Services\ShippingInfoProvider.cs" />
-    <Compile Include="Services\ShippingZoneService.cs" />
+    <Compile Include="Services\ShippingService.cs" />
     <Compile Include="Services\ShoppingCartService.cs" />
     <Compile Include="Services\VatService.cs" />
     <Compile Include="ViewModels\LocationsBulkAction.cs" />

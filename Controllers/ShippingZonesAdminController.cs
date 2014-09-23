@@ -22,15 +22,15 @@ namespace OShop.Controllers
     [OrchardFeature("OShop.Shipping")]
     public class ShippingZonesAdminController : Controller
     {
-        private readonly IShippingZoneService _shippingZoneService;
+        private readonly IShippingService _shippingService;
         private readonly ISiteService _siteService;
 
         public ShippingZonesAdminController(
-            IShippingZoneService shippingZoneService,
+            IShippingService shippingService,
             ISiteService siteService,
             IOrchardServices services,
             IShapeFactory shapeFactory) {
-            _shippingZoneService = shippingZoneService;
+            _shippingService = shippingService;
             _siteService = siteService;
 
             Shape = shapeFactory;
@@ -50,7 +50,7 @@ namespace OShop.Controllers
 
             var pager = new Pager(_siteService.GetSiteSettings(), pagerParameters);
 
-            var zones = _shippingZoneService.GetZones();
+            var zones = _shippingService.GetZones();
 
             switch (model.Filter) {
                 case ShippingZoneFilter.Disabled:
@@ -82,7 +82,7 @@ namespace OShop.Controllers
             if (itemIds != null && model.BulkAction != ShippingZoneBulkAction.None) {
                 int counter = 0;
                 foreach (int itemId in itemIds) {
-                    var zone = _shippingZoneService.GetZone(itemId);
+                    var zone = _shippingService.GetZone(itemId);
                     if (zone != null) {
                         switch (model.BulkAction) {
                             case ShippingZoneBulkAction.Enable:
@@ -92,7 +92,7 @@ namespace OShop.Controllers
                                 zone.Enabled = false;
                                 break;
                             case ShippingZoneBulkAction.Remove:
-                                _shippingZoneService.DeleteZone(zone);
+                                _shippingService.DeleteZone(zone);
                                 break;
                         }
 
@@ -129,7 +129,7 @@ namespace OShop.Controllers
                 return new HttpUnauthorizedResult();
 
             if (ModelState.IsValid) {
-                _shippingZoneService.CreateZone(new ShippingZoneRecord() {
+                _shippingService.CreateZone(new ShippingZoneRecord() {
                     Name = model.Name,
                     Enabled = model.Enabled
                 });
@@ -142,7 +142,7 @@ namespace OShop.Controllers
         }
 
         public ActionResult Edit(int id) {
-            var record = _shippingZoneService.GetZone(id);
+            var record = _shippingService.GetZone(id);
 
             if (record == null) {
                 return new HttpNotFoundResult();
@@ -157,7 +157,7 @@ namespace OShop.Controllers
                 return new HttpUnauthorizedResult();
 
             if (ModelState.IsValid) {
-                _shippingZoneService.UpdateZone(model);
+                _shippingService.UpdateZone(model);
 
                 Services.Notifier.Information(T("Country {0} successfully updated.", model.Name));
             }
@@ -169,7 +169,7 @@ namespace OShop.Controllers
             if (!Services.Authorizer.Authorize(Permissions.OShopPermissions.ManageShopSettings, T("Not allowed to manage shipping zones")))
                 return new HttpUnauthorizedResult();
 
-            var record = _shippingZoneService.GetZone(id);
+            var record = _shippingService.GetZone(id);
 
             if (record == null) {
                 return new HttpNotFoundResult();
@@ -186,7 +186,7 @@ namespace OShop.Controllers
             if (!Services.Authorizer.Authorize(Permissions.OShopPermissions.ManageShopSettings, T("Not allowed to manage shipping zones")))
                 return new HttpUnauthorizedResult();
 
-            var record = _shippingZoneService.GetZone(id);
+            var record = _shippingService.GetZone(id);
 
             if (record == null) {
                 return new HttpNotFoundResult();
@@ -203,13 +203,13 @@ namespace OShop.Controllers
             if (!Services.Authorizer.Authorize(Permissions.OShopPermissions.ManageShopSettings, T("Not allowed to manage shipping zones")))
                 return new HttpUnauthorizedResult();
 
-            var record = _shippingZoneService.GetZone(id);
+            var record = _shippingService.GetZone(id);
 
             if (record == null) {
                 return new HttpNotFoundResult();
             }
 
-            _shippingZoneService.DeleteZone(record);
+            _shippingService.DeleteZone(record);
 
             Services.Notifier.Information(T("Zone {0} successfully deleted.", record.Name));
 
