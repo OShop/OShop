@@ -1,26 +1,43 @@
 ﻿@model OShop.ViewModels.ShippingProviderPartEditViewModel
+@using OShop.Helpers
 
 <fieldset>
     <legend>@T("Shipping options")</legend>
     <div class="manage">
-        @Html.ActionLink(T("Add option").Text, "AddOption", "ShippingProviderAdmin", new { Area = "OShop", Id = Model.Id }, new { @class = "button primaryAction" })
+        @Html.ActionLink(T("Add option").Text, "AddOption", "ShippingProviderAdmin", new { Area = "OShop", Id = Model.Part.Id }, new { @class = "button primaryAction" })
     </div>
     <table class="items">
         <thead>
             <tr>
-                <th scope="col">@T("Name")</th>
+                <th scope="col" style="width: 100%">@T("Name")</th>
                 <th scope="col">@T("Zone")</th>
                 <th scope="col">@T("Priority")</th>
                 <th scope="col">@T("Price")</th>
+                @if (Model.VatEnabled) {
+                    <th scope="col">@T("VAT")</th>
+                    <th scope="col">@T("VAT Inc.")</th>
+                }
                 <th scope="col">@T("Actions")</th>
             </tr>
         </thead>
-        @foreach (var option in Model.Options) {
+        @foreach (var option in Model.Part.Options) {
             <tr>
                 <td scope="col">@option.Name</td>
                 <td scope="col">@(option.ShippingZoneRecord != null ? option.ShippingZoneRecord.Name : "-")</td>
                 <td scope="col">@option.Priority</td>
                 <td scope="col">@String.Format(Model.NumberFormat, "{0:C}", option.Price)</td>
+                @if (Model.VatEnabled) {
+                    if (Model.Part.VAT != null) {
+                        <td scope="col" class="percent" title="@Model.Part.VAT.Name">@T("{0:P}", Model.Part.VAT.Rate)</td>
+                        <td scope="col" class="price">
+                            @String.Format(Model.NumberFormat, "{0:C}", Model.Part.VAT.GetVatIncludedPrice(option.Price))
+                        </td>
+                    }
+                    else {
+                        <td scope="col" class="na" title="@T("No VAT defined on this product")">-</td>
+                        <td scope="col" class="price">@String.Format(Model.NumberFormat, "{0:C}", option.Price)</td>
+                    }
+                }
                 <td scope="col">
                     @Html.ActionLink(T("Edit").Text, "EditOption", "ShippingProviderAdmin", new { Area = "OShop", Id = option.Id }, new { @class = "button" })
                     @Html.ActionLink(T("Delete").Text, "DeleteOption", "ShippingProviderAdmin", new { Area = "OShop", Id = option.Id }, new { @class = "button" })
