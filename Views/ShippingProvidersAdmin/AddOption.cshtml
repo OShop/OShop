@@ -10,7 +10,7 @@
     @Html.ValidationSummary()
     @Html.HiddenFor(m=>m.ShippingProviderId)
     <fieldset>
-        <legend>@T("New shipping zone")</legend>
+        <legend>@T("New shipping option")</legend>
         <div>
             @Html.LabelFor(m => m.Name, T("Name"))
             @Html.TextBoxFor(m => m.Name, new { @class = "text medium" })

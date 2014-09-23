@@ -13,7 +13,7 @@
     @Html.HiddenFor(m=>m.OptionId)
     @Html.HiddenFor(m=>m.ShippingProviderId)
     <fieldset>
-        <legend>@T("New shipping zone")</legend>
+        <legend>@T("Shipping options")</legend>
         <div>
             @Html.LabelFor(m => m.Name, T("Name"))
             @Html.TextBoxFor(m => m.Name, new { @class = "text medium" })
