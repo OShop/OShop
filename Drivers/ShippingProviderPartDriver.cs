@@ -2,6 +2,7 @@
 using Orchard.ContentManagement.Drivers;
 using Orchard.Environment.Extensions;
 using Orchard.Environment.Features;
+using Orchard.Mvc;
 using OShop.Models;
 using OShop.Services;
 using OShop.ViewModels;
@@ -15,14 +16,20 @@ namespace OShop.Drivers {
     public class ShippingProviderPartDriver : ContentPartDriver<ShippingProviderPart> {
         private readonly ICurrencyProvider _currencyProvider;
         private readonly IFeatureManager _featureManager;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IShippingService _shippingService;
 
         private const string TemplateName = "Parts/ShippingProvider";
 
         public ShippingProviderPartDriver(
             ICurrencyProvider currencyProvider,
-            IFeatureManager featureManager) {
+            IFeatureManager featureManager,
+            IHttpContextAccessor httpContextAccessor,
+            IShippingService shippingService) {
             _currencyProvider = currencyProvider;
             _featureManager = featureManager;
+            _httpContextAccessor = httpContextAccessor;
+            _shippingService = shippingService;
         }
 
         protected override string Prefix { get { return "ShippingProvider"; } }
@@ -44,7 +51,22 @@ namespace OShop.Drivers {
 
         // POST
         protected override DriverResult Editor(ShippingProviderPart part, IUpdateModel updater, dynamic shapeHelper) {
-            updater.TryUpdateModel(part, Prefix, null, null);
+            var httpContext = _httpContextAccessor.Current();
+
+            if (httpContext.Request.Form["submit.Save"] == "ShippingProvider.New"
+                && httpContext.Request.Form["ShippingProvider.New.Option"] != null
+                && !String.IsNullOrWhiteSpace(httpContext.Request.Form["ShippingProvider.New.Option"])) {
+                // New option
+                    _shippingService.CreateOption(new ShippingOptionRecord() {
+                        Name = httpContext.Request.Form["ShippingProvider.New.Option"].Trim(),
+                        Enabled = false,
+                        ShippingProviderPartRecord = part.Record,
+                        Priority = 0,
+                        Price = 0
+                    });
+
+            }
+
             return Editor(part, shapeHelper);
         }
     }

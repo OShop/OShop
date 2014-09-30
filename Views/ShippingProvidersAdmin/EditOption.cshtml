@@ -1,4 +1,5 @@
 ﻿@model OShop.ViewModels.ShippingOptionEditViewModel
+@using OShop.Models
 
 @using Orchard.ContentManagement
 @using Orchard.ContentManagement.Aspects
@@ -40,9 +41,80 @@
             @Html.ValidationMessageFor(m => m.Price, "*")
         </div>
     </fieldset>
-
+    <table class="items">
+        <thead>
+            <tr>
+                <th>@T("Property")</th>
+                <th>@T("Operator")</th>
+                <th>@T("Value")</th>
+                <th>@T("Action")</th>
+            </tr>
+        </thead>
+        @for (int i =0; i < Model.Contraints.Count; i++) {
+            <tr>
+                <td>
+                    <select name="Contraints[@i].Property">
+                        @Html.SelectOption((ShippingContraintProperty)Model.Contraints[i].Property, ShippingContraintProperty.TotalPrice, T("Total price").Text)
+                        @Html.SelectOption((ShippingContraintProperty)Model.Contraints[i].Property, ShippingContraintProperty.TotalWeight, T("Total weight").Text)
+                        @Html.SelectOption((ShippingContraintProperty)Model.Contraints[i].Property, ShippingContraintProperty.TotalVolume, T("Total volume").Text)
+                        @Html.SelectOption((ShippingContraintProperty)Model.Contraints[i].Property, ShippingContraintProperty.ItemLongestDimension, T("Item longest dimension").Text)
+                        @Html.SelectOption((ShippingContraintProperty)Model.Contraints[i].Property, ShippingContraintProperty.ItemLength, T("Item length").Text)
+                        @Html.SelectOption((ShippingContraintProperty)Model.Contraints[i].Property, ShippingContraintProperty.ItemWidth, T("Item width").Text)
+                        @Html.SelectOption((ShippingContraintProperty)Model.Contraints[i].Property, ShippingContraintProperty.ItemHeight, T("Item height").Text)
+                    </select>
+                </td>
+                <td>
+                    <select name="Contraints[@i].Operator">
+                        @Html.SelectOption((ShippingContraintOperator)Model.Contraints[i].Operator, ShippingContraintOperator.LessThan, T("Less than").Text)
+                        @Html.SelectOption((ShippingContraintOperator)Model.Contraints[i].Operator, ShippingContraintOperator.LessThanOrEqual, T("Less than or equal").Text)
+                        @Html.SelectOption((ShippingContraintOperator)Model.Contraints[i].Operator, ShippingContraintOperator.Equal, T("Equal").Text)
+                        @Html.SelectOption((ShippingContraintOperator)Model.Contraints[i].Operator, ShippingContraintOperator.GreaterThan, T("Greater than").Text)
+                        @Html.SelectOption((ShippingContraintOperator)Model.Contraints[i].Operator, ShippingContraintOperator.GreaterThanOrEqual, T("Greater than or equal").Text)
+                        @Html.SelectOption((ShippingContraintOperator)Model.Contraints[i].Operator, ShippingContraintOperator.NotEqual, T("Not equal").Text)
+                    </select>
+                </td>
+                <td>
+                    <input type="text" name="Contraints[@i].Value" value="@Model.Contraints[i].Value" />
+                </td>
+                <td>
+                    <button type="submit" name="submit.Delete" value="@i">@T("Delete")</button>
+                </td>
+            </tr>
+        }
+        <tfoot>
+            <tr>
+                <td>
+                    <select name="NewContraint.Property">
+                        @Html.SelectOption((ShippingContraintProperty)Model.NewContraint.Property, ShippingContraintProperty.TotalPrice, T("Total price").Text)
+                        @Html.SelectOption((ShippingContraintProperty)Model.NewContraint.Property, ShippingContraintProperty.TotalWeight, T("Total weight").Text)
+                        @Html.SelectOption((ShippingContraintProperty)Model.NewContraint.Property, ShippingContraintProperty.TotalVolume, T("Total volume").Text)
+                        @Html.SelectOption((ShippingContraintProperty)Model.NewContraint.Property, ShippingContraintProperty.ItemLongestDimension, T("Item longest dimension").Text)
+                        @Html.SelectOption((ShippingContraintProperty)Model.NewContraint.Property, ShippingContraintProperty.ItemLength, T("Item length").Text)
+                        @Html.SelectOption((ShippingContraintProperty)Model.NewContraint.Property, ShippingContraintProperty.ItemWidth, T("Item width").Text)
+                        @Html.SelectOption((ShippingContraintProperty)Model.NewContraint.Property, ShippingContraintProperty.ItemHeight, T("Item height").Text)
+                    </select>
+                </td>
+                <td>
+                    <select name="NewContraint.Operator">
+                        @Html.SelectOption((ShippingContraintOperator)Model.NewContraint.Operator, ShippingContraintOperator.LessThan, T("Less than").Text)
+                        @Html.SelectOption((ShippingContraintOperator)Model.NewContraint.Operator, ShippingContraintOperator.LessThanOrEqual, T("Less than or equal").Text)
+                        @Html.SelectOption((ShippingContraintOperator)Model.NewContraint.Operator, ShippingContraintOperator.Equal, T("Equal").Text)
+                        @Html.SelectOption((ShippingContraintOperator)Model.NewContraint.Operator, ShippingContraintOperator.GreaterThan, T("Greater than").Text)
+                        @Html.SelectOption((ShippingContraintOperator)Model.NewContraint.Operator, ShippingContraintOperator.GreaterThanOrEqual, T("Greater than or equal").Text)
+                        @Html.SelectOption((ShippingContraintOperator)Model.NewContraint.Operator, ShippingContraintOperator.NotEqual, T("Not equal").Text)
+                    </select>
+                </td>
+                <td>
+                    <input type="text" name="NewContraint.Value" value="0" />
+                </td>
+                <td>
+                    <button type="submit" name="submit.Add" value="Add">@T("Add")</button>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
     <div>
-        <button type="submit" name="submit.Save" value="create">@T("Save")</button>
+        <button type="submit" name="submit.Save" value="Save">@T("Save")</button>
         @Html.Link(T("Cancel").Text, Model.ReturnUrl, new { @class = "button primaryAction" })
     </div>
-}
+    }

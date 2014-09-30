@@ -1,4 +1,5 @@
-﻿using Orchard.Data.Conventions;
+﻿using Newtonsoft.Json;
+using Orchard.Data.Conventions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +16,14 @@ namespace OShop.Models {
         [StringLengthMax]
         public virtual string Data { get; set; }
         public virtual decimal Price { get; set; }
+
+        internal IList<ShippingContraint> Contraints {
+            get {
+                return this.Data != null ? JsonConvert.DeserializeObject<IList<ShippingContraint>>(this.Data) : new List<ShippingContraint>();
+            }
+            set {
+                this.Data = JsonConvert.SerializeObject(value);
+            }
+        }
     }
 }

@@ -48,6 +48,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\lib\newtonsoft.json\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.ComponentModel.DataAnnotations">
@@ -102,7 +106,6 @@
     <Content Include="Views\LocationsAdmin\EditState.cshtml" />
     <Content Include="Views\ShippingProvidersAdmin\Index.cshtml" />
     <Content Include="Views\EditorTemplates\Parts\ShippingProvider.cshtml" />
-    <Content Include="Views\ShippingProvidersAdmin\AddOption.cshtml" />
     <Content Include="Views\ShippingProvidersAdmin\EditOption.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -153,6 +156,7 @@
     <Compile Include="Models\OShopSettingsPart.cs" />
     <Compile Include="Models\ProductPart.cs" />
     <Compile Include="Models\ProductPartRecord.cs" />
+    <Compile Include="Models\ShippingContraint.cs" />
     <Compile Include="Models\ShippingOptionRecord.cs" />
     <Compile Include="Models\ShippingPart.cs" />
     <Compile Include="Models\ShippingPartRecord.cs" />
@@ -197,7 +201,6 @@
     <Compile Include="ViewModels\ProductListViewModel.cs" />
     <Compile Include="ViewModels\ShippingOptionEditViewModel.cs" />
     <Compile Include="ViewModels\VatEditViewModel.cs" />
-    <Compile Include="ViewModels\ShippingOptionAddViewModel.cs" />
     <Compile Include="ViewModels\ShippingProviderPartEditViewModel.cs" />
     <Compile Include="ViewModels\ShippingZonesAddViewModel.cs" />
     <Compile Include="ViewModels\ShippingZonesIndexViewModel.cs" />

@@ -6,6 +6,7 @@ using Orchard.Core.Contents.ViewModels;
 using Orchard.DisplayManagement;
 using Orchard.Environment.Extensions;
 using Orchard.Localization;
+using Orchard.Mvc;
 using Orchard.Mvc.Extensions;
 using Orchard.Mvc.Html;
 using Orchard.Settings;
@@ -80,51 +81,6 @@ namespace OShop.Controllers
             return View((object)viewModel);
         }
 
-        public ActionResult AddOption(int id) {
-            if (!Services.Authorizer.Authorize(Permissions.OShopPermissions.ManageShopSettings, T("Not allowed to manage shipping options")))
-                return new HttpUnauthorizedResult();
-
-            var provider = _contentManager.Get<ShippingProviderPart>(id);
-
-            var Model = new ShippingOptionAddViewModel() {
-                ShippingProviderId = id,
-                ShippingProviderName = provider.As<ITitleAspect>().Title,
-                ShippingZones = _shippingService.GetZones(),
-
-                ReturnUrl = Url.ItemAdminUrl(provider)
-            };
-
-            return View(Model);
-        }
-
-        [HttpPost]
-        public ActionResult AddOption(ShippingOptionAddViewModel model) {
-            if (!Services.Authorizer.Authorize(Permissions.OShopPermissions.ManageShopSettings, T("Not allowed to manage shipping options")))
-                return new HttpUnauthorizedResult();
-
-            var provider = _contentManager.Get<ShippingProviderPart>(model.ShippingProviderId);
-
-            if (ModelState.IsValid) {
-                _shippingService.CreateOption(new ShippingOptionRecord() {
-                    Name = model.Name,
-                    Enabled = model.Enabled,
-                    ShippingZoneRecord = (model.ShippingZoneId > 0 ? _shippingService.GetZone(model.ShippingZoneId) : null),
-                    ShippingProviderPartRecord = provider.Record,
-                    Priority = model.Priority,
-
-                    Price = model.Price
-                });
-                Services.Notifier.Information(T("Shipping option {0} successfully created.", model.Name));
-                return Redirect(Url.ItemAdminUrl(provider));
-            }
-            else {
-                model.ShippingProviderName = _contentManager.Get<ShippingProviderPart>(model.ShippingProviderId).As<ITitleAspect>().Title;
-                model.ReturnUrl = Url.ItemAdminUrl(provider);
-                model.ShippingZones = _shippingService.GetZones();
-                return View(model);
-            }
-        }
-
         public ActionResult EditOption(int id) {
             if (!Services.Authorizer.Authorize(Permissions.OShopPermissions.ManageShopSettings, T("Not allowed to manage shipping options")))
                 return new HttpUnauthorizedResult();
@@ -135,20 +91,55 @@ namespace OShop.Controllers
             var model = new ShippingOptionEditViewModel() {
                 OptionId = option.Id,
                 ShippingProviderId = provider.Id,
-                ShippingProviderName = provider.As<ITitleAspect>().Title,
                 Name = option.Name,
                 Enabled = option.Enabled,
-                ShippingZones = _shippingService.GetZones(),
                 ShippingZoneId = (option.ShippingZoneRecord != null ? option.ShippingZoneRecord.Id : 0),
                 Priority = option.Priority,
                 Price = option.Price,
-                ReturnUrl = Url.ItemAdminUrl(provider)
+                Contraints = option.Contraints,
             };
+
+            InitEditViewModel(ref model, provider);
+
+            return View(model);
+        }
+
+        [HttpPost, ActionName("EditOption")]
+        [FormValueRequired("submit.Add")]
+        public ActionResult AddContraint(ShippingOptionEditViewModel model) {
+            if (!Services.Authorizer.Authorize(Permissions.OShopPermissions.ManageShopSettings, T("Not allowed to manage shipping options")))
+                return new HttpUnauthorizedResult();
+
+            var provider = _contentManager.Get<ShippingProviderPart>(model.ShippingProviderId);
+
+            model.Contraints.Add(model.NewContraint);
+            model.NewContraint = new ShippingContraint();
+
+            InitEditViewModel(ref model, provider);
+
+            return View(model);
+        }
+
+        [HttpPost, ActionName("EditOption")]
+        [FormValueRequired("submit.Delete")]
+        public ActionResult DeleteContraint(ShippingOptionEditViewModel model) {
+            if (!Services.Authorizer.Authorize(Permissions.OShopPermissions.ManageShopSettings, T("Not allowed to manage shipping options")))
+                return new HttpUnauthorizedResult();
+
+            var provider = _contentManager.Get<ShippingProviderPart>(model.ShippingProviderId);
+
+            int index;
+            if (Int32.TryParse(Services.WorkContext.HttpContext.Request.Form["submit.Delete"], out index)) {
+                model.Contraints.RemoveAt(index);
+            }
+
+            InitEditViewModel(ref model, provider);
 
             return View(model);
         }
 
         [HttpPost]
+        [FormValueRequired("submit.Save")]
         public ActionResult EditOption(ShippingOptionEditViewModel model) {
             if (!Services.Authorizer.Authorize(Permissions.OShopPermissions.ManageShopSettings, T("Not allowed to manage shipping options")))
                 return new HttpUnauthorizedResult();
@@ -163,19 +154,18 @@ namespace OShop.Controllers
                 option.ShippingZoneRecord = (model.ShippingZoneId > 0 ? _shippingService.GetZone(model.ShippingZoneId) : null);
                 option.Priority = model.Priority;
                 option.Price = model.Price;
+                option.Contraints = model.Contraints;
 
                 _shippingService.UpdateOption(option);
-                
+
                 Services.Notifier.Information(T("Shipping option {0} successfully updated.", model.Name));
 
                 return Redirect(Url.ItemAdminUrl(provider));
             }
-            else {
-                model.ShippingProviderName = _contentManager.Get<ShippingProviderPart>(model.ShippingProviderId).As<ITitleAspect>().Title;
-                model.ReturnUrl = Url.ItemAdminUrl(provider);
-                model.ShippingZones = _shippingService.GetZones();
-                return View(model);
-            }
+
+            InitEditViewModel(ref model, provider);
+
+            return View(model);
         }
 
         public ActionResult DeleteOption(int id) {
@@ -235,6 +225,12 @@ namespace OShop.Controllers
             Services.Notifier.Information(T("Option {0} successfully disabled.", record.Name));
 
             return Redirect(Url.ItemAdminUrl(shippingProvider));
+        }
+
+        private void InitEditViewModel(ref ShippingOptionEditViewModel model, ShippingProviderPart provider) {
+            model.ShippingProviderName = provider.As<ITitleAspect>().Title;
+            model.ReturnUrl = Url.ItemAdminUrl(provider);
+            model.ShippingZones = _shippingService.GetZones();
         }
 
     }

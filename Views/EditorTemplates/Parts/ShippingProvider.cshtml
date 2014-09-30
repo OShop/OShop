@@ -7,9 +7,6 @@
 
 <fieldset>
     <legend>@T("Shipping options")</legend>
-    <div class="manage">
-        @Html.ActionLink(T("Add option").Text, "AddOption", "ShippingProvidersAdmin", new { Area = "OShop", Id = Model.Part.Id }, new { @class = "button primaryAction" })
-    </div>
     <table class="items">
         <thead>
             <tr>
@@ -60,11 +57,19 @@
                     @Html.ActionLink(T("Edit").Text, "EditOption", "ShippingProvidersAdmin", new { Area = "OShop", Id = option.Id }, new { @class = "button" })
                     @Html.ActionLink(T("Delete").Text, "DeleteOption", "ShippingProvidersAdmin", new { Area = "OShop", Id = option.Id }, new { @class = "button", itemprop = "RemoveUrl UnsafeUrl" })
                 </td>
-
-
-
             </tr>
         }
+        <tfoot>
+            <tr>
+                <td scope="col">
+                    <input type="text" name="ShippingProvider.New.Option" class="text large" />
+                </td>
+                <td scope="col" colspan="@(Model.VatEnabled ? 5 : 3)"></td>
+                <td scope="col">
+                    <button type="submit" name="submit.Save" value="ShippingProvider.New">@T("Add option")</button>
+                </td>
+            </tr>
+        </tfoot>
     </table>
 
 </fieldset>
