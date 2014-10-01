@@ -12,9 +12,7 @@ namespace OShop.Migrations {
                  .Column<string>("Guid", c => c.WithLength(36))
                  .Column<DateTime>("ModifiedUtc")
                  .Column<int>("OwnerId", c => c.Nullable())
-                 .Column<int>("LocationsCountryRecord_Id")
-                 .Column<int>("LocationsStateRecord_Id")
-                 .Column<int>("ShippingProviderPartRecord_Id"));
+                 .Column<string>("Data", c => c.Unlimited()));
 
             SchemaBuilder.CreateTable("ShoppingCartItemRecord", table => table
                  .Column<int>("Id", c => c.PrimaryKey().Identity())
