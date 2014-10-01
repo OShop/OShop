@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Orchard.Data.Conventions;
 using System;
 using System.Collections.Generic;
@@ -18,12 +19,12 @@ namespace OShop.Models {
             Items = new List<ShoppingCartItemRecord>();
         }
 
-        internal IDictionary<string, string> Properties {
+        internal JObject Properties {
             get {
-                return this.Data != null ? JsonConvert.DeserializeObject<IDictionary<string, string>>(this.Data) : new Dictionary<string, string>();
+                return this.Data != null ? JObject.Parse(this.Data) : new JObject();
             }
             set {
-                this.Data = JsonConvert.SerializeObject(value);
+                this.Data = new JObject(value).ToString(Formatting.None);
             }
         }
     }

@@ -13,5 +13,9 @@ namespace OShop.Services {
         void UpdateQuantity(int Id, int Quantity);
         void Remove(int Id);
         void Empty();
+
+        void SetProperty<T>(string Key, T Value);
+        T GetProperty<T>(string Key);
+        void RemoveProperty(string Key);
     }
 }

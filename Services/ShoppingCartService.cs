@@ -1,4 +1,6 @@
-﻿using Orchard;
+﻿using Newtonsoft.Json.Linq;
+using Orchard;
+using Orchard.ContentManagement;
 using Orchard.Data;
 using Orchard.Environment.Extensions;
 using Orchard.Services;
@@ -13,17 +15,20 @@ namespace OShop.Services {
     public class ShoppingCartService : IShoppingCartService {
         private const string ShoppingCartKey = "ShoppingCartId";
 
+        private readonly IContentManager _contentManager;
         private readonly IRepository<ShoppingCartRecord> _shoppingCartRepository;
         private readonly IRepository<ShoppingCartItemRecord> _shoppingCartItemRepository;
         private readonly IEnumerable<IShopItemProvider> _shopItemProviders;
         private readonly IClock _clock;
 
         public ShoppingCartService(
+            IContentManager contentManager,
             IRepository<ShoppingCartRecord> shoppingCartRepository,
             IRepository<ShoppingCartItemRecord> shoppingCartItemRepository,
             IEnumerable<IShopItemProvider> shopItemProviders,
             IClock clock,
             IOrchardServices services) {
+            _contentManager = contentManager;
             _shoppingCartRepository = shoppingCartRepository;
             _shoppingCartItemRepository = shoppingCartItemRepository;
             _shopItemProviders = shopItemProviders;
@@ -171,8 +176,39 @@ namespace OShop.Services {
             // Unregister cart
             Services.WorkContext.HttpContext.Session.Remove(ShoppingCartKey);
         }
-        
+
+        public void SetProperty<T>(string Key, T Value) {
+            var cart = GetCart();
+
+            if (cart != null) {
+                var properties = cart.Properties;
+                properties[Key] = JToken.FromObject(Value);
+                cart.Properties = properties;
+            }
+        }
+
+        public T GetProperty<T>(string Key) {
+            var cart = GetCart();
+
+            if (cart != null) {
+                return cart.Properties.Value<T>(Key);
+            }
+
+            return default(T);
+        }
+
+        public void RemoveProperty(string Key) {
+            var cart = GetCart();
+
+            if (cart != null) {
+                var properties = cart.Properties;
+                properties.Remove(Key);
+                cart.Properties = properties;
+            }
+        }
+
         #endregion
+
 
     }
 }
