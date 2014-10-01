@@ -24,7 +24,7 @@
                     </tr>
                 </thead>
                 @{
-                    int i = 0;
+            int i = 0;
                 }
                 @foreach (var entry in Model.CartItems) {
                     <tr>
@@ -69,7 +69,7 @@
                             <button type="submit" name="@String.Format("CartItems[{0}].IsRemoved", i)" value="true">@T("Remove")</button>
                         </td>
                     </tr>
-                    i++;
+                            i++;
                 }
                 <tfoot>
                     <tr class="total">
@@ -87,9 +87,35 @@
                     </tr>
                 </tfoot>
             </table>
+
+            if (Model.Countries.Any()) {
+                <fieldset>
+                    <legend>@T("Location")</legend>
+                    <div>
+                        @Html.LabelFor(m => m.CountryId, T("Country"))
+                        @Html.DropDownListFor(m => m.CountryId, Model.Countries.BuildCountrySelectList())
+                        @Html.ValidationMessageFor(m => m.CountryId)
+                    </div>
+                    @if (Model.States.Any()) {
+                        <div>
+                            @Html.LabelFor(m => m.StateId, T("State"))
+                            @Html.DropDownListFor(m => m.StateId, Model.States.BuildStateSelectList())
+                            @Html.ValidationMessageFor(m => m.StateId)
+                        </div>
+                    }
+                </fieldset>
+            }
+
             <div class="cart-actions-foot">
                 <button type="submit" name="UpdateAll" value="true">@T("Update")</button>
             </div>
+        }
+
+        if (Model.ShippingRequired) {
+            <div>Shipping required !</div>
+        }
+        else {
+            <div>Shipping not required</div>
         }
     }
     else {

@@ -13,6 +13,11 @@ namespace OShop.ViewModels {
         // Optional features
         public bool VatEnabled { get; set; }
 
+        public IEnumerable<LocationsCountryRecord> Countries { get; set; }
+        public IEnumerable<LocationsStateRecord> States { get; set; }
+        public int CountryId { get; set; }
+        public int StateId { get; set; }
+
         public bool ShippingRequired { get; set; }
     }
 }

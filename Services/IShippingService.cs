@@ -24,5 +24,6 @@ namespace OShop.Services {
         IEnumerable<ShippingOptionRecord> GetOptions(ShippingProviderPart part);
 
         #endregion
+
     }
 }
