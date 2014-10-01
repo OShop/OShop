@@ -7,7 +7,7 @@ using System.Web.Mvc;
 
 namespace OShop.Helpers {
     public static class LocationsExtensions {
-        public static IEnumerable<SelectListItem> BuildCountrySelectList(this IEnumerable<LocationsCountryRecord> ZoneRecords, bool CreateEmpry = false, string EmptyString = "") {
+        public static IEnumerable<SelectListItem> BuildCountrySelectList(this IEnumerable<LocationsCountryRecord> CountryRecords, bool CreateEmpry = false, string EmptyString = "") {
             var result = new List<SelectListItem>();
 
             if (CreateEmpry) {
@@ -17,7 +17,26 @@ namespace OShop.Helpers {
                 });
             }
             result.AddRange(
-                ZoneRecords.Select(z => new SelectListItem() {
+                CountryRecords.Select(z => new SelectListItem() {
+                    Value = z.Id.ToString(),
+                    Text = z.Name
+                })
+            );
+
+            return result;
+        }
+
+        public static IEnumerable<SelectListItem> BuildStateSelectList(this IEnumerable<LocationsStateRecord> StateRecords, bool CreateEmpry = false, string EmptyString = "") {
+            var result = new List<SelectListItem>();
+
+            if (CreateEmpry) {
+                result.Add(new SelectListItem() {
+                    Value = "0",
+                    Text = EmptyString
+                });
+            }
+            result.AddRange(
+                StateRecords.Select(z => new SelectListItem() {
                     Value = z.Id.ToString(),
                     Text = z.Name
                 })
