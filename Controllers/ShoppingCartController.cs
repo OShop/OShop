@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Orchard.ContentManagement;
 
 namespace OShop.Controllers
 {
@@ -20,6 +21,7 @@ namespace OShop.Controllers
         private readonly ICurrencyProvider _currencyProvider;
         private readonly IEnumerable<IShippingInfoProvider> _shippingInfoProviders;
         private readonly IFeatureManager _featureManager;
+        private readonly IContentManager _contentManager;
 
         private readonly ILocationsService _locationService;
         private readonly IShippingService _shippingService;
@@ -29,12 +31,14 @@ namespace OShop.Controllers
             ICurrencyProvider currencyProvider,
             IEnumerable<IShippingInfoProvider> shippingInfoProviders,
             IFeatureManager featureManager,
+            IContentManager contentManager,
             ILocationsService locationService = null,
             IShippingService shippingService = null) {
             _shoppingCartService = shoppingCartService;
             _currencyProvider = currencyProvider;
             _shippingInfoProviders = shippingInfoProviders;
             _featureManager = featureManager;
+            _contentManager = contentManager;
             _locationService = locationService;
             _shippingService = shippingService;
         }
@@ -43,7 +47,7 @@ namespace OShop.Controllers
         [OutputCache(Duration = 0)]
         public ActionResult Index()
         {
-            Tuple<LocationsCountryRecord, LocationsStateRecord> location = new Tuple<LocationsCountryRecord, LocationsStateRecord>(null, null);
+            Location location = new Location(null, null);
 
             if (_locationService != null) {
                 location = GetLocation(
@@ -66,8 +70,8 @@ namespace OShop.Controllers
             };
 
             if (_locationService != null) {
-                model.CountryId = location.Item1 != null ? location.Item1.Id : 0;
-                model.StateId = location.Item2 != null ? location.Item2.Id : 0;
+                model.CountryId = location.Country != null ? location.Country.Id : 0;
+                model.StateId = location.State != null ? location.State.Id : 0;
 
                 model.Countries = _locationService.GetEnabledCountries();
                 model.States = _locationService.GetEnabledStates(model.CountryId);
@@ -85,10 +89,10 @@ namespace OShop.Controllers
             if (_locationService != null) {
                 var location = GetLocation(model.CountryId, model.StateId);
 
-                if (location.Item1 != null) {
-                    _shoppingCartService.SetProperty("CountryId", location.Item1.Id);
-                    if (location.Item2 != null) {
-                        _shoppingCartService.SetProperty("StateId", location.Item2.Id);
+                if (location.Country != null) {
+                    _shoppingCartService.SetProperty("CountryId", location.Country.Id);
+                    if (location.State != null) {
+                        _shoppingCartService.SetProperty("StateId", location.State.Id);
                     }
                     else {
                         _shoppingCartService.RemoveProperty("StateId");
@@ -140,22 +144,32 @@ namespace OShop.Controllers
             }
         }
 
-        private Tuple<LocationsCountryRecord, LocationsStateRecord> GetLocation(int CountryId, int StateId) {
+        private Location GetLocation(int CountryId, int StateId) {
             var country = _locationService.GetCountry(CountryId);
 
             if (country != null && country.Enabled) {
                 var state = country.States.Where(s => s.Id == StateId && s.Enabled).FirstOrDefault();
                 if (state != null) {
-                    return new Tuple<LocationsCountryRecord, LocationsStateRecord>(country, state);
+                    return new Location(country, state);
                 }
                 else {
-                    return new Tuple<LocationsCountryRecord, LocationsStateRecord>(country, null);
+                    return new Location(country, null);
                 }
             }
             else {
-                return new Tuple<LocationsCountryRecord, LocationsStateRecord>(null, null);
+                return new Location(null, null);
             }
 
+        }
+
+        private struct Location {
+            public Location(LocationsCountryRecord Country, LocationsStateRecord State) {
+                this.Country = Country;
+                this.State = State;
+            }
+
+            public LocationsCountryRecord Country;
+            public LocationsStateRecord State;
         }
     }
 }
