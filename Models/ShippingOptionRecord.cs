@@ -11,7 +11,7 @@ namespace OShop.Models {
         public virtual string Name { get; set; }
         public virtual bool Enabled { get; set; }
         public virtual ShippingZoneRecord ShippingZoneRecord { get; set; }
-        public virtual ShippingProviderPartRecord ShippingProviderPartRecord { get; set; }
+        public virtual int ShippingProviderId { get; set; }
         public virtual int Priority { get; set; }
         [StringLengthMax]
         public virtual string Data { get; set; }

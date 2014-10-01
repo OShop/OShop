@@ -29,7 +29,7 @@ namespace OShop.Migrations {
                  .Column<string>("Name")
                  .Column<bool>("Enabled")
                  .Column<int>("ShippingZoneRecord_Id")
-                 .Column<int>("ShippingProviderPartRecord_Id")
+                 .Column<int>("ShippingProviderId")
                  .Column<int>("Priority")
                  .Column<string>("Data", c => c.Unlimited())
                  .Column<decimal>("Price"));

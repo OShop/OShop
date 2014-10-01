@@ -86,7 +86,7 @@ namespace OShop.Controllers
                 return new HttpUnauthorizedResult();
 
             var option = _shippingService.GetOption(id);
-            var provider = _contentManager.Get<ShippingProviderPart>(option.ShippingProviderPartRecord.Id);
+            var provider = _contentManager.Get<ShippingProviderPart>(option.ShippingProviderId);
 
             var model = new ShippingOptionEditViewModel() {
                 OptionId = option.Id,
@@ -178,7 +178,7 @@ namespace OShop.Controllers
                 return new HttpNotFoundResult();
             }
 
-            var shippingProvider = _contentManager.Get<ShippingProviderPart>(record.ShippingProviderPartRecord.Id);
+            var shippingProvider = _contentManager.Get<ShippingProviderPart>(record.ShippingProviderId);
 
             _shippingService.DeleteOption(record);
 
@@ -197,7 +197,7 @@ namespace OShop.Controllers
                 return new HttpNotFoundResult();
             }
 
-            var shippingProvider = _contentManager.Get<ShippingProviderPart>(record.ShippingProviderPartRecord.Id);
+            var shippingProvider = _contentManager.Get<ShippingProviderPart>(record.ShippingProviderId);
 
             record.Enabled = true;
             _shippingService.UpdateOption(record);
@@ -217,7 +217,7 @@ namespace OShop.Controllers
                 return new HttpNotFoundResult();
             }
 
-            var shippingProvider = _contentManager.Get<ShippingProviderPart>(record.ShippingProviderPartRecord.Id);
+            var shippingProvider = _contentManager.Get<ShippingProviderPart>(record.ShippingProviderId);
 
             record.Enabled = false;
             _shippingService.UpdateOption(record);

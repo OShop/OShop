@@ -90,7 +90,7 @@ namespace OShop.Services {
         }
 
         public IEnumerable<ShippingOptionRecord> GetOptions(ShippingProviderPart part) {
-            return _optionRepository.Fetch(o => o.ShippingProviderPartRecord.Id == part.Id);
+            return _optionRepository.Fetch(o => o.ShippingProviderId == part.Id);
         }
         
         #endregion

@@ -60,7 +60,7 @@ namespace OShop.Drivers {
                     _shippingService.CreateOption(new ShippingOptionRecord() {
                         Name = httpContext.Request.Form["ShippingProvider.New.Option"].Trim(),
                         Enabled = false,
-                        ShippingProviderPartRecord = part.Record,
+                        ShippingProviderId = part.Id,
                         Priority = 0,
                         Price = 0
                     });
