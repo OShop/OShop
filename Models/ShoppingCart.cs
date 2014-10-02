@@ -11,6 +11,10 @@ namespace OShop.Models {
             Items = new List<ShoppingCartItem>();
         }
 
+        public LocationsCountryRecord Country;
+        public LocationsStateRecord State;
+        public ShippingZoneRecord ShippingZone;
+
         /// <summary>
         /// Cart's content
         /// </summary>

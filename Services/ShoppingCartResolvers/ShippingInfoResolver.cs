@@ -1,14 +1,11 @@
-﻿using Orchard.Environment.Extensions;
-using Orchard.ContentManagement;
+﻿using Orchard.ContentManagement;
+using Orchard.Environment.Extensions;
 using OShop.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
-namespace OShop.Services {
+namespace OShop.Services.ShoppingCartResolvers {
     [OrchardFeature("OShop.Shipping")]
-    public class ShippingInfoProvider : IShoppingCartResolver {
+    public class ShippingInfoResolver : IShoppingCartResolver {
 
         public Int32 Priority {
             get { return 50; }

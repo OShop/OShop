@@ -47,7 +47,7 @@ namespace OShop.Services {
         }
 
         public IEnumerable<LocationsCountryRecord> GetCountries() {
-            return _countryRepository.Table.OrderBy(c=>c.Name);
+            return _countryRepository.Table.OrderBy(c => c.Name);
         }
 
         public IEnumerable<LocationsCountryRecord> GetEnabledCountries() {
@@ -112,5 +112,6 @@ namespace OShop.Services {
         public IEnumerable<LocationsStateRecord> GetEnabledStates(int CountryId) {
             return _stateRepository.Fetch(s => s.Enabled && s.LocationsCountryRecord.Id == CountryId).OrderBy(s => s.Name);
         }
+        
     }
 }

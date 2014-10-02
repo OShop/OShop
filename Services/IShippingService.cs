@@ -22,7 +22,7 @@ namespace OShop.Services {
         void DeleteOption(ShippingOptionRecord record);
         ShippingOptionRecord GetOption(int Id);
         IEnumerable<ShippingOptionRecord> GetOptions(ShippingProviderPart part);
-        IEnumerable<ShippingProviderOption> GetSuitableProviderOptions(ShippingZoneRecord zone, ShoppingCart cart);
+        IEnumerable<ShippingProviderOption> GetSuitableProviderOptions(ShoppingCart cart);
         #endregion
     }
 }

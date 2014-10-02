@@ -7,7 +7,7 @@ using System.Web;
 
 namespace OShop.ViewModels {
     public class ShoppingCartIndexViewModel {
-        public IEnumerable<ShoppingCartItem> CartItems { get; set; }
+        public ShoppingCart Cart { get; set; }
         public NumberFormatInfo NumberFormat { get; set; }
 
         // Optional features
@@ -20,6 +20,5 @@ namespace OShop.ViewModels {
 
         public IEnumerable<ShippingProviderOption> ShippingProviders { get; set; }
         public int ShippingProviderId { get; set; }
-        public bool ShippingRequired { get; set; }
     }
 }

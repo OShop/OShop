@@ -6,13 +6,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace OShop.Services {
+namespace OShop.Services.ShoppingCartResolvers {
     [OrchardFeature("OShop.Products")]
-    public class ProductService : IShoppingCartResolver {
+    public class ProductResolver : IShoppingCartResolver {
         private readonly IContentManager _contentManager;
         private readonly IShoppingCartService _shoppingCartService;
 
-        public ProductService(
+        public ProductResolver(
             IContentManager contentManager,
             IShoppingCartService shoppingCartService) {
             _contentManager = contentManager;

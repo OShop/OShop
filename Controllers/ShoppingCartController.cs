@@ -47,24 +47,6 @@ namespace OShop.Controllers
         [OutputCache(Duration = 0)]
         public ActionResult Index()
         {
-            Location location = new Location(null, null);
-            ShippingZoneRecord shippingZone = null;
-
-            if (_locationService != null) {
-                location = GetLocation(
-                    _shoppingCartService.GetProperty<int>("CountryId"),
-                    _shoppingCartService.GetProperty<int>("StateId")
-                );
-            };
-
-            if (_shippingService != null) {
-                if (location.State != null && location.State.ShippingZoneRecord != null && location.State.ShippingZoneRecord.Enabled) {
-                    shippingZone = location.State.ShippingZoneRecord;
-                }
-                else if (location.Country != null && location.Country.ShippingZoneRecord != null && location.Country.ShippingZoneRecord.Enabled) {
-                    shippingZone = location.Country.ShippingZoneRecord;
-                }
-            }
 
             ShoppingCart cart = new ShoppingCart();
             foreach (var resolver in _shoppingCartResolvers.OrderByDescending(r => r.Priority)) {
@@ -72,25 +54,19 @@ namespace OShop.Controllers
             }
 
             var model = new ShoppingCartIndexViewModel() {
-                CartItems = cart.Items,
+                Cart = cart,
                 NumberFormat = _currencyProvider.NumberFormat,
                 // Optional features
-                VatEnabled = _featureManager.GetEnabledFeatures().Where(f => f.Id == "OShop.VAT").Any(),
-
-                ShippingRequired = cart.IsShippingRequired()
+                VatEnabled = _featureManager.GetEnabledFeatures().Where(f => f.Id == "OShop.VAT").Any()
             };
 
             if (_locationService != null) {
-                model.CountryId = location.Country != null ? location.Country.Id : 0;
-                model.StateId = location.State != null ? location.State.Id : 0;
-
                 model.Countries = _locationService.GetEnabledCountries();
-                model.States = _locationService.GetEnabledStates(model.CountryId);
+                model.States = _locationService.GetEnabledStates(cart.Country != null ? cart.Country.Id : 0);
             }
 
             if (_shippingService != null) {
-                model.ShippingProviders = _shippingService.GetSuitableProviderOptions(shippingZone, cart).OrderBy(p => p.Option.Price);
-                model.ShippingProviderId = _shoppingCartService.GetProperty<int>("ShippingProviderId");
+                model.ShippingProviders = _shippingService.GetSuitableProviderOptions(cart).OrderBy(p => p.Option.Price);
             }
 
             return View(model);
@@ -103,12 +79,13 @@ namespace OShop.Controllers
             }
 
             if (_locationService != null) {
-                var location = GetLocation(model.CountryId, model.StateId);
+                var country = _locationService.GetCountry(model.CountryId);
 
-                if (location.Country != null) {
-                    _shoppingCartService.SetProperty("CountryId", location.Country.Id);
-                    if (location.State != null) {
-                        _shoppingCartService.SetProperty("StateId", location.State.Id);
+                if (country != null && country.Enabled) {
+                    _shoppingCartService.SetProperty("CountryId", country.Id);
+                    var state = country.States.Where(s => s.Id == model.StateId && s.Enabled).FirstOrDefault();
+                    if (state != null) {
+                        _shoppingCartService.SetProperty("StateId", state.Id);
                     }
                     else {
                         _shoppingCartService.RemoveProperty("StateId");
@@ -169,32 +146,5 @@ namespace OShop.Controllers
             }
         }
 
-        private Location GetLocation(int CountryId, int StateId) {
-            var country = _locationService.GetCountry(CountryId);
-
-            if (country != null && country.Enabled) {
-                var state = country.States.Where(s => s.Id == StateId && s.Enabled).FirstOrDefault();
-                if (state != null) {
-                    return new Location(country, state);
-                }
-                else {
-                    return new Location(country, null);
-                }
-            }
-            else {
-                return new Location(null, null);
-            }
-
-        }
-
-        private struct Location {
-            public Location(LocationsCountryRecord Country, LocationsStateRecord State) {
-                this.Country = Country;
-                this.State = State;
-            }
-
-            public LocationsCountryRecord Country;
-            public LocationsStateRecord State;
-        }
     }
 }

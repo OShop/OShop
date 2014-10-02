@@ -98,12 +98,12 @@ namespace OShop.Services {
             return _optionRepository.Fetch(o => o.ShippingProviderId == part.Id);
         }
 
-        public IEnumerable<ShippingProviderOption> GetSuitableProviderOptions(ShippingZoneRecord zone, ShoppingCart cart) {
+        public IEnumerable<ShippingProviderOption> GetSuitableProviderOptions(ShoppingCart cart) {
             var publishedProviders = _contentManager.Query<ShippingProviderPart>(VersionOptions.Published).List();
 
             List<ShippingProviderOption> suitableProviders = new List<ShippingProviderOption>();
             foreach (var provider in publishedProviders) {
-                var option = GetSuitableOption(provider.Id, zone, cart);
+                var option = GetSuitableOption(provider.Id, cart);
                 if (option != null) {
                     suitableProviders.Add(new ShippingProviderOption(provider, option));
                 }
@@ -114,13 +114,13 @@ namespace OShop.Services {
 
         #endregion
 
-        private ShippingOptionRecord GetSuitableOption(int ShippingProviderId, ShippingZoneRecord zone, ShoppingCart cart) {
-            if (!zone.Enabled) {
+        private ShippingOptionRecord GetSuitableOption(int ShippingProviderId, ShoppingCart cart) {
+            if (cart.ShippingZone == null || !cart.ShippingZone.Enabled) {
                 return null;
             }
 
             return _optionRepository
-                .Fetch(o => o.ShippingProviderId == ShippingProviderId && o.ShippingZoneRecord == zone && o.Enabled)
+                .Fetch(o => o.ShippingProviderId == ShippingProviderId && o.ShippingZoneRecord == cart.ShippingZone && o.Enabled)
                 .OrderByDescending(o => o.Priority)
                 .Where(o => MeetsContraints(o, cart))
                 .FirstOrDefault();
@@ -164,7 +164,7 @@ namespace OShop.Services {
             var shippingInfos = cart.Items.Where(i => i.ShippingInfo != null && i.ShippingInfo.RequiresShipping);
             switch (property) {
                 case ShippingContraintProperty.TotalPrice:
-                    return Convert.ToDouble(cart.Items.Total());
+                    return Convert.ToDouble(cart.ItemsTotal());
                 case ShippingContraintProperty.TotalWeight:
                     return shippingInfos.Sum(i => i.Quantity * i.ShippingInfo.Weight);
                 case ShippingContraintProperty.TotalVolume:
