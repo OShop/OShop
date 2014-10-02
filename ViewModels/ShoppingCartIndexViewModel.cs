@@ -18,18 +18,8 @@ namespace OShop.ViewModels {
         public int CountryId { get; set; }
         public int StateId { get; set; }
 
-        public IEnumerable<ShippingProviderWithOption> ShippingProviders { get; set; }
+        public IEnumerable<ShippingProviderOption> ShippingProviders { get; set; }
         public int ShippingProviderId { get; set; }
         public bool ShippingRequired { get; set; }
-    }
-
-    public struct ShippingProviderWithOption {
-        public ShippingProviderWithOption(ShippingProviderPart provider, ShippingOptionRecord option) {
-            this.Provider = provider;
-            this.Option = option;
-        }
-
-        public ShippingProviderPart Provider;
-        public ShippingOptionRecord Option;
     }
 }

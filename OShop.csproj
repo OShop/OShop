@@ -160,6 +160,7 @@
     <Compile Include="Models\ShippingOptionRecord.cs" />
     <Compile Include="Models\ShippingPart.cs" />
     <Compile Include="Models\ShippingPartRecord.cs" />
+    <Compile Include="Models\ShippingProviderOption.cs" />
     <Compile Include="Models\ShippingProviderPart.cs" />
     <Compile Include="Models\ShippingProviderPartRecord.cs" />
     <Compile Include="Models\ShippingZoneRecord.cs" />
