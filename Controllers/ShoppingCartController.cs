@@ -89,17 +89,7 @@ namespace OShop.Controllers
             }
 
             if (_shippingService != null) {
-                var publishedProviders = _contentManager.Query<ShippingProviderPart>(VersionOptions.Published).List();
-
-                List<ShippingProviderWithOption> suitableProviders = new List<ShippingProviderWithOption>();
-                foreach (var provider in publishedProviders) {
-                    var option = _shippingService.GetSuitableOption(provider.Id, shippingZone, cart);
-                    if (option != null) {
-                        suitableProviders.Add(new ShippingProviderWithOption(provider, option));
-                    }
-                }
-
-                model.ShippingProviders = suitableProviders.OrderBy(p => p.Option.Price);
+                model.ShippingProviders = _shippingService.GetSuitableProviderOptions(shippingZone, cart).OrderBy(p => p.Option.Price);
                 model.ShippingProviderId = _shoppingCartService.GetProperty<int>("ShippingProviderId");
             }
 

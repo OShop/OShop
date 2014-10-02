@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Orchard.ContentManagement;
 
 namespace OShop.Services {
     [OrchardFeature("OShop.Shipping")]
@@ -14,16 +15,19 @@ namespace OShop.Services {
         private readonly IRepository<LocationsCountryRecord> _countryRepository;
         private readonly IRepository<LocationsStateRecord> _stateRepository;
         private readonly IRepository<ShippingOptionRecord> _optionRepository;
+        private readonly IContentManager _contentManager;
 
         public ShippingService(
             IRepository<ShippingZoneRecord> zoneRepository,
             IRepository<LocationsCountryRecord> countryRepository,
             IRepository<LocationsStateRecord> stateRepository,
-            IRepository<ShippingOptionRecord> optionRepository) {
+            IRepository<ShippingOptionRecord> optionRepository,
+            IContentManager contentManager) {
             _zoneRepository = zoneRepository;
             _countryRepository = countryRepository;
             _stateRepository = stateRepository;
             _optionRepository = optionRepository;
+            _contentManager = contentManager;
         }
 
         #region Shipping zones
@@ -94,7 +98,23 @@ namespace OShop.Services {
             return _optionRepository.Fetch(o => o.ShippingProviderId == part.Id);
         }
 
-        public ShippingOptionRecord GetSuitableOption(int ShippingProviderId, ShippingZoneRecord zone, ShoppingCart cart) {
+        public IEnumerable<ShippingProviderOption> GetSuitableProviderOptions(ShippingZoneRecord zone, ShoppingCart cart) {
+            var publishedProviders = _contentManager.Query<ShippingProviderPart>(VersionOptions.Published).List();
+
+            List<ShippingProviderOption> suitableProviders = new List<ShippingProviderOption>();
+            foreach (var provider in publishedProviders) {
+                var option = GetSuitableOption(provider.Id, zone, cart);
+                if (option != null) {
+                    suitableProviders.Add(new ShippingProviderOption(provider, option));
+                }
+            }
+
+            return suitableProviders;
+        }
+
+        #endregion
+
+        private ShippingOptionRecord GetSuitableOption(int ShippingProviderId, ShippingZoneRecord zone, ShoppingCart cart) {
             if (!zone.Enabled) {
                 return null;
             }
@@ -105,8 +125,6 @@ namespace OShop.Services {
                 .Where(o => MeetsContraints(o, cart))
                 .FirstOrDefault();
         }
-
-        #endregion
 
         private bool MeetsContraints(ShippingOptionRecord option, ShoppingCart cart) {
             foreach (var contraint in option.Contraints) {

@@ -17,6 +17,11 @@ namespace OShop.Models {
         public List<ShoppingCartItem> Items;
 
         /// <summary>
+        /// Selected shipping option
+        /// </summary>
+        public ShippingProviderOption ShippingOption;
+
+        /// <summary>
         /// To know if cart can be checked out
         /// </summary>
         public Boolean IsValid {
