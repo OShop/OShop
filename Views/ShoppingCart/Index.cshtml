@@ -1,5 +1,6 @@
 ﻿@model OShop.ViewModels.ShoppingCartIndexViewModel
-
+@using Orchard.ContentManagement
+@using Orchard.ContentManagement.Aspects
 @using OShop.Helpers
 
 @{
@@ -106,16 +107,33 @@
                 </fieldset>
             }
 
+            if (Model.ShippingRequired) {
+                if (Model.ShippingProviders.Any()) {
+                    <ul>
+                        @foreach (var provider in Model.ShippingProviders) {
+                            <li>
+                                @Html.RadioButtonFor(m => m.ShippingProviderId, provider.Provider.Id, new { id = "ShippingOption" + provider.Provider.Id })
+                                @Html.LabelFor(m => m.ShippingProviderId, provider.Provider.As<ITitleAspect>().Title, new { @for = "ShippingOption" + provider.Provider.Id })
+                                <span>
+                                    @if (Model.VatEnabled) {
+                                        @String.Format(Model.NumberFormat, "{0:C}", provider.Provider.VAT.GetVatIncludedPrice(provider.Option.Price))
+                                    }
+                                    else {
+                                        @String.Format(Model.NumberFormat, "{0:C}", provider.Option.Price)
+                                    }
+                                </span>
+                            </li>
+                        }
+                    </ul>
+                }
+                else {
+                    <div>@T("There is no shipping option for your order / location. Please contact us.")</div>
+                }
+            }
+
             <div class="cart-actions-foot">
                 <button type="submit" name="UpdateAll" value="true">@T("Update")</button>
             </div>
-        }
-
-        if (Model.ShippingRequired) {
-            <div>Shipping required !</div>
-        }
-        else {
-            <div>Shipping not required</div>
         }
     }
     else {

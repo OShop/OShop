@@ -1,6 +1,7 @@
 ﻿using Orchard.Data;
 using Orchard.Environment.Extensions;
 using OShop.Models;
+using OShop.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -92,9 +93,74 @@ namespace OShop.Services {
         public IEnumerable<ShippingOptionRecord> GetOptions(ShippingProviderPart part) {
             return _optionRepository.Fetch(o => o.ShippingProviderId == part.Id);
         }
-        
+
+        public ShippingOptionRecord GetSuitableOption(int ShippingProviderId, ShippingZoneRecord zone, IEnumerable<ItemShippingInfo> shippingInfos, IEnumerable<ShoppingCartItem> cartItems) {
+            if (!zone.Enabled) {
+                return null;
+            }
+
+            return _optionRepository
+                .Fetch(o => o.ShippingProviderId == ShippingProviderId && o.ShippingZoneRecord == zone && o.Enabled)
+                .OrderByDescending(o => o.Priority)
+                .Where(o => MeetsContraints(o, shippingInfos, cartItems))
+                .FirstOrDefault();
+        }
+
         #endregion
 
+        private bool MeetsContraints(ShippingOptionRecord option, IEnumerable<ItemShippingInfo> shippingInfos, IEnumerable<ShoppingCartItem> cartItems) {
+            foreach (var contraint in option.Contraints) {
+                double propertyValue = EvalProperty(contraint.Property, shippingInfos, cartItems);
+                switch (contraint.Operator) {
+                    case ShippingContraintOperator.LessThan:
+                        if (contraint.Value <= propertyValue)
+                            return false;
+                        break;
+                    case ShippingContraintOperator.LessThanOrEqual:
+                        if (contraint.Value < propertyValue)
+                            return false;
+                        break;
+                    case ShippingContraintOperator.Equal:
+                        if (contraint.Value != propertyValue)
+                            return false;
+                        break;
+                    case ShippingContraintOperator.GreaterThan:
+                        if (contraint.Value >= propertyValue)
+                            return false;
+                        break;
+                    case ShippingContraintOperator.GreaterThanOrEqual:
+                        if (contraint.Value > propertyValue)
+                            return false;
+                        break;
+                    case ShippingContraintOperator.NotEqual:
+                        if (contraint.Value == propertyValue)
+                            return false;
+                        break;
+                }
+            }
 
+            return true;
+        }
+
+        private double EvalProperty(ShippingContraintProperty property, IEnumerable<ItemShippingInfo> shippingInfos, IEnumerable<ShoppingCartItem> cartItems) {
+            switch (property) {
+                case ShippingContraintProperty.TotalPrice:
+                    return Convert.ToDouble(cartItems.Total());
+                case ShippingContraintProperty.TotalWeight:
+                    return shippingInfos.Sum(i => i.Quantity * i.ShippingInfo.Weight);
+                case ShippingContraintProperty.TotalVolume:
+                    return shippingInfos.Sum(i => i.Quantity * i.ShippingInfo.Length * i.ShippingInfo.Width * i.ShippingInfo.Height);
+                case ShippingContraintProperty.ItemLongestDimension:
+                    return shippingInfos.Max(i => new double[] { i.ShippingInfo.Length, i.ShippingInfo.Width, i.ShippingInfo.Height }.Max());
+                case ShippingContraintProperty.MaxItemLength:
+                    return shippingInfos.Max(i => i.ShippingInfo.Length);
+                case ShippingContraintProperty.MaxItemWidth:
+                    return shippingInfos.Max(i => i.ShippingInfo.Width);
+                case ShippingContraintProperty.MaxItemHeight:
+                    return shippingInfos.Max(i => i.ShippingInfo.Height);
+                default:
+                    return 0;
+            }
+        }
     }
 }

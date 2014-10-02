@@ -48,6 +48,7 @@ namespace OShop.Controllers
         public ActionResult Index()
         {
             Location location = new Location(null, null);
+            ShippingZoneRecord shippingZone = null;
 
             if (_locationService != null) {
                 location = GetLocation(
@@ -55,6 +56,15 @@ namespace OShop.Controllers
                     _shoppingCartService.GetProperty<int>("StateId")
                 );
             };
+
+            if (_shippingService != null) {
+                if (location.State != null && location.State.ShippingZoneRecord != null && location.State.ShippingZoneRecord.Enabled) {
+                    shippingZone = location.State.ShippingZoneRecord;
+                }
+                else if (location.Country != null && location.Country.ShippingZoneRecord != null && location.Country.ShippingZoneRecord.Enabled) {
+                    shippingZone = location.Country.ShippingZoneRecord;
+                }
+            }
 
             var cartItems = _shoppingCartService.ListItems();
 
@@ -75,6 +85,21 @@ namespace OShop.Controllers
 
                 model.Countries = _locationService.GetEnabledCountries();
                 model.States = _locationService.GetEnabledStates(model.CountryId);
+            }
+
+            if (_shippingService != null) {
+                var publishedProviders = _contentManager.Query<ShippingProviderPart>(VersionOptions.Published).List();
+
+                List<ShippingProviderWithOption> suitableProviders = new List<ShippingProviderWithOption>();
+                foreach (var provider in publishedProviders) {
+                    var option = _shippingService.GetSuitableOption(provider.Id, shippingZone, shippingInfos, cartItems);
+                    if (option != null) {
+                        suitableProviders.Add(new ShippingProviderWithOption(provider, option));
+                    }
+                }
+
+                model.ShippingProviders = suitableProviders.OrderBy(p => p.Option.Price);
+                model.ShippingProviderId = _shoppingCartService.GetProperty<int>("ShippingProviderId");
             }
 
             return View(model);
@@ -103,6 +128,15 @@ namespace OShop.Controllers
                     _shoppingCartService.RemoveProperty("StateId");
                 }
 
+            }
+
+            if (_shippingService != null) {
+                if (model.ShippingProviderId > 0) {
+                    _shoppingCartService.SetProperty("ShippingProviderId", model.ShippingProviderId);
+                }
+                else {
+                    _shoppingCartService.RemoveProperty("ShippingProviderId");
+                }
             }
 
             return RedirectToAction("Index");
