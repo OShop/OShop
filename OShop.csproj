@@ -163,6 +163,7 @@
     <Compile Include="Models\ShippingProviderPart.cs" />
     <Compile Include="Models\ShippingProviderPartRecord.cs" />
     <Compile Include="Models\ShippingZoneRecord.cs" />
+    <Compile Include="Models\ShoppingCart.cs" />
     <Compile Include="Models\ShoppingCartItem.cs" />
     <Compile Include="Models\ShoppingCartItemRecord.cs" />
     <Compile Include="Models\ShoppingCartRecord.cs" />
@@ -178,9 +179,8 @@
     <Compile Include="Services\DefaultCurrencyProvider.cs" />
     <Compile Include="Services\ICurrencyProvider.cs" />
     <Compile Include="Services\ILocationsService.cs" />
-    <Compile Include="Services\IShippingInfoProvider.cs" />
     <Compile Include="Services\IShippingService.cs" />
-    <Compile Include="Services\IShopItemProvider.cs" />
+    <Compile Include="Services\IShoppingCartResolver.cs" />
     <Compile Include="Services\IShoppingCartService.cs" />
     <Compile Include="Services\IVatService.cs" />
     <Compile Include="Services\LocationsService.cs" />

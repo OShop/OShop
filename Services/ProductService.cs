@@ -8,36 +8,39 @@ using System.Web;
 
 namespace OShop.Services {
     [OrchardFeature("OShop.Products")]
-    public class ProductService : IShopItemProvider {
+    public class ProductService : IShoppingCartResolver {
         private readonly IContentManager _contentManager;
+        private readonly IShoppingCartService _shoppingCartService;
 
-        public ProductService(IContentManager contentManager) {
+        public ProductService(
+            IContentManager contentManager,
+            IShoppingCartService shoppingCartService) {
             _contentManager = contentManager;
+            _shoppingCartService = shoppingCartService;
         }
 
-        public short Priority {
+        public Int32 Priority {
             get { return 100; }
         }
 
-        public void GetItems(IEnumerable<ShoppingCartItemRecord> CartRecords, ref List<ShoppingCartItem> CartItems) {
+        public void ResolveCart(ref ShoppingCart Cart) {
+            var cartRecords = _shoppingCartService.ListItems();
             var products = _contentManager.GetMany<ProductPart>(
-                CartRecords.Where(cr => cr.ItemType == ProductPart.PartItemType).Select(cr => cr.ItemId),
+                cartRecords.Where(cr => cr.ItemType == ProductPart.PartItemType).Select(cr => cr.ItemId),
                 VersionOptions.Published,
                 QueryHints.Empty);
 
-            foreach (var cartRecord in CartRecords.Where(cr=>cr.ItemType == ProductPart.PartItemType)) {
+            foreach (var cartRecord in cartRecords.Where(cr => cr.ItemType == ProductPart.PartItemType)) {
                 var product = products.Where(p => p.Id == cartRecord.ItemId).FirstOrDefault();
 
                 if (product != null) {
-                    CartItems.Add(new ShoppingCartItem {
+                    Cart.Items.Add(new ShoppingCartItem {
                         Id = cartRecord.Id,
                         Item = product,
                         Quantity = cartRecord.Quantity
                     });
                 }
             }
-
-
         }
     }
 }

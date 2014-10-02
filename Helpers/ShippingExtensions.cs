@@ -7,8 +7,8 @@ using System.Web.Mvc;
 
 namespace OShop.Helpers {
     public static class ShippingExtensions {
-        public static bool IsShippingRequired(this IEnumerable<ItemShippingInfo> Items) {
-            return Items.Where(i => i.ShippingInfo.RequiresShipping).Any();
+        public static bool IsShippingRequired(this ShoppingCart Cart) {
+            return Cart.Items.Where(i => i.ShippingInfo != null && i.ShippingInfo.RequiresShipping).Any();
         }
 
         public static IEnumerable<SelectListItem> BuildZoneSelectList(this IEnumerable<ShippingZoneRecord> ZoneRecords, bool CreateEmpry = false, string EmptyString = "") {

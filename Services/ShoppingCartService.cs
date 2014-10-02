@@ -18,20 +18,17 @@ namespace OShop.Services {
         private readonly IContentManager _contentManager;
         private readonly IRepository<ShoppingCartRecord> _shoppingCartRepository;
         private readonly IRepository<ShoppingCartItemRecord> _shoppingCartItemRepository;
-        private readonly IEnumerable<IShopItemProvider> _shopItemProviders;
         private readonly IClock _clock;
 
         public ShoppingCartService(
             IContentManager contentManager,
             IRepository<ShoppingCartRecord> shoppingCartRepository,
             IRepository<ShoppingCartItemRecord> shoppingCartItemRepository,
-            IEnumerable<IShopItemProvider> shopItemProviders,
             IClock clock,
             IOrchardServices services) {
             _contentManager = contentManager;
             _shoppingCartRepository = shoppingCartRepository;
             _shoppingCartItemRepository = shoppingCartItemRepository;
-            _shopItemProviders = shopItemProviders;
             _clock = clock;
             Services = services;
         }
@@ -98,17 +95,14 @@ namespace OShop.Services {
 
         #region IShoppingCartService members
 
-        public IEnumerable<ShoppingCartItem> ListItems() {
-            var result = new List<ShoppingCartItem>();
+        public IEnumerable<ShoppingCartItemRecord> ListItems() {
             var cart = GetCart();
             if (cart != null) {
-                var items = cart.Items;
-                foreach (IShopItemProvider provider in _shopItemProviders.OrderByDescending(p=>p.Priority)) {
-                    provider.GetItems(cart.Items, ref result);
-                }
+                return cart.Items;
             }
-
-            return result;
+            else {
+                return new List<ShoppingCartItemRecord>();
+            }
         }
 
         public void Add(int ItemId, string ItemType = ProductPart.PartItemType, int Quantity = 1) {

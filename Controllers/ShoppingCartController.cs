@@ -19,7 +19,7 @@ namespace OShop.Controllers
     {
         private readonly IShoppingCartService _shoppingCartService;
         private readonly ICurrencyProvider _currencyProvider;
-        private readonly IEnumerable<IShippingInfoProvider> _shippingInfoProviders;
+        private readonly IEnumerable<IShoppingCartResolver> _shoppingCartResolvers;
         private readonly IFeatureManager _featureManager;
         private readonly IContentManager _contentManager;
 
@@ -29,14 +29,14 @@ namespace OShop.Controllers
         public ShoppingCartController(
             IShoppingCartService shoppingCartService,
             ICurrencyProvider currencyProvider,
-            IEnumerable<IShippingInfoProvider> shippingInfoProviders,
+            IEnumerable<IShoppingCartResolver> shoppingCartResolvers,
             IFeatureManager featureManager,
             IContentManager contentManager,
             ILocationsService locationService = null,
             IShippingService shippingService = null) {
             _shoppingCartService = shoppingCartService;
             _currencyProvider = currencyProvider;
-            _shippingInfoProviders = shippingInfoProviders;
+            _shoppingCartResolvers = shoppingCartResolvers;
             _featureManager = featureManager;
             _contentManager = contentManager;
             _locationService = locationService;
@@ -66,17 +66,18 @@ namespace OShop.Controllers
                 }
             }
 
-            var cartItems = _shoppingCartService.ListItems();
-
-            var shippingInfos = _shippingInfoProviders.SelectMany(sip => sip.GetShippingInfos(cartItems));
+            ShoppingCart cart = new ShoppingCart();
+            foreach (var resolver in _shoppingCartResolvers.OrderByDescending(r => r.Priority)) {
+                resolver.ResolveCart(ref cart);
+            }
 
             var model = new ShoppingCartIndexViewModel() {
-                CartItems = cartItems,
+                CartItems = cart.Items,
                 NumberFormat = _currencyProvider.NumberFormat,
                 // Optional features
                 VatEnabled = _featureManager.GetEnabledFeatures().Where(f => f.Id == "OShop.VAT").Any(),
 
-                ShippingRequired = shippingInfos.IsShippingRequired()
+                ShippingRequired = cart.IsShippingRequired()
             };
 
             if (_locationService != null) {
@@ -92,7 +93,7 @@ namespace OShop.Controllers
 
                 List<ShippingProviderWithOption> suitableProviders = new List<ShippingProviderWithOption>();
                 foreach (var provider in publishedProviders) {
-                    var option = _shippingService.GetSuitableOption(provider.Id, shippingZone, shippingInfos, cartItems);
+                    var option = _shippingService.GetSuitableOption(provider.Id, shippingZone, cart);
                     if (option != null) {
                         suitableProviders.Add(new ShippingProviderWithOption(provider, option));
                     }

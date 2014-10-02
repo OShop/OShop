@@ -94,7 +94,7 @@ namespace OShop.Services {
             return _optionRepository.Fetch(o => o.ShippingProviderId == part.Id);
         }
 
-        public ShippingOptionRecord GetSuitableOption(int ShippingProviderId, ShippingZoneRecord zone, IEnumerable<ItemShippingInfo> shippingInfos, IEnumerable<ShoppingCartItem> cartItems) {
+        public ShippingOptionRecord GetSuitableOption(int ShippingProviderId, ShippingZoneRecord zone, ShoppingCart cart) {
             if (!zone.Enabled) {
                 return null;
             }
@@ -102,15 +102,15 @@ namespace OShop.Services {
             return _optionRepository
                 .Fetch(o => o.ShippingProviderId == ShippingProviderId && o.ShippingZoneRecord == zone && o.Enabled)
                 .OrderByDescending(o => o.Priority)
-                .Where(o => MeetsContraints(o, shippingInfos, cartItems))
+                .Where(o => MeetsContraints(o, cart))
                 .FirstOrDefault();
         }
 
         #endregion
 
-        private bool MeetsContraints(ShippingOptionRecord option, IEnumerable<ItemShippingInfo> shippingInfos, IEnumerable<ShoppingCartItem> cartItems) {
+        private bool MeetsContraints(ShippingOptionRecord option, ShoppingCart cart) {
             foreach (var contraint in option.Contraints) {
-                double propertyValue = EvalProperty(contraint.Property, shippingInfos, cartItems);
+                double propertyValue = EvalProperty(contraint.Property, cart);
                 switch (contraint.Operator) {
                     case ShippingContraintOperator.LessThan:
                         if (contraint.Value <= propertyValue)
@@ -142,10 +142,11 @@ namespace OShop.Services {
             return true;
         }
 
-        private double EvalProperty(ShippingContraintProperty property, IEnumerable<ItemShippingInfo> shippingInfos, IEnumerable<ShoppingCartItem> cartItems) {
+        private double EvalProperty(ShippingContraintProperty property, ShoppingCart cart) {
+            var shippingInfos = cart.Items.Where(i => i.ShippingInfo != null && i.ShippingInfo.RequiresShipping);
             switch (property) {
                 case ShippingContraintProperty.TotalPrice:
-                    return Convert.ToDouble(cartItems.Total());
+                    return Convert.ToDouble(cart.Items.Total());
                 case ShippingContraintProperty.TotalWeight:
                     return shippingInfos.Sum(i => i.Quantity * i.ShippingInfo.Weight);
                 case ShippingContraintProperty.TotalVolume:
@@ -162,5 +163,6 @@ namespace OShop.Services {
                     return 0;
             }
         }
+
     }
 }

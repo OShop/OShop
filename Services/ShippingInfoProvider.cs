@@ -8,23 +8,21 @@ using System.Web;
 
 namespace OShop.Services {
     [OrchardFeature("OShop.Shipping")]
-    public class ShippingInfoProvider : IShippingInfoProvider {
-        public List<ItemShippingInfo> GetShippingInfos(IEnumerable<ShoppingCartItem> CartItems) {
-            List<ItemShippingInfo> result = new List<ItemShippingInfo>();
+    public class ShippingInfoProvider : IShoppingCartResolver {
 
-            foreach (var item in CartItems) {
-                if(item.Item.Content != null) {
+        public Int32 Priority {
+            get { return 50; }
+        }
+
+        public void ResolveCart(ref ShoppingCart Cart) {
+            foreach (var item in Cart.Items) {
+                if (item.Item.Content != null) {
                     var shippingPart = item.Item.Content.As<ShippingPart>();
                     if (shippingPart != null) {
-                        result.Add(new ItemShippingInfo() {
-                            Quantity = item.Quantity,
-                            ShippingInfo = shippingPart
-                        });
+                        item.ShippingInfo = shippingPart;
                     }
                 }
             }
-
-            return result;
         }
     }
 }
