@@ -7,7 +7,7 @@ namespace OShop.Models {
     public class ShippingContraint {
         public ShippingContraintProperty Property { get; set; }
         public ShippingContraintOperator Operator { get; set; }
-        public float Value { get; set; }
+        public double Value { get; set; }
     }
 
     public enum ShippingContraintProperty {
@@ -15,9 +15,9 @@ namespace OShop.Models {
         TotalWeight,
         TotalVolume,
         ItemLongestDimension,
-        ItemLength,
-        ItemWidth,
-        ItemHeight
+        MaxItemLength,
+        MaxItemWidth,
+        MaxItemHeight
     }
 
     public enum ShippingContraintOperator {
