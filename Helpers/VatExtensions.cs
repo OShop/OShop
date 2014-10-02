@@ -38,24 +38,43 @@ namespace OShop.Helpers {
         }
 
         public static decimal VatIncludedUnitPrice(this ShoppingCartItem cartItem) {
-            return cartItem.Item.VAT.GetVatIncludedPrice(cartItem.UnitPrice());
+            return cartItem.Item.VAT.GetVatIncludedPrice(cartItem.UnitPrice);
         }
 
         public static decimal VatIncludedSubTotal(this ShoppingCartItem cartItem) {
             return cartItem.Item.VAT.GetVatIncludedPrice(cartItem.SubTotal());
         }
 
-        public static decimal VatSubTotal(this ShoppingCartItem cartItem) {
+        public static decimal SubTotalVat(this ShoppingCartItem cartItem) {
             return cartItem.Item.VAT.GetVat(cartItem.SubTotal());
         }
 
-        public static decimal VatTotal(this IEnumerable<ShoppingCartItem> Items) {
-            return Items.Sum(ci => ci.VatSubTotal());
+        public static decimal ItemsTotalVat(this ShoppingCart Cart) {
+            return Cart.Items.Sum(ci => ci.SubTotalVat());
         }
 
-        public static decimal VatIncludedTotal(this IEnumerable<ShoppingCartItem> Items) {
-            return Items.Sum(ci => ci.VatIncludedSubTotal());
+        public static decimal VatIncludedItemsTotal(this ShoppingCart Cart) {
+            return Cart.Items.Sum(ci => ci.VatIncludedSubTotal());
         }
 
+        public static decimal CartTotalVat(this ShoppingCart Cart) {
+            if (Cart.ShippingOption != null) {
+                var shippingOption = Cart.ShippingOption;
+                return Cart.ItemsTotalVat() + shippingOption.Provider.VAT.GetVat(shippingOption.Option.Price);
+            }
+            else {
+                return Cart.ItemsTotalVat();
+            }
+        }
+
+        public static decimal VatIncludedCartTotal(this ShoppingCart Cart) {
+            if (Cart.ShippingOption != null) {
+                var shippingOption = Cart.ShippingOption;
+                return Cart.VatIncludedItemsTotal() + shippingOption.Provider.VAT.GetVatIncludedPrice(shippingOption.Option.Price);
+            }
+            else {
+                return Cart.VatIncludedItemsTotal();
+            }
+        }
     }
 }

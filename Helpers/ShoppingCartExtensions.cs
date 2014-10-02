@@ -9,8 +9,20 @@ namespace OShop.Helpers {
             return Items.Count();
         }
 
-        public static decimal Total(this IEnumerable<ShoppingCartItem> Items) {
-            return Items.Sum(ci => ci.SubTotal());
+        public static decimal SubTotal(this ShoppingCartItem Item) {
+            return Item.UnitPrice * Item.Quantity;
+        }
+
+        public static decimal ItemsTotal(this ShoppingCart Cart) {
+            return Cart.Items.Sum(ci => ci.SubTotal());
+        }
+
+        public static decimal CartTotal(this ShoppingCart Cart) {
+            if (Cart.ShippingOption != null) {
+                return Cart.ItemsTotal() + Cart.ShippingOption.Option.Price;
+            } else {
+                return Cart.ItemsTotal();
+            }
         }
     }
 }

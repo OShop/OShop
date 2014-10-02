@@ -5,10 +5,15 @@
 
 @{
     Layout.Title = T("My shopping cart");
+
+    // Init View model
+    Model.CountryId = Model.Cart.Country != null ? Model.Cart.Country.Id : 0;
+    Model.StateId = Model.Cart.State != null ? Model.Cart.State.Id : 0;
+    Model.ShippingProviderId = Model.Cart.ShippingOption != null ? Model.Cart.ShippingOption.Provider.Id : 0;
 }
 
 <div class="shopping-cart-container">
-    @if (Model.CartItems.Any()) {
+    @if (Model.Cart.Items.Any()) {
         using (Html.BeginFormAntiForgeryPost(Url.Action("Update", "ShoppingCart", new { area = "OShop" }))) {
             <div class="cart-actions-head">
                 @Html.ActionLink(T("Empty cart").Text, "Empty", "ShoppingCart", new { Area = "OShop" }, new { })
@@ -27,7 +32,7 @@
                 @{
             int i = 0;
                 }
-                @foreach (var entry in Model.CartItems) {
+                @foreach (var entry in Model.Cart.Items) {
                     <tr>
                         <td>@entry.Item.SKU</td>
                         <td>
@@ -51,7 +56,7 @@
                                 @String.Format(Model.NumberFormat, "{0:C}", entry.VatIncludedUnitPrice())
                             }
                             else {
-                                @String.Format(Model.NumberFormat, "{0:C}", entry.UnitPrice())
+                                @String.Format(Model.NumberFormat, "{0:C}", entry.UnitPrice)
                             }
                         </td>
                         <td>
@@ -73,16 +78,44 @@
                             i++;
                 }
                 <tfoot>
+                    @if (Model.Cart.ShippingOption != null) {
+                        <tr class="total">
+                            <td colspan="4">
+                                @T("Items total")
+                            </td>
+                            <td>
+                                @if (Model.VatEnabled) {
+                                    @String.Format(Model.NumberFormat, "{0:C}", Model.Cart.VatIncludedItemsTotal())
+                                }
+                                else {
+                                    @String.Format(Model.NumberFormat, "{0:C}", Model.Cart.ItemsTotal())
+                                }
+                            </td>
+                        </tr>
+                        <tr class="total">
+                            <td colspan="4">
+                                @T("Shipping")
+                            </td>
+                            <td>
+                                @if (Model.VatEnabled) {
+                                    @String.Format(Model.NumberFormat, "{0:C}", Model.Cart.ShippingOption.Provider.VAT.GetVatIncludedPrice(Model.Cart.ShippingOption.Option.Price))
+                                }
+                                else {
+                                    @String.Format(Model.NumberFormat, "{0:C}", Model.Cart.ShippingOption.Option.Price)
+                                }
+                            </td>
+                        </tr>
+                    }
                     <tr class="total">
                         <td colspan="4">
                             @T("Total")
                         </td>
                         <td>
                             @if (Model.VatEnabled) {
-                                @String.Format(Model.NumberFormat, "{0:C}", Model.CartItems.Sum(ci => ci.VatIncludedSubTotal()))
+                                @String.Format(Model.NumberFormat, "{0:C}", Model.Cart.VatIncludedCartTotal())
                             }
                             else {
-                                @String.Format(Model.NumberFormat, "{0:C}", Model.CartItems.Sum(ci => ci.SubTotal()))
+                                @String.Format(Model.NumberFormat, "{0:C}", Model.Cart.CartTotal())
                             }
                         </td>
                     </tr>
@@ -107,7 +140,7 @@
                 </fieldset>
             }
 
-            if (Model.ShippingRequired) {
+            if (Model.Cart.IsShippingRequired()) {
                 if (Model.ShippingProviders.Any()) {
                     <ul>
                         @foreach (var provider in Model.ShippingProviders) {
@@ -133,6 +166,9 @@
 
             <div class="cart-actions-foot">
                 <button type="submit" name="UpdateAll" value="true">@T("Update")</button>
+                @if (Model.Cart.IsValid) {
+                    <button type="submit" name="Checkout" value="true">@T("Check out")</button>
+                }
             </div>
         }
     }

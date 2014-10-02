@@ -32,7 +32,7 @@ namespace OShop.Drivers {
             }
 
             return ContentShape("Parts_ShoppingCartWidget", () => shapeHelper.Parts_ShoppingCartWidget(
-                CartItems: cart.Items,
+                Cart: cart,
                 NumberFormat: _currencyProvider.NumberFormat,
                 VatEnabled: _featureManager.GetEnabledFeatures().Where(f => f.Id == "OShop.VAT").Any(),
                 ContentItem: part.ContentItem
