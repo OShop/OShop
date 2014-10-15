@@ -166,16 +166,34 @@ namespace OShop.Services {
                 case ShippingContraintProperty.TotalPrice:
                     return Convert.ToDouble(cart.ItemsTotal());
                 case ShippingContraintProperty.TotalWeight:
+                    if (!shippingInfos.Any()) {
+                        return 0;
+                    }
                     return shippingInfos.Sum(i => i.Quantity * i.ShippingInfo.Weight);
                 case ShippingContraintProperty.TotalVolume:
+                    if (!shippingInfos.Any()) {
+                        return 0;
+                    }
                     return shippingInfos.Sum(i => i.Quantity * i.ShippingInfo.Length * i.ShippingInfo.Width * i.ShippingInfo.Height);
                 case ShippingContraintProperty.ItemLongestDimension:
+                    if (!shippingInfos.Any()) {
+                        return 0;
+                    }
                     return shippingInfos.Max(i => new double[] { i.ShippingInfo.Length, i.ShippingInfo.Width, i.ShippingInfo.Height }.Max());
                 case ShippingContraintProperty.MaxItemLength:
+                    if (!shippingInfos.Any()) {
+                        return 0;
+                    }
                     return shippingInfos.Max(i => i.ShippingInfo.Length);
                 case ShippingContraintProperty.MaxItemWidth:
+                    if (!shippingInfos.Any()) {
+                        return 0;
+                    }
                     return shippingInfos.Max(i => i.ShippingInfo.Width);
                 case ShippingContraintProperty.MaxItemHeight:
+                    if (!shippingInfos.Any()) {
+                        return 0;
+                    }
                     return shippingInfos.Max(i => i.ShippingInfo.Height);
                 default:
                     return 0;
