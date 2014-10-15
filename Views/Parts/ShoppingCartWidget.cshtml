@@ -1,10 +1,16 @@
-﻿@using OShop.Helpers;
-@using OShop.Models;
-@{
-    var cart = (ShoppingCart)Model.Cart;
+﻿@{
+    Script.Require("jQuery");
 }
 
-<div>
-    <span>@T.Plural("1 item", "{0} items", cart.Items.ItemsCount()) : @String.Format(Model.NumberFormat, "{0:C}", (Model.VatEnabled ? cart.VatIncludedCartTotal() : cart.CartTotal()))</span><br/>
-    @Html.ActionLink(T("My cart").Text, "Index", "ShoppingCart", new { area = "OShop" }, new { })
+<div class="shoppingcart-widget">
 </div>
+
+@using (Script.Foot()) {
+    <script type="text/javascript">
+//<![CDATA[
+    $(function () {
+        $(".shoppingcart-widget").load("@Url.Action("Widget", "ShoppingCart", new { area = "OShop" })");
+    })
+//]]>
+    </script>
+}

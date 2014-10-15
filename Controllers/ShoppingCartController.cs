@@ -48,10 +48,7 @@ namespace OShop.Controllers
         public ActionResult Index()
         {
 
-            ShoppingCart cart = new ShoppingCart();
-            foreach (var resolver in _shoppingCartResolvers.OrderByDescending(r => r.Priority)) {
-                resolver.ResolveCart(ref cart);
-            }
+            ShoppingCart cart = ResolveCart();
 
             var model = new ShoppingCartIndexViewModel() {
                 Cart = cart,
@@ -129,10 +126,31 @@ namespace OShop.Controllers
             return ReturnOrIndex(returnUrl);
         }
 
+        [OutputCache(Duration = 0)]
+        public ActionResult Widget() {
+            ShoppingCart cart = ResolveCart();
+            var model = new ShoppingCartWidgetViewModel() {
+                Cart = cart,
+                NumberFormat = _currencyProvider.NumberFormat,
+                // Optional features
+                VatEnabled = _featureManager.GetEnabledFeatures().Where(f => f.Id == "OShop.VAT").Any()
+            };
+
+            return View(model);
+        }
+
         private RedirectResult ReturnOrIndex(string returnUrl = null) {
             var urlReferrer = Request.UrlReferrer != null ? Request.UrlReferrer.ToString() : Url.Action("Index");
 
             return Redirect(string.IsNullOrWhiteSpace(returnUrl) ? urlReferrer : returnUrl);
+        }
+
+        private ShoppingCart ResolveCart() {
+            ShoppingCart cart = new ShoppingCart();
+            foreach (var resolver in _shoppingCartResolvers.OrderByDescending(r => r.Priority)) {
+                resolver.ResolveCart(ref cart);
+            }
+            return cart;
         }
 
         private void UpdateCart(ShoppingCartItemUpdateViewModel[] CartItems) {
