@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
 using Orchard;
-using Orchard.ContentManagement;
 using Orchard.Data;
 using Orchard.Environment.Extensions;
 using Orchard.Services;
@@ -8,25 +7,21 @@ using OShop.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace OShop.Services {
     [OrchardFeature("OShop.ShoppingCart")]
     public class ShoppingCartService : IShoppingCartService {
         private const string ShoppingCartKey = "ShoppingCartId";
 
-        private readonly IContentManager _contentManager;
         private readonly IRepository<ShoppingCartRecord> _shoppingCartRepository;
         private readonly IRepository<ShoppingCartItemRecord> _shoppingCartItemRepository;
         private readonly IClock _clock;
 
         public ShoppingCartService(
-            IContentManager contentManager,
             IRepository<ShoppingCartRecord> shoppingCartRepository,
             IRepository<ShoppingCartItemRecord> shoppingCartItemRepository,
             IClock clock,
             IOrchardServices services) {
-            _contentManager = contentManager;
             _shoppingCartRepository = shoppingCartRepository;
             _shoppingCartItemRepository = shoppingCartItemRepository;
             _clock = clock;
