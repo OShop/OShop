@@ -12,6 +12,8 @@ namespace OShop.ViewModels {
 
         // Optional features
         public bool VatEnabled { get; set; }
+        public bool CheckoutEnabled { get; set; }
+        public bool ExpressCheckoutEnabled { get; set; }
 
         public IEnumerable<LocationsCountryRecord> Countries { get; set; }
         public IEnumerable<LocationsStateRecord> States { get; set; }

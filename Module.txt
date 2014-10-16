@@ -37,3 +37,13 @@ Features:
 		Category: Commerce
         Description: Provides customer management.
 		Dependencies: OShop, OShop.Locations, Orchard.Users
+	OShop.Checkout:
+		Name: OShop customer check-out
+		Category: Commerce
+        Description: Provides check-out service for customers.
+		Dependencies: OShop, OShop.Customers
+	OShop.ExpressCheckout:
+		Name: OShop express check-out
+		Category: Commerce
+        Description: Provides check-out service without account.
+		Dependencies: OShop

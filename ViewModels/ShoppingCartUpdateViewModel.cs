@@ -9,6 +9,7 @@ namespace OShop.ViewModels {
         public int CountryId { get; set; }
         public int StateId { get; set; }
         public int ShippingProviderId { get; set; }
+        public String Action { get; set; }
     }
 
     public class ShoppingCartItemUpdateViewModel {

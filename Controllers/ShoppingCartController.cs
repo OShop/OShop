@@ -54,7 +54,9 @@ namespace OShop.Controllers
                 Cart = cart,
                 NumberFormat = _currencyProvider.NumberFormat,
                 // Optional features
-                VatEnabled = _featureManager.GetEnabledFeatures().Where(f => f.Id == "OShop.VAT").Any()
+                VatEnabled = _featureManager.GetEnabledFeatures().Where(f => f.Id == "OShop.VAT").Any(),
+                CheckoutEnabled = _featureManager.GetEnabledFeatures().Where(f => f.Id == "OShop.Checkout").Any(),
+                ExpressCheckoutEnabled = _featureManager.GetEnabledFeatures().Where(f => f.Id == "OShop.ExpressCheckout").Any()
             };
 
             if (_locationService != null) {
@@ -104,7 +106,12 @@ namespace OShop.Controllers
                 }
             }
 
-            return RedirectToAction("Index");
+            if (model.Action == "Checkout") {
+                return RedirectToAction("Index", "Checkout", new { area = "OShop" });
+            }
+            else {
+                return RedirectToAction("Index");
+            }
         }
 
         public ActionResult Add(int id, int quantity = 1, string itemType = ProductPart.PartItemType, string returnUrl = null) {

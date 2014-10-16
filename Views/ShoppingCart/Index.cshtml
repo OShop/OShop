@@ -165,9 +165,14 @@
             }
 
             <div class="cart-actions-foot">
-                <button type="submit" name="UpdateAll" value="true">@T("Update")</button>
+                <button type="submit" name="Action" value="Update">@T("Update")</button>
                 @if (Model.Cart.IsValid) {
-                    <button type="submit" name="Checkout" value="true">@T("Check out")</button>
+                    if (Model.CheckoutEnabled) {
+                        <button type="submit" name="Action" value="Checkout">@T("Check out")</button>
+                    }
+                    if (Model.ExpressCheckoutEnabled) {
+                        <button type="submit" name="Action" value="ExpressCheckout">@T("Check out")</button>
+                    }
                 }
             </div>
         }
