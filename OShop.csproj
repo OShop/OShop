@@ -188,8 +188,10 @@
     <Compile Include="Navigation\ProductsAdminMenu.cs" />
     <Compile Include="Permissions\OShopPermissions.cs" />
     <Compile Include="Resources\OShopResources.cs" />
+    <Compile Include="Services\CustomersService.cs" />
     <Compile Include="Services\DefaultCurrencyProvider.cs" />
     <Compile Include="Services\ICurrencyProvider.cs" />
+    <Compile Include="Services\ICustomersService.cs" />
     <Compile Include="Services\ILocationsService.cs" />
     <Compile Include="Services\IShippingService.cs" />
     <Compile Include="Services\IShoppingCartResolver.cs" />
