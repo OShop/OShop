@@ -32,3 +32,8 @@ Features:
 		Category: Commerce
         Description: Provides shipping service.
 		Dependencies: OShop, OShop.Locations
+	OShop.Customers:
+		Name: OShop Customers
+		Category: Commerce
+        Description: Provides customer management.
+		Dependencies: OShop, OShop.Locations, Orchard.Users

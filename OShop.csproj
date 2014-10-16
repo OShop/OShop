@@ -134,6 +134,8 @@
     <Compile Include="Drivers\ShoppingCartWidgetPartDriver.cs" />
     <Compile Include="Drivers\VatShippingProviderPartDriver.cs" />
     <Compile Include="Drivers\VatProductPartDriver.cs" />
+    <Compile Include="Handlers\CustomerAddressPartHandler.cs" />
+    <Compile Include="Handlers\CustomerPartHandler.cs" />
     <Compile Include="Handlers\OShopSettingsPartHandler.cs" />
     <Compile Include="Handlers\ProductPartHandler.cs" />
     <Compile Include="Handlers\ShippingPartHandler.cs" />
@@ -142,11 +144,16 @@
     <Compile Include="Helpers\ShippingExtensions.cs" />
     <Compile Include="Helpers\ShoppingCartExtensions.cs" />
     <Compile Include="Helpers\VatExtensions.cs" />
+    <Compile Include="Migrations\CustomerMigrations.cs" />
     <Compile Include="Migrations\LocationsMigrations.cs" />
     <Compile Include="Migrations\ProductsMigrations.cs" />
     <Compile Include="Migrations\ShippingMigrations.cs" />
     <Compile Include="Migrations\ShoppingCartMigrations.cs" />
     <Compile Include="Migrations\VatMigrations.cs" />
+    <Compile Include="Models\CustomerAddressPart.cs" />
+    <Compile Include="Models\CustomerAddressPartRecord.cs" />
+    <Compile Include="Models\CustomerPart.cs" />
+    <Compile Include="Models\CustomerPartRecord.cs" />
     <Compile Include="Models\ICurrencySettings.cs" />
     <Compile Include="Models\IShippingInfo.cs" />
     <Compile Include="Models\IShopItem.cs" />
