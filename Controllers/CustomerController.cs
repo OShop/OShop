@@ -2,6 +2,7 @@
 using Orchard.Data;
 using Orchard.Environment.Extensions;
 using Orchard.Mvc;
+using Orchard.Mvc.Extensions;
 using Orchard.Security;
 using Orchard.Services;
 using Orchard.Themes;
@@ -56,7 +57,7 @@ namespace OShop.Controllers
         }
 
         [Themed]
-        public ActionResult Create() {
+        public ActionResult Create(string returnUrl = null) {
             var user = _authenticationService.GetAuthenticatedUser();
             if (user == null) {
                 return RedirectToAction("LogOn", "Account", new { area = "Orchard.Users", ReturnUrl = Url.Action("Create", "Customer", new { area = "OShop" }) });
@@ -72,7 +73,7 @@ namespace OShop.Controllers
         }
 
         [HttpPost, ActionName("Create")]
-        public ActionResult CreatePost() {
+        public ActionResult CreatePost(string returnUrl = null) {
             var user = _authenticationService.GetAuthenticatedUser();
             if (user == null) {
                 return RedirectToAction("LogOn", "Account", new { area = "Orchard.Users", ReturnUrl = Url.Action("Create", "Customer", new { area = "OShop" }) });
@@ -90,7 +91,7 @@ namespace OShop.Controllers
 
             _contentManager.Publish(customer);
 
-            return RedirectToAction("Index");
+            return this.RedirectLocal(returnUrl, () => RedirectToAction("Index"));
         }
 
         [Themed]
