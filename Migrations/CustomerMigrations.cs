@@ -11,9 +11,7 @@ namespace OShop.Migrations {
             SchemaBuilder.CreateTable("CustomerPartRecord", table => table
                  .ContentPartRecord()
                  .Column<string>("FirstName")
-                 .Column<string>("LastName")
-                 .Column<DateTime>("CreatedUtc")
-                 .Column<int>("UserId"));
+                 .Column<string>("LastName"));
 
             SchemaBuilder.CreateTable("CustomerAddressPartRecord", table => table
                  .ContentPartRecord()
@@ -27,6 +25,9 @@ namespace OShop.Migrations {
                 );
 
             ContentDefinitionManager.AlterTypeDefinition("Customer", type => type
+                .WithPart("CommonPart", builder => builder
+                    .WithSetting("OwnerEditorSettings.ShowOwnerEditor", "false")
+                    .WithSetting("DateEditorSettings.ShowDateEditor", "false"))
                 .WithPart("CustomerPart")
                 .Creatable(false)
                 );
