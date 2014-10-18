@@ -1,7 +1,10 @@
 ﻿using Orchard;
 using Orchard.ContentManagement;
+using Orchard.Core.Common.Models;
 using Orchard.Environment.Extensions;
+using Orchard.Security;
 using Orchard.Services;
+using OShop.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,26 +14,40 @@ namespace OShop.Services {
     [OrchardFeature("OShop.ShoppingCart")]
     public class CustomersService : ICustomersService {
         private readonly IContentManager _contentManager;
+        private readonly IAuthenticationService _authenticationService;
         private readonly IClock _clock;
 
         public CustomersService(
             IContentManager contentManager,
-            IOrchardServices services,
+            IAuthenticationService authenticationService,
             IClock clock
             ) {
             _contentManager = contentManager;
+            _authenticationService = authenticationService;
             _clock = clock;
-            Services = services;
         }
 
-        public IOrchardServices Services { get; set; }
+        public CustomerPart GetCustomer() {
+            var user = _authenticationService.GetAuthenticatedUser();
 
-        public Models.CustomerPart GetCustomer() {
-            throw new NotImplementedException();
+            if (user == null) {
+                return null;
+            }
+
+            return GetCustomer(user.Id);
         }
 
-        public Models.CustomerPart GetCustomer(int UserId) {
-            throw new NotImplementedException();
+        public CustomerPart GetCustomer(int UserId) {
+            var commonPart =  _contentManager.Query<CommonPart, CommonPartRecord>("Customer")
+                .Where(c => c.OwnerId == UserId).Slice(1)
+                .FirstOrDefault();
+
+            if (commonPart != null) {
+                return commonPart.ContentItem.As<CustomerPart>();
+            }
+            else {
+                return null;
+            }
         }
     }
 }

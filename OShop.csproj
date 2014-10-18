@@ -109,6 +109,9 @@
     <Content Include="Views\ShippingProvidersAdmin\EditOption.cshtml" />
     <Content Include="Views\ShoppingCart\Widget.cshtml" />
     <Content Include="Views\Checkout\Index.cshtml" />
+    <Content Include="Views\Parts\Customer.cshtml" />
+    <Content Include="Views\EditorTemplates\Parts\Customer.cshtml" />
+    <Content Include="Views\Customer\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Orchard.Core">
@@ -130,6 +133,7 @@
     <Compile Include="Controllers\ShippingZonesAdminController.cs" />
     <Compile Include="Controllers\ShoppingCartController.cs" />
     <Compile Include="Controllers\VatAdminController.cs" />
+    <Compile Include="Drivers\CustomerPartDriver.cs" />
     <Compile Include="Drivers\ProductPartDriver.cs" />
     <Compile Include="Drivers\ShippingPartDriver.cs" />
     <Compile Include="Drivers\ShippingProviderPartDriver.cs" />
@@ -265,9 +269,7 @@
   <ItemGroup>
     <Content Include="Views\Parts\Product.Vat.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\Customer\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

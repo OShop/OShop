@@ -1,0 +1,8 @@
+﻿@{
+    Layout.Title = T("Create customer account").Text;
+}
+
+@using (Html.BeginFormAntiForgeryPost()) {
+    @Html.ValidationSummary()
+    @Display(Model)
+}

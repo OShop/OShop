@@ -18,4 +18,8 @@
   <!-- Shipping -->
   <Place Parts_Shipping_Edit="Content:3.2" />
   <Place Parts_ShippingProvider_Edit="Content:10" />
+  <!-- Customer -->
+  <Place Parts_Customer="Content:3"/>
+  <Place Parts_Customer_Edit="Content:3"/>
+
 </Placement>
