@@ -25,9 +25,7 @@ namespace OShop.Migrations {
                 );
 
             ContentDefinitionManager.AlterTypeDefinition("Customer", type => type
-                .WithPart("CommonPart", builder => builder
-                    .WithSetting("OwnerEditorSettings.ShowOwnerEditor", "false")
-                    .WithSetting("DateEditorSettings.ShowDateEditor", "false"))
+                .WithPart("CommonPart")
                 .WithPart("CustomerPart")
                 .Creatable(false)
                 );
