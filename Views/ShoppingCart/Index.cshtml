@@ -125,7 +125,7 @@
                 </tfoot>
             </table>
 
-                            if (Model.Countries.Any()) {
+                if (Model.Countries.Any()) {
                 <fieldset>
                     <legend>@T("Location")</legend>
                     <div>
@@ -143,8 +143,8 @@
                 </fieldset>
                             }
 
-                            if (Model.Cart.IsShippingRequired()) {
-                                if (Model.ShippingProviders.Any()) {
+                if (Model.Cart.IsShippingRequired()) {
+                    if (Model.ShippingProviders.Any()) {
                     <ul>
                         @foreach (var provider in Model.ShippingProviders) {
                             <li>
@@ -161,11 +161,11 @@
                             </li>
                         }
                     </ul>
-                                }
-                                else {
-                    <div>@T("There is no shipping option for your order / location. Please contact us.")</div>
-                                }
-                            }
+                    }
+                    else {
+                        <div>@T("There is no shipping option for your order / location. Please contact us.")</div>
+                        }
+                    }
 
             <div class="cart-actions-foot">
                 <button type="submit" name="Action" value="Update">@T("Update")</button>

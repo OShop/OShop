@@ -15,6 +15,9 @@
     <Place Parts_Product_AddToCart="Content:4" />
   </Match>
   <Place Parts_ShoppingCartWidget="Content:0" />
+  <!-- Locations -->
+  <Place Fields_Location="Content:after"/>
+  <Place Fields_Location_Edit="Content:5"/>
   <!-- Shipping -->
   <Place Parts_Shipping_Edit="Content:3.2" />
   <Place Parts_ShippingProvider_Edit="Content:10" />

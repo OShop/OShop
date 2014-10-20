@@ -112,6 +112,9 @@
     <Content Include="Views\Parts\Customer.cshtml" />
     <Content Include="Views\EditorTemplates\Parts\Customer.cshtml" />
     <Content Include="Views\Customer\Create.cshtml" />
+    <Content Include="Views\Fields\Location.cshtml" />
+    <Content Include="Views\EditorTemplates\Fields\Location.cshtml" />
+    <Content Include="Views\DefinitionTemplates\LocationFieldSettings.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Orchard.Core">
@@ -134,6 +137,7 @@
     <Compile Include="Controllers\ShoppingCartController.cs" />
     <Compile Include="Controllers\VatAdminController.cs" />
     <Compile Include="Drivers\CustomerPartDriver.cs" />
+    <Compile Include="Drivers\LocationFieldDriver.cs" />
     <Compile Include="Drivers\ProductPartDriver.cs" />
     <Compile Include="Drivers\ShippingPartDriver.cs" />
     <Compile Include="Drivers\ShippingProviderPartDriver.cs" />
@@ -141,6 +145,7 @@
     <Compile Include="Drivers\ShoppingCartWidgetPartDriver.cs" />
     <Compile Include="Drivers\VatShippingProviderPartDriver.cs" />
     <Compile Include="Drivers\VatProductPartDriver.cs" />
+    <Compile Include="Fields\LocationField.cs" />
     <Compile Include="Handlers\CustomerAddressPartHandler.cs" />
     <Compile Include="Handlers\CustomerPartHandler.cs" />
     <Compile Include="Handlers\OShopSettingsPartHandler.cs" />
@@ -210,6 +215,9 @@
     <Compile Include="Services\ShoppingCartResolvers\ShippingZoneResolver.cs" />
     <Compile Include="Services\ShoppingCartService.cs" />
     <Compile Include="Services\VatService.cs" />
+    <Compile Include="Settings\LocationFieldEditorEvents.cs" />
+    <Compile Include="Settings\LocationFieldSettings.cs" />
+    <Compile Include="ViewModels\LocationFieldViewModel.cs" />
     <Compile Include="ViewModels\LocationsBulkAction.cs" />
     <Compile Include="ViewModels\LocationsStatesIndexViewModel.cs" />
     <Compile Include="ViewModels\LocationsFilter.cs" />

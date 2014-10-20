@@ -1,0 +1,9 @@
+﻿@model OShop.Settings.LocationFieldSettings
+@using OShop.Settings;
+
+<fieldset>
+    <div>
+        @Html.CheckBoxFor(m => m.Required) <label for="@Html.FieldIdFor(m => m.Required)" class="forcheckbox">@T("Required")</label>
+        <span class="hint">@T("Check if the field is required.")</span>
+    </div>
+</fieldset>

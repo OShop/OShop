@@ -1,0 +1,22 @@
+﻿@model OShop.ViewModels.LocationFieldViewModel
+@using OShop.Helpers
+
+<fieldset>
+    <legend>@T("Location")</legend>
+    <div>
+        @Html.LabelFor(m => m.CountryId, T("Country"))
+        @Html.DropDownListFor(m => m.CountryId, Model.Countries.BuildCountrySelectList(), new { @class = "autoupdate" })
+        @Html.ValidationMessageFor(m => m.CountryId)
+    </div>
+    @if (Model.States.Any()) {
+        <div>
+            @Html.LabelFor(m => m.StateId, T("State"))
+            @Html.DropDownListFor(m => m.StateId, Model.States.BuildStateSelectList())
+            @Html.ValidationMessageFor(m => m.StateId)
+        </div>
+    }
+    else {
+        <input type="hidden" name="@Html.NameFor(m => m.StateId)" value="0"/>
+    }
+</fieldset>
+
