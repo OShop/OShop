@@ -51,8 +51,28 @@ namespace OShop.Controllers
 
         public ActionResult Index(ListContentsViewModel model, PagerParameters pagerParameters)
         {
+            if (!Services.Authorizer.Authorize(Permissions.OShopPermissions.ManageShopSettings, T("Not allowed to manage shipping options")))
+                return new HttpUnauthorizedResult();
+
             var pager = new Pager(_siteService.GetSiteSettings(), pagerParameters);
-            var query = _contentManager.Query<ShippingProviderPart, ShippingProviderPartRecord>(VersionOptions.Latest);
+
+            var versionOptions = VersionOptions.Latest;
+            switch (model.Options.ContentsStatus) {
+                case ContentsStatus.Published:
+                    versionOptions = VersionOptions.Published;
+                    break;
+                case ContentsStatus.Draft:
+                    versionOptions = VersionOptions.Draft;
+                    break;
+                case ContentsStatus.AllVersions:
+                    versionOptions = VersionOptions.AllVersions;
+                    break;
+                default:
+                    versionOptions = VersionOptions.Latest;
+                    break;
+            }
+
+            var query = _contentManager.Query(versionOptions, "ShippingProvider");
 
             switch (model.Options.OrderBy) {
                 case ContentsOrder.Modified:
@@ -72,13 +92,62 @@ namespace OShop.Controllers
             var list = Shape.List();
             list.AddRange(pageOfContentItems.Select(ci => _contentManager.BuildDisplay(ci, "SummaryAdmin")));
 
-            dynamic viewModel = Shape.ViewModel()
+            var viewModel = Shape.ViewModel()
                 .ContentItems(list)
                 .Pager(pagerShape)
                 .Options(model.Options);
 
             // Casting to avoid invalid (under medium trust) reflection over the protected View method and force a static invocation.
-            return View((object)viewModel);
+            return View(viewModel);
+        }
+
+        [HttpPost, ActionName("Index")]
+        [FormValueRequired("submit.Filter")]
+        public ActionResult ListFilterPOST(ContentOptions options) {
+            var routeValues = ControllerContext.RouteData.Values;
+            if (options != null) {
+                routeValues["Options.OrderBy"] = options.OrderBy; //todo: don't hard-code the key
+                routeValues["Options.ContentsStatus"] = options.ContentsStatus; //todo: don't hard-code the key
+            }
+
+            return RedirectToAction("Index", routeValues);
+        }
+
+        [HttpPost, ActionName("Index")]
+        [FormValueRequired("submit.BulkEdit")]
+        public ActionResult ListPOST(ContentOptions options, IEnumerable<int> itemIds, string returnUrl) {
+            if (!Services.Authorizer.Authorize(Permissions.OShopPermissions.ManageShopSettings, T("Not allowed to manage shipping options")))
+                return new HttpUnauthorizedResult();
+
+            if (itemIds != null) {
+                var checkedContentItems = _contentManager.GetMany<ContentItem>(itemIds, VersionOptions.Latest, QueryHints.Empty);
+                switch (options.BulkAction) {
+                    case ContentsBulkAction.None:
+                        break;
+                    case ContentsBulkAction.PublishNow:
+                        foreach (var item in checkedContentItems) {
+                            _contentManager.Publish(item);
+                        }
+                        Services.Notifier.Information(T("Content successfully published."));
+                        break;
+                    case ContentsBulkAction.Unpublish:
+                        foreach (var item in checkedContentItems) {
+                            _contentManager.Unpublish(item);
+                        }
+                        Services.Notifier.Information(T("Content successfully unpublished."));
+                        break;
+                    case ContentsBulkAction.Remove:
+                        foreach (var item in checkedContentItems) {
+                            _contentManager.Remove(item);
+                        }
+                        Services.Notifier.Information(T("Content successfully removed."));
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+
+            return this.RedirectLocal(returnUrl, () => RedirectToAction("Index"));
         }
 
         public ActionResult EditOption(int id) {
