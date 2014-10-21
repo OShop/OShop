@@ -1,0 +1,34 @@
+﻿@using Orchard.Core.Contents.ViewModels;
+
+@{
+    var pageTitle = T("Manage Customers");
+    var createLinkText = T("Create New Customer");
+    Layout.Title = pageTitle;
+}
+
+<div class="manage">
+    @Html.ActionLink(createLinkText.Text, "Create", "Admin", new { Area = "Contents", Id = "Customer" }, new { @class = "button primaryAction" })
+</div>
+@using (Html.BeginFormAntiForgeryPost()) {
+    <fieldset class="bulk-actions">
+        <label for="publishActions">@T("Actions:")</label>
+        <select id="publishActions" name="Options.BulkAction">
+            @Html.SelectOption((ContentsBulkAction)Model.Options.BulkAction, ContentsBulkAction.None, T("Choose action...").ToString())
+            @Html.SelectOption((ContentsBulkAction)Model.Options.BulkAction, ContentsBulkAction.Remove, T("Delete").ToString())
+        </select>
+        <button type="submit" name="submit.BulkEdit" value="yes">@T("Apply")</button>
+    </fieldset>
+    <fieldset class="bulk-actions">
+        <label for="orderResults" class="bulk-order">@T("Ordered by")</label>
+        <select id="orderResults" name="Options.OrderBy">
+            @Html.SelectOption((ContentsOrder)Model.Options.OrderBy, ContentsOrder.Created, T("recently created").Text)
+            @Html.SelectOption((ContentsOrder)Model.Options.OrderBy, ContentsOrder.Modified, T("recently modified").Text)
+            @Html.SelectOption((ContentsOrder)Model.Options.OrderBy, ContentsOrder.Published, T("recently published").Text)
+        </select>
+        <button type="submit" name="submit.Filter" value="yes please">@T("Apply")</button>
+    </fieldset>
+    <fieldset class="contentItems bulk-items">
+        @Display(Model.ContentItems)
+    </fieldset>
+    @Display(Model.Pager)
+}

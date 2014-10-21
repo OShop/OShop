@@ -115,6 +115,7 @@
     <Content Include="Views\Fields\Location.cshtml" />
     <Content Include="Views\EditorTemplates\Fields\Location.cshtml" />
     <Content Include="Views\DefinitionTemplates\LocationFieldSettings.cshtml" />
+    <Content Include="Views\CustomersAdmin\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Orchard.Core">
@@ -129,6 +130,7 @@
   <ItemGroup>
     <Compile Include="Controllers\CheckoutController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
+    <Compile Include="Controllers\CustomersAdminController.cs" />
     <Compile Include="Controllers\LocationsAdminController.cs" />
     <Compile Include="Controllers\ProductsAdminController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
@@ -192,9 +194,11 @@
     <Compile Include="Models\VatRecord.cs" />
     <Compile Include="Navigation\AdminMenu.cs" />
     <Compile Include="Navigation\LocationsAdminMenu.cs" />
+    <Compile Include="Navigation\CustomersAdminMenu.cs" />
     <Compile Include="Navigation\ShippingAdminMenu.cs" />
     <Compile Include="Navigation\VatAdminMenu.cs" />
     <Compile Include="Navigation\ProductsAdminMenu.cs" />
+    <Compile Include="Permissions\CustomersPermissions.cs" />
     <Compile Include="Permissions\OShopPermissions.cs" />
     <Compile Include="Resources\OShopResources.cs" />
     <Compile Include="Services\CustomersService.cs" />
