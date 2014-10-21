@@ -103,7 +103,7 @@ namespace OShop.Controllers
 
         [HttpPost, ActionName("Index")]
         [FormValueRequired("submit.Filter")]
-        public ActionResult ListFilterPOST(ContentOptions options) {
+        public ActionResult IndexFilterPOST(ContentOptions options) {
             var routeValues = ControllerContext.RouteData.Values;
             if (options != null) {
                 routeValues["Options.OrderBy"] = options.OrderBy; //todo: don't hard-code the key
@@ -115,7 +115,7 @@ namespace OShop.Controllers
 
         [HttpPost, ActionName("Index")]
         [FormValueRequired("submit.BulkEdit")]
-        public ActionResult ListPOST(ContentOptions options, IEnumerable<int> itemIds, string returnUrl) {
+        public ActionResult IndexPOST(ContentOptions options, IEnumerable<int> itemIds, string returnUrl) {
             if (!Services.Authorizer.Authorize(Permissions.OShopPermissions.ManageShopSettings, T("Not allowed to manage shipping options")))
                 return new HttpUnauthorizedResult();
 
