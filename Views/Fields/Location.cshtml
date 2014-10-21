@@ -7,7 +7,7 @@
 
 @if (HasText(name) && country != null) {
     <p class="text-field">
-        <span class="name">@name:</span><br />
+        @*<span class="name">@name:</span><br />*@
         <span class="name">@T("Country"):</span> <span class="value">@country.Name</span>
         @if (state != null) {
             <br /><span class="name">@T("State"):</span> <span class="value">@state.Name</span>
