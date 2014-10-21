@@ -15,7 +15,6 @@ using Orchard.Settings;
 using Orchard.UI.Admin;
 using Orchard.UI.Navigation;
 using Orchard.UI.Notify;
-using OShop.Models;
 using OShop.Services;
 using OShop.ViewModels;
 using System;
