@@ -1,0 +1,9 @@
+﻿@model OShop.Models.CustomerAddressPart
+
+<fieldset>
+    <div>
+        @Html.LabelFor(m => m.AddressAlias, T("Address alias").Text, new { @class = "required" })
+        @Html.TextBoxFor(m => m.AddressAlias, new { @class = "text medium" })
+        @Html.ValidationMessageFor(m => m.AddressAlias, "*")
+    </div>
+</fieldset>

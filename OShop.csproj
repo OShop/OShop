@@ -116,6 +116,8 @@
     <Content Include="Views\EditorTemplates\Fields\Location.cshtml" />
     <Content Include="Views\DefinitionTemplates\LocationFieldSettings.cshtml" />
     <Content Include="Views\CustomersAdmin\Index.cshtml" />
+    <Content Include="Views\EditorTemplates\Parts\CustomerAddress.cshtml" />
+    <Content Include="Views\Parts\CustomerAddress.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Orchard.Core">
@@ -138,6 +140,7 @@
     <Compile Include="Controllers\ShippingZonesAdminController.cs" />
     <Compile Include="Controllers\ShoppingCartController.cs" />
     <Compile Include="Controllers\VatAdminController.cs" />
+    <Compile Include="Drivers\CustomerAddressPartDriver.cs" />
     <Compile Include="Drivers\CustomerPartDriver.cs" />
     <Compile Include="Drivers\LocationFieldDriver.cs" />
     <Compile Include="Drivers\ProductPartDriver.cs" />
