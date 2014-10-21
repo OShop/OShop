@@ -26,5 +26,7 @@
     <Place Parts_Customer="Content:3"/>
   </Match>
   <Place Parts_Customer_Edit="Content:3"/>
+  <Place Parts_CustomerAddress="Content:1"/>
+  <Place Parts_CustomerAddress_Edit="Content:1"/>
 
 </Placement>
