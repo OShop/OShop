@@ -1,6 +1,10 @@
 ﻿@model OShop.ViewModels.LocationFieldViewModel
 @using OShop.Helpers
 
+@{
+    Script.Require("jQuery");
+}
+
 <fieldset>
     <legend>@T("Location")</legend>
     <div>
@@ -20,3 +24,14 @@
     }
 </fieldset>
 
+@using (Script.Foot()) {
+    <script type="text/javascript">
+//<![CDATA[
+    $(function () {
+        $(".autoupdate").change(function () {
+            $(this).closest("form").submit();
+        });
+    })
+//]]>
+    </script>
+}

@@ -10,16 +10,22 @@ using Orchard.Environment.Extensions;
 using OShop.ViewModels;
 using OShop.Settings;
 using Orchard.Localization;
+using Orchard.Mvc;
 
 namespace OShop.Drivers {
     [OrchardFeature("OShop.Locations")]
     public class LocationFieldDriver : ContentFieldDriver<LocationField> {
         private readonly ILocationsService _locationService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         private const string TemplateName = "Fields/Location";
 
-        public LocationFieldDriver(ILocationsService locationService) {
+        public LocationFieldDriver(
+            ILocationsService locationService,
+            IHttpContextAccessor httpContextAccessor
+            ) {
             _locationService = locationService;
+            _httpContextAccessor = httpContextAccessor;
             T = NullLocalizer.Instance;
         }
 
@@ -46,13 +52,20 @@ namespace OShop.Drivers {
         }
 
         protected override DriverResult Editor(ContentPart part, LocationField field, dynamic shapeHelper) {
+            var httpContext = _httpContextAccessor.Current();
+            Int32? countryId = null;
+            String countryFieldName = GetPrefix(field, part) + ".CountryId";
+            if (httpContext.Request.Form[countryFieldName] != null) {
+                countryId = Int32.Parse(httpContext.Request.Form[countryFieldName]);
+            }
+
             return ContentShape("Fields_Location_Edit", GetDifferentiator(field, part),
                 () => {
                     var model = new LocationFieldViewModel() {
-                        CountryId = field.CountryId,
+                        CountryId = countryId.HasValue ? countryId.Value : field.CountryId,
                         StateId = field.StateId,
                         Countries = _locationService.GetEnabledCountries(),
-                        States = _locationService.GetEnabledStates(field.CountryId)
+                        States = _locationService.GetEnabledStates(countryId.HasValue ? countryId.Value : field.CountryId)
                     };
                     return shapeHelper.EditorTemplate(
                         TemplateName: TemplateName,
