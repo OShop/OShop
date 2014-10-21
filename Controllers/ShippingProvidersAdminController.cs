@@ -128,19 +128,19 @@ namespace OShop.Controllers
                         foreach (var item in checkedContentItems) {
                             _contentManager.Publish(item);
                         }
-                        Services.Notifier.Information(T("Content successfully published."));
+                        Services.Notifier.Information(T("Shipping Providers successfully published."));
                         break;
                     case ContentsBulkAction.Unpublish:
                         foreach (var item in checkedContentItems) {
                             _contentManager.Unpublish(item);
                         }
-                        Services.Notifier.Information(T("Content successfully unpublished."));
+                        Services.Notifier.Information(T("Shipping Providers successfully unpublished."));
                         break;
                     case ContentsBulkAction.Remove:
                         foreach (var item in checkedContentItems) {
                             _contentManager.Remove(item);
                         }
-                        Services.Notifier.Information(T("Content successfully removed."));
+                        Services.Notifier.Information(T("Shipping Providers successfully removed."));
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
