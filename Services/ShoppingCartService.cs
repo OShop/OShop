@@ -66,7 +66,19 @@ namespace OShop.Services {
         }
 
         private ShoppingCartRecord GetUserCart(int OwnerId) {
-            return _shoppingCartRepository.Get(sc => sc.OwnerId.HasValue && sc.OwnerId == OwnerId);
+            var userCarts = _shoppingCartRepository
+                .Fetch(sc => sc.OwnerId.HasValue && sc.OwnerId == OwnerId)
+                .OrderByDescending(sc => sc.ModifiedUtc)
+                .ToList();
+
+            if (userCarts.Count > 1) {
+                // Remove old carts
+                foreach (var cart in userCarts.Skip(1)) {
+                    _shoppingCartRepository.Delete(cart);
+                }
+            }
+
+            return userCarts.FirstOrDefault();
         }
 
         private ShoppingCartRecord CreateCart() {
