@@ -1,0 +1,8 @@
+﻿@{
+    Layout.Title = T("Edit address").Text;
+}
+
+@using (Html.BeginFormAntiForgeryPost(Url.Action("EditAddress", new { ReturnUrl = Request.QueryString["ReturnUrl"] }))) {
+    @Html.ValidationSummary()
+    @Display(Model)
+}

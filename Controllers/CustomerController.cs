@@ -1,11 +1,16 @@
-﻿using Orchard.ContentManagement;
+﻿using Orchard;
+using Orchard.ContentManagement;
+using Orchard.Core.Common.Models;
 using Orchard.Data;
 using Orchard.Environment.Extensions;
+using Orchard.Localization;
 using Orchard.Mvc;
 using Orchard.Mvc.Extensions;
 using Orchard.Security;
 using Orchard.Services;
 using Orchard.Themes;
+using Orchard.UI.Notify;
+using Orchard.Utility.Extensions;
 using OShop.Models;
 using OShop.Services;
 using System;
@@ -26,18 +31,23 @@ namespace OShop.Controllers
         private readonly ICustomersService _customersService;
 
         public CustomerController(
+            IOrchardServices orchardServices,
             IAuthenticationService authenticationService,
             IContentManager contentManager,
             ITransactionManager transactionManager,
             IClock clock,
             ICustomersService customersService
             ) {
+            Services = orchardServices;
             _authenticationService = authenticationService;
             _contentManager = contentManager;
             _transactionManager = transactionManager;
             _clock = clock;
             _customersService = customersService;
         }
+
+        public IOrchardServices Services { get; private set; }
+        public Localizer T { get; set; }
 
         [Themed]
         public ActionResult Index()
@@ -91,11 +101,13 @@ namespace OShop.Controllers
 
             _contentManager.Publish(customer);
 
+            Services.Notifier.Information(T("Your customer account was successfully created."));
+
             return this.RedirectLocal(returnUrl, () => RedirectToAction("Index"));
         }
 
         [Themed]
-        public ActionResult Edit() {
+        public ActionResult Edit(string returnUrl = null) {
             var user = _authenticationService.GetAuthenticatedUser();
             if (user == null) {
                 return RedirectToAction("LogOn", "Account", new { area = "Orchard.Users", ReturnUrl = Url.Action("Edit", "Customer", new { area = "OShop" }) });
@@ -103,10 +115,136 @@ namespace OShop.Controllers
 
             var customer = _customersService.GetCustomer(user.Id);
             if (customer != null) {
-                return new ShapeResult(this, _contentManager.BuildEditor(customer.ContentItem));
+                return View(_contentManager.BuildEditor(customer.ContentItem));
             }
             else {
                 return RedirectToAction("Create");
+            }
+        }
+
+        [HttpPost, ActionName("Edit")]
+        public ActionResult EditPost(string returnUrl = null) {
+            var user = _authenticationService.GetAuthenticatedUser();
+            if (user == null) {
+                return RedirectToAction("LogOn", "Account", new { area = "Orchard.Users", ReturnUrl = Url.Action("Create", "Customer", new { area = "OShop" }) });
+            }
+
+            var customerPart = _customersService.GetCustomer(user.Id);
+
+            var customer = _contentManager.Get(customerPart.ContentItem.Id, VersionOptions.Draft);
+            var model = _contentManager.UpdateEditor(customer, this);
+
+            if (!ModelState.IsValid) {
+                _transactionManager.Cancel();
+                return View(model);
+            }
+
+            _contentManager.Publish(customer);
+
+            Services.Notifier.Information(T("Your customer account was successfully updated."));
+
+            return this.RedirectLocal(returnUrl, () => RedirectToAction("Index"));
+        }
+
+        [Themed]
+        public ActionResult CreateAddress(string returnUrl = null) {
+            var user = _authenticationService.GetAuthenticatedUser();
+            if (user == null) {
+                return RedirectToAction("LogOn", "Account", new { area = "Orchard.Users", ReturnUrl = Url.Action("CreateAddress", "Customer", new { area = "OShop" }) });
+            }
+
+            return View(_contentManager.BuildEditor(_contentManager.New("CustomerAddress")));
+        }
+
+        [Themed]
+        [HttpPost, ActionName("CreateAddress")]
+        public ActionResult CreateAddressPost(bool IsDefaultAddress = false, string returnUrl = null) {
+            var user = _authenticationService.GetAuthenticatedUser();
+            if (user == null) {
+                return RedirectToAction("LogOn", "Account", new { area = "Orchard.Users", ReturnUrl = Url.Action("Create", "Customer", new { area = "OShop" }) });
+            }
+
+            var customerAddress = _contentManager.New("CustomerAddress");
+
+            _contentManager.Create(customerAddress, VersionOptions.Draft);
+            var model = _contentManager.UpdateEditor(customerAddress, this);
+
+            if (!ModelState.IsValid) {
+                _transactionManager.Cancel();
+                return View(model);
+            }
+
+            _contentManager.Publish(customerAddress);
+
+            if (IsDefaultAddress) {
+                SetDefaultAddress(customerAddress);
+            }
+
+            Services.Notifier.Information(T("Your customer account was successfully created."));
+
+            return this.RedirectLocal(returnUrl, () => RedirectToAction("Index"));
+        }
+
+        [Themed]
+        public ActionResult EditAddress(int id, string returnUrl = null) {
+            var user = _authenticationService.GetAuthenticatedUser();
+            if (user == null) {
+                return RedirectToAction("LogOn", "Account", new { area = "Orchard.Users", ReturnUrl = Url.Action("Edit", "Customer", new { area = "OShop" }) });
+            }
+
+            var address = _contentManager.Get(id, VersionOptions.Latest);
+            if (address == null || address.ContentType != "CustomerAddress") {
+                return HttpNotFound();
+            }
+
+            var addressCommonPart = address.As<CommonPart>();
+            if (addressCommonPart == null || addressCommonPart.Owner == null || addressCommonPart.Owner.Id != user.Id) {
+                return new HttpUnauthorizedResult();
+            }
+
+            return View(_contentManager.BuildEditor(address));
+        }
+
+        [Themed]
+        [HttpPost, ActionName("EditAddress")]
+        public ActionResult EditAddressPost(int id, string returnUrl = null) {
+            var user = _authenticationService.GetAuthenticatedUser();
+            if (user == null) {
+                return RedirectToAction("LogOn", "Account", new { area = "Orchard.Users", ReturnUrl = Url.Action("Create", "Customer", new { area = "OShop" }) });
+            }
+
+            var address = _contentManager.Get(id, VersionOptions.Latest);
+            if (address == null || address.ContentType != "CustomerAddress") {
+                return HttpNotFound();
+            }
+
+            var addressCommonPart = address.As<CommonPart>();
+            if (addressCommonPart == null || addressCommonPart.Owner == null || addressCommonPart.Owner.Id != user.Id) {
+                return new HttpUnauthorizedResult();
+            }
+
+            var model = _contentManager.UpdateEditor(address, this);
+
+            if (!ModelState.IsValid) {
+                _transactionManager.Cancel();
+                return View(model);
+            }
+
+            _contentManager.Publish(address);
+
+            if (ModelState["IsDefaultAddress"] != null) {
+                SetDefaultAddress(address);
+            }
+
+            Services.Notifier.Information(T("Your address was successfully updated."));
+
+            return this.RedirectLocal(returnUrl, () => RedirectToAction("Index"));
+        }
+
+        private void SetDefaultAddress(ContentItem customerAddress) {
+            var customer = _customersService.GetCustomer();
+            if (customer != null) {
+                customer.DefaultAddressId = customerAddress.Id;
             }
         }
 

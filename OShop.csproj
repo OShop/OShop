@@ -118,6 +118,9 @@
     <Content Include="Views\CustomersAdmin\Index.cshtml" />
     <Content Include="Views\EditorTemplates\Parts\CustomerAddress.cshtml" />
     <Content Include="Views\Parts\CustomerAddress.cshtml" />
+    <Content Include="Views\Customer\CreateAddress.cshtml" />
+    <Content Include="Views\Customer\Edit.cshtml" />
+    <Content Include="Views\Customer\EditAddress.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Orchard.Core">
