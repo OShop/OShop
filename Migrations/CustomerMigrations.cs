@@ -11,7 +11,8 @@ namespace OShop.Migrations {
             SchemaBuilder.CreateTable("CustomerPartRecord", table => table
                  .ContentPartRecord()
                  .Column<string>("FirstName")
-                 .Column<string>("LastName"));
+                 .Column<string>("LastName")
+                 .Column<int>("DefaultAddressId"));
 
             SchemaBuilder.CreateTable("CustomerAddressPartRecord", table => table
                  .ContentPartRecord()

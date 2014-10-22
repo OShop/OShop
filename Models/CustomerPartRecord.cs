@@ -8,5 +8,6 @@ namespace OShop.Models {
     public class CustomerPartRecord : ContentPartRecord {
         public virtual String FirstName { get; set; }
         public virtual String LastName { get; set; }
+        public virtual Int32 DefaultAddressId { get; set; }
     }
 }
