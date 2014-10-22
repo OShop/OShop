@@ -3,12 +3,12 @@
 <fieldset>
     <legend>@T("Customer account")</legend>
     <div>
-        @Html.LabelFor(m => m.FirstName, T("First name"))
+        @Html.LabelFor(m => m.FirstName, T("First name").Text, new { @class = "required" })
         @Html.TextBoxFor(m => m.FirstName, new { @class = "text medium" })
         @Html.ValidationMessageFor(m => m.FirstName, "*")
     </div>
     <div>
-        @Html.LabelFor(m => m.LastName, T("Last name"))
+        @Html.LabelFor(m => m.LastName, T("Last name").Text, new { @class = "required" })
         @Html.TextBoxFor(m => m.LastName, new { @class = "text medium" })
         @Html.ValidationMessageFor(m => m.LastName, "*")
     </div>
