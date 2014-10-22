@@ -35,13 +35,13 @@ namespace OShop.Models {
             get { return this.Retrieve(x => x.City); }
             set { this.Store(x => x.City, value); }
         }
-        public LocationsCountryRecord Country {
-            get { return Record.LocationsCountryRecord; }
-            set { Record.LocationsCountryRecord = value; }
+        public Int32 CountryId {
+            get { return this.Retrieve(x => x.LocationsCountryId); }
+            set { this.Store(x => x.LocationsCountryId, value); }
         }
-        public LocationsStateRecord State {
-            get { return Record.LocationsStateRecord; }
-            set { Record.LocationsStateRecord = value; }
+        public Int32 StateId {
+            get { return this.Retrieve(x => x.LocationsStateId); }
+            set { this.Store(x => x.LocationsStateId, value); }
         }
     }
 }

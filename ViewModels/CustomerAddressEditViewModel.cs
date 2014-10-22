@@ -7,6 +7,7 @@ using System.Web;
 
 namespace OShop.ViewModels {
     public class CustomerAddressEditViewModel {
+        public Boolean IsDefault { get; set; }
         [Required]
         public String AddressAlias { get; set; }
         public String Company { get; set; }

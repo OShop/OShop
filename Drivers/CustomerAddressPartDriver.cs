@@ -1,5 +1,6 @@
 ﻿using Orchard.ContentManagement;
 using Orchard.ContentManagement.Drivers;
+using Orchard.Core.Common.Models;
 using Orchard.Environment.Extensions;
 using Orchard.Localization;
 using Orchard.Mvc;
@@ -16,6 +17,7 @@ namespace OShop.Drivers {
     [OrchardFeature("OShop.Customers")]
     public class CustomerAddressPartDriver : ContentPartDriver<CustomerAddressPart> {
         private readonly ILocationsService _locationService;
+        private readonly ICustomersService _customersService;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         private const string TemplateName = "Parts/CustomerAddress";
@@ -24,9 +26,11 @@ namespace OShop.Drivers {
 
         public CustomerAddressPartDriver(
             ILocationsService locationService,
+            ICustomersService customersService,
             IHttpContextAccessor httpContextAccessor
             ) {
             _locationService = locationService;
+            _customersService = customersService;
             _httpContextAccessor = httpContextAccessor;
             T = NullLocalizer.Instance;
         }
@@ -41,7 +45,7 @@ namespace OShop.Drivers {
         // GET
         protected override DriverResult Editor(CustomerAddressPart part, dynamic shapeHelper) {
             var httpContext = _httpContextAccessor.Current();
-            int countryId = part.Country != null ? part.Country.Id : 0;
+            int countryId = part.CountryId;
 
             if (httpContext.Request.Form[Prefix + ".CountryId"] != null) {
                 countryId = Int32.Parse(httpContext.Request.Form[Prefix + ".CountryId"]);
@@ -60,10 +64,18 @@ namespace OShop.Drivers {
                 Zipcode = part.Zipcode,
                 City = part.City,
                 CountryId = countryId,
-                StateId = part.State != null ? part.State.Id : 0,
+                StateId = part.StateId,
                 Countries = _locationService.GetEnabledCountries(),
                 States = _locationService.GetEnabledStates(countryId)
             };
+
+            var commonPart = part.ContentItem.As<CommonPart>();
+            if (commonPart != null && commonPart.Owner != null) {
+                var customer = _customersService.GetCustomer(commonPart.Owner.Id);
+                if (customer != null && customer.DefaultAddressId == part.Id) {
+                    model.IsDefault = true;
+                }
+            }
 
             return ContentShape("Parts_CustomerAddress_Edit",
                 () => shapeHelper.EditorTemplate(
@@ -93,8 +105,24 @@ namespace OShop.Drivers {
                     part.Address2 = model.Address2;
                     part.Zipcode = model.Zipcode;
                     part.City = model.City;
-                    part.Country = _locationService.GetCountry(model.CountryId);
-                    part.State = model.StateId > 0 ? _locationService.GetState(model.StateId) : null;
+                    part.CountryId = model.CountryId;
+                    part.StateId = model.StateId;
+
+                    var commonPart = part.ContentItem.As<CommonPart>();
+                    if (commonPart != null && commonPart.Owner != null) {
+                        var customer = _customersService.GetCustomer(commonPart.Owner.Id);
+                        if (customer != null) {
+                            if (model.IsDefault) {
+                                // Set default address
+                                customer.DefaultAddressId = part.Id;
+                            }
+                            else if (customer.DefaultAddressId == part.Id) {
+                                // Reset default address
+                                customer.DefaultAddressId = 0;
+                            }
+                        }
+                    }
+
                 }
             }
 

@@ -10,6 +10,11 @@
         @Html.LabelFor(m => m.AddressAlias, T("Address alias").Text, new { @class = "required" })
         @Html.TextBoxFor(m => m.AddressAlias, new { @class = "text medium" })
         @Html.ValidationMessageFor(m => m.AddressAlias, "*")
+        <span class="hint">@T("(e.g.: Home, Office...)")</span>
+    </div>
+    <div>
+        @Html.CheckBoxFor(m=>m.IsDefault)
+        @Html.LabelFor(m => m.IsDefault, T("Set as default address").Text, new { @class = "forcheckbox"})
     </div>
     <div>
         @Html.LabelFor(m => m.Company, T("Company"))

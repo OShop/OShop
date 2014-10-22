@@ -24,8 +24,8 @@ namespace OShop.Migrations {
                  .Column<string>("Address2")
                  .Column<string>("Zipcode")
                  .Column<string>("City")
-                 .Column<int>("LocationsCountryRecord_Id")
-                 .Column<int>("LocationsStateRecord_Id"));
+                 .Column<int>("LocationsCountryId")
+                 .Column<int>("LocationsStateId"));
 
             ContentDefinitionManager.AlterPartDefinition("CustomerPart", part => part
                 .Attachable(false)
