@@ -1,4 +1,6 @@
 ﻿using Orchard.ContentManagement;
+using Orchard.Core.Common.Models;
+using Orchard.Security;
 using System;
 
 namespace OShop.Models {
@@ -42,6 +44,10 @@ namespace OShop.Models {
         public Int32 StateId {
             get { return this.Retrieve(x => x.LocationsStateId); }
             set { this.Store(x => x.LocationsStateId, value); }
+        }
+        public IUser Owner {
+            get { return this.As<CommonPart>().Owner; }
+            set { this.As<CommonPart>().Owner = value; }
         }
     }
 }

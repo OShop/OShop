@@ -192,13 +192,12 @@ namespace OShop.Controllers
                 return RedirectToAction("LogOn", "Account", new { area = "Orchard.Users", ReturnUrl = Url.Action("Edit", "Customer", new { area = "OShop" }) });
             }
 
-            var address = _contentManager.Get(id, VersionOptions.Latest);
-            if (address == null || address.ContentType != "CustomerAddress") {
+            var address = _contentManager.Get<CustomerAddressPart>(id, VersionOptions.Latest);
+            if (address == null) {
                 return HttpNotFound();
             }
 
-            var addressCommonPart = address.As<CommonPart>();
-            if (addressCommonPart == null || addressCommonPart.Owner == null || addressCommonPart.Owner.Id != user.Id) {
+            if (address.Owner == null || address.Owner.Id != user.Id) {
                 return new HttpUnauthorizedResult();
             }
 
@@ -213,28 +212,23 @@ namespace OShop.Controllers
                 return RedirectToAction("LogOn", "Account", new { area = "Orchard.Users", ReturnUrl = Url.Action("Create", "Customer", new { area = "OShop" }) });
             }
 
-            var address = _contentManager.Get(id, VersionOptions.Latest);
-            if (address == null || address.ContentType != "CustomerAddress") {
+            var address = _contentManager.Get<CustomerAddressPart>(id, VersionOptions.Latest);
+            if (address == null) {
                 return HttpNotFound();
             }
 
-            var addressCommonPart = address.As<CommonPart>();
-            if (addressCommonPart == null || addressCommonPart.Owner == null || addressCommonPart.Owner.Id != user.Id) {
+            if (address.Owner == null || address.Owner.Id != user.Id) {
                 return new HttpUnauthorizedResult();
             }
 
-            var model = _contentManager.UpdateEditor(address, this);
+            var model = _contentManager.UpdateEditor(address.ContentItem, this);
 
             if (!ModelState.IsValid) {
                 _transactionManager.Cancel();
                 return View(model);
             }
 
-            _contentManager.Publish(address);
-
-            if (ModelState["IsDefaultAddress"] != null) {
-                SetDefaultAddress(address);
-            }
+            _contentManager.Publish(address.ContentItem);
 
             Services.Notifier.Information(T("Your address was successfully updated."));
 

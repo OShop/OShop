@@ -69,9 +69,8 @@ namespace OShop.Drivers {
                 States = _locationService.GetEnabledStates(countryId)
             };
 
-            var commonPart = part.ContentItem.As<CommonPart>();
-            if (commonPart != null && commonPart.Owner != null) {
-                var customer = _customersService.GetCustomer(commonPart.Owner.Id);
+            if (part.Owner != null) {
+                var customer = _customersService.GetCustomer(part.Owner.Id);
                 if (customer != null && customer.DefaultAddressId == part.Id) {
                     model.IsDefault = true;
                 }
@@ -108,9 +107,8 @@ namespace OShop.Drivers {
                     part.CountryId = model.CountryId;
                     part.StateId = model.StateId;
 
-                    var commonPart = part.ContentItem.As<CommonPart>();
-                    if (commonPart != null && commonPart.Owner != null) {
-                        var customer = _customersService.GetCustomer(commonPart.Owner.Id);
+                    if (part.Owner != null) {
+                        var customer = _customersService.GetCustomer(part.Owner.Id);
                         if (customer != null) {
                             if (model.IsDefault) {
                                 // Set default address
