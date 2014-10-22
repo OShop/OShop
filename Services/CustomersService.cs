@@ -11,7 +11,7 @@ using System.Linq;
 using System.Web;
 
 namespace OShop.Services {
-    [OrchardFeature("OShop.ShoppingCart")]
+    [OrchardFeature("OShop.Customers")]
     public class CustomersService : ICustomersService {
         private readonly IContentManager _contentManager;
         private readonly IAuthenticationService _authenticationService;
@@ -48,6 +48,23 @@ namespace OShop.Services {
             else {
                 return null;
             }
+        }
+
+        public IEnumerable<CustomerAddressPart> GetAddresses() {
+            var user = _authenticationService.GetAuthenticatedUser();
+
+            if (user == null) {
+                return new List<CustomerAddressPart>();
+            }
+
+            return GetAddresses(user.Id);
+        }
+
+        public IEnumerable<CustomerAddressPart> GetAddresses(int UserId) {
+            return _contentManager.Query<CommonPart, CommonPartRecord>("CustomerAddress")
+                .Where(c => c.OwnerId == UserId)
+                .ForPart<CustomerAddressPart>()
+                .List();
         }
     }
 }
