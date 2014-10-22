@@ -58,10 +58,14 @@ namespace OShop.Drivers {
             if (httpContext.Request.Form[countryFieldName] != null) {
                 countryId = Int32.Parse(httpContext.Request.Form[countryFieldName]);
             }
+            else if (field.CountryId <= 0) {
+                countryId = _locationService.GetDefaultCountryId();
+            }
 
             return ContentShape("Fields_Location_Edit", GetDifferentiator(field, part),
                 () => {
                     var model = new LocationFieldViewModel() {
+                        Settings = field.PartFieldDefinition.Settings.GetModel<LocationFieldSettings>(),
                         CountryId = countryId.HasValue ? countryId.Value : field.CountryId,
                         StateId = field.StateId,
                         Countries = _locationService.GetEnabledCountries(),
