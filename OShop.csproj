@@ -224,6 +224,7 @@
     <Compile Include="Services\VatService.cs" />
     <Compile Include="Settings\LocationFieldEditorEvents.cs" />
     <Compile Include="Settings\LocationFieldSettings.cs" />
+    <Compile Include="ViewModels\CustomerAddressEditViewModel.cs" />
     <Compile Include="ViewModels\LocationFieldViewModel.cs" />
     <Compile Include="ViewModels\LocationsBulkAction.cs" />
     <Compile Include="ViewModels\LocationsStatesIndexViewModel.cs" />

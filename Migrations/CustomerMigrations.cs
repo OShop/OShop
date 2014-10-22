@@ -15,8 +15,14 @@ namespace OShop.Migrations {
 
             SchemaBuilder.CreateTable("CustomerAddressPartRecord", table => table
                  .ContentPartRecord()
-                 .Column<int>("CustomerPartRecord_Id")
-                 .Column<string>("Label")
+                 .Column<string>("AddressAlias")
+                 .Column<string>("Company")
+                 .Column<string>("FirstName")
+                 .Column<string>("LastName")
+                 .Column<string>("Address1")
+                 .Column<string>("Address2")
+                 .Column<string>("Zipcode")
+                 .Column<string>("City")
                  .Column<int>("LocationsCountryRecord_Id")
                  .Column<int>("LocationsStateRecord_Id"));
 
@@ -32,16 +38,11 @@ namespace OShop.Migrations {
 
             ContentDefinitionManager.AlterPartDefinition("CustomerAddressPart", part => part
                 .Attachable(false)
-                .WithField("Name", f => f.OfType("TextField"))
-                .WithField("AddressLine1", f => f.OfType("TextField"))
-                .WithField("AddressLine2", f => f.OfType("TextField"))
-                .WithField("Zipcode", f => f.OfType("TextField"))
-                .WithField("City", f => f.OfType("TextField"))
                 );
 
             ContentDefinitionManager.AlterTypeDefinition("CustomerAddress", type => type
                 .WithPart("CommonPart")
-                .WithPart("AddressPart")
+                .WithPart("CustomerAddressPart")
                 .Creatable(false)
                 );
 

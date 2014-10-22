@@ -1,4 +1,9 @@
-﻿@model OShop.Models.CustomerAddressPart
+﻿@model OShop.ViewModels.CustomerAddressEditViewModel
+@using OShop.Helpers
+
+@{
+    Script.Require("jQuery");
+}
 
 <fieldset>
     <div>
@@ -6,4 +11,65 @@
         @Html.TextBoxFor(m => m.AddressAlias, new { @class = "text medium" })
         @Html.ValidationMessageFor(m => m.AddressAlias, "*")
     </div>
+    <div>
+        @Html.LabelFor(m => m.Company, T("Company"))
+        @Html.TextBoxFor(m => m.Company, new { @class = "text medium" })
+        @Html.ValidationMessageFor(m => m.Company, "*")
+    </div>
+    <div>
+        @Html.LabelFor(m => m.FirstName, T("First name").Text, new { @class = "required" })
+        @Html.TextBoxFor(m => m.FirstName, new { @class = "text medium" })
+        @Html.ValidationMessageFor(m => m.FirstName, "*")
+    </div>
+    <div>
+        @Html.LabelFor(m => m.LastName, T("Last name").Text, new { @class = "required" })
+        @Html.TextBoxFor(m => m.LastName, new { @class = "text medium" })
+        @Html.ValidationMessageFor(m => m.LastName, "*")
+    </div>
+    <div>
+        @Html.LabelFor(m => m.Address1, T("Address").Text, new { @class = "required" })
+        @Html.TextBoxFor(m => m.Address1, new { @class = "text medium" })
+        @Html.ValidationMessageFor(m => m.Address1, "*")
+    </div>
+    <div>
+        @Html.TextBoxFor(m => m.Address2, new { @class = "text medium" })
+        @Html.ValidationMessageFor(m => m.Address2, "*")
+    </div>
+    <div>
+        @Html.LabelFor(m => m.Zipcode, T("Zip code").Text, new { @class = "required" })
+        @Html.TextBoxFor(m => m.Zipcode, new { @class = "text medium" })
+        @Html.ValidationMessageFor(m => m.Zipcode, "*")
+    </div>
+    <div>
+        @Html.LabelFor(m => m.City, T("City").Text, new { @class = "required" })
+        @Html.TextBoxFor(m => m.City, new { @class = "text medium" })
+        @Html.ValidationMessageFor(m => m.City, "*")
+    </div>
+    <div>
+        @Html.LabelFor(m => m.CountryId, T("Country").Text, new { @class = "required" })
+        @Html.DropDownListFor(m => m.CountryId, Model.Countries.BuildCountrySelectList(), new { @class = "autoupdate" })
+        @Html.ValidationMessageFor(m => m.CountryId)
+    </div>
+    @if (Model.States.Any()) {
+        <div>
+            @Html.LabelFor(m => m.StateId, T("State").Text, new { @class = "required" })
+            @Html.DropDownListFor(m => m.StateId, Model.States.BuildStateSelectList())
+            @Html.ValidationMessageFor(m => m.StateId)
+        </div>
+    }
+    else {
+        <input type="hidden" name="@Html.NameFor(m => m.StateId)" value="0" />
+    }
 </fieldset>
+
+@using (Script.Foot()) {
+    <script type="text/javascript">
+//<![CDATA[
+    $(function () {
+        $(".autoupdate").change(function () {
+            $(this).closest("form").submit();
+        });
+    })
+//]]>
+    </script>
+}
