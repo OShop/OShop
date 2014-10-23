@@ -66,6 +66,24 @@ namespace OShop.Controllers
             }
         }
 
+        [HttpPost, ActionName("Index")]
+        [FormValueRequired("Action")]
+        public ActionResult IndexPost(string Action, int CustomerAddressId) {
+            var user = _authenticationService.GetAuthenticatedUser();
+            if (user == null) {
+                return RedirectToAction("LogOn", "Account", new { area = "Orchard.Users", ReturnUrl = Url.Action("Index", "Customer", new { area = "OShop" }) });
+            }
+
+            switch (Action) {
+                case "Edit":
+                    return RedirectToAction("EditAddress", "Customer", new { area = "OShop", id = CustomerAddressId, ReturnUrl = Url.Action("Index", "Customer", new { area = "OShop" }) });
+                case "Remove":
+                    return RedirectToAction("RemoveAddress", "Customer", new { area = "OShop", id = CustomerAddressId, ReturnUrl = Url.Action("Index", "Customer", new { area = "OShop" }) });
+                default :
+                    return Index();
+            }
+        }
+
         [Themed]
         public ActionResult Create(string returnUrl = null) {
             var user = _authenticationService.GetAuthenticatedUser();
@@ -83,6 +101,7 @@ namespace OShop.Controllers
         }
 
         [HttpPost, ActionName("Create")]
+        [FormValueRequired("submit.Save")]
         public ActionResult CreatePost(string returnUrl = null) {
             var user = _authenticationService.GetAuthenticatedUser();
             if (user == null) {
@@ -123,6 +142,7 @@ namespace OShop.Controllers
         }
 
         [HttpPost, ActionName("Edit")]
+        [FormValueRequired("submit.Save")]
         public ActionResult EditPost(string returnUrl = null) {
             var user = _authenticationService.GetAuthenticatedUser();
             if (user == null) {
@@ -158,6 +178,7 @@ namespace OShop.Controllers
 
         [Themed]
         [HttpPost, ActionName("CreateAddress")]
+        [FormValueRequired("submit.Save")]
         public ActionResult CreateAddressPost(bool IsDefaultAddress = false, string returnUrl = null) {
             var user = _authenticationService.GetAuthenticatedUser();
             if (user == null) {
@@ -206,6 +227,7 @@ namespace OShop.Controllers
 
         [Themed]
         [HttpPost, ActionName("EditAddress")]
+        [FormValueRequired("submit.Save")]
         public ActionResult EditAddressPost(int id, string returnUrl = null) {
             var user = _authenticationService.GetAuthenticatedUser();
             if (user == null) {
@@ -231,6 +253,28 @@ namespace OShop.Controllers
             _contentManager.Publish(address.ContentItem);
 
             Services.Notifier.Information(T("Your address was successfully updated."));
+
+            return this.RedirectLocal(returnUrl, () => RedirectToAction("Index"));
+        }
+
+        public ActionResult RemoveAddress(int id, string returnUrl = null) {
+            var user = _authenticationService.GetAuthenticatedUser();
+            if (user == null) {
+                return RedirectToAction("LogOn", "Account", new { area = "Orchard.Users", ReturnUrl = Url.Action("Create", "Customer", new { area = "OShop" }) });
+            }
+
+            var address = _contentManager.Get<CustomerAddressPart>(id, VersionOptions.Latest);
+            if (address == null) {
+                return HttpNotFound();
+            }
+
+            if (address.Owner == null || address.Owner.Id != user.Id) {
+                return new HttpUnauthorizedResult();
+            }
+
+            _contentManager.Remove(address.ContentItem);
+
+            Services.Notifier.Information(T("Your address was successfully removed."));
 
             return this.RedirectLocal(returnUrl, () => RedirectToAction("Index"));
         }

@@ -88,39 +88,37 @@ namespace OShop.Drivers {
         // POST
         protected override DriverResult Editor(CustomerAddressPart part, IUpdateModel updater, dynamic shapeHelper) {
             var model = new CustomerAddressEditViewModel();
-            if (updater.TryUpdateModel(model, Prefix, null, null)) {
-                if (model.CountryId <= 0) {
-                    updater.AddModelError("CountryId", T("Please select your country."));
-                }
-                else if (_locationService.GetStates(model.CountryId).Any() && model.StateId <= 0) {
-                    updater.AddModelError("StateId", T("Please select your state."));
-                }
-                else {
-                    part.AddressAlias = model.AddressAlias;
-                    part.Company = model.Company;
-                    part.FirstName = model.FirstName;
-                    part.LastName = model.LastName;
-                    part.Address1 = model.Address1;
-                    part.Address2 = model.Address2;
-                    part.Zipcode = model.Zipcode;
-                    part.City = model.City;
-                    part.CountryId = model.CountryId;
-                    part.StateId = model.StateId;
 
-                    if (part.Owner != null) {
-                        var customer = _customersService.GetCustomer(part.Owner.Id);
-                        if (customer != null) {
-                            if (model.IsDefault) {
-                                // Set default address
-                                customer.DefaultAddressId = part.Id;
-                            }
-                            else if (customer.DefaultAddressId == part.Id) {
-                                // Reset default address
-                                customer.DefaultAddressId = 0;
-                            }
-                        }
+            Boolean modelValid = updater.TryUpdateModel(model, Prefix, null, null);
+
+            if (model.CountryId <= 0) {
+                updater.AddModelError("CountryId", T("Please select your country."));
+            }
+            else if (_locationService.GetStates(model.CountryId).Any() && model.StateId <= 0) {
+                updater.AddModelError("StateId", T("Please select your state."));
+            }
+            part.AddressAlias = model.AddressAlias;
+            part.Company = model.Company;
+            part.FirstName = model.FirstName;
+            part.LastName = model.LastName;
+            part.Address1 = model.Address1;
+            part.Address2 = model.Address2;
+            part.Zipcode = model.Zipcode;
+            part.City = model.City;
+            part.CountryId = model.CountryId;
+            part.StateId = model.StateId;
+
+            if (modelValid && part.Owner != null) {
+                var customer = _customersService.GetCustomer(part.Owner.Id);
+                if (customer != null) {
+                    if (model.IsDefault) {
+                        // Set default address
+                        customer.DefaultAddressId = part.Id;
                     }
-
+                    else if (customer.DefaultAddressId == part.Id) {
+                        // Reset default address
+                        customer.DefaultAddressId = 0;
+                    }
                 }
             }
 

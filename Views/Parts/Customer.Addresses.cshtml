@@ -1,0 +1,25 @@
+﻿@using OShop.Models
+
+@{
+    Script.Require("OShop");
+    
+    CustomerPart contentPart = Model.ContentPart;
+    IEnumerable<CustomerAddressPart> addresses = Model.Addresses;
+}
+
+@Html.ActionLink(T("Create new address").Text, "CreateAddress", new { area = "OShop" })
+
+@if (addresses.Any()) {
+    using (Html.BeginFormAntiForgeryPost(Url.Action("Index", "Customer", new { area = "OShop" }))) {
+        <fieldset>
+            <label for="CustomerAddress">@T("Your addresses :")</label>
+            <select id="CustomerAddress" name="CustomerAddressId">
+                @foreach (var address in addresses) {
+                    <option value="@address.Id" @(address.Id == contentPart.DefaultAddressId ? "selected" : "")>@address.AddressAlias</option>
+                }
+            </select>
+            <button type="submit" name="Action" value="Edit">@T("Edit")</button>
+            <button type="submit" name="Action" value="Remove" class="oshop-confirm" data-msg="@T("Are you sure you want to remove this address ?")">@T("Remove")</button>
+        </fieldset>
+    }
+}

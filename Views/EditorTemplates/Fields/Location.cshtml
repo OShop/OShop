@@ -2,14 +2,14 @@
 @using OShop.Helpers
 
 @{
-    Script.Require("jQuery");
+    Script.Require("OShop");
 }
 
 <fieldset>
     @*<legend>@T("Location")</legend>*@
     <div>
         @Html.LabelFor(m => m.CountryId, T("Country").Text, Model.Settings.Required ? new { @class = "required" } : null)
-        @Html.DropDownListFor(m => m.CountryId, Model.Countries.BuildCountrySelectList(), new { @class = "autoupdate" })
+        @Html.DropDownListFor(m => m.CountryId, Model.Countries.BuildCountrySelectList(), new { @class = "oshop-autoupdate" })
         @Html.ValidationMessageFor(m => m.CountryId)
     </div>
     @if (Model.States.Any()) {
@@ -23,15 +23,3 @@
         <input type="hidden" name="@Html.NameFor(m => m.StateId)" value="0"/>
     }
 </fieldset>
-
-@using (Script.Foot()) {
-    <script type="text/javascript">
-//<![CDATA[
-    $(function () {
-        $(".autoupdate").change(function () {
-            $(this).closest("form").submit();
-        });
-    })
-//]]>
-    </script>
-}

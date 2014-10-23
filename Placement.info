@@ -24,6 +24,7 @@
   <!-- Customer -->
   <Match DisplayType="Detail">
     <Place Parts_Customer="Content:3"/>
+    <Place Parts_Customer_Addresses="Content:5"/>
   </Match>
   <Place Parts_Customer_Edit="Content:3"/>
   <Place Parts_CustomerAddress="Content:1"/>

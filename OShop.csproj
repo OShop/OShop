@@ -74,10 +74,23 @@
     <Content Include="Content\Admin\Images\Disabled.png" />
     <Content Include="Content\Admin\Images\Enabled.png" />
     <Content Include="Content\Admin\Images\Default.png" />
-    <Content Include="Scripts\admin-shipping.js" />
+    <Content Include="Scripts\oshop-admin.js" />
+    <Content Include="Scripts\oshop-admin.min.js">
+      <DependentUpon>oshop-admin.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\oshop.js" />
+    <Content Include="Scripts\oshop.min.js">
+      <DependentUpon>oshop.js</DependentUpon>
+    </Content>
     <Content Include="Styles\Images\menu.oshop.png" />
     <Content Include="Content\Web.config">
       <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Scripts\oshop.min.js.map">
+      <DependentUpon>oshop.min.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\oshop-admin.min.js.map">
+      <DependentUpon>oshop-admin.min.js</DependentUpon>
     </Content>
     <None Include="Styles\oshop-admin.less" />
     <Content Include="Styles\oshop-admin.css">
@@ -121,6 +134,7 @@
     <Content Include="Views\Customer\CreateAddress.cshtml" />
     <Content Include="Views\Customer\Edit.cshtml" />
     <Content Include="Views\Customer\EditAddress.cshtml" />
+    <Content Include="Views\Parts\Customer.Addresses.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Orchard.Core">
@@ -160,6 +174,7 @@
     <Compile Include="Handlers\ProductPartHandler.cs" />
     <Compile Include="Handlers\ShippingPartHandler.cs" />
     <Compile Include="Handlers\ShippingProviderPartHandler.cs" />
+    <Compile Include="Helpers\CustomersHelpers.cs" />
     <Compile Include="Helpers\LocationsExtensions.cs" />
     <Compile Include="Helpers\ShippingExtensions.cs" />
     <Compile Include="Helpers\ShoppingCartExtensions.cs" />

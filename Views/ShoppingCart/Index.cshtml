@@ -5,8 +5,8 @@
 
 @{
     Layout.Title = T("My shopping cart");
-    
-    Script.Require("jQuery");
+
+    Script.Require("OShop");
 
 
     // Init View model
@@ -64,7 +64,7 @@
                         </td>
                         <td>
                             <input type="hidden" name="@String.Format("CartItems[{0}].Id", i)" value="@entry.Id" />
-                            <input type="number" name="@String.Format("CartItems[{0}].Quantity", i)" value="@entry.Quantity" class="quantity autoupdate" />
+                            <input type="number" name="@String.Format("CartItems[{0}].Quantity", i)" value="@entry.Quantity" class="quantity oshop-autoupdate" />
                         </td>
                         <td>
                             @if (Model.VatEnabled && entry.Item.VAT != null) {
@@ -130,13 +130,13 @@
                     <legend>@T("Location")</legend>
                     <div>
                         @Html.LabelFor(m => m.CountryId, T("Country"))
-                        @Html.DropDownListFor(m => m.CountryId, Model.Countries.BuildCountrySelectList(), new { @class = "autoupdate" })
+                        @Html.DropDownListFor(m => m.CountryId, Model.Countries.BuildCountrySelectList(), new { @class = "oshop-autoupdate" })
                         @Html.ValidationMessageFor(m => m.CountryId)
                     </div>
                     @if (Model.States.Any()) {
                         <div>
                             @Html.LabelFor(m => m.StateId, T("State"))
-                            @Html.DropDownListFor(m => m.StateId, Model.States.BuildStateSelectList(), new { @class = "autoupdate" })
+                            @Html.DropDownListFor(m => m.StateId, Model.States.BuildStateSelectList(), new { @class = "oshop-autoupdate" })
                             @Html.ValidationMessageFor(m => m.StateId)
                         </div>
                     }
@@ -148,7 +148,7 @@
                     <ul>
                         @foreach (var provider in Model.ShippingProviders) {
                             <li>
-                                @Html.RadioButtonFor(m => m.ShippingProviderId, provider.Provider.Id, new { id = "ShippingOption" + provider.Provider.Id, @class = "autoupdate" })
+                                @Html.RadioButtonFor(m => m.ShippingProviderId, provider.Provider.Id, new { id = "ShippingOption" + provider.Provider.Id, @class = "oshop-autoupdate" })
                                 @Html.LabelFor(m => m.ShippingProviderId, provider.Provider.As<ITitleAspect>().Title, new { @for = "ShippingOption" + provider.Provider.Id })
                                 <span>
                                     @if (Model.VatEnabled) {
@@ -186,15 +186,3 @@
         </p>
     }
 </div>
-
-@using (Script.Foot()) {
-    <script type="text/javascript">
-//<![CDATA[
-    $(function () {
-        $("#shoppingcartform .autoupdate").change(function () {
-            $("#shoppingcartform").submit();
-        });
-    })
-//]]>
-    </script>
-}

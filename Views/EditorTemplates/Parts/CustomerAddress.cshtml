@@ -1,10 +1,6 @@
 ﻿@model OShop.ViewModels.CustomerAddressEditViewModel
 @using OShop.Helpers
 
-@{
-    Script.Require("jQuery");
-}
-
 <fieldset>
     <div>
         @Html.LabelFor(m => m.AddressAlias, T("Address alias").Text, new { @class = "required" })
@@ -52,7 +48,7 @@
     </div>
     <div>
         @Html.LabelFor(m => m.CountryId, T("Country").Text, new { @class = "required" })
-        @Html.DropDownListFor(m => m.CountryId, Model.Countries.BuildCountrySelectList(), new { @class = "autoupdate" })
+        @Html.DropDownListFor(m => m.CountryId, Model.Countries.BuildCountrySelectList())
         @Html.ValidationMessageFor(m => m.CountryId)
     </div>
     @if (Model.States.Any()) {
@@ -66,15 +62,3 @@
         <input type="hidden" name="@Html.NameFor(m => m.StateId)" value="0" />
     }
 </fieldset>
-
-@using (Script.Foot()) {
-    <script type="text/javascript">
-//<![CDATA[
-    $(function () {
-        $(".autoupdate").change(function () {
-            $(this).closest("form").submit();
-        });
-    })
-//]]>
-    </script>
-}

@@ -7,6 +7,9 @@ namespace OShop.Resources {
             var manifest = builder.Add();
 
             manifest.DefineStyle("OShopAdmin").SetUrl("oshop-admin.min.css", "oshop-admin.css");
+
+            manifest.DefineScript("OShop").SetUrl("oshop.min.js", "oshop.js").SetDependencies("jQuery");
+            manifest.DefineScript("OShopAdmin").SetUrl("oshop-admin.min.js", "oshop-admin.js").SetDependencies("jQuery");
         }
     }
 }
