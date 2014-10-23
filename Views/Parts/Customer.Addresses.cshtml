@@ -18,8 +18,10 @@
                     <option value="@address.Id" @(address.Id == contentPart.DefaultAddressId ? "selected" : "")>@address.AddressAlias</option>
                 }
             </select>
+        @if (Model.AllowEdit) {
             <button type="submit" name="Action" value="Edit">@T("Edit")</button>
             <button type="submit" name="Action" value="Remove" class="oshop-confirm" data-msg="@T("Are you sure you want to remove this address ?")">@T("Remove")</button>
+        }
         </fieldset>
     }
 }

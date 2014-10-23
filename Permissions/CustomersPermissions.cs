@@ -9,19 +9,47 @@ using System.Web;
 namespace OShop.Permissions {
     [OrchardFeature("OShop.Customers")]
     public class CustomersPermissions : IPermissionProvider {
-        public static readonly Permission ManageCustomers = new Permission {
+        public static readonly Permission ManageCustomerAccounts = new Permission {
             Description = "Manage customer accounts",
-            Name = "ManageCustomers",
+            Name = "ManageCustomerAccounts",
             ImpliedBy = new[] {
-            OShopPermissions.ManageShopSettings
-        }
+                OShopPermissions.ManageShopSettings
+            }
+        };
+
+        public static readonly Permission ViewCustomerAccounts = new Permission {
+            Description = "View customer accounts",
+            Name = "ViewCustomerAccounts",
+            ImpliedBy = new[] {
+                CustomersPermissions.ManageCustomerAccounts
+            }
+        };
+
+        public static readonly Permission EditOwnCustomerAccount = new Permission {
+            Description = "Edit own customer accounts",
+            Name = "EditOwnCustomerAccount",
+            ImpliedBy = new[] {
+                CustomersPermissions.ManageCustomerAccounts
+            }
+        };
+
+        public static readonly Permission ViewOwnCustomerAccount = new Permission {
+            Description = "View own customer accounts",
+            Name = "ViewOwnCustomerAccount",
+            ImpliedBy = new[] {
+                CustomersPermissions.ViewCustomerAccounts,
+                CustomersPermissions.EditOwnCustomerAccount
+            }
         };
 
         public Feature Feature { get; set; }
 
         public IEnumerable<Permission> GetPermissions() {
             return new[] {
-                CustomersPermissions.ManageCustomers
+                CustomersPermissions.ManageCustomerAccounts,
+                CustomersPermissions.ViewCustomerAccounts,
+                CustomersPermissions.EditOwnCustomerAccount,
+                CustomersPermissions.ViewOwnCustomerAccount
             };
         }
 
@@ -30,12 +58,20 @@ namespace OShop.Permissions {
                 new PermissionStereotype {
                     Name = "Administrator",
                     Permissions = new[] {
-                        CustomersPermissions.ManageCustomers
+                        CustomersPermissions.ManageCustomerAccounts
                     }
                 },
                 new PermissionStereotype {
                     Name = "Editor",
-                    //Permissions = new[] {}
+                    Permissions = new[] {
+                        CustomersPermissions.ViewCustomerAccounts
+                    }
+                },
+                new PermissionStereotype {
+                    Name = "Authenticated",
+                    Permissions = new[] {
+                        CustomersPermissions.ViewOwnCustomerAccount
+                    }
                 }
             };
         }

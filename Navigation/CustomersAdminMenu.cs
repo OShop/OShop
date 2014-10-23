@@ -21,7 +21,7 @@ namespace OShop.Navigation {
                     .Add(subMenu => subMenu
                         .Caption(T("Customers"))
                         .Position("7")
-                        .Permission(CustomersPermissions.ManageCustomers)
+                        .Permission(CustomersPermissions.ManageCustomerAccounts)
                         .Action("Index", "CustomersAdmin", new { area = "OShop" })
                     )
                 );

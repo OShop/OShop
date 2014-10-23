@@ -44,7 +44,7 @@ namespace OShop.Controllers
         public IOrchardServices Services { get; set; }
 
         public ActionResult Index(ListContentsViewModel model, PagerParameters pagerParameters) {
-            if (!Services.Authorizer.Authorize(Permissions.CustomersPermissions.ManageCustomers, T("Not allowed to manage customers")))
+            if (!Services.Authorizer.Authorize(Permissions.CustomersPermissions.ManageCustomerAccounts, T("Not allowed to manage customers")))
                 return new HttpUnauthorizedResult();
 
             var pager = new Pager(_siteService.GetSiteSettings(), pagerParameters);
@@ -91,7 +91,7 @@ namespace OShop.Controllers
         [HttpPost, ActionName("Index")]
         [FormValueRequired("submit.BulkEdit")]
         public ActionResult IndexPOST(ContentOptions options, IEnumerable<int> itemIds, string returnUrl) {
-            if (!Services.Authorizer.Authorize(Permissions.CustomersPermissions.ManageCustomers, T("Not allowed to manage customers")))
+            if (!Services.Authorizer.Authorize(Permissions.CustomersPermissions.ManageCustomerAccounts, T("Not allowed to manage customers")))
                 return new HttpUnauthorizedResult();
 
             if (itemIds != null) {

@@ -1,8 +1,10 @@
-﻿using Orchard.ContentManagement;
+﻿using Orchard;
+using Orchard.ContentManagement;
 using Orchard.ContentManagement.Drivers;
 using Orchard.Core.Common.Models;
 using Orchard.Environment.Extensions;
 using OShop.Models;
+using OShop.Permissions;
 using OShop.Services;
 using System.Collections.Generic;
 
@@ -15,17 +17,26 @@ namespace OShop.Drivers {
 
         protected override string Prefix { get { return "Customer"; } }
 
-        public CustomerPartDriver(ICustomersService customersService) {
+        public CustomerPartDriver(
+            ICustomersService customersService,
+            IOrchardServices orchardServices
+            ) {
+            Services = orchardServices;
             _customersService = customersService;
         }
 
+        public IOrchardServices Services { get; private set; }
+
         protected override DriverResult Display(CustomerPart part, string displayType, dynamic shapeHelper) {
+            bool allowEdit = Services.Authorizer.Authorize(Orchard.Core.Contents.Permissions.EditContent, part);
             return Combined(
                 ContentShape("Parts_Customer", () => shapeHelper.Parts_Customer(
+                    AllowEdit: allowEdit,
                     ContentPart: part)
                 ),
                 ContentShape("Parts_Customer_Addresses", () => shapeHelper.Parts_Customer_Addresses(
                     ContentPart: part,
+                    AllowEdit: allowEdit,
                     Addresses: part.Owner != null ? _customersService.GetAddresses(part.Owner.Id) : new List<CustomerAddressPart>())
                 )
             );

@@ -13,8 +13,8 @@ namespace OShop.Permissions {
             Description = "Access Shop Panel",
             Name = "AccessShopPanel",
             ImpliedBy = new[] {
-            OShopPermissions.ManageShopSettings
-        }
+                OShopPermissions.ManageShopSettings
+            }
         };
 
         public Feature Feature { get; set; }

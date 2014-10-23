@@ -222,6 +222,7 @@
     <Compile Include="Permissions\CustomersPermissions.cs" />
     <Compile Include="Permissions\OShopPermissions.cs" />
     <Compile Include="Resources\OShopResources.cs" />
+    <Compile Include="Security\CustomersAuthorizationEventHandler.cs" />
     <Compile Include="Services\CustomersService.cs" />
     <Compile Include="Services\DefaultCurrencyProvider.cs" />
     <Compile Include="Services\ICurrencyProvider.cs" />

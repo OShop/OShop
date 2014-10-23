@@ -5,4 +5,7 @@
 
 <div>
     @customer.FirstName @customer.LastName
+    @if (Model.AllowEdit) {
+        @Html.ActionLink(T("Edit").Text, "Edit", "Customer", new { area = "OShop", returnUrl = Context.Request.RawUrl }, new { })
+    }
 </div>
