@@ -41,9 +41,9 @@ Features:
 		Name: OShop customer check-out
 		Category: Commerce
         Description: Provides check-out service for customers.
-		Dependencies: OShop, OShop.Locations, OShop.Customers
+		Dependencies: OShop, OShop.Locations, OShop.Customers, OShop.ShoppingCart
 	OShop.ExpressCheckout:
 		Name: OShop express check-out
 		Category: Commerce
         Description: Provides check-out service without account.
-		Dependencies: OShop
+		Dependencies: OShop, OShop.Locations, OShop.ShoppingCart
