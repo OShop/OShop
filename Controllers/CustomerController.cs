@@ -235,7 +235,7 @@ namespace OShop.Controllers
                 SetDefaultAddress(customerAddress);
             }
 
-            Services.Notifier.Information(T("Your customer account was successfully created."));
+            Services.Notifier.Information(T("Your address was successfully created."));
 
             return this.RedirectLocal(returnUrl, () => RedirectToAction("Index"));
         }
