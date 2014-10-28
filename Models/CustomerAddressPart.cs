@@ -4,7 +4,7 @@ using Orchard.Security;
 using System;
 
 namespace OShop.Models {
-    public class CustomerAddressPart : ContentPart<CustomerAddressPartRecord> {
+    public class CustomerAddressPart : ContentPart<CustomerAddressPartRecord>, IOrderAddress {
         public String AddressAlias {
             get { return this.Retrieve(x => x.AddressAlias); }
             set { this.Store(x => x.AddressAlias, value); }

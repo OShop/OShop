@@ -190,12 +190,14 @@
     <Compile Include="Models\CustomerPart.cs" />
     <Compile Include="Models\CustomerPartRecord.cs" />
     <Compile Include="Models\ICurrencySettings.cs" />
+    <Compile Include="Models\IOrderAddress.cs" />
     <Compile Include="Models\IShippingInfo.cs" />
     <Compile Include="Models\IShopItem.cs" />
     <Compile Include="Models\ItemShippingInfo.cs" />
     <Compile Include="Models\LocationsCountryRecord.cs" />
     <Compile Include="Models\LocationsStateRecord.cs" />
     <Compile Include="Models\NumberFormats.cs" />
+    <Compile Include="Models\OrderAddress.cs" />
     <Compile Include="Models\OShopSettingsPart.cs" />
     <Compile Include="Models\ProductPart.cs" />
     <Compile Include="Models\ProductPartRecord.cs" />
