@@ -1,2 +1,35 @@
-﻿
-<h1>Check-out !</h1>
+﻿@model OShop.ViewModels.CheckoutIndexViewModel
+@using OShop.Helpers
+@{
+    Script.Require("OShop");
+
+    Layout.Title = T("Check-out");
+}
+
+<h1>@T("Please select your address :")</h1>
+
+<div class="checkout">
+@if (Model.Addresses.Any()) {
+    using (Html.BeginFormAntiForgeryPost()) {
+        @Html.ValidationSummary()
+    <fieldset>
+        @Html.ActionLink(T("Create new address").Text, "CreateAddress", "Customer", new { area = "OShop", returnUrl = Url.Action("Index", "Checkout", new { area = "OShop" }) }, new { })
+    </fieldset>
+    <fieldset>
+        <legend>@T("Shipping address")</legend>
+        @Html.DropDownListFor(m => m.ShippingAddressId, Model.Addresses.BuildAddressSelectList())
+        <button type="submit" name="Action" value="EditShippingAddress">@T("Edit")</button>
+        <button type="submit" name="Action" value="RemoveShippingAddress" class="oshop-confirm" data-msg="@T("Are you sure you want to remove this address ?")">@T("Remove")</button>
+    </fieldset>
+    <fieldset>
+        <legend>@T("Billing address")</legend>
+        @Html.DropDownListFor(m => m.BillingAddressId, Model.Addresses.BuildAddressSelectList())
+        <button type="submit" name="Action" value="EditBillingAddress">@T("Edit")</button>
+        <button type="submit" name="Action" value="RemoveBillingAddress" class="oshop-confirm" data-msg="@T("Are you sure you want to remove this address ?")">@T("Remove")</button>
+    </fieldset>
+    }
+}
+else {
+    <span>@T("You have no address, please")&nbsp;@Html.ActionLink(T("create one.").Text, "CreateAddress", "Customer", new { area = "OShop", returnUrl = Url.Action("Index", "Checkout", new { area = "OShop" }) }, new { })</span>
+}
+</div>
