@@ -39,7 +39,7 @@ namespace OShop.Migrations {
                  .WithDescription("Add shipping information to your products"));
 
             ContentDefinitionManager.AlterPartDefinition("ShippingProviderPart", part => part
-                 .Attachable()
+                 .Attachable(false)
                  .WithDescription("Allows your content item to contain ShippingOptions."));
 
             ContentDefinitionManager.AlterTypeDefinition("ShippingProvider", cfg => cfg
