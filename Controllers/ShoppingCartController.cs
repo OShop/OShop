@@ -61,7 +61,7 @@ namespace OShop.Controllers
 
             if (_locationService != null) {
                 model.Countries = _locationService.GetEnabledCountries();
-                model.States = _locationService.GetEnabledStates(cart.Country != null ? cart.Country.Id : 0);
+                model.States = _locationService.GetEnabledStates(cart.ShippingAddress != null ? cart.ShippingAddress.CountryId : 0);
             }
 
             if (_shippingService != null) {

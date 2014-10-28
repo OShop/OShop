@@ -10,8 +10,8 @@
 
 
     // Init View model
-    Model.CountryId = Model.Cart.Country != null ? Model.Cart.Country.Id : 0;
-    Model.StateId = Model.Cart.State != null ? Model.Cart.State.Id : 0;
+    Model.CountryId = Model.Cart.ShippingAddress != null ? Model.Cart.ShippingAddress.CountryId : 0;
+    Model.StateId = Model.Cart.ShippingAddress != null ? Model.Cart.ShippingAddress.StateId : 0;
     Model.ShippingProviderId = Model.Cart.ShippingOption != null ? Model.Cart.ShippingOption.Provider.Id : 0;
 }
 

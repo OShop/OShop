@@ -26,15 +26,21 @@ namespace OShop.Services.ShoppingCartResolvers {
 
             var country = _locationService.GetCountry(countryId);
 
+            var dummyAddress = new OrderAddress();
+
             if (country != null && country.Enabled) {
                 var state = country.States.Where(s => s.Id == stateId && s.Enabled).FirstOrDefault();
-                Cart.Country = country;
-                Cart.State = state;
+                dummyAddress.CountryId = country != null ? country.Id : 0;
+                dummyAddress.StateId = state != null ? state.Id : 0;
             }
             else {
-                Cart.Country = _locationService.GetDefaultCountry();
-                Cart.State = null;
+                country = _locationService.GetDefaultCountry();
+                dummyAddress.CountryId = country != null ? country.Id : 0;
+                dummyAddress.StateId = 0;
             }
+
+            Cart.ShippingAddress = dummyAddress;
+            Cart.BillingAddress = dummyAddress;
         }
     }
 }
