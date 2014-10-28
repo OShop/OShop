@@ -63,10 +63,12 @@ namespace OShop.Controllers
 
             switch (Action) {
                 case "EditShippingAddress":
+                    _shoppingCartService.SetProperty("ShippingAddressId", Model.ShippingAddressId);
                     return RedirectToAction("EditAddress", "Customer", new { area = "OShop", id = Model.ShippingAddressId, ReturnUrl = Url.Action("Index", "Checkout", new { area = "OShop" }) });
                 case "RemoveShippingAddress":
                     return RedirectToAction("RemoveAddress", "Customer", new { area = "OShop", id = Model.ShippingAddressId, ReturnUrl = Url.Action("Index", "Checkout", new { area = "OShop" }) });
                 case "EditBillingAddress":
+                    _shoppingCartService.SetProperty("BillingAddressId", Model.BillingAddressId);
                     return RedirectToAction("EditAddress", "Customer", new { area = "OShop", id = Model.BillingAddressId, ReturnUrl = Url.Action("Index", "Checkout", new { area = "OShop" }) });
                 case "RemoveBillingAddress":
                     return RedirectToAction("RemoveAddress", "Customer", new { area = "OShop", id = Model.BillingAddressId, ReturnUrl = Url.Action("Index", "Checkout", new { area = "OShop" }) });
