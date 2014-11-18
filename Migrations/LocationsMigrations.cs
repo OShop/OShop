@@ -11,14 +11,15 @@ namespace OShop.Migrations {
                  .Column<int>("Id", c => c.PrimaryKey().Identity())
                  .Column<bool>("Enabled")
                  .Column<string>("Name")
-                 .Column<string>("IsoCode")
+                 .Column<string>("IsoCode", c => c.WithLength(8))
+                 .Column<string>("AddressFormat", c => c.WithLength(1000))
                  .Column<int>("ShippingZoneRecord_Id"));
 
             SchemaBuilder.CreateTable("LocationsStateRecord", table => table
                  .Column<int>("Id", c => c.PrimaryKey().Identity())
                  .Column<bool>("Enabled")
                  .Column<string>("Name")
-                 .Column<string>("IsoCode")
+                 .Column<string>("IsoCode", c => c.WithLength(8))
                  .Column<int>("LocationsCountryRecord_Id")
                  .Column<int>("ShippingZoneRecord_Id"));
 

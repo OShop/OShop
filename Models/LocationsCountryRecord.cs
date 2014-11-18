@@ -10,6 +10,9 @@ namespace OShop.Models {
         public virtual string Name { get; set; }
         [Required]
         public virtual string IsoCode { get; set; }
+        [Required]
+        public virtual string AddressFormat { get; set; }
+
         public virtual ShippingZoneRecord ShippingZoneRecord { get; set; }
 
         [CascadeAllDeleteOrphan]

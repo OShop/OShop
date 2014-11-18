@@ -22,6 +22,18 @@
             <button type="submit" name="Action" value="Edit">@T("Edit")</button>
             <button type="submit" name="Action" value="Remove" class="oshop-confirm" data-msg="@T("Are you sure you want to remove this address ?")">@T("Remove")</button>
         }
+            <div id="CustomerAddressPreview" class="address-preview">
+            </div>
         </fieldset>
     }
+}
+
+@using (Script.Foot()) {
+    <script type="text/javascript">
+//<![CDATA[
+    $(function () {
+        $("#CustomerAddress").OShopAddressPreview("@Url.Action("PreviewAddress", "Customer", new { area = "OShop" })/", "#CustomerAddressPreview");
+    })
+//]]>
+    </script>
 }

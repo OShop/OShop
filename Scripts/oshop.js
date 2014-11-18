@@ -9,3 +9,18 @@
         }
     });
 })(jQuery);
+
+(function ($) {
+    $.fn.OShopAddressPreview = function (addressPreviewPath, addressPreviewPlaceholder) {
+        var addressSelector = this;
+        var UpdatePreview = function () {
+            $(addressPreviewPlaceholder).empty();
+            $(addressPreviewPlaceholder).load(addressPreviewPath + $(addressSelector).val());
+        };
+        UpdatePreview();
+        this.change(UpdatePreview);
+
+        return this;
+    };
+}(jQuery));
+

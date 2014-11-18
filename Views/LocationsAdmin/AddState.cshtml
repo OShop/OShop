@@ -15,14 +15,14 @@
             @Html.ValidationMessageFor(m => m.Name, "*")
         </div>
         <div>
-            @Html.LabelFor(m => m.IsoCode, T("ISO Code"))
-            @Html.TextBoxFor(m => m.IsoCode, new { @class = "text small" })
-            @Html.ValidationMessageFor(m => m.IsoCode, "*")
-        </div>
-        <div>
             @Html.CheckBoxFor(m => m.Enabled)
             @Html.LabelFor(m => m.Enabled, T("Active").Text, new { @class = "forcheckbox" })
             @Html.ValidationMessageFor(m => m.Enabled)
+        </div>
+        <div>
+            @Html.LabelFor(m => m.IsoCode, T("ISO Code"))
+            @Html.TextBoxFor(m => m.IsoCode, new { @class = "text small" })
+            @Html.ValidationMessageFor(m => m.IsoCode, "*")
         </div>
         <div>
             @Html.LabelFor(m => m.CountryId, T("Country"))

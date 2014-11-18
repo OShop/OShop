@@ -15,14 +15,19 @@
             @Html.ValidationMessageFor(m => m.Name, "*")
         </div>
         <div>
+            @Html.CheckBoxFor(m => m.Enabled)
+            @Html.LabelFor(m => m.Enabled, T("Active").Text, new { @class = "forcheckbox" })
+            @Html.ValidationMessageFor(m => m.Enabled)
+        </div>
+        <div>
             @Html.LabelFor(m => m.IsoCode, T("ISO Code"))
             @Html.TextBoxFor(m => m.IsoCode, new { @class = "text small" })
             @Html.ValidationMessageFor(m => m.IsoCode, "*")
         </div>
         <div>
-            @Html.CheckBoxFor(m => m.Enabled)
-            @Html.LabelFor(m => m.Enabled, T("Active").Text, new { @class = "forcheckbox" })
-            @Html.ValidationMessageFor(m => m.Enabled)
+            @Html.LabelFor(m => m.AddressFormat, T("Address format"))
+            @Html.TextAreaFor(m => m.AddressFormat, new { @class = "tokenized" })
+            @Html.ValidationMessageFor(m => m.AddressFormat, "*")
         </div>
         @if (Model.ShippingZones.Any()) {
             <div>
@@ -38,3 +43,5 @@
         @Html.ActionLink(T("Cancel").Text, "Index", "LocationsAdmin", new { area = "OShop" }, new { @class = "button primaryAction" })
     </div>
 }
+
+@Display.TokenHint()

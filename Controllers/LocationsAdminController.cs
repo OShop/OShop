@@ -186,6 +186,7 @@ namespace OShop.Controllers
                 var record = new LocationsCountryRecord() {
                     Name = model.Name,
                     IsoCode = model.IsoCode,
+                    AddressFormat = model.AddressFormat,
                     Enabled = model.Enabled,
                 };
 
@@ -216,6 +217,7 @@ namespace OShop.Controllers
             var model = new LocationsCountriesEditViewModel() {
                 Name = record.Name,
                 IsoCode = record.IsoCode,
+                AddressFormat = record.AddressFormat,
                 Enabled = record.Enabled,
                 ShippingZoneId = record.ShippingZoneRecord != null ? record.ShippingZoneRecord.Id : 0
             };
@@ -239,6 +241,7 @@ namespace OShop.Controllers
             if (ModelState.IsValid) {
                 record.Name = model.Name;
                 record.IsoCode = model.IsoCode;
+                record.AddressFormat = model.AddressFormat;
                 record.Enabled = model.Enabled;
 
                 if (_shippingService != null) {

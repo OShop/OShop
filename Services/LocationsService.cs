@@ -7,20 +7,24 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Orchard.Tokens;
 
 namespace OShop.Services {
     [OrchardFeature("OShop.Locations")]
     public class LocationsService : ILocationsService {
         private readonly IRepository<LocationsCountryRecord> _countryRepository;
         private readonly IRepository<LocationsStateRecord> _stateRepository;
+        private readonly ITokenizer _tokenizer;
 
         public LocationsService(
             IRepository<LocationsCountryRecord> countryRepository,
             IRepository<LocationsStateRecord> stateRepository,
+            ITokenizer tokenizer,
             IOrchardServices services
             ) {
             _countryRepository = countryRepository;
             _stateRepository = stateRepository;
+            _tokenizer = tokenizer;
             Services = services;
         }
 
@@ -112,6 +116,19 @@ namespace OShop.Services {
         public IEnumerable<LocationsStateRecord> GetEnabledStates(int CountryId) {
             return _stateRepository.Fetch(s => s.Enabled && s.LocationsCountryRecord.Id == CountryId).OrderBy(s => s.Name);
         }
-        
+
+        public string FormatAddress(IOrderAddress address) {
+            var country = GetCountry(address.CountryId);
+            if (country == null || String.IsNullOrWhiteSpace(country.AddressFormat)) {
+                // TODO : Provide default format
+                return "";
+            }
+            else {
+                return _tokenizer.Replace(
+                    country.AddressFormat,
+                    new Dictionary<string, object> { { "OrderAddress", address } }
+                ).Trim(new char[]{' ', '-', '\r', '\n'});
+            }
+        }
     }
 }

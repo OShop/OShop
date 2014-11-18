@@ -38,8 +38,11 @@ namespace OShop.Drivers {
         public Localizer T { get; set; }
 
         protected override DriverResult Display(CustomerAddressPart part, string displayType, dynamic shapeHelper) {
-            return ContentShape("Parts_CustomerAddress", () => shapeHelper.Parts_Customer(
-                    ContentPart: part));
+            return ContentShape("Parts_CustomerAddress", () => shapeHelper.Parts_CustomerAddress(
+                    ContentPart: part,
+                    FormatedAddress: _locationService.FormatAddress(part)
+                )
+            );
         }
 
         // GET

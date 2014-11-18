@@ -31,5 +31,8 @@ namespace OShop.Services {
         IEnumerable<LocationsStateRecord> GetStates();
         IEnumerable<LocationsStateRecord> GetStates(int CountryId);
         IEnumerable<LocationsStateRecord> GetEnabledStates(int CountryId);
+
+        // Addresses
+        string FormatAddress(IOrderAddress address);
     }
 }

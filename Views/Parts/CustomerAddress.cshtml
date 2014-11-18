@@ -1,9 +1,11 @@
-﻿@using OShop.Models
+﻿@using Orchard.Utility.Extensions
+@using OShop.Models
 
 @{
     CustomerAddressPart address = Model.ContentPart;
+    String formatedAddress = Model.FormatedAddress;
 }
 
-<h3>
-    @address.AddressAlias
-</h3>
+<p>
+    @Html.Raw(formatedAddress.ReplaceNewLinesWith("<br />"))
+</p>

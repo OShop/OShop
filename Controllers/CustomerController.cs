@@ -90,6 +90,24 @@ namespace OShop.Controllers
             }
         }
 
+        [OutputCache(Duration = 0)]
+        public ActionResult PreviewAddress(int id) {
+            var user = _authenticationService.GetAuthenticatedUser();
+            if (user == null) {
+                return new HttpUnauthorizedResult();
+            }
+            var address = _contentManager.Get<CustomerAddressPart>(id);
+            if (address == null) {
+                return new HttpNotFoundResult();
+            }
+            else if (Services.Authorizer.Authorize(Orchard.Core.Contents.Permissions.ViewOwnContent, address)) {
+                return new ShapeResult(this, _contentManager.BuildDisplay(address.ContentItem));
+            }
+            else {
+                return new HttpUnauthorizedResult();
+            }
+        }
+
         [Themed]
         public ActionResult Create(string returnUrl = null) {
             var user = _authenticationService.GetAuthenticatedUser();

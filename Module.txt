@@ -26,7 +26,7 @@ Features:
 		Name: OShop Locations
 		Category: Commerce
         Description: Provides location management.
-		Dependencies: OShop
+		Dependencies: OShop, Orchard.Tokens
 	OShop.Shipping:
 		Name: OShop Shipping
 		Category: Commerce

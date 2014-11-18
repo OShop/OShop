@@ -29,5 +29,10 @@
   <Place Parts_Customer_Edit="Content:3"/>
   <Place Parts_CustomerAddress="Content:1"/>
   <Place Parts_CustomerAddress_Edit="Content:1"/>
-
+  <Match ContentType="Customer">
+    <Place Parts_Common_Metadata="-"/>
+  </Match>
+  <Match ContentType="CustomerAddress">
+    <Place Parts_Common_Metadata="-"/>
+  </Match>
 </Placement>
