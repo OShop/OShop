@@ -92,13 +92,18 @@ namespace OShop.Drivers {
         protected override DriverResult Editor(CustomerAddressPart part, IUpdateModel updater, dynamic shapeHelper) {
             var model = new CustomerAddressEditViewModel();
 
-            Boolean modelValid = updater.TryUpdateModel(model, Prefix, null, null);
+            Boolean modelValid = updater.TryUpdateModel(part, Prefix, null, null);
 
             if (model.CountryId <= 0) {
                 updater.AddModelError("CountryId", T("Please select your country."));
             }
-            else if (_locationService.GetStates(model.CountryId).Any() && model.StateId <= 0) {
-                updater.AddModelError("StateId", T("Please select your state."));
+            else {
+                var states = _locationService.GetStates(model.CountryId);
+                if (states.Any()) {
+                    if (model.StateId <= 0 || !states.Where(s=>s.Id == model.StateId).Any()) {
+                        updater.AddModelError("StateId", T("Please select your state."));
+                    }
+                }
             }
             part.AddressAlias = model.AddressAlias;
             part.Company = model.Company;

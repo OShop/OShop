@@ -36,7 +36,7 @@ Features:
 		Name: OShop Customers
 		Category: Commerce
         Description: Provides customer management.
-		Dependencies: OShop, OShop.Locations, Orchard.Users
+		Dependencies: OShop, OShop.Locations, Orchard.Users, Orchard.jQuery
 	OShop.Checkout:
 		Name: OShop customer check-out
 		Category: Commerce
