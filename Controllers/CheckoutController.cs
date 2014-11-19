@@ -2,6 +2,7 @@
 using Orchard.Mvc;
 using Orchard.Security;
 using Orchard.Themes;
+using OShop.Helpers;
 using OShop.Services;
 using OShop.ViewModels;
 using System;
@@ -45,6 +46,7 @@ namespace OShop.Controllers
             Int32 billingAddressId = _shoppingCartService.GetProperty<Int32>("BillingAddressId");
             Int32 shippingAddressId = _shoppingCartService.GetProperty<Int32>("ShippingAddressId");
             var model = new CheckoutIndexViewModel() {
+                ShippingRequired = _shoppingCartService.GetShoppingCart().IsShippingRequired(),
                 Addresses = _customersService.GetAddresses(user.Id),
                 BillingAddressId = billingAddressId > 0 ? billingAddressId : customer.DefaultAddressId,
                 ShippingAddressId = shippingAddressId > 0 ? shippingAddressId : customer.DefaultAddressId
