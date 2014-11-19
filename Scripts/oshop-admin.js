@@ -1,4 +1,7 @@
 ﻿(function ($) {
+    /*
+        Shipping details
+    */
     function DisplayShippingDetails() {
         if ($("#Shipping_RequiresShipping").prop("checked")) {
             $("#shipping-details").show();
