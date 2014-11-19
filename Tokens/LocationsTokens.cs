@@ -61,11 +61,11 @@ namespace OShop.Tokens {
                 ;
             context.For<LocationsCountryRecord>("Country")
                 .Token("Name", country => country.Name)
-                .Token("IsoCode", country => country.Name)
+                .Token("IsoCode", country => country.IsoCode)
                 ;
             context.For<LocationsStateRecord>("State")
                 .Token("Name", state => state.Name)
-                .Token("IsoCode", state => state.Name)
+                .Token("IsoCode", state => state.IsoCode)
                 ;
         }
     }
