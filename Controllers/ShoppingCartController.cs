@@ -68,8 +68,9 @@ namespace OShop.Controllers
             return View(model);
         }
 
-        [HttpPost]
-        public ActionResult Update(ShoppingCartUpdateViewModel model) {
+        [Themed]
+        [HttpPost, ActionName("Index")]
+        public ActionResult IndexPost(ShoppingCartUpdateViewModel model) {
             if (model.CartItems != null) {
                 UpdateCart(model.CartItems);
             }
@@ -107,7 +108,7 @@ namespace OShop.Controllers
                 return RedirectToAction("Index", "Checkout", new { area = "OShop" });
             }
             else {
-                return RedirectToAction("Index");
+                return Index();
             }
         }
 

@@ -17,7 +17,7 @@
 
 <div class="shopping-cart-container">
     @if (Model.Cart.Items.Any()) {
-        using (Html.BeginFormAntiForgeryPost(Url.Action("Update", "ShoppingCart", new { area = "OShop" }), FormMethod.Post, new { id = "shoppingcartform" })) {
+        using (Html.BeginFormAntiForgeryPost(Url.Action("Index", "ShoppingCart", new { area = "OShop" }), FormMethod.Post, new { id = "shoppingcartform" })) {
             <div class="cart-actions-head">
                 @Html.ActionLink(T("Empty cart").Text, "Empty", "ShoppingCart", new { Area = "OShop" }, new { })
             </div>
