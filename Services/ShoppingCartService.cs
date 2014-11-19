@@ -15,22 +15,25 @@ namespace OShop.Services {
 
         private readonly IRepository<ShoppingCartRecord> _shoppingCartRepository;
         private readonly IRepository<ShoppingCartItemRecord> _shoppingCartItemRepository;
+        private readonly IEnumerable<IShoppingCartResolver> _shoppingCartResolvers;
         private readonly IClock _clock;
 
         public ShoppingCartService(
             IRepository<ShoppingCartRecord> shoppingCartRepository,
             IRepository<ShoppingCartItemRecord> shoppingCartItemRepository,
+            IEnumerable<IShoppingCartResolver> shoppingCartResolvers,
             IClock clock,
             IOrchardServices services) {
             _shoppingCartRepository = shoppingCartRepository;
             _shoppingCartItemRepository = shoppingCartItemRepository;
+            _shoppingCartResolvers = shoppingCartResolvers;
             _clock = clock;
             Services = services;
         }
 
         public IOrchardServices Services { get; set; }
 
-        private ShoppingCartRecord GetCart(bool CreateIfNull = false) {
+        private ShoppingCartRecord GetCartRecord(bool CreateIfNull = false) {
             Guid shoppingCartGuid = Guid.Empty;
 
             if (Services.WorkContext.HttpContext.Session[ShoppingCartKey] != null) {
@@ -41,12 +44,12 @@ namespace OShop.Services {
 
             if (shoppingCartGuid != null && shoppingCartGuid != Guid.Empty) {
                 // try return session cart
-                cart = GetCart(shoppingCartGuid);
+                cart = GetCartRecord(shoppingCartGuid);
             }
 
             if (cart == null && Services.WorkContext.CurrentUser != null) {
                 // try return user cart
-                cart = GetUserCart(Services.WorkContext.CurrentUser.Id);
+                cart = GetUserCartRecord(Services.WorkContext.CurrentUser.Id);
             }
             else if (cart != null && !cart.OwnerId.HasValue && Services.WorkContext.CurrentUser != null) {
                 // Attach cart to user
@@ -54,18 +57,18 @@ namespace OShop.Services {
             }
 
             if (cart == null && CreateIfNull) {
-                return CreateCart();
+                return CreateCartRecord();
             }
             else {
                 return cart;
             }
         }
 
-        private ShoppingCartRecord GetCart(Guid Guid) {
+        private ShoppingCartRecord GetCartRecord(Guid Guid) {
             return _shoppingCartRepository.Get(sc => sc.Guid == Guid);
         }
 
-        private ShoppingCartRecord GetUserCart(int OwnerId) {
+        private ShoppingCartRecord GetUserCartRecord(int OwnerId) {
             var userCarts = _shoppingCartRepository
                 .Fetch(sc => sc.OwnerId.HasValue && sc.OwnerId == OwnerId)
                 .OrderByDescending(sc => sc.ModifiedUtc)
@@ -81,7 +84,7 @@ namespace OShop.Services {
             return userCarts.FirstOrDefault();
         }
 
-        private ShoppingCartRecord CreateCart() {
+        private ShoppingCartRecord CreateCartRecord() {
             var cart = new ShoppingCartRecord() {
                 Guid = Guid.NewGuid(),
                 ModifiedUtc = _clock.UtcNow
@@ -103,7 +106,7 @@ namespace OShop.Services {
         #region IShoppingCartService members
 
         public IEnumerable<ShoppingCartItemRecord> ListItems() {
-            var cart = GetCart();
+            var cart = GetCartRecord();
             if (cart != null) {
                 return cart.Items;
             }
@@ -113,7 +116,7 @@ namespace OShop.Services {
         }
 
         public void Add(int ItemId, string ItemType = ProductPart.PartItemType, int Quantity = 1) {
-            var cart = GetCart(CreateIfNull: true);
+            var cart = GetCartRecord(CreateIfNull: true);
 
             var item = cart.Items.Where(i=>i.ItemId == ItemId && i.ItemType == ItemType).FirstOrDefault();
             if (item != null) {
@@ -168,7 +171,7 @@ namespace OShop.Services {
         }
 
         public void Empty() {
-            var cart = GetCart();
+            var cart = GetCartRecord();
 
             if (cart != null) {
                 _shoppingCartRepository.Delete(cart);
@@ -179,7 +182,7 @@ namespace OShop.Services {
         }
 
         public void SetProperty<T>(string Key, T Value) {
-            var cart = GetCart();
+            var cart = GetCartRecord();
 
             if (cart != null) {
                 var properties = cart.Properties;
@@ -189,7 +192,7 @@ namespace OShop.Services {
         }
 
         public T GetProperty<T>(string Key) {
-            var cart = GetCart();
+            var cart = GetCartRecord();
 
             if (cart != null) {
                 return cart.Properties.Value<T>(Key);
@@ -199,7 +202,7 @@ namespace OShop.Services {
         }
 
         public void RemoveProperty(string Key) {
-            var cart = GetCart();
+            var cart = GetCartRecord();
 
             if (cart != null) {
                 var properties = cart.Properties;
@@ -210,6 +213,13 @@ namespace OShop.Services {
 
         #endregion
 
+        public ShoppingCart GetShoppingCart() {
+            ShoppingCart cart = new ShoppingCart();
+            foreach (var resolver in _shoppingCartResolvers.OrderByDescending(r => r.Priority)) {
+                resolver.ResolveCart(this, ref cart);
+            }
+            return cart;
+        }
 
     }
 }

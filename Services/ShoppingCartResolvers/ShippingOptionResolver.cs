@@ -10,21 +10,17 @@ namespace OShop.Services.ShoppingCartResolvers {
     [OrchardFeature("OShop.Shipping")]
     public class ShippingOptionResolver : IShoppingCartResolver {
         private readonly IShippingService _shippingService;
-        private readonly IShoppingCartService _shoppingCartService;
 
         public ShippingOptionResolver(
-            IShippingService shippingService,
-            IShoppingCartService shoppingCartService) {
+            IShippingService shippingService) {
             _shippingService = shippingService;
-            _shoppingCartService = shoppingCartService;
-
         }
 
         public Int32 Priority {
             get { return 10; }
         }
 
-        public void ResolveCart(ref ShoppingCart Cart) {
+        public void ResolveCart(IShoppingCartService ShoppingCartService, ref ShoppingCart Cart) {
             if (!Cart.IsShippingRequired()) {
                 return;
             }
@@ -42,7 +38,7 @@ namespace OShop.Services.ShoppingCartResolvers {
                 return;
             }
 
-            Int32 selectedProviderId = _shoppingCartService.GetProperty<int>("ShippingProviderId");
+            Int32 selectedProviderId = ShoppingCartService.GetProperty<int>("ShippingProviderId");
             var selectedProvider = suitableProviders.Where(p => p.Provider.Id == selectedProviderId).FirstOrDefault();
             if (selectedProvider != null) {
                 // Apply selected provider

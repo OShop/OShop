@@ -19,7 +19,6 @@ namespace OShop.Controllers
     {
         private readonly IShoppingCartService _shoppingCartService;
         private readonly ICurrencyProvider _currencyProvider;
-        private readonly IEnumerable<IShoppingCartResolver> _shoppingCartResolvers;
         private readonly IFeatureManager _featureManager;
         private readonly IContentManager _contentManager;
 
@@ -29,14 +28,12 @@ namespace OShop.Controllers
         public ShoppingCartController(
             IShoppingCartService shoppingCartService,
             ICurrencyProvider currencyProvider,
-            IEnumerable<IShoppingCartResolver> shoppingCartResolvers,
             IFeatureManager featureManager,
             IContentManager contentManager,
             ILocationsService locationService = null,
             IShippingService shippingService = null) {
             _shoppingCartService = shoppingCartService;
             _currencyProvider = currencyProvider;
-            _shoppingCartResolvers = shoppingCartResolvers;
             _featureManager = featureManager;
             _contentManager = contentManager;
             _locationService = locationService;
@@ -48,7 +45,7 @@ namespace OShop.Controllers
         public ActionResult Index()
         {
 
-            ShoppingCart cart = ResolveCart();
+            ShoppingCart cart = _shoppingCartService.GetShoppingCart();
 
             var model = new ShoppingCartIndexViewModel() {
                 Cart = cart,
@@ -135,7 +132,7 @@ namespace OShop.Controllers
 
         [OutputCache(Duration = 0)]
         public ActionResult Widget() {
-            ShoppingCart cart = ResolveCart();
+            ShoppingCart cart = _shoppingCartService.GetShoppingCart();
             var model = new ShoppingCartWidgetViewModel() {
                 Cart = cart,
                 NumberFormat = _currencyProvider.NumberFormat,
@@ -150,14 +147,6 @@ namespace OShop.Controllers
             var urlReferrer = Request.UrlReferrer != null ? Request.UrlReferrer.ToString() : Url.Action("Index");
 
             return Redirect(string.IsNullOrWhiteSpace(returnUrl) ? urlReferrer : returnUrl);
-        }
-
-        private ShoppingCart ResolveCart() {
-            ShoppingCart cart = new ShoppingCart();
-            foreach (var resolver in _shoppingCartResolvers.OrderByDescending(r => r.Priority)) {
-                resolver.ResolveCart(ref cart);
-            }
-            return cart;
         }
 
         private void UpdateCart(ShoppingCartItemUpdateViewModel[] CartItems) {

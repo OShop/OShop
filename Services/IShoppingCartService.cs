@@ -17,5 +17,7 @@ namespace OShop.Services {
         void SetProperty<T>(string Key, T Value);
         T GetProperty<T>(string Key);
         void RemoveProperty(string Key);
+
+        ShoppingCart GetShoppingCart();
     }
 }

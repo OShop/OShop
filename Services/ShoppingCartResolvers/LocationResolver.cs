@@ -7,22 +7,19 @@ namespace OShop.Services.ShoppingCartResolvers {
     [OrchardFeature("OShop.Locations")]
     public class LocationResolver : IShoppingCartResolver {
         private readonly ILocationsService _locationService;
-        private readonly IShoppingCartService _shoppingCartService;
 
         public LocationResolver(
-            ILocationsService locationService,
-            IShoppingCartService shoppingCartService) {
+            ILocationsService locationService) {
             _locationService = locationService;
-            _shoppingCartService = shoppingCartService;
         }
 
         public Int32 Priority {
             get { return 1000; }
         }
 
-        public void ResolveCart(ref ShoppingCart Cart) {
-            Int32 countryId = _shoppingCartService.GetProperty<int>("CountryId");
-            Int32 stateId = _shoppingCartService.GetProperty<int>("StateId");
+        public void ResolveCart(IShoppingCartService ShoppingCartService, ref ShoppingCart Cart) {
+            Int32 countryId = ShoppingCartService.GetProperty<int>("CountryId");
+            Int32 stateId = ShoppingCartService.GetProperty<int>("StateId");
 
             var country = _locationService.GetCountry(countryId);
 

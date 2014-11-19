@@ -9,6 +9,6 @@ using System.Threading.Tasks;
 namespace OShop.Services {
     public interface IShoppingCartResolver : IDependency {
         Int32 Priority { get; }
-        void ResolveCart(ref ShoppingCart Cart);
+        void ResolveCart(IShoppingCartService ShoppingCartService, ref ShoppingCart Cart);
     }
 }

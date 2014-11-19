@@ -17,7 +17,7 @@ namespace OShop.Services.ShoppingCartResolvers {
             get { return 990; }
         }
 
-        public void ResolveCart(ref ShoppingCart Cart) {
+        public void ResolveCart(IShoppingCartService ShoppingCartService, ref ShoppingCart Cart) {
             if (Cart.ShippingAddress != null) {
                 var state = _locationService.GetState(Cart.ShippingAddress.StateId);
                 var country = _locationService.GetCountry(Cart.ShippingAddress.CountryId);

@@ -11,7 +11,7 @@ namespace OShop.Services.ShoppingCartResolvers {
             get { return 50; }
         }
 
-        public void ResolveCart(ref ShoppingCart Cart) {
+        public void ResolveCart(IShoppingCartService ShoppingCartService, ref ShoppingCart Cart) {
             foreach (var item in Cart.Items) {
                 if (item.Item.Content != null) {
                     var shippingPart = item.Item.Content.As<ShippingPart>();

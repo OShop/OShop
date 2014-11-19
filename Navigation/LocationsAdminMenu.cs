@@ -19,7 +19,9 @@ namespace OShop.Navigation {
                 .Add(menu => menu
                     .Caption(T("OShop"))
                     .Add(subMenu => subMenu
-                        .Caption(T("Settings"))
+                        .Caption(T("Locations"))
+                        .Position("9")
+                        .Permission(OShopPermissions.ManageShopSettings)
                         .Add(tab => tab
                             .Caption(T("Countries"))
                             .Position("3")
