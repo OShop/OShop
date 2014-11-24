@@ -1,4 +1,6 @@
 ﻿@model OShop.ViewModels.CheckoutIndexViewModel
+@using Orchard.ContentManagement
+@using Orchard.ContentManagement.Aspects
 @using OShop.Helpers
 @{
     Script.Require("OShop");
@@ -6,51 +8,67 @@
     Layout.Title = T("Check-out");
 }
 
-<h1>@T("Please select your address :")</h1>
-
 <div class="checkout">
-    @if (Model.Addresses.Any()) {
-        using (Html.BeginFormAntiForgeryPost()) {
-            @Html.ValidationSummary()
-            <fieldset>
-                @Html.ActionLink(T("Create new address").Text, "CreateAddress", "Customer", new { area = "OShop", returnUrl = Url.Action("Index", "Checkout", new { area = "OShop" }) }, new { })
-            </fieldset>
-            <fieldset>
-                <legend>@T("Billing address")</legend>
-                @Html.DropDownListFor(m => m.BillingAddressId, Model.Addresses.BuildAddressSelectList())
-                <button type="submit" name="Action" value="EditBillingAddress">@T("Edit")</button>
-                <button type="submit" name="Action" value="RemoveBillingAddress" class="oshop-confirm" data-msg="@T("Are you sure you want to remove this address ?")">@T("Remove")</button>
-                <div id="@Html.FieldIdFor(m => m.BillingAddressId)Preview" class="address-preview">
-                </div>
-            </fieldset>
-            if (Model.ShippingRequired) {
+    @Html.ValidationSummary()
+    @using (Html.BeginFormAntiForgeryPost()) {
+        if (Model.Addresses.Any()) {
+            <div class="addresses">
+                <h2>@T("Please select your address :")</h2>
                 <fieldset>
-                    <legend>@T("Shipping address")</legend>
-                    @Html.DropDownListFor(m => m.ShippingAddressId, Model.Addresses.BuildAddressSelectList())
-                    <button type="submit" name="Action" value="EditShippingAddress">@T("Edit")</button>
-                    <button type="submit" name="Action" value="RemoveShippingAddress" class="oshop-confirm" data-msg="@T("Are you sure you want to remove this address ?")">@T("Remove")</button>
-                    <div id="@Html.FieldIdFor(m => m.ShippingAddressId)Preview" class="address-preview">
+                    @Html.ActionLink(T("Create new address").Text, "CreateAddress", "Customer", new { area = "OShop", returnUrl = Url.Action("Index", "Checkout", new { area = "OShop" }) }, new { })
+                </fieldset>
+                <fieldset>
+                    <legend>@T("Billing address")</legend>
+                    @Html.DropDownListFor(m => m.BillingAddressId, Model.Addresses.BuildAddressSelectList(), new { @class = "oshop-autoupdate" })
+                    <button type="submit" name="Action" value="EditBillingAddress">@T("Edit")</button>
+                    <button type="submit" name="Action" value="RemoveBillingAddress" class="oshop-confirm" data-msg="@T("Are you sure you want to remove this address ?")">@T("Remove")</button>
+                    <div id="@Html.FieldIdFor(m => m.BillingAddressId)Preview" class="address-preview">
                     </div>
                 </fieldset>
+                @if (Model.ShippingRequired) {
+                    <fieldset>
+                        <legend>@T("Shipping address")</legend>
+                        @Html.DropDownListFor(m => m.ShippingAddressId, Model.Addresses.BuildAddressSelectList(), new { @class = "oshop-autoupdate" })
+                        <button type="submit" name="Action" value="EditShippingAddress">@T("Edit")</button>
+                        <button type="submit" name="Action" value="RemoveShippingAddress" class="oshop-confirm" data-msg="@T("Are you sure you want to remove this address ?")">@T("Remove")</button>
+                        <div id="@Html.FieldIdFor(m => m.ShippingAddressId)Preview" class="address-preview">
+                        </div>
+                    </fieldset>
+                }
+            </div>
+            if (Model.ShippingRequired) {
+                <div class="shipping">
+                    @if (Model.ShippingProviders.Any()) {
+                    <h2>@T("Please select a shipping method :")</h2>
+                    <ul>
+                        @foreach (var provider in Model.ShippingProviders) {
+                            <li>
+                                @Html.RadioButtonFor(m => m.ShippingProviderId, provider.Provider.Id, new { id = "ShippingOption" + provider.Provider.Id, @class = "oshop-autoupdate" })
+                                @Html.LabelFor(m => m.ShippingProviderId, provider.Provider.As<ITitleAspect>().Title, new { @for = "ShippingOption" + provider.Provider.Id })
+                                <span>
+                                    @if (Model.VatEnabled) {
+                                        @String.Format(Model.NumberFormat, "{0:C}", provider.Provider.VAT.GetVatIncludedPrice(provider.Option.Price))
+                                    }
+                                    else {
+                                        @String.Format(Model.NumberFormat, "{0:C}", provider.Option.Price)
+                                    }
+                                </span>
+                            </li>
+                        }
+                    </ul>
+                    }
+                    else {
+                    <div>@T("There is no shipping option for your order / location. Please contact us.")</div>
+                    }
+                </div>
             }
+            <fieldset class="checkout-actions">
+                @Html.ActionLink(T("Return").Text, "Index", "ShoppingCart", new { area = "OShop" }, new { @class = "button" })
+                <button type="submit" name="Action" value="Validate">@T("Validate")</button>
+            </fieldset>
+        }
+        else {
+            <span>@T("You have no address, please")&nbsp;@Html.ActionLink(T("create one.").Text, "CreateAddress", "Customer", new { area = "OShop", returnUrl = Url.Action("Index", "Checkout", new { area = "OShop" }) }, new { })</span>
         }
     }
-    else {
-        <span>@T("You have no address, please")&nbsp;@Html.ActionLink(T("create one.").Text, "CreateAddress", "Customer", new { area = "OShop", returnUrl = Url.Action("Index", "Checkout", new { area = "OShop" }) }, new { })</span>
-    }
 </div>
-<div class="checkout-actions-foot">
-    @Html.ActionLink(T("Return").Text, "Index", "ShoppingCart", new { area = "OShop" }, new { @class = "button" })
-    <button type="submit" name="Action" value="Update">@T("Validate")</button>
-</div>
-
-@using (Script.Foot()) {
-    <script type="text/javascript">
-        //<![CDATA[
-        $(function () {
-            $("#@Html.FieldIdFor(m => m.BillingAddressId)").OShopAddressPreview("@Url.Action("PreviewAddress", "Customer", new { area = "OShop" })/", "#@Html.FieldIdFor(m => m.BillingAddressId)Preview");
-            $("#@Html.FieldIdFor(m => m.ShippingAddressId)").OShopAddressPreview("@Url.Action("PreviewAddress", "Customer", new { area = "OShop" })/", "#@Html.FieldIdFor(m => m.ShippingAddressId)Preview");
-        })
-        //]]>
-    </script>
-}

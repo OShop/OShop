@@ -1,14 +1,17 @@
-﻿using Orchard.Environment.Extensions;
+﻿using Orchard;
+using Orchard.Environment.Extensions;
+using Orchard.Environment.Features;
+using Orchard.Localization;
 using Orchard.Mvc;
 using Orchard.Security;
 using Orchard.Themes;
+using Orchard.UI.Notify;
 using OShop.Helpers;
+using OShop.Models;
 using OShop.Services;
 using OShop.ViewModels;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace OShop.Controllers
@@ -19,16 +22,31 @@ namespace OShop.Controllers
         private readonly IAuthenticationService _authenticationService;
         private readonly ICustomersService _customersService;
         private readonly IShoppingCartService _shoppingCartService;
+        private readonly ICurrencyProvider _currencyProvider;
+        private readonly IFeatureManager _featureManager;
+        private readonly IShippingService _shippingService;
 
         public CheckoutController(
             IAuthenticationService authenticationService,
             ICustomersService customersService,
-            IShoppingCartService shoppingCartService
+            IShoppingCartService shoppingCartService,
+            ICurrencyProvider currencyProvider,
+            IFeatureManager featureManager,
+            IOrchardServices services,
+            IShippingService shippingService = null
             ) {
             _authenticationService = authenticationService;
             _customersService = customersService;
             _shoppingCartService = shoppingCartService;
+            _currencyProvider = currencyProvider;
+            _featureManager = featureManager;
+            _shippingService = shippingService;
+            Services = services;
+            T = NullLocalizer.Instance;
         }
+
+        public Localizer T { get; set; }
+        public IOrchardServices Services { get; set; }
 
         [Themed]
         public ActionResult Index()
@@ -43,41 +61,83 @@ namespace OShop.Controllers
                 return RedirectToAction("Create", "Customer", new { area = "OShop", ReturnUrl = Url.Action("Index", "Checkout", new { area = "OShop" }) });
             }
 
+            ShoppingCart cart = _shoppingCartService.GetShoppingCart();
+
             Int32 billingAddressId = _shoppingCartService.GetProperty<Int32>("BillingAddressId");
             Int32 shippingAddressId = _shoppingCartService.GetProperty<Int32>("ShippingAddressId");
             var model = new CheckoutIndexViewModel() {
-                ShippingRequired = _shoppingCartService.GetShoppingCart().IsShippingRequired(),
+                ShippingRequired = cart.IsShippingRequired(),
                 Addresses = _customersService.GetAddresses(user.Id),
                 BillingAddressId = billingAddressId > 0 ? billingAddressId : customer.DefaultAddressId,
-                ShippingAddressId = shippingAddressId > 0 ? shippingAddressId : customer.DefaultAddressId
+                ShippingAddressId = shippingAddressId > 0 ? shippingAddressId : customer.DefaultAddressId,
+                NumberFormat = _currencyProvider.NumberFormat,
+                VatEnabled = _featureManager.GetEnabledFeatures().Where(f => f.Id == "OShop.VAT").Any()
             };
+
+            if (model.ShippingRequired && _shippingService != null) {
+                model.ShippingProviders = _shippingService.GetSuitableProviderOptions(cart).OrderBy(p => p.Option.Price);
+                model.ShippingProviderId = cart.ShippingOption != null ? cart.ShippingOption.Provider.Id : 0;
+            }
 
             return View(model);
         }
 
+        [Themed]
         [HttpPost, ActionName("Index")]
-        [FormValueRequired("Action")]
         public ActionResult IndexPost(string Action, CheckoutIndexViewModel Model) {
             var user = _authenticationService.GetAuthenticatedUser();
             if (user == null) {
                 return RedirectToAction("LogOn", "Account", new { area = "Orchard.Users", ReturnUrl = Url.Action("Index", "Checkout", new { area = "OShop" }) });
             }
 
+            _shoppingCartService.SetProperty("BillingAddressId", Model.BillingAddressId);
+            _shoppingCartService.SetProperty("ShippingAddressId", Model.ShippingAddressId);
+            _shoppingCartService.SetProperty("ShippingProviderId", Model.ShippingProviderId);
+
             switch (Action) {
                 case "EditShippingAddress":
-                    _shoppingCartService.SetProperty("ShippingAddressId", Model.ShippingAddressId);
                     return RedirectToAction("EditAddress", "Customer", new { area = "OShop", id = Model.ShippingAddressId, ReturnUrl = Url.Action("Index", "Checkout", new { area = "OShop" }) });
                 case "RemoveShippingAddress":
+                    _shoppingCartService.RemoveProperty("ShippingAddressId");
                     return RedirectToAction("RemoveAddress", "Customer", new { area = "OShop", id = Model.ShippingAddressId, ReturnUrl = Url.Action("Index", "Checkout", new { area = "OShop" }) });
                 case "EditBillingAddress":
-                    _shoppingCartService.SetProperty("BillingAddressId", Model.BillingAddressId);
                     return RedirectToAction("EditAddress", "Customer", new { area = "OShop", id = Model.BillingAddressId, ReturnUrl = Url.Action("Index", "Checkout", new { area = "OShop" }) });
                 case "RemoveBillingAddress":
+                    _shoppingCartService.RemoveProperty("RemoveBillingAddress");
                     return RedirectToAction("RemoveAddress", "Customer", new { area = "OShop", id = Model.BillingAddressId, ReturnUrl = Url.Action("Index", "Checkout", new { area = "OShop" }) });
+                case "Validate":
+                    return ValidateAddress();
                 default:
                     return Index();
             }
         }
 
+        private ActionResult ValidateAddress() {
+            var cart = _shoppingCartService.GetShoppingCart();
+            Boolean isValid = cart.IsValid;
+
+            if (cart.BillingAddress == null) {
+                isValid = false;
+                Services.Notifier.Error(T("Please provide your billing address."));
+            }
+
+            if (cart.IsShippingRequired()) {
+                if (cart.ShippingAddress == null) {
+                    isValid = false;
+                    Services.Notifier.Error(T("Please provide your shipping address."));
+                }
+                if (cart.ShippingOption == null) {
+                    isValid = false;
+                    Services.Notifier.Error(T("Please select a shipping method."));
+                }
+            }
+
+            if (!isValid) {
+                return Index();
+            }
+            else {
+                return RedirectToAction("Index", "Order", new { area = "OShop", ReturnUrl = Url.Action("Index", "Checkout", new { area = "OShop" }) });
+            }
+        }
     }
 }
