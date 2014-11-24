@@ -4,13 +4,8 @@ using Orchard.Themes;
 using OShop.Models;
 using OShop.Services;
 using OShop.ViewModels;
-using OShop.Helpers;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using Orchard.ContentManagement;
 
 namespace OShop.Controllers
 {
@@ -20,7 +15,6 @@ namespace OShop.Controllers
         private readonly IShoppingCartService _shoppingCartService;
         private readonly ICurrencyProvider _currencyProvider;
         private readonly IFeatureManager _featureManager;
-        private readonly IContentManager _contentManager;
 
         private readonly ILocationsService _locationService;
         private readonly IShippingService _shippingService;
@@ -29,13 +23,11 @@ namespace OShop.Controllers
             IShoppingCartService shoppingCartService,
             ICurrencyProvider currencyProvider,
             IFeatureManager featureManager,
-            IContentManager contentManager,
             ILocationsService locationService = null,
             IShippingService shippingService = null) {
             _shoppingCartService = shoppingCartService;
             _currencyProvider = currencyProvider;
             _featureManager = featureManager;
-            _contentManager = contentManager;
             _locationService = locationService;
             _shippingService = shippingService;
         }
