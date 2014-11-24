@@ -92,7 +92,7 @@ namespace OShop.Drivers {
         protected override DriverResult Editor(CustomerAddressPart part, IUpdateModel updater, dynamic shapeHelper) {
             var model = new CustomerAddressEditViewModel();
 
-            Boolean modelValid = updater.TryUpdateModel(part, Prefix, null, null);
+            Boolean modelValid = updater.TryUpdateModel(model, Prefix, null, null);
 
             if (model.CountryId <= 0) {
                 updater.AddModelError("CountryId", T("Please select your country."));
