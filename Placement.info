@@ -21,6 +21,9 @@
   <!-- Shipping -->
   <Place Parts_Shipping_Edit="Content:3.2" />
   <Place Parts_ShippingProvider_Edit="Content:10" />
+  <Match ContentType="ShippingProvider">
+    <Place Parts_Common_Metadata_Summary="-"/>
+  </Match>
   <!-- Customer -->
   <Match DisplayType="Detail">
     <Place Parts_Customer="Content:3"/>
