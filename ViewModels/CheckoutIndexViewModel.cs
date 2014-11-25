@@ -10,7 +10,9 @@ namespace OShop.ViewModels {
         public Boolean ShippingRequired { get; set; }
         public IEnumerable<CustomerAddressPart> Addresses { get; set; }
         public Int32 BillingAddressId { get; set; }
+        public dynamic BillingAddress { get; set; }
         public Int32 ShippingAddressId { get; set; }
+        public dynamic ShippingAddress { get; set; }
 
         public NumberFormatInfo NumberFormat { get; set; }
         public bool VatEnabled { get; set; }

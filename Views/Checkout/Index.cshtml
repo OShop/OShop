@@ -22,7 +22,8 @@
                     @Html.DropDownListFor(m => m.BillingAddressId, Model.Addresses.BuildAddressSelectList(), new { @class = "oshop-autoupdate" })
                     <button type="submit" name="Action" value="EditBillingAddress">@T("Edit")</button>
                     <button type="submit" name="Action" value="RemoveBillingAddress" class="oshop-confirm" data-msg="@T("Are you sure you want to remove this address ?")">@T("Remove")</button>
-                    <div id="@Html.FieldIdFor(m => m.BillingAddressId)Preview" class="address-preview">
+                    <div class="address-preview">
+                        @Display(Model.BillingAddress)
                     </div>
                 </fieldset>
                 @if (Model.ShippingRequired) {
@@ -31,7 +32,8 @@
                         @Html.DropDownListFor(m => m.ShippingAddressId, Model.Addresses.BuildAddressSelectList(), new { @class = "oshop-autoupdate" })
                         <button type="submit" name="Action" value="EditShippingAddress">@T("Edit")</button>
                         <button type="submit" name="Action" value="RemoveShippingAddress" class="oshop-confirm" data-msg="@T("Are you sure you want to remove this address ?")">@T("Remove")</button>
-                        <div id="@Html.FieldIdFor(m => m.ShippingAddressId)Preview" class="address-preview">
+                        <div class="address-preview">
+                            @Display(Model.ShippingAddress)
                         </div>
                     </fieldset>
                 }

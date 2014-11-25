@@ -1,4 +1,5 @@
 ﻿using Orchard;
+using Orchard.ContentManagement;
 using Orchard.Environment.Extensions;
 using Orchard.Environment.Features;
 using Orchard.Localization;
@@ -23,6 +24,7 @@ namespace OShop.Controllers
         private readonly ICustomersService _customersService;
         private readonly IShoppingCartService _shoppingCartService;
         private readonly ICurrencyProvider _currencyProvider;
+        private readonly IContentManager _contentManager;
         private readonly IFeatureManager _featureManager;
         private readonly IShippingService _shippingService;
 
@@ -31,6 +33,7 @@ namespace OShop.Controllers
             ICustomersService customersService,
             IShoppingCartService shoppingCartService,
             ICurrencyProvider currencyProvider,
+            IContentManager contentManager,
             IFeatureManager featureManager,
             IOrchardServices services,
             IShippingService shippingService = null
@@ -39,6 +42,7 @@ namespace OShop.Controllers
             _customersService = customersService;
             _shoppingCartService = shoppingCartService;
             _currencyProvider = currencyProvider;
+            _contentManager = contentManager;
             _featureManager = featureManager;
             _shippingService = shippingService;
             Services = services;
@@ -73,6 +77,9 @@ namespace OShop.Controllers
                 NumberFormat = _currencyProvider.NumberFormat,
                 VatEnabled = _featureManager.GetEnabledFeatures().Where(f => f.Id == "OShop.VAT").Any()
             };
+
+            model.BillingAddress = _contentManager.BuildDisplay(_contentManager.Get(model.BillingAddressId));
+            model.ShippingAddress = _contentManager.BuildDisplay(_contentManager.Get(model.ShippingAddressId));
 
             if (model.ShippingRequired && _shippingService != null) {
                 model.ShippingProviders = _shippingService.GetSuitableProviderOptions(cart).OrderBy(p => p.Option.Price);
