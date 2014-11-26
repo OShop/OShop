@@ -26,8 +26,12 @@ namespace OShop.Models {
             set { this.Store(x => x.DefaultAddressId, value); }
         }
 
-        public string Title {
+        public String Title {
             get { return this.FirstName + " " + this.LastName; }
+        }
+
+        public String Email {
+            get { return this.Owner.Email; }
         }
 
         public IUser Owner {
