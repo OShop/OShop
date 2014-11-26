@@ -8,7 +8,7 @@ using System.Web;
 
 namespace OShop.Services.ShoppingCartResolvers {
     [OrchardFeature("OShop.Shipping")]
-    public class ShippingOptionResolver : IShoppingCartResolver {
+    public class ShippingOptionResolver : IShoppingCartBuilder {
         private readonly IShippingService _shippingService;
 
         public ShippingOptionResolver(
@@ -20,7 +20,7 @@ namespace OShop.Services.ShoppingCartResolvers {
             get { return 10; }
         }
 
-        public void ResolveCart(IShoppingCartService ShoppingCartService, ref ShoppingCart Cart) {
+        public void BuildCart(IShoppingCartService ShoppingCartService, ref ShoppingCart Cart) {
             if (!Cart.IsShippingRequired()) {
                 return;
             }

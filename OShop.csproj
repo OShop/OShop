@@ -243,7 +243,7 @@
     <Compile Include="Services\ICustomersService.cs" />
     <Compile Include="Services\ILocationsService.cs" />
     <Compile Include="Services\IShippingService.cs" />
-    <Compile Include="Services\IShoppingCartResolver.cs" />
+    <Compile Include="Services\ShoppingCartResolvers\IShoppingCartBuilder.cs" />
     <Compile Include="Services\IShoppingCartService.cs" />
     <Compile Include="Services\IVatService.cs" />
     <Compile Include="Services\LocationsService.cs" />

@@ -65,7 +65,7 @@ namespace OShop.Controllers
                 return RedirectToAction("Create", "Customer", new { area = "OShop", ReturnUrl = Url.Action("Index", "Checkout", new { area = "OShop" }) });
             }
 
-            ShoppingCart cart = _shoppingCartService.GetShoppingCart();
+            ShoppingCart cart = _shoppingCartService.BuildCart();
 
             Int32 billingAddressId = _shoppingCartService.GetProperty<Int32>("BillingAddressId");
             Int32 shippingAddressId = _shoppingCartService.GetProperty<Int32>("ShippingAddressId");
@@ -120,7 +120,7 @@ namespace OShop.Controllers
         }
 
         private ActionResult ValidateAddress() {
-            var cart = _shoppingCartService.GetShoppingCart();
+            var cart = _shoppingCartService.BuildCart();
             Boolean isValid = cart.IsValid;
 
             if (cart.BillingAddress == null) {

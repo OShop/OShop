@@ -18,6 +18,6 @@ namespace OShop.Services {
         T GetProperty<T>(string Key);
         void RemoveProperty(string Key);
 
-        ShoppingCart GetShoppingCart();
+        ShoppingCart BuildCart();
     }
 }

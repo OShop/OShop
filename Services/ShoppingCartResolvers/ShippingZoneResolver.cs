@@ -5,7 +5,7 @@ using System;
 
 namespace OShop.Services.ShoppingCartResolvers {
     [OrchardFeature("OShop.Shipping")]
-    public class ShippingZoneResolver : IShoppingCartResolver {
+    public class ShippingZoneResolver : IShoppingCartBuilder {
         private readonly ILocationsService _locationsService;
 
         public ShippingZoneResolver(
@@ -17,7 +17,7 @@ namespace OShop.Services.ShoppingCartResolvers {
             get { return 900; }
         }
 
-        public void ResolveCart(IShoppingCartService ShoppingCartService, ref ShoppingCart Cart) {
+        public void BuildCart(IShoppingCartService ShoppingCartService, ref ShoppingCart Cart) {
             LocationsStateRecord state = null;
             LocationsCountryRecord country = null;
 

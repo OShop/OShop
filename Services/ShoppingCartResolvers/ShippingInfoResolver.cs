@@ -5,13 +5,13 @@ using System;
 
 namespace OShop.Services.ShoppingCartResolvers {
     [OrchardFeature("OShop.Shipping")]
-    public class ShippingInfoResolver : IShoppingCartResolver {
+    public class ShippingInfoResolver : IShoppingCartBuilder {
 
         public Int32 Priority {
             get { return 50; }
         }
 
-        public void ResolveCart(IShoppingCartService ShoppingCartService, ref ShoppingCart Cart) {
+        public void BuildCart(IShoppingCartService ShoppingCartService, ref ShoppingCart Cart) {
             foreach (var item in Cart.Items) {
                 if (item.Item.Content != null) {
                     var shippingPart = item.Item.Content.As<ShippingPart>();

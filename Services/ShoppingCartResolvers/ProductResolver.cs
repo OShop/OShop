@@ -8,7 +8,7 @@ using System.Web;
 
 namespace OShop.Services.ShoppingCartResolvers {
     [OrchardFeature("OShop.Products")]
-    public class ProductResolver : IShoppingCartResolver {
+    public class ProductResolver : IShoppingCartBuilder {
         private readonly IContentManager _contentManager;
 
         public ProductResolver(
@@ -20,7 +20,7 @@ namespace OShop.Services.ShoppingCartResolvers {
             get { return 100; }
         }
 
-        public void ResolveCart(IShoppingCartService ShoppingCartService, ref ShoppingCart Cart) {
+        public void BuildCart(IShoppingCartService ShoppingCartService, ref ShoppingCart Cart) {
             var cartRecords = ShoppingCartService.ListItems();
             var products = _contentManager.GetMany<ProductPart>(
                 cartRecords.Where(cr => cr.ItemType == ProductPart.PartItemType).Select(cr => cr.ItemId),

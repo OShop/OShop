@@ -7,7 +7,7 @@ using System.Web;
 
 namespace OShop.Services.ShoppingCartResolvers {
     [OrchardFeature("OShop.Customers")]
-    public class CustomerAddressResolver : IShoppingCartResolver {
+    public class CustomerAddressResolver : IShoppingCartBuilder {
         private readonly ICustomersService _customersService;
 
         public CustomerAddressResolver (
@@ -19,7 +19,7 @@ namespace OShop.Services.ShoppingCartResolvers {
             get { return 950; }
         }
 
-        public void ResolveCart(IShoppingCartService ShoppingCartService, ref ShoppingCart Cart) {
+        public void BuildCart(IShoppingCartService ShoppingCartService, ref ShoppingCart Cart) {
             Int32 billingAddressId = ShoppingCartService.GetProperty<int>("BillingAddressId");
             Int32 shippingAddressId = ShoppingCartService.GetProperty<int>("ShippingAddressId");
 

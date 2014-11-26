@@ -37,7 +37,7 @@ namespace OShop.Controllers
         public ActionResult Index()
         {
 
-            ShoppingCart cart = _shoppingCartService.GetShoppingCart();
+            ShoppingCart cart = _shoppingCartService.BuildCart();
 
             var model = new ShoppingCartIndexViewModel() {
                 Cart = cart,
@@ -125,7 +125,7 @@ namespace OShop.Controllers
 
         [OutputCache(Duration = 0)]
         public ActionResult Widget() {
-            ShoppingCart cart = _shoppingCartService.GetShoppingCart();
+            ShoppingCart cart = _shoppingCartService.BuildCart();
             var model = new ShoppingCartWidgetViewModel() {
                 Cart = cart,
                 NumberFormat = _currencyProvider.NumberFormat,

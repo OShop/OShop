@@ -1,9 +1,11 @@
 ﻿using Newtonsoft.Json.Linq;
 using Orchard;
+using Orchard.ContentManagement;
 using Orchard.Data;
 using Orchard.Environment.Extensions;
 using Orchard.Services;
 using OShop.Models;
+using OShop.Services.ShoppingCartResolvers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,18 +17,18 @@ namespace OShop.Services {
 
         private readonly IRepository<ShoppingCartRecord> _shoppingCartRepository;
         private readonly IRepository<ShoppingCartItemRecord> _shoppingCartItemRepository;
-        private readonly IEnumerable<IShoppingCartResolver> _shoppingCartResolvers;
+        private readonly IEnumerable<IShoppingCartBuilder> _shoppingCartBuilders;
         private readonly IClock _clock;
 
         public ShoppingCartService(
             IRepository<ShoppingCartRecord> shoppingCartRepository,
             IRepository<ShoppingCartItemRecord> shoppingCartItemRepository,
-            IEnumerable<IShoppingCartResolver> shoppingCartResolvers,
+            IEnumerable<IShoppingCartBuilder> shoppingCartBuilders,
             IClock clock,
             IOrchardServices services) {
             _shoppingCartRepository = shoppingCartRepository;
             _shoppingCartItemRepository = shoppingCartItemRepository;
-            _shoppingCartResolvers = shoppingCartResolvers;
+            _shoppingCartBuilders = shoppingCartBuilders;
             _clock = clock;
             Services = services;
         }
@@ -213,13 +215,16 @@ namespace OShop.Services {
 
         #endregion
 
-        public ShoppingCart GetShoppingCart() {
+        public ShoppingCart BuildCart() {
             ShoppingCart cart = new ShoppingCart();
-            foreach (var resolver in _shoppingCartResolvers.OrderByDescending(r => r.Priority)) {
-                resolver.ResolveCart(this, ref cart);
+            foreach (var builder in _shoppingCartBuilders.OrderByDescending(r => r.Priority)) {
+                builder.BuildCart(this, ref cart);
             }
             return cart;
         }
 
+        public IContent BuildOrder() {
+            throw new NotImplementedException();
+        }
     }
 }
