@@ -38,4 +38,11 @@
   <Match ContentType="CustomerAddress">
     <Place Parts_Common_Metadata="-"/>
   </Match>
+  <!-- Orders -->
+  <Place Parts_Order_Reference="Meta:1"/>
+  <Place Parts_Order_Customer="Header:1"/>
+  <Place Parts_Order_BillingAddress="Header:5"/>
+  <Place Parts_Order_Status="Meta:2"/>
+  <Place Parts_Order_Items="Content:5"/>
+  <Place Parts_Order_Logs="Footer:5"/>
 </Placement>

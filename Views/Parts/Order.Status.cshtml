@@ -1,0 +1,9 @@
+﻿@using OShop.Models
+
+@{
+    OrderPart order = Model.ContentPart;
+}
+
+<span class="order-ref">
+    @T("Order status : {0}", order.OrderStatus)
+</span>

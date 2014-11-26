@@ -1,0 +1,42 @@
+﻿@using OShop.Models
+@using System.Globalization
+
+@{
+    IList<OrderItem> items = ((OrderPart)Model.ContentPart).Items;
+    NumberFormatInfo numberFormat = Model.NumberFormat;
+}
+
+<table class="cart-items">
+    <thead>
+        <tr>
+            <th>@T("SKU")</th>
+            <th>@T("Product")</th>
+            <th>@T("Unit Price")</th>
+            <th>@T("Qty.")</th>
+            <th>@T("Total")</th>
+            <th></th>
+        </tr>
+    </thead>
+    @foreach (var item in items) {
+    <tr>
+        <td>
+            @item.SKU
+        </td>
+        <td>
+            @item.Designation
+            @if (!String.IsNullOrWhiteSpace(item.Description)) {
+                <span class="description">@item.Description</span>
+            }
+        </td>
+        <td>
+            @String.Format(numberFormat, "{0:C}", item.UnitPrice)
+        </td>
+        <td>
+            @item.Quantity
+        </td>
+        <td>
+            @String.Format(numberFormat, "{0:C}", item.UnitPrice * item.Quantity)
+        </td>
+    </tr>
+    }
+</table>

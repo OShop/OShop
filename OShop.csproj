@@ -135,6 +135,12 @@
     <Content Include="Views\Customer\Edit.cshtml" />
     <Content Include="Views\Customer\EditAddress.cshtml" />
     <Content Include="Views\Parts\Customer.Addresses.cshtml" />
+    <Content Include="Views\Parts\Order.Reference.cshtml" />
+    <Content Include="Views\Parts\Order.Customer.cshtml" />
+    <Content Include="Views\Parts\Order.BillingAddress.cshtml" />
+    <Content Include="Views\Parts\Order.Status.cshtml" />
+    <Content Include="Views\Parts\Order.Items.cshtml" />
+    <Content Include="Views\Parts\Order.Logs.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Orchard.Core">
@@ -161,6 +167,7 @@
     <Compile Include="Drivers\CustomerAddressPartDriver.cs" />
     <Compile Include="Drivers\CustomerPartDriver.cs" />
     <Compile Include="Drivers\LocationFieldDriver.cs" />
+    <Compile Include="Drivers\OrderPartDriver.cs" />
     <Compile Include="Drivers\ProductPartDriver.cs" />
     <Compile Include="Drivers\ShippingPartDriver.cs" />
     <Compile Include="Drivers\ShippingProviderPartDriver.cs" />
@@ -171,6 +178,7 @@
     <Compile Include="Fields\LocationField.cs" />
     <Compile Include="Handlers\CustomerAddressPartHandler.cs" />
     <Compile Include="Handlers\CustomerPartHandler.cs" />
+    <Compile Include="Handlers\OrderPartHandler.cs" />
     <Compile Include="Handlers\OShopSettingsPartHandler.cs" />
     <Compile Include="Handlers\ProductPartHandler.cs" />
     <Compile Include="Handlers\ShippingPartHandler.cs" />
@@ -182,6 +190,7 @@
     <Compile Include="Helpers\VatExtensions.cs" />
     <Compile Include="Migrations\CustomerMigrations.cs" />
     <Compile Include="Migrations\LocationsMigrations.cs" />
+    <Compile Include="Migrations\OrdersMigrations.cs" />
     <Compile Include="Migrations\ProductsMigrations.cs" />
     <Compile Include="Migrations\ShippingMigrations.cs" />
     <Compile Include="Migrations\ShoppingCartMigrations.cs" />
@@ -199,6 +208,8 @@
     <Compile Include="Models\LocationsStateRecord.cs" />
     <Compile Include="Models\NumberFormats.cs" />
     <Compile Include="Models\OrderAddress.cs" />
+    <Compile Include="Models\OrderPart.cs" />
+    <Compile Include="Models\OrderPartRecord.cs" />
     <Compile Include="Models\OShopSettingsPart.cs" />
     <Compile Include="Models\ProductPart.cs" />
     <Compile Include="Models\ProductPartRecord.cs" />
