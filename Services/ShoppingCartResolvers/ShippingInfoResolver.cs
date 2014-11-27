@@ -21,5 +21,6 @@ namespace OShop.Services.ShoppingCartResolvers {
                 }
             }
         }
+
     }
 }
