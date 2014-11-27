@@ -119,6 +119,18 @@ namespace OShop.Controllers
             }
         }
 
+        [Themed]
+        public ActionResult ValidateOrder() {
+            var user = _authenticationService.GetAuthenticatedUser();
+            if (user == null) {
+                return RedirectToAction("LogOn", "Account", new { area = "Orchard.Users", ReturnUrl = Url.Action("Index", "Checkout", new { area = "OShop" }) });
+            }
+
+            var order = _shoppingCartService.BuildOrder();
+            
+            return View(_contentManager.BuildDisplay(order));
+        }
+
         private ActionResult ValidateAddress() {
             var cart = _shoppingCartService.BuildCart();
             Boolean isValid = cart.IsValid;
@@ -143,7 +155,8 @@ namespace OShop.Controllers
                 return Index();
             }
             else {
-                return RedirectToAction("Index", "Order", new { area = "OShop", ReturnUrl = Url.Action("Index", "Checkout", new { area = "OShop" }) });
+                return RedirectToAction("ValidateOrder");
+                //return RedirectToAction("Index", "Order", new { area = "OShop", ReturnUrl = Url.Action("Index", "Checkout", new { area = "OShop" }) });
             }
         }
     }

@@ -1,0 +1,12 @@
+﻿@{
+    Layout.Title = T("Validate your order").Text;
+}
+
+@Display(Model)
+
+@using (Html.BeginFormAntiForgeryPost()) {
+    <fieldset class="checkout-actions">
+        @Html.ActionLink(T("Return").Text, "Index", "Checkout", new { area = "OShop" }, new { @class = "button" })
+        <button type="submit" name="Action" value="Validate">@T("Validate")</button>
+    </fieldset>
+}

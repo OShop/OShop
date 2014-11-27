@@ -141,6 +141,7 @@
     <Content Include="Views\Parts\Order.Status.cshtml" />
     <Content Include="Views\Parts\Order.Items.cshtml" />
     <Content Include="Views\Parts\Order.Logs.cshtml" />
+    <Content Include="Views\Checkout\ValidateOrder.cshtml" />
     <Content Include="Views\Parts\Order.ShippingAddress.cshtml" />
     <Content Include="Views\Parts\Order.ShippingStatus.cshtml" />
     <Content Include="Views\Parts\Order.ShippingInfos.cshtml" />
