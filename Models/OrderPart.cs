@@ -2,8 +2,6 @@
 using Orchard.ContentManagement;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace OShop.Models {
     public class OrderPart : ContentPart<OrderPartRecord> {
@@ -13,7 +11,7 @@ namespace OShop.Models {
         }
 
         public CustomerInfos CustomerInfos {
-            get { return JsonConvert.DeserializeObject<CustomerInfos>(this.Retrieve(x => x.CustomerInfos)); }
+            get { return JsonConvert.DeserializeObject<CustomerInfos>(this.Retrieve(x => x.CustomerInfos, "")) ?? new CustomerInfos(); }
             set { this.Store(x => x.CustomerInfos, JsonConvert.SerializeObject(value)); }
         }
 
@@ -28,17 +26,17 @@ namespace OShop.Models {
         }
 
         public IList<OrderItem> Items {
-            get { return JsonConvert.DeserializeObject<IList<OrderItem>>(this.Retrieve(x => x.Items)); }
+            get { return JsonConvert.DeserializeObject < IList < OrderItem >>(this.Retrieve(x => x.Items, "")) ?? new List<OrderItem>(); }
             set { this.Store(x => x.Items, JsonConvert.SerializeObject(value)); }
         }
 
         public IList<OrderLog> Logs {
-            get { return JsonConvert.DeserializeObject<IList<OrderLog>>(this.Retrieve(x => x.Logs)); }
+            get { return JsonConvert.DeserializeObject<IList<OrderLog>>(this.Retrieve(x => x.Logs, "")) ?? new List<OrderLog>(); }
             set { this.Store(x => x.Logs, JsonConvert.SerializeObject(value)); }
         }
     }
 
-    public struct CustomerInfos {
+    public class CustomerInfos {
         public string FirstName;
         public string LastName;
         public string EMail;
@@ -52,8 +50,7 @@ namespace OShop.Models {
         Completed = 2
     }
 
-    public struct OrderItem {
-        public int Id;
+    public class OrderItem {
         public string SKU;
         public int ContentId;
         public string Designation;
@@ -63,7 +60,7 @@ namespace OShop.Models {
         public int VatId;
     }
 
-    public struct OrderLog {
+    public class OrderLog {
         public DateTime LogDate;
         public String Description;
     }

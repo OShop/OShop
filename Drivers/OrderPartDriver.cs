@@ -39,12 +39,5 @@ namespace OShop.Drivers {
             );
         }
 
-        protected override DriverResult Editor(OrderPart part, dynamic shapeHelper) {
-            return base.Editor(part, shapeHelper);
-        }
-
-        protected override DriverResult Editor(OrderPart part, IUpdateModel updater, dynamic shapeHelper) {
-            return base.Editor(part, updater, shapeHelper);
-        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Orchard.ContentManagement.Handlers;
+﻿using Newtonsoft.Json;
+using Orchard.ContentManagement.Handlers;
 using Orchard.Data;
 using Orchard.Environment.Extensions;
 using OShop.Models;
@@ -12,7 +13,7 @@ namespace OShop.Handlers {
     public class OrderPartHandler : ContentHandler {
         public OrderPartHandler(IRepository<OrderPartRecord> repository) {
             Filters.Add(StorageFilter.For(repository));
-            
         }
+
     }
 }
