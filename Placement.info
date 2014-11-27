@@ -45,4 +45,7 @@
   <Place Parts_Order_Status="Meta:2"/>
   <Place Parts_Order_Items="Content:5"/>
   <Place Parts_Order_Logs="Footer:5"/>
+  <Place Parts_Order_ShippingAddress="Header:6"/>
+  <Place Parts_Order_ShippingStatus="Meta:3"/>
+  <Place Parts_Order_ShippingInfos="Content:10"/>
 </Placement>

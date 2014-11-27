@@ -1,0 +1,15 @@
+﻿@using OShop.Models
+
+@{
+    ShippingInfos shippingInfos = ((OrderShippingPart)Model.ContentPart).ShippingInfos;
+}
+
+@if (customer != null) {
+    <div class="order-customer">
+        <h3>@T("Shipping :")</h3>
+        @shippingInfos.Designation
+        @if (!String.IsNullOrWhiteSpace(shippingInfos.Description)) {
+            <span class="description">@shippingInfos.Description</span>
+        }
+    </div>
+}

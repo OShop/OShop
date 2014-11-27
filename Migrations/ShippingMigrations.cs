@@ -51,5 +51,20 @@ namespace OShop.Migrations {
             return 1;
         }
 
+        public int UpdateFrom1() {
+            SchemaBuilder.CreateTable("OrderShippingPartRecord", table => table
+               .ContentPartRecord()
+               .Column<string>("ShippingAddress", c => c.Unlimited())
+               .Column<int>("ShippingStatus")
+               .Column<string>("ShippingInfos", c => c.Unlimited())
+            );
+
+            ContentDefinitionManager.AlterTypeDefinition("Order", type => type
+                .WithPart("OrderShippingPart")
+            );
+
+            return 2;
+        }
+
     }
 }

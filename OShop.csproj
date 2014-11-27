@@ -141,6 +141,9 @@
     <Content Include="Views\Parts\Order.Status.cshtml" />
     <Content Include="Views\Parts\Order.Items.cshtml" />
     <Content Include="Views\Parts\Order.Logs.cshtml" />
+    <Content Include="Views\Parts\Order.ShippingAddress.cshtml" />
+    <Content Include="Views\Parts\Order.ShippingStatus.cshtml" />
+    <Content Include="Views\Parts\Order.ShippingInfos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Orchard.Core">
@@ -167,6 +170,7 @@
     <Compile Include="Drivers\CustomerAddressPartDriver.cs" />
     <Compile Include="Drivers\CustomerPartDriver.cs" />
     <Compile Include="Drivers\LocationFieldDriver.cs" />
+    <Compile Include="Drivers\OrderShippingPartDriver.cs" />
     <Compile Include="Drivers\OrderPartDriver.cs" />
     <Compile Include="Drivers\ProductPartDriver.cs" />
     <Compile Include="Drivers\ShippingPartDriver.cs" />
@@ -181,6 +185,7 @@
     <Compile Include="Handlers\OrderPartHandler.cs" />
     <Compile Include="Handlers\OShopSettingsPartHandler.cs" />
     <Compile Include="Handlers\ProductPartHandler.cs" />
+    <Compile Include="Handlers\OrderShippingPartHandler.cs" />
     <Compile Include="Handlers\ShippingPartHandler.cs" />
     <Compile Include="Handlers\ShippingProviderPartHandler.cs" />
     <Compile Include="Helpers\CustomersHelpers.cs" />
@@ -210,6 +215,8 @@
     <Compile Include="Models\OrderAddress.cs" />
     <Compile Include="Models\OrderPart.cs" />
     <Compile Include="Models\OrderPartRecord.cs" />
+    <Compile Include="Models\OrderShippingPart.cs" />
+    <Compile Include="Models\OrderShippingPartRecord.cs" />
     <Compile Include="Models\OShopSettingsPart.cs" />
     <Compile Include="Models\ProductPart.cs" />
     <Compile Include="Models\ProductPartRecord.cs" />

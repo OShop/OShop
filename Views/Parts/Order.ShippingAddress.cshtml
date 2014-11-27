@@ -1,0 +1,11 @@
+﻿@using Orchard.Utility.Extensions
+@using OShop.Models
+
+@{
+    OrderShippingPart orderShipping = Model.ContentPart;
+}
+
+<div class="order-address order-shippingaddress">
+    <h3>@T("Shipping Address :")</h3>
+    @Html.Raw(orderShipping.ShippingAddress.ReplaceNewLinesWith("<br />"))
+</div>
