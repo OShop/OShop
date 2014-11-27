@@ -1,4 +1,5 @@
 ﻿using Orchard;
+using Orchard.ContentManagement;
 using OShop.Models;
 using System;
 using System.Collections.Generic;
@@ -19,5 +20,6 @@ namespace OShop.Services {
         void RemoveProperty(string Key);
 
         ShoppingCart BuildCart();
+        IContent BuildOrder();
     }
 }

@@ -18,17 +18,23 @@ namespace OShop.Services {
         private readonly IRepository<ShoppingCartRecord> _shoppingCartRepository;
         private readonly IRepository<ShoppingCartItemRecord> _shoppingCartItemRepository;
         private readonly IEnumerable<IShoppingCartBuilder> _shoppingCartBuilders;
+        private readonly IEnumerable<IOrderBuilder> _orderBuilders;
+        private readonly IContentManager _contentManager;
         private readonly IClock _clock;
 
         public ShoppingCartService(
             IRepository<ShoppingCartRecord> shoppingCartRepository,
             IRepository<ShoppingCartItemRecord> shoppingCartItemRepository,
             IEnumerable<IShoppingCartBuilder> shoppingCartBuilders,
+            IEnumerable<IOrderBuilder> orderBuilders,
+            IContentManager contentManager,
             IClock clock,
             IOrchardServices services) {
             _shoppingCartRepository = shoppingCartRepository;
             _shoppingCartItemRepository = shoppingCartItemRepository;
             _shoppingCartBuilders = shoppingCartBuilders;
+            _orderBuilders = orderBuilders;
+            _contentManager = contentManager;
             _clock = clock;
             Services = services;
         }
@@ -224,7 +230,11 @@ namespace OShop.Services {
         }
 
         public IContent BuildOrder() {
-            throw new NotImplementedException();
+            IContent order = _contentManager.New("Order");
+            foreach (var builder in _orderBuilders.OrderByDescending(r => r.Priority)) {
+                builder.BuildOrder(this, ref order);
+            }
+            return order;
         }
     }
 }

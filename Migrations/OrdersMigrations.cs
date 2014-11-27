@@ -21,6 +21,7 @@ namespace OShop.Migrations {
                 .WithPart("CommonPart")
                 .WithPart("OrderPart")
                 .Creatable(false)
+                .Draftable(false)
             );
 
             return 1;
