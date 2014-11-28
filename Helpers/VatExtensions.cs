@@ -58,8 +58,8 @@ namespace OShop.Helpers {
         }
 
         public static decimal CartTotalVat(this ShoppingCart Cart) {
-            if (Cart.ShippingOption != null) {
-                var shippingOption = Cart.ShippingOption;
+            var shippingOption = Cart.Properties["ShippingOption"] as ShippingProviderOption;
+            if (shippingOption != null) {
                 return Cart.ItemsTotalVat() + shippingOption.Provider.VAT.GetVat(shippingOption.Option.Price);
             }
             else {
@@ -68,8 +68,8 @@ namespace OShop.Helpers {
         }
 
         public static decimal VatIncludedCartTotal(this ShoppingCart Cart) {
-            if (Cart.ShippingOption != null) {
-                var shippingOption = Cart.ShippingOption;
+            var shippingOption = Cart.Properties["ShippingOption"] as ShippingProviderOption;
+            if (shippingOption != null) {
                 return Cart.VatIncludedItemsTotal() + shippingOption.Provider.VAT.GetVatIncludedPrice(shippingOption.Option.Price);
             }
             else {

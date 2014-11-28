@@ -18,8 +18,9 @@ namespace OShop.Helpers {
         }
 
         public static decimal CartTotal(this ShoppingCart Cart) {
-            if (Cart.ShippingOption != null) {
-                return Cart.ItemsTotal() + Cart.ShippingOption.Option.Price;
+            var shippingOption = Cart.Properties["ShippingOption"] as ShippingProviderOption;
+            if (shippingOption != null) {
+                return Cart.ItemsTotal() + shippingOption.Option.Price;
             } else {
                 return Cart.ItemsTotal();
             }

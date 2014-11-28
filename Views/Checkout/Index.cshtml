@@ -13,7 +13,7 @@
     @using (Html.BeginFormAntiForgeryPost()) {
         if (Model.Addresses.Any()) {
             <div class="addresses">
-                <h2>@T("Please select your address :")</h2>
+                <h2>@T("Your address :")</h2>
                 <fieldset>
                     @Html.ActionLink(T("Create new address").Text, "CreateAddress", "Customer", new { area = "OShop", returnUrl = Url.Action("Index", "Checkout", new { area = "OShop" }) }, new { })
                 </fieldset>
@@ -41,7 +41,7 @@
             if (Model.ShippingRequired) {
                 <div class="shipping">
                     @if (Model.ShippingProviders.Any()) {
-                    <h2>@T("Please select a shipping method :")</h2>
+                    <h2>@T("Shipping method :")</h2>
                     <ul>
                         @foreach (var provider in Model.ShippingProviders) {
                             <li>

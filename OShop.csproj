@@ -287,7 +287,6 @@
     <Compile Include="ViewModels\ShippingZonesAddViewModel.cs" />
     <Compile Include="ViewModels\ShippingZonesIndexViewModel.cs" />
     <Compile Include="ViewModels\ShoppingCartIndexViewModel.cs" />
-    <Compile Include="ViewModels\ShoppingCartUpdateViewModel.cs" />
     <Compile Include="ViewModels\VatCreateViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

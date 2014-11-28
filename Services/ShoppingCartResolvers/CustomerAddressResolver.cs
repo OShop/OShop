@@ -32,14 +32,14 @@ namespace OShop.Services.ShoppingCartResolvers {
             if (billingAddressId > 0) {
                 var billingAddress = addresses.Where(a => a.Id == billingAddressId).FirstOrDefault();
                 if (billingAddress != null) {
-                    Cart.BillingAddress = billingAddress;
+                    Cart.Properties["BillingAddress"] = billingAddress;
                 }
             }
 
             if (shippingAddressId > 0) {
                 var shippingAddress = addresses.Where(a => a.Id == shippingAddressId).FirstOrDefault();
                 if (shippingAddress != null) {
-                    Cart.ShippingAddress = shippingAddress;
+                    Cart.Properties["ShippingAddress"] = shippingAddress;
                 }
             }
         }

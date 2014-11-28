@@ -78,12 +78,16 @@ namespace OShop.Controllers
                 VatEnabled = _featureManager.GetEnabledFeatures().Where(f => f.Id == "OShop.VAT").Any()
             };
 
-            model.BillingAddress = _contentManager.BuildDisplay(_contentManager.Get(model.BillingAddressId));
-            model.ShippingAddress = _contentManager.BuildDisplay(_contentManager.Get(model.ShippingAddressId));
+            var billingAddress = _contentManager.Get(model.BillingAddressId);
+            model.BillingAddress = _contentManager.BuildDisplay(billingAddress);
 
             if (model.ShippingRequired && _shippingService != null) {
+                var shippingAddress = _contentManager.Get(model.ShippingAddressId);
+                model.ShippingAddress = _contentManager.BuildDisplay(shippingAddress);
+
                 model.ShippingProviders = _shippingService.GetSuitableProviderOptions(cart).OrderBy(p => p.Option.Price);
-                model.ShippingProviderId = cart.ShippingOption != null ? cart.ShippingOption.Provider.Id : 0;
+                var shippingOption = cart.Properties["ShippingOption"] as ShippingProviderOption;
+                model.ShippingProviderId = shippingOption != null ? shippingOption.Provider.Id : 0;
             }
 
             return View(model);
@@ -135,17 +139,17 @@ namespace OShop.Controllers
             var cart = _shoppingCartService.BuildCart();
             Boolean isValid = cart.IsValid;
 
-            if (cart.BillingAddress == null) {
+            if (cart.Properties["BillingAddress"] as IOrderAddress == null) {
                 isValid = false;
                 Services.Notifier.Error(T("Please provide your billing address."));
             }
 
             if (cart.IsShippingRequired()) {
-                if (cart.ShippingAddress == null) {
+                if (cart.Properties["ShippingAddress"] == null) {
                     isValid = false;
                     Services.Notifier.Error(T("Please provide your shipping address."));
                 }
-                if (cart.ShippingOption == null) {
+                if (cart.Properties["ShippingOption"] as ShippingProviderOption == null) {
                     isValid = false;
                     Services.Notifier.Error(T("Please select a shipping method."));
                 }

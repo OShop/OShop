@@ -115,12 +115,13 @@ namespace OShop.Services {
         #endregion
 
         private ShippingOptionRecord GetSuitableOption(int ShippingProviderId, ShoppingCart cart) {
-            if (cart.ShippingZone == null || !cart.ShippingZone.Enabled) {
+            var shippingZone = cart.Properties["ShippingZone"] as ShippingZoneRecord;
+            if (shippingZone == null || !shippingZone.Enabled) {
                 return null;
             }
 
             return _optionRepository
-                .Fetch(o => o.ShippingProviderId == ShippingProviderId && o.ShippingZoneRecord == cart.ShippingZone && o.Enabled)
+                .Fetch(o => o.ShippingProviderId == ShippingProviderId && o.ShippingZoneRecord == shippingZone && o.Enabled)
                 .OrderByDescending(o => o.Priority)
                 .Where(o => MeetsContraints(o, cart))
                 .FirstOrDefault();

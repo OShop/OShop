@@ -49,12 +49,33 @@ namespace OShop.Controllers
             };
 
             if (_locationService != null) {
-                model.Countries = _locationService.GetEnabledCountries();
-                model.States = _locationService.GetEnabledStates(cart.ShippingAddress != null ? cart.ShippingAddress.CountryId : 0);
+                var billingAddress = cart.Properties["BillingAddress"] as IOrderAddress;
+                if (billingAddress != null) {
+                    // Addresses selected
+                    model.BillingCountry = _locationService.GetCountry(billingAddress.CountryId);
+                    model.BillingState = _locationService.GetState(billingAddress.StateId);
+                    var shippingAddress = cart.Properties["ShippingAddress"] as IOrderAddress ?? billingAddress;
+                    if (shippingAddress != null) {
+                        model.ShippingCountry = _locationService.GetCountry(shippingAddress.CountryId);
+                        model.ShippingState = _locationService.GetState(shippingAddress.StateId);
+                    }
+                    else {
+                        model.ShippingCountry = model.BillingCountry;
+                        model.ShippingState = model.BillingState;
+                    }
+                }
+                else {
+                    // No address selected => show location selection
+                    model.Countries = _locationService.GetEnabledCountries();
+                    model.States = _locationService.GetEnabledStates(_shoppingCartService.GetProperty<int>("CountryId"));
+                }
             }
 
             if (_shippingService != null) {
                 model.ShippingProviders = _shippingService.GetSuitableProviderOptions(cart).OrderBy(p => p.Option.Price);
+
+                var shippingOption = cart.Properties["ShippingOption"] as ShippingProviderOption;
+                model.ShippingProviderId = shippingOption != null ? shippingOption.Provider.Id : 0;
             }
 
             return View(model);
@@ -62,12 +83,12 @@ namespace OShop.Controllers
 
         [Themed]
         [HttpPost, ActionName("Index")]
-        public ActionResult IndexPost(ShoppingCartUpdateViewModel model) {
+        public ActionResult IndexPost(ShoppingCartIndexViewModel model) {
             if (model.CartItems != null) {
                 UpdateCart(model.CartItems);
             }
 
-            if (_locationService != null) {
+            if (_locationService != null && model.CountryId > 0) {
                 var country = _locationService.GetCountry(model.CountryId);
 
                 if (country != null && country.Enabled) {

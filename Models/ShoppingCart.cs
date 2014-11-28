@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -9,12 +10,8 @@ namespace OShop.Models {
         public ShoppingCart() {
             _isValid = true;
             Items = new List<ShoppingCartItem>();
+            Properties = new Hashtable();
         }
-
-        public IOrderAddress ShippingAddress;
-        public ShippingZoneRecord ShippingZone;
-
-        public IOrderAddress BillingAddress;
 
         /// <summary>
         /// Cart's content
@@ -22,9 +19,9 @@ namespace OShop.Models {
         public List<ShoppingCartItem> Items;
 
         /// <summary>
-        /// Selected shipping option
+        /// Cart's properties bag
         /// </summary>
-        public ShippingProviderOption ShippingOption;
+        public Hashtable Properties;
 
         /// <summary>
         /// To know if cart can be checked out

@@ -2,17 +2,14 @@
 @using Orchard.ContentManagement
 @using Orchard.ContentManagement.Aspects
 @using OShop.Helpers
+@using OShop.Models
 
 @{
     Layout.Title = T("My shopping cart");
 
     Script.Require("OShop");
 
-
-    // Init View model
-    Model.CountryId = Model.Cart.ShippingAddress != null ? Model.Cart.ShippingAddress.CountryId : 0;
-    Model.StateId = Model.Cart.ShippingAddress != null ? Model.Cart.ShippingAddress.StateId : 0;
-    Model.ShippingProviderId = Model.Cart.ShippingOption != null ? Model.Cart.ShippingOption.Provider.Id : 0;
+    var shippingOption = Model.ShippingProviders.Where(sp => sp.Provider.Id == Model.ShippingProviderId).FirstOrDefault();
 }
 
 <div class="shopping-cart-container">
@@ -81,7 +78,7 @@
                             i++;
                 }
                 <tfoot>
-                    @if (Model.Cart.ShippingOption != null) {
+                    @if (shippingOption != null) {
                         <tr class="total">
                             <td colspan="4">
                                 @T("Items total")
@@ -101,10 +98,10 @@
                             </td>
                             <td>
                                 @if (Model.VatEnabled) {
-                                    @String.Format(Model.NumberFormat, "{0:C}", Model.Cart.ShippingOption.Provider.VAT.GetVatIncludedPrice(Model.Cart.ShippingOption.Option.Price))
+                                    @String.Format(Model.NumberFormat, "{0:C}", shippingOption.Provider.VAT.GetVatIncludedPrice(shippingOption.Option.Price))
                                 }
                                 else {
-                                    @String.Format(Model.NumberFormat, "{0:C}", Model.Cart.ShippingOption.Option.Price)
+                                    @String.Format(Model.NumberFormat, "{0:C}", shippingOption.Option.Price)
                                 }
                             </td>
                         </tr>
@@ -125,9 +122,10 @@
                 </tfoot>
             </table>
 
-                if (Model.Countries.Any()) {
+            if (Model.Countries != null && Model.Countries.Any()) {
                 <fieldset>
                     <legend>@T("Location")</legend>
+                    <span class="hint">@T("Select your location to estimate taxes and shipping.")</span>
                     <div>
                         @Html.LabelFor(m => m.CountryId, T("Country"))
                         @Html.DropDownListFor(m => m.CountryId, Model.Countries.BuildCountrySelectList(), new { @class = "oshop-autoupdate" })
@@ -141,32 +139,38 @@
                         </div>
                     }
                 </fieldset>
-                            }
+                }
 
                 if (Model.Cart.IsShippingRequired()) {
-                    if (Model.ShippingProviders.Any()) {
-                    <ul>
-                        @foreach (var provider in Model.ShippingProviders) {
-                            <li>
-                                @Html.RadioButtonFor(m => m.ShippingProviderId, provider.Provider.Id, new { id = "ShippingOption" + provider.Provider.Id, @class = "oshop-autoupdate" })
-                                @*@Html.LabelFor(m => m.ShippingProviderId, provider.Provider.As<ITitleAspect>().Title, new { @for = "ShippingOption" + provider.Provider.Id })*@
-                                @Display(BuildDisplay(provider.Provider, "Summary"))
-                                <span>
-                                    @if (Model.VatEnabled) {
-                                        @String.Format(Model.NumberFormat, "{0:C}", provider.Provider.VAT.GetVatIncludedPrice(provider.Option.Price))
-                                    }
-                                    else {
-                                        @String.Format(Model.NumberFormat, "{0:C}", provider.Option.Price)
-                                    }
-                                </span>
-                            </li>
+                    <fieldset>
+                        <legend>@T("Shipping method :")</legend>
+                        @if (Model.ShippingCountry != null) {
+                            <span class="hint">@T("Shipping options for {0}.", Model.ShippingCountry.Name + (Model.ShippingState != null ? " - " + Model.ShippingState.Name : ""))</span>
                         }
-                    </ul>
-                    }
-                    else {
-                        <div>@T("There is no shipping option for your order / location. Please contact us.")</div>
+                        @if (Model.ShippingProviders.Any()) {
+                            <ul>
+                                @foreach (var provider in Model.ShippingProviders) {
+                                    <li>
+                                        @Html.RadioButtonFor(m => m.ShippingProviderId, provider.Provider.Id, new { id = "ShippingOption" + provider.Provider.Id, @class = "oshop-autoupdate" })
+                                        @*@Html.LabelFor(m => m.ShippingProviderId, provider.Provider.As<ITitleAspect>().Title, new { @for = "ShippingOption" + provider.Provider.Id })*@
+                                        @Display(BuildDisplay(provider.Provider, "Summary"))
+                                        <span>
+                                            @if (Model.VatEnabled) {
+                                                @String.Format(Model.NumberFormat, "{0:C}", provider.Provider.VAT.GetVatIncludedPrice(provider.Option.Price))
+                                            }
+                                            else {
+                                                @String.Format(Model.NumberFormat, "{0:C}", provider.Option.Price)
+                                            }
+                                        </span>
+                                    </li>
+                                }
+                            </ul>
                         }
-                    }
+                        else {
+                            <div>@T("There is no shipping option for your order / location. Please contact us.")</div>
+                        }
+                    </fieldset>
+                }
 
             <div class="cart-actions-foot">
                 <button type="submit" name="Action" value="Update">@T("Update")</button>

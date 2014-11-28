@@ -25,7 +25,7 @@ namespace OShop.Services.ShoppingCartResolvers {
                 return;
             }
 
-            if (Cart.ShippingZone == null) {
+            if (Cart.Properties["ShippingZone"] as ShippingZoneRecord == null) {
                 // Need a shipping zone
                 Cart.InvalidCart();
             }
@@ -34,7 +34,7 @@ namespace OShop.Services.ShoppingCartResolvers {
 
             if (!suitableProviders.Any()) {
                 // Need a suitable shipping provider
-                Cart.InvalidCart();
+                //Cart.InvalidCart();
                 return;
             }
 
@@ -42,11 +42,11 @@ namespace OShop.Services.ShoppingCartResolvers {
             var selectedProvider = suitableProviders.Where(p => p.Provider.Id == selectedProviderId).FirstOrDefault();
             if (selectedProvider != null) {
                 // Apply selected provider
-                Cart.ShippingOption = selectedProvider;
+                Cart.Properties["ShippingOption"] = selectedProvider;
             }
             else {
                 // Set cheapest option
-                Cart.ShippingOption = suitableProviders.OrderBy(p => p.Option.Price).FirstOrDefault();
+                Cart.Properties["ShippingOption"] = suitableProviders.OrderBy(p => p.Option.Price).FirstOrDefault();
             }
 
         }
