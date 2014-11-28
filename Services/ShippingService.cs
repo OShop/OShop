@@ -162,7 +162,13 @@ namespace OShop.Services {
         }
 
         private double EvalProperty(ShippingContraintProperty property, ShoppingCart cart) {
-            var shippingInfos = cart.Items.Where(i => i.ShippingInfo != null && i.ShippingInfo.RequiresShipping);
+            var shippingInfos = cart.Properties["ShippingInfos"] as IList<Tuple<int, IShippingInfo>>;
+            if (shippingInfos == null) {
+                return 0;
+            }
+            //  shippingInfos :
+            //  Item1 => Qty
+            //  Item2 => IShippingInfo
             switch (property) {
                 case ShippingContraintProperty.TotalPrice:
                     return Convert.ToDouble(cart.ItemsTotal());
@@ -170,32 +176,32 @@ namespace OShop.Services {
                     if (!shippingInfos.Any()) {
                         return 0;
                     }
-                    return shippingInfos.Sum(i => i.Quantity * i.ShippingInfo.Weight);
+                    return shippingInfos.Sum(i => i.Item1 * i.Item2.Weight);
                 case ShippingContraintProperty.TotalVolume:
                     if (!shippingInfos.Any()) {
                         return 0;
                     }
-                    return shippingInfos.Sum(i => i.Quantity * i.ShippingInfo.Length * i.ShippingInfo.Width * i.ShippingInfo.Height);
+                    return shippingInfos.Sum(i => i.Item1 * i.Item2.Length * i.Item2.Width * i.Item2.Height);
                 case ShippingContraintProperty.ItemLongestDimension:
                     if (!shippingInfos.Any()) {
                         return 0;
                     }
-                    return shippingInfos.Max(i => new double[] { i.ShippingInfo.Length, i.ShippingInfo.Width, i.ShippingInfo.Height }.Max());
+                    return shippingInfos.Max(i => new double[] { i.Item2.Length, i.Item2.Width, i.Item2.Height }.Max());
                 case ShippingContraintProperty.MaxItemLength:
                     if (!shippingInfos.Any()) {
                         return 0;
                     }
-                    return shippingInfos.Max(i => i.ShippingInfo.Length);
+                    return shippingInfos.Max(i => i.Item2.Length);
                 case ShippingContraintProperty.MaxItemWidth:
                     if (!shippingInfos.Any()) {
                         return 0;
                     }
-                    return shippingInfos.Max(i => i.ShippingInfo.Width);
+                    return shippingInfos.Max(i => i.Item2.Width);
                 case ShippingContraintProperty.MaxItemHeight:
                     if (!shippingInfos.Any()) {
                         return 0;
                     }
-                    return shippingInfos.Max(i => i.ShippingInfo.Height);
+                    return shippingInfos.Max(i => i.Item2.Height);
                 default:
                     return 0;
             }

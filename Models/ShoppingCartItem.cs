@@ -7,7 +7,6 @@ namespace OShop.Models {
     public class ShoppingCartItem {
         public int Id;
         public IShopItem Item;
-        public IShippingInfo ShippingInfo;
         public int Quantity;
 
         public decimal UnitPrice {
