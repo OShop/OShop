@@ -51,6 +51,7 @@ namespace OShop.Models {
     }
 
     public class OrderItem {
+        public int Id;
         public string SKU;
         public int ContentId;
         public string Designation;

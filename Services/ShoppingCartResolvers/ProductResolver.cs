@@ -22,10 +22,7 @@ namespace OShop.Services.ShoppingCartResolvers {
 
         public void BuildCart(IShoppingCartService ShoppingCartService, ref ShoppingCart Cart) {
             var cartRecords = ShoppingCartService.ListItems();
-            var products = _contentManager.GetMany<ProductPart>(
-                cartRecords.Where(cr => cr.ItemType == ProductPart.PartItemType).Select(cr => cr.ItemId),
-                VersionOptions.Published,
-                QueryHints.Empty);
+            var products = ListProducts(cartRecords);
 
             foreach (var cartRecord in cartRecords.Where(cr => cr.ItemType == ProductPart.PartItemType)) {
                 var product = products.Where(p => p.Id == cartRecord.ItemId).FirstOrDefault();
@@ -44,16 +41,14 @@ namespace OShop.Services.ShoppingCartResolvers {
             var orderPart = Order.As<OrderPart>();
             if (orderPart != null) {
                 var cartRecords = ShoppingCartService.ListItems();
-                var products = _contentManager.GetMany<ProductPart>(
-                    cartRecords.Where(cr => cr.ItemType == ProductPart.PartItemType).Select(cr => cr.ItemId),
-                    VersionOptions.Published,
-                    QueryHints.Empty);
+                var products = ListProducts(cartRecords);
                 var orderItems = orderPart.Items ?? new List<OrderItem>();
                 foreach (var cartRecord in cartRecords.Where(cr => cr.ItemType == ProductPart.PartItemType)) {
                     var product = products.Where(p => p.Id == cartRecord.ItemId).FirstOrDefault();
 
                     if (product != null) {
                         orderItems.Add(new OrderItem {
+                            Id = cartRecord.Id,
                             SKU = product.SKU,
                             ContentId = product.Content.Id,
                             Designation = product.Designation,
@@ -66,6 +61,14 @@ namespace OShop.Services.ShoppingCartResolvers {
                 }
                 orderPart.Items = orderItems;
             }
+        }
+
+        private IEnumerable<ProductPart> ListProducts(IEnumerable<ShoppingCartItemRecord> cartRecords) {
+            var products = _contentManager.GetMany<ProductPart>(
+                cartRecords.Where(cr => cr.ItemType == ProductPart.PartItemType).Select(cr => cr.ItemId),
+                VersionOptions.Published,
+                QueryHints.Empty);
+            return products;
         }
 
     }
