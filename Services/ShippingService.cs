@@ -98,12 +98,12 @@ namespace OShop.Services {
             return _optionRepository.Fetch(o => o.ShippingProviderId == part.Id);
         }
 
-        public IEnumerable<ShippingProviderOption> GetSuitableProviderOptions(ShoppingCart cart) {
+        public IEnumerable<ShippingProviderOption> GetSuitableProviderOptions(ShippingZoneRecord Zone, IList<Tuple<int, IShippingInfo>> ShippingInfos, Decimal ItemsTotal = 0) {
             var publishedProviders = _contentManager.Query<ShippingProviderPart>(VersionOptions.Published).List();
 
             List<ShippingProviderOption> suitableProviders = new List<ShippingProviderOption>();
             foreach (var provider in publishedProviders) {
-                var option = GetSuitableOption(provider.Id, cart);
+                var option = GetSuitableOption(provider.Id, Zone, ShippingInfos, ItemsTotal);
                 if (option != null) {
                     suitableProviders.Add(new ShippingProviderOption(provider, option));
                 }
@@ -114,22 +114,21 @@ namespace OShop.Services {
 
         #endregion
 
-        private ShippingOptionRecord GetSuitableOption(int ShippingProviderId, ShoppingCart cart) {
-            var shippingZone = cart.Properties["ShippingZone"] as ShippingZoneRecord;
-            if (shippingZone == null || !shippingZone.Enabled) {
+        private ShippingOptionRecord GetSuitableOption(int ShippingProviderId, ShippingZoneRecord Zone, IList<Tuple<int, IShippingInfo>> ShippingInfos, Decimal ItemsTotal) {
+            if (Zone == null) {
                 return null;
             }
 
             return _optionRepository
-                .Fetch(o => o.ShippingProviderId == ShippingProviderId && o.ShippingZoneRecord == shippingZone && o.Enabled)
+                .Fetch(o => o.ShippingProviderId == ShippingProviderId && o.ShippingZoneRecord == Zone && o.Enabled)
                 .OrderByDescending(o => o.Priority)
-                .Where(o => MeetsContraints(o, cart))
+                .Where(o => MeetsContraints(o, ShippingInfos, ItemsTotal))
                 .FirstOrDefault();
         }
 
-        private bool MeetsContraints(ShippingOptionRecord option, ShoppingCart cart) {
+        private bool MeetsContraints(ShippingOptionRecord option, IList<Tuple<int, IShippingInfo>> ShippingInfos, Decimal ItemsTotal) {
             foreach (var contraint in option.Contraints) {
-                double propertyValue = EvalProperty(contraint.Property, cart);
+                double propertyValue = EvalProperty(contraint.Property, ShippingInfos, ItemsTotal);
                 switch (contraint.Operator) {
                     case ShippingContraintOperator.LessThan:
                         if (contraint.Value <= propertyValue)
@@ -161,47 +160,43 @@ namespace OShop.Services {
             return true;
         }
 
-        private double EvalProperty(ShippingContraintProperty property, ShoppingCart cart) {
-            var shippingInfos = cart.Properties["ShippingInfos"] as IList<Tuple<int, IShippingInfo>>;
-            if (shippingInfos == null) {
-                return 0;
-            }
+        private double EvalProperty(ShippingContraintProperty property, IList<Tuple<int, IShippingInfo>> ShippingInfos, Decimal ItemsTotal) {
             //  shippingInfos :
             //  Item1 => Qty
             //  Item2 => IShippingInfo
             switch (property) {
                 case ShippingContraintProperty.TotalPrice:
-                    return Convert.ToDouble(cart.ItemsTotal());
+                    return Convert.ToDouble(ItemsTotal);
                 case ShippingContraintProperty.TotalWeight:
-                    if (!shippingInfos.Any()) {
+                    if (!ShippingInfos.Any()) {
                         return 0;
                     }
-                    return shippingInfos.Sum(i => i.Item1 * i.Item2.Weight);
+                    return ShippingInfos.Sum(i => i.Item1 * i.Item2.Weight);
                 case ShippingContraintProperty.TotalVolume:
-                    if (!shippingInfos.Any()) {
+                    if (!ShippingInfos.Any()) {
                         return 0;
                     }
-                    return shippingInfos.Sum(i => i.Item1 * i.Item2.Length * i.Item2.Width * i.Item2.Height);
+                    return ShippingInfos.Sum(i => i.Item1 * i.Item2.Length * i.Item2.Width * i.Item2.Height);
                 case ShippingContraintProperty.ItemLongestDimension:
-                    if (!shippingInfos.Any()) {
+                    if (!ShippingInfos.Any()) {
                         return 0;
                     }
-                    return shippingInfos.Max(i => new double[] { i.Item2.Length, i.Item2.Width, i.Item2.Height }.Max());
+                    return ShippingInfos.Max(i => new double[] { i.Item2.Length, i.Item2.Width, i.Item2.Height }.Max());
                 case ShippingContraintProperty.MaxItemLength:
-                    if (!shippingInfos.Any()) {
+                    if (!ShippingInfos.Any()) {
                         return 0;
                     }
-                    return shippingInfos.Max(i => i.Item2.Length);
+                    return ShippingInfos.Max(i => i.Item2.Length);
                 case ShippingContraintProperty.MaxItemWidth:
-                    if (!shippingInfos.Any()) {
+                    if (!ShippingInfos.Any()) {
                         return 0;
                     }
-                    return shippingInfos.Max(i => i.Item2.Width);
+                    return ShippingInfos.Max(i => i.Item2.Width);
                 case ShippingContraintProperty.MaxItemHeight:
-                    if (!shippingInfos.Any()) {
+                    if (!ShippingInfos.Any()) {
                         return 0;
                     }
-                    return shippingInfos.Max(i => i.Item2.Height);
+                    return ShippingInfos.Max(i => i.Item2.Height);
                 default:
                     return 0;
             }

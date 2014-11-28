@@ -1,4 +1,5 @@
-﻿using Orchard.Environment.Extensions;
+﻿using Orchard.ContentManagement;
+using Orchard.Environment.Extensions;
 using OShop.Helpers;
 using OShop.Models;
 using System;
@@ -8,7 +9,7 @@ using System.Web;
 
 namespace OShop.Services.ShoppingCartResolvers {
     [OrchardFeature("OShop.Shipping")]
-    public class ShippingOptionResolver : IShoppingCartBuilder {
+    public class ShippingOptionResolver : IShoppingCartBuilder, IOrderBuilder {
         private readonly IShippingService _shippingService;
 
         public ShippingOptionResolver(
@@ -22,19 +23,28 @@ namespace OShop.Services.ShoppingCartResolvers {
 
         public void BuildCart(IShoppingCartService ShoppingCartService, ref ShoppingCart Cart) {
             if (!Cart.IsShippingRequired()) {
+                Cart.Properties.Remove("ShippingOption");
                 return;
             }
 
-            if (Cart.Properties["ShippingZone"] as ShippingZoneRecord == null) {
+            var zone = Cart.Properties["ShippingZone"] as ShippingZoneRecord;
+            if (zone == null) {
                 // Need a shipping zone
-                Cart.InvalidCart();
+                //Cart.InvalidCart();
+                Cart.Properties.Remove("ShippingOption");
+                return;
             }
 
-            var suitableProviders = _shippingService.GetSuitableProviderOptions(Cart);
+            var suitableProviders = _shippingService.GetSuitableProviderOptions(
+                zone,
+                Cart.Properties["ShippingInfos"] as IList<Tuple<int, IShippingInfo>> ?? new List<Tuple<int, IShippingInfo>>(),
+                Cart.ItemsTotal()
+            );
 
             if (!suitableProviders.Any()) {
                 // Need a suitable shipping provider
                 //Cart.InvalidCart();
+                Cart.Properties.Remove("ShippingOption");
                 return;
             }
 
@@ -49,6 +59,14 @@ namespace OShop.Services.ShoppingCartResolvers {
                 Cart.Properties["ShippingOption"] = suitableProviders.OrderBy(p => p.Option.Price).FirstOrDefault();
             }
 
+        }
+
+        public void BuildOrder(IShoppingCartService ShoppingCartService, ref IContent Order) {
+            var shippingPart = Order.As<OrderShippingPart>();
+            if (shippingPart != null) {
+                //  Shipping option
+
+            }
         }
     }
 }

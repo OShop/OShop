@@ -1,9 +1,12 @@
 ﻿using Orchard.Environment.Extensions;
 using Orchard.Environment.Features;
 using Orchard.Themes;
+using OShop.Helpers;
 using OShop.Models;
 using OShop.Services;
 using OShop.ViewModels;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -72,7 +75,11 @@ namespace OShop.Controllers
             }
 
             if (_shippingService != null) {
-                model.ShippingProviders = _shippingService.GetSuitableProviderOptions(cart).OrderBy(p => p.Option.Price);
+                model.ShippingProviders = _shippingService.GetSuitableProviderOptions(
+                    cart.Properties["ShippingZone"] as ShippingZoneRecord,
+                    cart.Properties["ShippingInfos"] as IList<Tuple<int, IShippingInfo>> ?? new List<Tuple<int, IShippingInfo>>(),
+                    cart.ItemsTotal()
+                ).OrderBy(p => p.Option.Price);
 
                 var shippingOption = cart.Properties["ShippingOption"] as ShippingProviderOption;
                 model.ShippingProviderId = shippingOption != null ? shippingOption.Provider.Id : 0;

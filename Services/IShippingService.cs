@@ -1,5 +1,6 @@
 ﻿using Orchard;
 using OShop.Models;
+using System;
 using System.Collections.Generic;
 
 namespace OShop.Services {
@@ -22,7 +23,7 @@ namespace OShop.Services {
         void DeleteOption(ShippingOptionRecord record);
         ShippingOptionRecord GetOption(int Id);
         IEnumerable<ShippingOptionRecord> GetOptions(ShippingProviderPart part);
-        IEnumerable<ShippingProviderOption> GetSuitableProviderOptions(ShoppingCart cart);
+        IEnumerable<ShippingProviderOption> GetSuitableProviderOptions(ShippingZoneRecord Zone, IList<Tuple<int, IShippingInfo>> ShippingInfos, Decimal ItemsTotal = 0);
         #endregion
     }
 }
