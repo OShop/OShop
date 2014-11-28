@@ -17,8 +17,8 @@ namespace OShop.Models {
             set { this.Store(x => x.ShippingStatus, value); }
         }
 
-        public ShippingInfos ShippingInfos {
-            get { return JsonConvert.DeserializeObject<ShippingInfos>(this.Retrieve(x => x.ShippingInfos, "")); }
+        public OrderShippingInfos ShippingInfos {
+            get { return JsonConvert.DeserializeObject<OrderShippingInfos>(this.Retrieve(x => x.ShippingInfos, "")); }
             set { this.Store(x => x.ShippingInfos, JsonConvert.SerializeObject(value)); }
         }
     }
@@ -30,7 +30,7 @@ namespace OShop.Models {
         Delivered = 3
     }
 
-    public class ShippingInfos {
+    public class OrderShippingInfos {
         public string Designation;
         public string Description;
         public decimal Price;
