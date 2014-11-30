@@ -14,7 +14,7 @@ namespace OShop.Models {
 
         public ShippingStatus ShippingStatus {
             get { return (ShippingStatus)this.Retrieve(x => x.ShippingStatus); }
-            set { this.Store(x => x.ShippingStatus, value); }
+            set { this.Store(x => x.ShippingStatus, (int)value); }
         }
 
         public OrderShippingInfos ShippingInfos {

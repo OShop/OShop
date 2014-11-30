@@ -9,7 +9,11 @@ namespace OShop.Helpers {
     public static class ShippingExtensions {
         public static bool IsShippingRequired(this ShoppingCart Cart) {
             var shippingInfos = Cart.Properties["ShippingInfos"] as IList<Tuple<int, IShippingInfo>>;
-            return shippingInfos == null ? false : shippingInfos.Any();
+            return shippingInfos.IsShippingRequired();
+        }
+
+        public static bool IsShippingRequired(this IList<Tuple<int, IShippingInfo>> ShippingInfos) {
+            return ShippingInfos == null ? false : ShippingInfos.Any();
         }
 
         public static IEnumerable<SelectListItem> BuildZoneSelectList(this IEnumerable<ShippingZoneRecord> ZoneRecords, bool CreateEmpry = false, string EmptyString = "") {

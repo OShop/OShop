@@ -1,4 +1,6 @@
-﻿using Orchard.ContentManagement;
+﻿using Orchard;
+using Orchard.ContentManagement;
+using Orchard.ContentManagement.Aspects;
 using Orchard.Environment.Extensions;
 using OShop.Helpers;
 using OShop.Models;
@@ -11,10 +13,13 @@ namespace OShop.Services.ShoppingCartResolvers {
     [OrchardFeature("OShop.Shipping")]
     public class ShippingOptionResolver : IShoppingCartBuilder, IOrderBuilder {
         private readonly IShippingService _shippingService;
+        private readonly IWorkContextAccessor _workContextAccessor;
 
         public ShippingOptionResolver(
-            IShippingService shippingService) {
+            IShippingService shippingService,
+            IWorkContextAccessor workContextAccessor) {
             _shippingService = shippingService;
+            _workContextAccessor = workContextAccessor;
         }
 
         public Int32 Priority {
@@ -62,10 +67,36 @@ namespace OShop.Services.ShoppingCartResolvers {
         }
 
         public void BuildOrder(IShoppingCartService ShoppingCartService, ref IContent Order) {
+            var orderPart = Order.As<OrderPart>();
             var shippingPart = Order.As<OrderShippingPart>();
-            if (shippingPart != null) {
-                //  Shipping option
 
+            if (orderPart != null && shippingPart != null) {
+                //  Shipping option
+                var workContext = _workContextAccessor.GetContext();
+                var shippingInfos = workContext.GetState<IList<Tuple<int, IShippingInfo>>>("OShop.Orders.ShippingInfos");
+                if (!shippingInfos.IsShippingRequired()) {
+                    shippingPart.ShippingStatus = ShippingStatus.NotRequired;
+                    return;
+                }
+
+                Int32 selectedProviderId = ShoppingCartService.GetProperty<int>("ShippingProviderId");
+
+                var suitableProviders = _shippingService.GetSuitableProviderOptions(
+                    workContext.GetState<ShippingZoneRecord>("OShop.Orders.ShippingZone"),
+                    workContext.GetState<IList<Tuple<int, IShippingInfo>>>("OShop.Orders.ShippingInfos") ?? new List<Tuple<int, IShippingInfo>>(),
+                    orderPart.Items.Sum(i => i.UnitPrice * i.Quantity)
+                );
+
+                var selectedOption = suitableProviders.Where(po => po.Provider.Id == selectedProviderId).FirstOrDefault();
+                if (selectedOption != null) {
+                    shippingPart.ShippingInfos = new OrderShippingInfos {
+                        Designation = selectedOption.Provider.As<ITitleAspect>().Title,
+                        Description = selectedOption.Option.Name,
+                        Price = selectedOption.Option.Price,
+                        VatId = selectedOption.Provider.VAT != null ? selectedOption.Provider.VAT.Id : 0
+                    };
+                    shippingPart.ShippingStatus = ShippingStatus.Pending;
+                }
             }
         }
     }

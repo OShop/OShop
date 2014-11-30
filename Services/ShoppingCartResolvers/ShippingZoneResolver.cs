@@ -21,21 +21,13 @@ namespace OShop.Services.ShoppingCartResolvers {
             LocationsStateRecord state = null;
             LocationsCountryRecord country = null;
 
-            var shippingAddress = Cart.Properties["ShippingAddress"] as IOrderAddress;
-            if (shippingAddress != null) {
-                // Based on selected address
-                state = _locationsService.GetState(shippingAddress.StateId);
-                country = _locationsService.GetCountry(shippingAddress.CountryId);
-            }
-            else {
-                // Based on user selected location
-                Int32 countryId = ShoppingCartService.GetProperty<int>("CountryId");
-                if (countryId > 0) {
-                    country = _locationsService.GetCountry(countryId);
-                    Int32 stateId = ShoppingCartService.GetProperty<int>("StateId");
-                    if (stateId > 0) {
-                        state = _locationsService.GetState(stateId);
-                    }
+            // Based on user selected location
+            Int32 countryId = ShoppingCartService.GetProperty<int>("CountryId");
+            if (countryId > 0) {
+                country = _locationsService.GetCountry(countryId);
+                Int32 stateId = ShoppingCartService.GetProperty<int>("StateId");
+                if (stateId > 0) {
+                    state = _locationsService.GetState(stateId);
                 }
             }
 
@@ -44,9 +36,6 @@ namespace OShop.Services.ShoppingCartResolvers {
             }
             else if (country != null && country.Enabled && country.ShippingZoneRecord != null) {
                 Cart.Properties["ShippingZone"] = country.ShippingZoneRecord;
-            }
-            else {
-                Cart.Properties.Remove("ShippingZone");
             }
         }
     }

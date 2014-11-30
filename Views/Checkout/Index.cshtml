@@ -40,8 +40,8 @@
             </div>
             if (Model.ShippingRequired) {
                 <div class="shipping">
-                    @if (Model.ShippingProviders.Any()) {
                     <h2>@T("Shipping method :")</h2>
+                    @if (Model.ShippingProviders.Any()) {
                     <ul>
                         @foreach (var provider in Model.ShippingProviders) {
                             <li>

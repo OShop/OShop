@@ -4,15 +4,19 @@ using OShop.Models;
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using Orchard;
 
 namespace OShop.Services.ShoppingCartResolvers {
     [OrchardFeature("OShop.Shipping")]
-    public class ShippingInfoResolver : IShoppingCartBuilder {
+    public class ShippingInfoResolver : IShoppingCartBuilder, IOrderBuilder {
         private readonly IContentManager _contentManager;
+        private readonly IWorkContextAccessor _workContextAccessor;
 
         public ShippingInfoResolver(
-            IContentManager contentManager) {
+            IContentManager contentManager,
+            IWorkContextAccessor workContextAccessor) {
             _contentManager = contentManager;
+            _workContextAccessor = workContextAccessor;
         }
 
         public Int32 Priority {
@@ -36,6 +40,24 @@ namespace OShop.Services.ShoppingCartResolvers {
             }
         }
 
+        public void BuildOrder(IShoppingCartService ShoppingCartService, ref IContent Order) {
+            var cartRecords = ShoppingCartService.ListItems();
+            var shippingParts = ListShippingParts(cartRecords);
+
+            if (shippingParts.Any()) {
+                var workContext = _workContextAccessor.GetContext();
+                var shippingInfos = workContext.GetState<IList<Tuple<int, IShippingInfo>>>("OShop.Orders.ShippingInfos") ?? new List<Tuple<int, IShippingInfo>>();
+                foreach (var cartRecord in cartRecords) {
+                    var shippingPart = shippingParts.Where(p => p.Id == cartRecord.ItemId).FirstOrDefault();
+
+                    if (shippingPart != null) {
+                        shippingInfos.Add(new Tuple<int, IShippingInfo>(cartRecord.Quantity, shippingPart));
+                    }
+                }
+                workContext.SetState("OShop.Orders.ShippingInfos", shippingInfos);
+            }
+        }
+
         private IEnumerable<ShippingPart> ListShippingParts(IEnumerable<ShoppingCartItemRecord> cartRecords) {
             var shippingParts = _contentManager.GetMany<ShippingPart>(
                 cartRecords.Select(cr => cr.ItemId),
@@ -43,5 +65,6 @@ namespace OShop.Services.ShoppingCartResolvers {
                 QueryHints.Empty);
             return shippingParts.Where(sp => sp.RequiresShipping);
         }
+
     }
 }
