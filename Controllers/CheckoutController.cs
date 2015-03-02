@@ -66,13 +66,39 @@ namespace OShop.Controllers
                 return RedirectToAction("Create", "Customer", new { area = "OShop", ReturnUrl = Url.Action("Index", "Checkout", new { area = "OShop" }) });
             }
 
+            var customerAddresses = _customersService.GetAddresses(user.Id);
+
+            // Billing address
+            Int32 billingAddressId = _shoppingCartService.GetProperty<Int32>("BillingAddressId");
+            if (billingAddressId <= 0) {
+                if (customer.DefaultAddressId > 0 && customerAddresses.Where(a => a.Id == customer.DefaultAddressId).Any()) {
+                    billingAddressId = customer.DefaultAddressId;
+                    _shoppingCartService.SetProperty<Int32>("BillingAddressId", billingAddressId);
+                }
+                else if(customerAddresses.Any()) {
+                    billingAddressId = customerAddresses.First().Id;
+                    _shoppingCartService.SetProperty<Int32>("BillingAddressId", billingAddressId);
+                }
+            }
+
+            // Shipping address
+            Int32 shippingAddressId = _shoppingCartService.GetProperty<Int32>("ShippingAddressId");
+            if (shippingAddressId <= 0) {
+                if (customer.DefaultAddressId > 0 && customerAddresses.Where(a => a.Id == customer.DefaultAddressId).Any()) {
+                    shippingAddressId = customer.DefaultAddressId;
+                    _shoppingCartService.SetProperty<Int32>("ShippingAddressId", shippingAddressId);
+                }
+                else if (customerAddresses.Any()) {
+                    shippingAddressId = customerAddresses.First().Id;
+                    _shoppingCartService.SetProperty<Int32>("ShippingAddressId", shippingAddressId);
+                }
+            }
+
             ShoppingCart cart = _shoppingCartService.BuildCart();
 
-            Int32 billingAddressId = _shoppingCartService.GetProperty<Int32>("BillingAddressId");
-            Int32 shippingAddressId = _shoppingCartService.GetProperty<Int32>("ShippingAddressId");
             var model = new CheckoutIndexViewModel() {
                 ShippingRequired = cart.IsShippingRequired(),
-                Addresses = _customersService.GetAddresses(user.Id),
+                Addresses = customerAddresses,
                 BillingAddressId = billingAddressId > 0 ? billingAddressId : customer.DefaultAddressId,
                 ShippingAddressId = shippingAddressId > 0 ? shippingAddressId : customer.DefaultAddressId,
                 NumberFormat = _currencyProvider.NumberFormat,
@@ -80,11 +106,15 @@ namespace OShop.Controllers
             };
 
             var billingAddress = _contentManager.Get(model.BillingAddressId);
-            model.BillingAddress = _contentManager.BuildDisplay(billingAddress);
+            if (billingAddress != null) {
+                model.BillingAddress = _contentManager.BuildDisplay(billingAddress);
+            }
 
             if (model.ShippingRequired && _shippingService != null) {
                 var shippingAddress = _contentManager.Get(model.ShippingAddressId);
-                model.ShippingAddress = _contentManager.BuildDisplay(shippingAddress);
+                if (shippingAddress != null) {
+                    model.ShippingAddress = _contentManager.BuildDisplay(shippingAddress);
+                }
 
                 model.ShippingProviders = _shippingService.GetSuitableProviderOptions(
                     cart.Properties["ShippingZone"] as ShippingZoneRecord,
@@ -168,5 +198,6 @@ namespace OShop.Controllers
                 //return RedirectToAction("Index", "Order", new { area = "OShop", ReturnUrl = Url.Action("Index", "Checkout", new { area = "OShop" }) });
             }
         }
+
     }
 }
