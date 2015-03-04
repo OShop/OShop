@@ -7,7 +7,7 @@ namespace OShop.Services {
     public interface ICustomersService : IDependency {
         CustomerPart GetCustomer();
         CustomerPart GetCustomer(Int32 UserId);
-        IEnumerable<CustomerAddressPart> GetAddresses();
-        IEnumerable<CustomerAddressPart> GetAddresses(Int32 UserId);
+        IEnumerable<CustomerAddressPart> GetMyAddresses();
+        IEnumerable<CustomerAddressPart> GetAddressesByOwner(Int32 UserId);
     }
 }

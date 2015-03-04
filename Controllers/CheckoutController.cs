@@ -66,7 +66,7 @@ namespace OShop.Controllers
                 return RedirectToAction("Create", "Customer", new { area = "OShop", ReturnUrl = Url.Action("Index", "Checkout", new { area = "OShop" }) });
             }
 
-            var customerAddresses = _customersService.GetAddresses(user.Id);
+            var customerAddresses = _customersService.GetAddressesByOwner(user.Id);
 
             // Billing address
             Int32 billingAddressId = _shoppingCartService.GetProperty<Int32>("BillingAddressId");
@@ -166,8 +166,11 @@ namespace OShop.Controllers
             }
 
             var order = _shoppingCartService.BuildOrder();
+            TempData["OShop.Checkout.Order"] = order;
             
-            return View(_contentManager.BuildDisplay(order));
+            return View(_contentManager.BuildDisplay(order, "OrderPreview"));
+        }
+
         }
 
         private ActionResult ValidateAddress() {

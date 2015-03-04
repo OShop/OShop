@@ -31,7 +31,7 @@ namespace OShop.Services.ShoppingCartResolvers {
             Int32 billingAddressId = ShoppingCartService.GetProperty<int>("BillingAddressId");
             Int32 shippingAddressId = ShoppingCartService.GetProperty<int>("ShippingAddressId");
 
-            var addresses = _customersService.GetAddresses();
+            var addresses = _customersService.GetMyAddresses();
 
             if (billingAddressId > 0) {
                 var billingAddress = addresses.Where(a => a.Id == billingAddressId).FirstOrDefault();
@@ -60,7 +60,7 @@ namespace OShop.Services.ShoppingCartResolvers {
         }
 
         public void BuildOrder(IShoppingCartService ShoppingCartService, ref IContent Order) {
-            var addresses = _customersService.GetAddresses();
+            var addresses = _customersService.GetMyAddresses();
 
             var orderPart = Order.As<OrderPart>();
             if (orderPart != null) {

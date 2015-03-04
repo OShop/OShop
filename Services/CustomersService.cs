@@ -15,16 +15,13 @@ namespace OShop.Services {
     public class CustomersService : ICustomersService {
         private readonly IContentManager _contentManager;
         private readonly IAuthenticationService _authenticationService;
-        private readonly IClock _clock;
 
         public CustomersService(
             IContentManager contentManager,
-            IAuthenticationService authenticationService,
-            IClock clock
+            IAuthenticationService authenticationService
             ) {
             _contentManager = contentManager;
             _authenticationService = authenticationService;
-            _clock = clock;
         }
 
         public CustomerPart GetCustomer() {
@@ -38,7 +35,7 @@ namespace OShop.Services {
         }
 
         public CustomerPart GetCustomer(int UserId) {
-            var commonPart =  _contentManager.Query<CommonPart, CommonPartRecord>("Customer")
+            var commonPart =  _contentManager.Query<CommonPart, CommonPartRecord>()
                 .Where(c => c.OwnerId == UserId).Slice(1)
                 .FirstOrDefault();
 
@@ -50,18 +47,18 @@ namespace OShop.Services {
             }
         }
 
-        public IEnumerable<CustomerAddressPart> GetAddresses() {
+        public IEnumerable<CustomerAddressPart> GetMyAddresses() {
             var user = _authenticationService.GetAuthenticatedUser();
 
             if (user == null) {
                 return new List<CustomerAddressPart>();
             }
 
-            return GetAddresses(user.Id);
+            return GetAddressesByOwner(user.Id);
         }
 
-        public IEnumerable<CustomerAddressPart> GetAddresses(int UserId) {
-            return _contentManager.Query<CommonPart, CommonPartRecord>("CustomerAddress")
+        public IEnumerable<CustomerAddressPart> GetAddressesByOwner(int UserId) {
+            return _contentManager.Query<CommonPart, CommonPartRecord>()
                 .Where(c => c.OwnerId == UserId)
                 .ForPart<CustomerAddressPart>()
                 .List();

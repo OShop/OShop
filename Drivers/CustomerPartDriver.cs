@@ -37,7 +37,7 @@ namespace OShop.Drivers {
                 ContentShape("Parts_Customer_Addresses", () => shapeHelper.Parts_Customer_Addresses(
                     ContentPart: part,
                     AllowEdit: allowEdit,
-                    Addresses: part.Owner != null ? _customersService.GetAddresses(part.Owner.Id) : new List<CustomerAddressPart>())
+                    Addresses: part.Owner != null ? _customersService.GetAddressesByOwner(part.Owner.Id) : new List<CustomerAddressPart>())
                 )
             );
         }
