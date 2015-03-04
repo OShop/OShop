@@ -26,7 +26,7 @@ namespace OShop.Models {
         }
 
         public IList<OrderItem> Items {
-            get { return JsonConvert.DeserializeObject < IList < OrderItem >>(this.Retrieve(x => x.Items, "")) ?? new List<OrderItem>(); }
+            get { return JsonConvert.DeserializeObject<IList<OrderItem>>(this.Retrieve(x => x.Items, "")) ?? new List<OrderItem>(); }
             set { this.Store(x => x.Items, JsonConvert.SerializeObject(value)); }
         }
 

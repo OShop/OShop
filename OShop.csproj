@@ -162,6 +162,7 @@
     <Compile Include="Controllers\CustomersAdminController.cs" />
     <Compile Include="Controllers\LocationsAdminController.cs" />
     <Compile Include="Controllers\LocationsController.cs" />
+    <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Controllers\ProductsAdminController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Controllers\ShippingProvidersAdminController.cs" />
@@ -250,7 +251,9 @@
     <Compile Include="Services\ICurrencyProvider.cs" />
     <Compile Include="Services\ICustomersService.cs" />
     <Compile Include="Services\ILocationsService.cs" />
+    <Compile Include="Services\IOrdersService.cs" />
     <Compile Include="Services\IShippingService.cs" />
+    <Compile Include="Services\OrdersService.cs" />
     <Compile Include="Services\ShoppingCartResolvers\IOrderBuilder.cs" />
     <Compile Include="Services\ShoppingCartResolvers\IShoppingCartBuilder.cs" />
     <Compile Include="Services\IShoppingCartService.cs" />
@@ -336,6 +339,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Locations\" />
+    <Folder Include="Views\Orders\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

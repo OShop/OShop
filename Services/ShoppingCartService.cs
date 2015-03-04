@@ -219,8 +219,6 @@ namespace OShop.Services {
             }
         }
 
-        #endregion
-
         public ShoppingCart BuildCart() {
             ShoppingCart cart = new ShoppingCart();
             foreach (var builder in _shoppingCartBuilders.OrderByDescending(r => r.Priority)) {
@@ -236,5 +234,7 @@ namespace OShop.Services {
             }
             return order;
         }
+
+        #endregion
     }
 }

@@ -171,6 +171,20 @@ namespace OShop.Controllers
             return View(_contentManager.BuildDisplay(order, "OrderPreview"));
         }
 
+        [Themed]
+        [HttpPost, ActionName("ValidateOrder")]
+        public ActionResult ValidateOrderPost() {
+            var order = TempData["OShop.Checkout.Order"] as IContent;
+            if (order != null) {
+                _contentManager.Create(order);
+
+                _shoppingCartService.Empty();
+
+                return RedirectToAction("Display", "Orders", new { area = "OShop", id = order.As<OrderPart>().Reference });
+            }
+            else {
+                return ValidateOrder();
+            }
         }
 
         private ActionResult ValidateAddress() {
