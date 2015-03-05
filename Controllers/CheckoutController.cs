@@ -21,7 +21,6 @@ namespace OShop.Controllers
     [OrchardFeature("OShop.Checkout")]
     public class CheckoutController : Controller
     {
-        private readonly IAuthenticationService _authenticationService;
         private readonly ICustomersService _customersService;
         private readonly IShoppingCartService _shoppingCartService;
         private readonly ICurrencyProvider _currencyProvider;
@@ -30,7 +29,6 @@ namespace OShop.Controllers
         private readonly IShippingService _shippingService;
 
         public CheckoutController(
-            IAuthenticationService authenticationService,
             ICustomersService customersService,
             IShoppingCartService shoppingCartService,
             ICurrencyProvider currencyProvider,
@@ -39,7 +37,6 @@ namespace OShop.Controllers
             IOrchardServices services,
             IShippingService shippingService = null
             ) {
-            _authenticationService = authenticationService;
             _customersService = customersService;
             _shoppingCartService = shoppingCartService;
             _currencyProvider = currencyProvider;
@@ -57,17 +54,17 @@ namespace OShop.Controllers
         [Authorize]
         public ActionResult Index()
         {
-            var user = _authenticationService.GetAuthenticatedUser();
-            if (user == null) {
-                return new HttpUnauthorizedResult();
-            }
-
-            var customer = _customersService.GetCustomer(user.Id);
+            var customer = _customersService.GetCustomer();
             if(customer == null) {
                 return RedirectToAction("Create", "Customer", new { area = "OShop", ReturnUrl = Url.Action("Index", "Checkout", new { area = "OShop" }) });
             }
 
-            var customerAddresses = _customersService.GetAddressesByOwner(user.Id);
+            if (!_shoppingCartService.ListItems().Any()) {
+                // Cart is empty => Return to Shopping cart
+                return RedirectToAction("Index", "ShoppingCart", new { area = "OShop" });
+            }
+
+            var customerAddresses = _customersService.GetMyAddresses();
 
             // Billing address
             Int32 billingAddressId = _shoppingCartService.GetProperty<Int32>("BillingAddressId");
@@ -133,11 +130,6 @@ namespace OShop.Controllers
         [Authorize]
         [HttpPost, ActionName("Index")]
         public ActionResult IndexPost(string Action, CheckoutIndexViewModel Model) {
-            var user = _authenticationService.GetAuthenticatedUser();
-            if (user == null) {
-                return new HttpUnauthorizedResult();
-            }
-
             _shoppingCartService.SetProperty("BillingAddressId", Model.BillingAddressId);
             _shoppingCartService.SetProperty("ShippingAddressId", Model.ShippingAddressId);
             _shoppingCartService.SetProperty("ShippingProviderId", Model.ShippingProviderId);
@@ -163,15 +155,10 @@ namespace OShop.Controllers
         [Themed]
         [Authorize]
         public ActionResult ValidateOrder() {
-            var user = _authenticationService.GetAuthenticatedUser();
-            if (user == null) {
-                return new HttpUnauthorizedResult();
-            }
-
             var order = _shoppingCartService.BuildOrder();
             TempData["OShop.Checkout.Order"] = order;
             
-            return View(_contentManager.BuildDisplay(order, "OrderPreview"));
+            return View(_contentManager.BuildDisplay(order));
         }
 
         [Themed]
