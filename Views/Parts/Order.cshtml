@@ -1,0 +1,9 @@
+﻿@using OShop.Models
+
+@{
+    OrderPart order = Model.ContentPart;
+    var title = T("Your order {0}", order.Reference);
+    Layout.Title = title;
+}
+
+<h1>@title</h1>

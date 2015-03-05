@@ -39,13 +39,18 @@
     <Place Parts_Common_Metadata="-"/>
   </Match>
   <!-- Orders -->
-  <Place Parts_Order_Reference="Meta:1"/>
-  <Place Parts_Order_Customer="Header:1"/>
-  <Place Parts_Order_BillingAddress="Header:5"/>
-  <Place Parts_Order_Status="Meta:2"/>
-  <Place Parts_Order_Items="Content:5"/>
-  <Place Parts_Order_Logs="Footer:5"/>
-  <Place Parts_Order_ShippingAddress="Header:6"/>
-  <Place Parts_Order_ShippingStatus="Meta:3"/>
-  <Place Parts_Order_ShippingInfos="Content:10"/>
+  <Place Parts_Order_Summary="Header:5"/>
+  <Match DisplayType="Detail">
+    <Place Parts_Order_Summary="-"/>
+    <Place Parts_Order="Header:before"/>
+    <Place Parts_Order_Reference="Meta:10.1"/>
+    <Place Parts_Order_Customer="Header:1"/>
+    <Place Parts_Order_BillingAddress="Header:5"/>
+    <Place Parts_Order_Status="Meta:10.2"/>
+    <Place Parts_Order_Items="Content:5"/>
+    <Place Parts_Order_Logs="Footer:5"/>
+    <Place Parts_Order_ShippingAddress="Header:6"/>
+    <Place Parts_Order_ShippingStatus="Meta:10.3"/>
+    <Place Parts_Order_ShippingInfos="Content:10"/>
+  </Match>
 </Placement>

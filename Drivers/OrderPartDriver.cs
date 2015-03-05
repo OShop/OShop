@@ -23,6 +23,10 @@ namespace OShop.Drivers {
 
         protected override DriverResult Display(OrderPart part, string displayType, dynamic shapeHelper) {
             return Combined(
+                ContentShape("Parts_Order", () => shapeHelper.Parts_Order(
+                    ContentPart: part)),
+                ContentShape("Parts_Order_Summary", () => shapeHelper.Parts_Order_Summary(
+                    ContentPart: part)),
                 ContentShape("Parts_Order_Reference", () => shapeHelper.Parts_Order_Reference(
                     ContentPart: part)),
                 ContentShape("Parts_Order_Customer", () => shapeHelper.Parts_Order_Customer(

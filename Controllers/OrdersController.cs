@@ -1,8 +1,12 @@
 ﻿using Orchard.ContentManagement;
+using Orchard.DisplayManagement;
 using Orchard.Environment.Extensions;
 using Orchard.Mvc;
+using Orchard.Settings;
 using Orchard.Themes;
+using Orchard.UI.Navigation;
 using OShop.Services;
+using OShop.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,20 +20,39 @@ namespace OShop.Controllers
     {
         private readonly IOrdersService _ordersService;
         private readonly IContentManager _contentManager;
+        private readonly ISiteService _siteService;
 
         public OrdersController(
-            IContentManager contentManager, 
-            IOrdersService ordersService
+            IContentManager contentManager,
+            IOrdersService ordersService,
+            ISiteService siteService,
+            IShapeFactory shapeFactory
             ) {
             _contentManager = contentManager;
             _ordersService = ordersService;
+            _siteService = siteService;
+
+            Shape = shapeFactory;
         }
+
+        dynamic Shape { get; set; }
 
         // GET: Order
         [Themed]
-        public ActionResult Index()
+        [Authorize]
+        public ActionResult Index(PagerParameters pagerParameters)
         {
-            return View();
+            var pager = new Pager(_siteService.GetSiteSettings(), pagerParameters);
+
+            var myOrders = _ordersService.GetMyOrders();
+
+            var model = new OrdersIndexViewModel() {
+                Orders = myOrders.Skip(pager.GetStartIndex()).Take(pager.PageSize)
+                    .Select(order => _contentManager.BuildDisplay(order.ContentItem, "Summary")),
+                Pager = Shape.Pager(pager).TotalItemCount(myOrders.Count())
+            };
+
+            return View(model);
         }
 
         [Themed]

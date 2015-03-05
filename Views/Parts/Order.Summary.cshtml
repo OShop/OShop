@@ -1,0 +1,7 @@
+﻿@using OShop.Models
+
+@{
+    OrderPart order = Model.ContentPart;
+}
+
+<h1>@Html.ActionLink(T("Order {0}", order.Reference).Text, "Display", "Orders", new { area = "OShop", id = order.Reference }, null)</h1>

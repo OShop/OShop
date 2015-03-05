@@ -1,0 +1,17 @@
+﻿@model OShop.ViewModels.OrdersIndexViewModel
+@{
+    Layout.Title = T("My orders");
+}
+
+<h1 class="page-title">@T("My orders")</h1>
+@if (Model.Orders.Any()) {
+    @Html.UnorderedList(
+        Model.Orders,
+        (orderShape, index) => Display(orderShape),
+        "orders"
+    )
+    @Display(Model.Pager)
+}
+else {
+    <span>@T("There is no order in your customer account.")</span>
+}

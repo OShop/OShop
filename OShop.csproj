@@ -145,6 +145,9 @@
     <Content Include="Views\Parts\Order.ShippingAddress.cshtml" />
     <Content Include="Views\Parts\Order.ShippingStatus.cshtml" />
     <Content Include="Views\Parts\Order.ShippingInfos.cshtml" />
+    <Content Include="Views\Orders\Index.cshtml" />
+    <Content Include="Views\Parts\Order.Summary.cshtml" />
+    <Content Include="Views\Parts\Order.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Orchard.Core">
@@ -281,6 +284,7 @@
     <Compile Include="ViewModels\LocationsCountriesAddViewModel.cs" />
     <Compile Include="ViewModels\LocationsCountriesEditViewModel.cs" />
     <Compile Include="ViewModels\LocationsCountriesIndexViewModel.cs" />
+    <Compile Include="ViewModels\OrdersIndexViewModel.cs" />
     <Compile Include="ViewModels\OShopSettingsViewsModel.cs" />
     <Compile Include="ViewModels\ProductListViewModel.cs" />
     <Compile Include="ViewModels\ShippingOptionEditViewModel.cs" />
@@ -339,7 +343,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Locations\" />
-    <Folder Include="Views\Orders\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -56,6 +56,7 @@ namespace OShop.Services {
         public IEnumerable<OrderPart> GetOrdersByOwner(int UserId) {
             return _contentManager.Query<CommonPart, CommonPartRecord>()
                 .Where(c => c.OwnerId == UserId)
+                .OrderByDescending(c => c.CreatedUtc)
                 .ForPart<OrderPart>()
                 .List();
         }

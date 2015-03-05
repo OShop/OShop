@@ -1,10 +1,15 @@
 ﻿using Newtonsoft.Json;
 using Orchard.ContentManagement;
+using Orchard.ContentManagement.Aspects;
 using System;
 using System.Collections.Generic;
 
 namespace OShop.Models {
-    public class OrderPart : ContentPart<OrderPartRecord> {
+    public class OrderPart : ContentPart<OrderPartRecord>, ITitleAspect {
+        public string Title {
+            get { return this.Reference; }
+        }
+
         public string Reference {
             get { return this.Retrieve(x => x.Reference); }
             set { this.Store(x => x.Reference, value); }
