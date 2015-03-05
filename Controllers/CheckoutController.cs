@@ -54,11 +54,12 @@ namespace OShop.Controllers
         public IOrchardServices Services { get; set; }
 
         [Themed]
+        [Authorize]
         public ActionResult Index()
         {
             var user = _authenticationService.GetAuthenticatedUser();
             if (user == null) {
-                return RedirectToAction("LogOn", "Account", new { area = "Orchard.Users", ReturnUrl = Url.Action("Index", "Checkout", new { area = "OShop" }) });
+                return new HttpUnauthorizedResult();
             }
 
             var customer = _customersService.GetCustomer(user.Id);
@@ -129,11 +130,12 @@ namespace OShop.Controllers
         }
 
         [Themed]
+        [Authorize]
         [HttpPost, ActionName("Index")]
         public ActionResult IndexPost(string Action, CheckoutIndexViewModel Model) {
             var user = _authenticationService.GetAuthenticatedUser();
             if (user == null) {
-                return RedirectToAction("LogOn", "Account", new { area = "Orchard.Users", ReturnUrl = Url.Action("Index", "Checkout", new { area = "OShop" }) });
+                return new HttpUnauthorizedResult();
             }
 
             _shoppingCartService.SetProperty("BillingAddressId", Model.BillingAddressId);
@@ -159,10 +161,11 @@ namespace OShop.Controllers
         }
 
         [Themed]
+        [Authorize]
         public ActionResult ValidateOrder() {
             var user = _authenticationService.GetAuthenticatedUser();
             if (user == null) {
-                return RedirectToAction("LogOn", "Account", new { area = "Orchard.Users", ReturnUrl = Url.Action("Index", "Checkout", new { area = "OShop" }) });
+                return new HttpUnauthorizedResult();
             }
 
             var order = _shoppingCartService.BuildOrder();
@@ -172,6 +175,7 @@ namespace OShop.Controllers
         }
 
         [Themed]
+        [Authorize]
         [HttpPost, ActionName("ValidateOrder")]
         public ActionResult ValidateOrderPost() {
             var order = TempData["OShop.Checkout.Order"] as IContent;
