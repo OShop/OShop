@@ -35,12 +35,13 @@ namespace OShop.Services {
         }
 
         public CustomerPart GetCustomer(int UserId) {
-            var commonPart =  _contentManager.Query<CommonPart, CommonPartRecord>()
+            var customerPart = _contentManager.Query<CustomerPart, CustomerPartRecord>()
+                .Join<CommonPartRecord>()
                 .Where(c => c.OwnerId == UserId).Slice(1)
                 .FirstOrDefault();
 
-            if (commonPart != null) {
-                return commonPart.ContentItem.As<CustomerPart>();
+            if (customerPart != null) {
+                return customerPart;
             }
             else {
                 return null;
@@ -58,9 +59,9 @@ namespace OShop.Services {
         }
 
         public IEnumerable<CustomerAddressPart> GetAddressesByOwner(int UserId) {
-            return _contentManager.Query<CommonPart, CommonPartRecord>()
+            return _contentManager.Query<CustomerAddressPart, CustomerAddressPartRecord>()
+                .Join<CommonPartRecord>()
                 .Where(c => c.OwnerId == UserId)
-                .ForPart<CustomerAddressPart>()
                 .List();
         }
     }
