@@ -29,11 +29,20 @@
     <Place Parts_Customer="Content:3"/>
     <Place Parts_Customer_Addresses="Content:5"/>
   </Match>
+  <Match DisplayType="DetailAdmin">
+    <Place Parts_Customer="Content:1;Alternate=Parts_Customer_Admin"/>
+    <Place Parts_Customer_Addresses="Content:5;Alternate=Parts_Customer_Addresses_Admin"/>
+  </Match>
   <Place Parts_Customer_Edit="Content:3"/>
+  <Place Parts_Customer_AdminEdit="Content:3"/>
   <Place Parts_CustomerAddress="Content:1"/>
   <Place Parts_CustomerAddress_Edit="Content:1"/>
   <Match ContentType="Customer">
     <Place Parts_Common_Metadata="-"/>
+    <Match DisplayType="SummaryAdmin">
+      <Place Parts_Contents_Publish_SummaryAdmin="-"
+             Parts_Contents_Clone_SummaryAdmin="-"/>
+    </Match>
   </Match>
   <Match ContentType="CustomerAddress">
     <Place Parts_Common_Metadata="-"/>

@@ -6,6 +6,7 @@
 }
 
 <fieldset>
+    @Html.HiddenFor(m => m.CustomerId)
     <div>
         @Html.LabelFor(m => m.AddressAlias, T("Address alias").Text, new { @class = "required" })
         @Html.TextBoxFor(m => m.AddressAlias, new { @class = "text medium" })

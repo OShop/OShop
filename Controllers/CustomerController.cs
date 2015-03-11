@@ -53,13 +53,8 @@ namespace OShop.Controllers
         [Themed]
         [Authorize]
         public ActionResult Index()
-        {
-            var user = _authenticationService.GetAuthenticatedUser();
-            if (user == null) {
-                return new HttpUnauthorizedResult();
-            }
-            
-            var customer = _customersService.GetCustomer(user.Id);
+        {            
+            var customer = _customersService.GetCustomer();
             if (customer != null) {
                 if (Services.Authorizer.Authorize(Orchard.Core.Contents.Permissions.ViewContent, customer, T("You are not allowed to view this account."))) {
                     return new ShapeResult(this, _contentManager.BuildDisplay(customer.ContentItem));
@@ -73,21 +68,26 @@ namespace OShop.Controllers
             }
         }
 
+        [Themed]
         [Authorize]
         [HttpPost, ActionName("Index")]
         [FormValueRequired("Action")]
         public ActionResult IndexPost(string Action, int CustomerAddressId) {
-            var user = _authenticationService.GetAuthenticatedUser();
-            if (user == null) {
-                return new HttpUnauthorizedResult();
-            }
-
             switch (Action) {
                 case "Edit":
                     return RedirectToAction("EditAddress", "Customer", new { area = "OShop", id = CustomerAddressId, ReturnUrl = Url.Action("Index", "Customer", new { area = "OShop" }) });
                 case "Remove":
-                    return RedirectToAction("RemoveAddress", "Customer", new { area = "OShop", id = CustomerAddressId, ReturnUrl = Url.Action("Index", "Customer", new { area = "OShop" }) });
-                default :
+                    var contentItem = _contentManager.Get(CustomerAddressId, VersionOptions.Latest);
+
+                    if (!Services.Authorizer.Authorize(Orchard.Core.Contents.Permissions.DeleteContent, contentItem, T("You are not allowed to remove this address.")))
+                        return new HttpUnauthorizedResult();
+
+                    if (contentItem != null) {
+                        _contentManager.Remove(contentItem);
+                        Services.Notifier.Information(T("Your address was successfully removed."));
+                    }
+                    return Index();
+                default:
                     return Index();
             }
         }
@@ -95,15 +95,11 @@ namespace OShop.Controllers
         [Authorize]
         [OutputCache(Duration = 0)]
         public ActionResult PreviewAddress(int id) {
-            var user = _authenticationService.GetAuthenticatedUser();
-            if (user == null) {
-                return new HttpUnauthorizedResult();
-            }
             var address = _contentManager.Get<CustomerAddressPart>(id);
             if (address == null) {
                 return new HttpNotFoundResult();
             }
-            else if (Services.Authorizer.Authorize(Orchard.Core.Contents.Permissions.ViewOwnContent, address)) {
+            else if (Services.Authorizer.Authorize(Orchard.Core.Contents.Permissions.ViewContent, address)) {
                 return new ShapeResult(this, _contentManager.BuildDisplay(address.ContentItem));
             }
             else {
@@ -114,12 +110,7 @@ namespace OShop.Controllers
         [Themed]
         [Authorize]
         public ActionResult Create(string returnUrl = null) {
-            var user = _authenticationService.GetAuthenticatedUser();
-            if (user == null) {
-                return new HttpUnauthorizedResult();
-            }
-
-            var customer = _customersService.GetCustomer(user.Id);
+            var customer = _customersService.GetCustomer();
             if (customer == null) {
                 if (Services.Authorizer.Authorize(CustomersPermissions.EditOwnCustomerAccount, T("You are not allowed to create an account."))) {
                     return View(_contentManager.BuildEditor(_contentManager.New("Customer")));
@@ -137,26 +128,26 @@ namespace OShop.Controllers
         [HttpPost, ActionName("Create")]
         [FormValueRequired("submit.Save")]
         public ActionResult CreatePost(string returnUrl = null) {
-            var user = _authenticationService.GetAuthenticatedUser();
-            if (user == null) {
+            if (!Services.Authorizer.Authorize(CustomersPermissions.EditOwnCustomerAccount, T("You are not allowed to create an account."))) {
                 return new HttpUnauthorizedResult();
             }
 
-            var customer = _contentManager.New("Customer");
-
-            if (!Services.Authorizer.Authorize(Orchard.Core.Contents.Permissions.PublishContent, customer, T("You are not allowed to create an account."))) {
-                return new HttpUnauthorizedResult();
+            ContentItem customer;
+            var customerPart = _customersService.GetCustomer();
+            if (customerPart != null) {
+                customer = customerPart.ContentItem;
+            }
+            else {
+                customer = _contentManager.New("Customer");
+                _contentManager.Create(customer);
             }
 
-            _contentManager.Create(customer, VersionOptions.Draft);
             var model = _contentManager.UpdateEditor(customer, this);
 
             if (!ModelState.IsValid) {
                 _transactionManager.Cancel();
                 return View(model);
             }
-
-            _contentManager.Publish(customer);
 
             Services.Notifier.Information(T("Your customer account was successfully created."));
 
@@ -166,14 +157,9 @@ namespace OShop.Controllers
         [Themed]
         [Authorize]
         public ActionResult Edit(string returnUrl = null) {
-            var user = _authenticationService.GetAuthenticatedUser();
-            if (user == null) {
-                return new HttpUnauthorizedResult();
-            }
-
-            var customer = _customersService.GetCustomer(user.Id);
+            var customer = _customersService.GetCustomer();
             if (customer != null) {
-                if (Services.Authorizer.Authorize(Orchard.Core.Contents.Permissions.PublishContent, customer, T("You are not allowed to edit this account."))) {
+                if (Services.Authorizer.Authorize(CustomersPermissions.EditOwnCustomerAccount, T("You are not allowed to edit this account."))) {
                     return View(_contentManager.BuildEditor(customer.ContentItem));
                 }
                 else {
@@ -189,16 +175,11 @@ namespace OShop.Controllers
         [HttpPost, ActionName("Edit")]
         [FormValueRequired("submit.Save")]
         public ActionResult EditPost(string returnUrl = null) {
-            var user = _authenticationService.GetAuthenticatedUser();
-            if (user == null) {
-                return new HttpUnauthorizedResult();
-            }
+            var customerPart = _customersService.GetCustomer();
 
-            var customerPart = _customersService.GetCustomer(user.Id);
+            var customer = _contentManager.Get(customerPart.ContentItem.Id, VersionOptions.DraftRequired);
 
-            var customer = _contentManager.Get(customerPart.ContentItem.Id, VersionOptions.Draft);
-
-            if (!Services.Authorizer.Authorize(Orchard.Core.Contents.Permissions.PublishContent, customer, T("You are not allowed to edit this account."))) {
+            if (!Services.Authorizer.Authorize(CustomersPermissions.EditOwnCustomerAccount, T("You are not allowed to edit this account."))) {
                 return new HttpUnauthorizedResult();
             }
             
@@ -209,8 +190,6 @@ namespace OShop.Controllers
                 return View(model);
             }
 
-            _contentManager.Publish(customer);
-
             Services.Notifier.Information(T("Your customer account was successfully updated."));
 
             return this.RedirectLocal(returnUrl, () => RedirectToAction("Index"));
@@ -219,11 +198,10 @@ namespace OShop.Controllers
         [Themed]
         [Authorize]
         public ActionResult CreateAddress(string returnUrl = null) {
-            var user = _authenticationService.GetAuthenticatedUser();
-            if (user == null) {
-                return new HttpUnauthorizedResult();
+            var customer = _customersService.GetCustomer();
+            if (customer == null) {
+                return RedirectToAction("Create", new { ReturnUrl = returnUrl });
             }
-
             if (Services.Authorizer.Authorize(CustomersPermissions.EditOwnCustomerAccount, T("You are not allowed to create an address."))) {
                 return View(_contentManager.BuildEditor(_contentManager.New("CustomerAddress")));
             }
@@ -237,26 +215,24 @@ namespace OShop.Controllers
         [HttpPost, ActionName("CreateAddress")]
         [FormValueRequired("submit.Save")]
         public ActionResult CreateAddressPost(bool IsDefaultAddress = false, string returnUrl = null) {
-            var user = _authenticationService.GetAuthenticatedUser();
-            if (user == null) {
-                return new HttpUnauthorizedResult();
+            var customer = _customersService.GetCustomer();
+            if (customer == null) {
+                return RedirectToAction("Create", new { ReturnUrl = returnUrl });
             }
 
             var customerAddress = _contentManager.New("CustomerAddress");
 
-            if (!Services.Authorizer.Authorize(Orchard.Core.Contents.Permissions.PublishContent, customerAddress, T("You are not allowed to create an address."))) {
+            if (!Services.Authorizer.Authorize(CustomersPermissions.EditOwnCustomerAccount, T("You are not allowed to create an address."))) {
                 return new HttpUnauthorizedResult();
             }
 
-            _contentManager.Create(customerAddress, VersionOptions.Draft);
+            _contentManager.Create(customerAddress);
             var model = _contentManager.UpdateEditor(customerAddress, this);
 
             if (!ModelState.IsValid) {
                 _transactionManager.Cancel();
                 return View(model);
             }
-
-            _contentManager.Publish(customerAddress);
 
             if (IsDefaultAddress) {
                 SetDefaultAddress(customerAddress);
@@ -270,14 +246,9 @@ namespace OShop.Controllers
         [Themed]
         [Authorize]
         public ActionResult EditAddress(int id, string returnUrl = null) {
-            var user = _authenticationService.GetAuthenticatedUser();
-            if (user == null) {
-                return new HttpUnauthorizedResult();
-            }
-
-            var address = _contentManager.Get<CustomerAddressPart>(id, VersionOptions.Latest);
+            var address = _contentManager.Get<CustomerAddressPart>(id);
             if (address != null) {
-                if (Services.Authorizer.Authorize(Orchard.Core.Contents.Permissions.PublishContent, address, T("You are not allowed to edit this address."))) {
+                if (Services.Authorizer.Authorize(Orchard.Core.Contents.Permissions.EditContent, address, T("You are not allowed to edit this address."))) {
                     return View(_contentManager.BuildEditor(address));
                 }
                 else {
@@ -294,17 +265,12 @@ namespace OShop.Controllers
         [HttpPost, ActionName("EditAddress")]
         [FormValueRequired("submit.Save")]
         public ActionResult EditAddressPost(int id, string returnUrl = null) {
-            var user = _authenticationService.GetAuthenticatedUser();
-            if (user == null) {
-                return new HttpUnauthorizedResult();
-            }
-
-            var address = _contentManager.Get<CustomerAddressPart>(id, VersionOptions.Latest);
+            var address = _contentManager.Get<CustomerAddressPart>(id);
             if (address == null) {
                 return HttpNotFound();
             }
 
-            if (!Services.Authorizer.Authorize(Orchard.Core.Contents.Permissions.PublishContent, address, T("You are not allowed to edit this address."))) {
+            if (!Services.Authorizer.Authorize(Orchard.Core.Contents.Permissions.EditContent, address, T("You are not allowed to edit this address."))) {
                 return new HttpUnauthorizedResult();
             }
 
@@ -315,32 +281,7 @@ namespace OShop.Controllers
                 return View(model);
             }
 
-            _contentManager.Publish(address.ContentItem);
-
             Services.Notifier.Information(T("Your address was successfully updated."));
-
-            return this.RedirectLocal(returnUrl, () => RedirectToAction("Index"));
-        }
-
-        [Authorize]
-        public ActionResult RemoveAddress(int id, string returnUrl = null) {
-            var user = _authenticationService.GetAuthenticatedUser();
-            if (user == null) {
-                return new HttpUnauthorizedResult();
-            }
-
-            var address = _contentManager.Get<CustomerAddressPart>(id, VersionOptions.Latest);
-            if (address == null) {
-                return HttpNotFound();
-            }
-
-            if (!Services.Authorizer.Authorize(Orchard.Core.Contents.Permissions.DeleteContent, address, T("You are not allowed to remove this address."))) {
-                return this.RedirectLocal(returnUrl, () => new HttpUnauthorizedResult());
-            }
-
-            _contentManager.Remove(address.ContentItem);
-
-            Services.Notifier.Information(T("Your address was successfully removed."));
 
             return this.RedirectLocal(returnUrl, () => RedirectToAction("Index"));
         }

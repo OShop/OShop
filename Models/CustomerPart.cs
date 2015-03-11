@@ -9,6 +9,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace OShop.Models {
     public class CustomerPart : ContentPart<CustomerPartRecord>, ITitleAspect {
+        internal readonly LazyField<IEnumerable<CustomerAddressPart>> _addresses = new LazyField<IEnumerable<CustomerAddressPart>>();
+        internal readonly LazyField<IUser> _user = new LazyField<IUser>();
+
         [Required]
         public String FirstName {
             get { return this.Retrieve(x => x.FirstName); }
@@ -31,12 +34,21 @@ namespace OShop.Models {
         }
 
         public String Email {
-            get { return this.Owner.Email; }
+            get { return this.User != null ? this.User.Email : String.Empty; }
         }
 
-        public IUser Owner {
-            get { return this.As<CommonPart>().Owner; }
-            set { this.As<CommonPart>().Owner = value; }
+        public Int32 UserId {
+            get { return this.Retrieve(x => x.UserId); }
+            set { this.Store(x => x.UserId, value); }
+        }
+
+        public IUser User {
+            get { return _user.Value; }
+            set { _user.Value = value; }
+        }
+
+        public IEnumerable<CustomerAddressPart> Addresses {
+            get { return _addresses.Value; }
         }
     }
 }

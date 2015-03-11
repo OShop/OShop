@@ -1,24 +1,25 @@
-﻿@using OShop.Models
+﻿@using Orchard.Core.Contents
+@using OShop.Models
 
 @{
     Script.Require("OShop");
     
     CustomerPart contentPart = Model.ContentPart;
-    IEnumerable<CustomerAddressPart> addresses = Model.Addresses;
 }
 
-@Html.ActionLink(T("Create new address").Text, "CreateAddress", new { area = "OShop" })
-
-@if (addresses.Any()) {
+@if (Authorizer.Authorize(Permissions.EditContent, contentPart)) {
+    @Html.ActionLink(T("Create new address").Text, "CreateAddress", new { area = "OShop" })
+}
+@if (contentPart.Addresses.Any()) {
     using (Html.BeginFormAntiForgeryPost(Url.Action("Index", "Customer", new { area = "OShop" }))) {
         <fieldset>
             <label for="CustomerAddress">@T("Your addresses :")</label>
             <select id="CustomerAddress" name="CustomerAddressId">
-                @foreach (var address in addresses) {
-                    <option value="@address.Id" @(address.Id == contentPart.DefaultAddressId ? "selected" : "")>@address.AddressAlias</option>
+                @foreach (var address in contentPart.Addresses) {
+                    <option value="@address.ContentItem.Id" @(address.IsDefault ? "selected" : "")>@address.AddressAlias</option>
                 }
             </select>
-        @if (Model.AllowEdit) {
+        @if (Authorizer.Authorize(Permissions.EditContent, contentPart)) {
             <button type="submit" name="Action" value="Edit">@T("Edit")</button>
             <button type="submit" name="Action" value="Remove" class="oshop-confirm" data-msg="@T("Are you sure you want to remove this address ?")">@T("Remove")</button>
         }

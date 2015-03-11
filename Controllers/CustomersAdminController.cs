@@ -44,7 +44,7 @@ namespace OShop.Controllers
         public IOrchardServices Services { get; set; }
 
         public ActionResult Index(ListContentsViewModel model, PagerParameters pagerParameters) {
-            if (!Services.Authorizer.Authorize(Permissions.CustomersPermissions.ManageCustomerAccounts, T("Not allowed to manage customers")))
+            if (!Services.Authorizer.Authorize(Permissions.CustomersPermissions.ViewCustomerAccounts, T("Not allowed to manage customers")))
                 return new HttpUnauthorizedResult();
 
             var pager = new Pager(_siteService.GetSiteSettings(), pagerParameters);
@@ -112,5 +112,41 @@ namespace OShop.Controllers
 
             return this.RedirectLocal(returnUrl, () => RedirectToAction("Index"));
         }
+
+        public ActionResult Detail(int id) {
+            if (!Services.Authorizer.Authorize(Permissions.CustomersPermissions.ViewCustomerAccounts, T("Not allowed to manage customers")))
+                return new HttpUnauthorizedResult();
+
+            var customer = _contentManager.Get<CustomerPart>(id, VersionOptions.Latest);
+            if (customer != null) {
+                return new ShapeResult(this, _contentManager.BuildDisplay(customer.ContentItem, "DetailAdmin"));
+            }
+            else {
+                return new HttpNotFoundResult();
+            }
+        }
+
+        [HttpPost, ActionName("Detail")]
+        [FormValueRequired("Action")]
+        public ActionResult DetailPost(int id, string Action, int CustomerAddressId) {
+            switch (Action) {
+                case "Edit":
+                    return RedirectToAction("Edit", "Admin", new { area = "Contents", id = CustomerAddressId, ReturnUrl = Url.Action("Detail", "CustomersAdmin", new { area = "OShop", id = id }) });
+                case "Remove":
+                    var contentItem = _contentManager.Get(CustomerAddressId, VersionOptions.Latest);
+
+                    if (!Services.Authorizer.Authorize(Orchard.Core.Contents.Permissions.DeleteContent, contentItem, T("You are not allowed to remove this address.")))
+                        return new HttpUnauthorizedResult();
+
+                    if (contentItem != null) {
+                        _contentManager.Remove(contentItem);
+                        Services.Notifier.Information(T("Address was successfully removed."));
+                    }
+                    return Detail(id);
+                default:
+                    return Detail(id);
+            }
+        }
+
     }
 }

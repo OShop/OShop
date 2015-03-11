@@ -64,17 +64,15 @@ namespace OShop.Controllers
                 return RedirectToAction("Index", "ShoppingCart", new { area = "OShop" });
             }
 
-            var customerAddresses = _customersService.GetMyAddresses();
-
             // Billing address
             Int32 billingAddressId = _shoppingCartService.GetProperty<Int32>("BillingAddressId");
             if (billingAddressId <= 0) {
-                if (customer.DefaultAddressId > 0 && customerAddresses.Where(a => a.Id == customer.DefaultAddressId).Any()) {
+                if (customer.DefaultAddressId > 0 && customer.Addresses.Where(a => a.Id == customer.DefaultAddressId).Any()) {
                     billingAddressId = customer.DefaultAddressId;
                     _shoppingCartService.SetProperty<Int32>("BillingAddressId", billingAddressId);
                 }
-                else if(customerAddresses.Any()) {
-                    billingAddressId = customerAddresses.First().Id;
+                else if(customer.Addresses.Any()) {
+                    billingAddressId = customer.Addresses.First().ContentItem.Id;
                     _shoppingCartService.SetProperty<Int32>("BillingAddressId", billingAddressId);
                 }
             }
@@ -82,12 +80,12 @@ namespace OShop.Controllers
             // Shipping address
             Int32 shippingAddressId = _shoppingCartService.GetProperty<Int32>("ShippingAddressId");
             if (shippingAddressId <= 0) {
-                if (customer.DefaultAddressId > 0 && customerAddresses.Where(a => a.Id == customer.DefaultAddressId).Any()) {
+                if (customer.DefaultAddressId > 0 && customer.Addresses.Where(a => a.Id == customer.DefaultAddressId).Any()) {
                     shippingAddressId = customer.DefaultAddressId;
                     _shoppingCartService.SetProperty<Int32>("ShippingAddressId", shippingAddressId);
                 }
-                else if (customerAddresses.Any()) {
-                    shippingAddressId = customerAddresses.First().Id;
+                else if (customer.Addresses.Any()) {
+                    shippingAddressId = customer.Addresses.First().ContentItem.Id;
                     _shoppingCartService.SetProperty<Int32>("ShippingAddressId", shippingAddressId);
                 }
             }
@@ -96,20 +94,20 @@ namespace OShop.Controllers
 
             var model = new CheckoutIndexViewModel() {
                 ShippingRequired = cart.IsShippingRequired(),
-                Addresses = customerAddresses,
+                Addresses = customer.Addresses,
                 BillingAddressId = billingAddressId > 0 ? billingAddressId : customer.DefaultAddressId,
                 ShippingAddressId = shippingAddressId > 0 ? shippingAddressId : customer.DefaultAddressId,
                 NumberFormat = _currencyProvider.NumberFormat,
                 VatEnabled = _featureManager.GetEnabledFeatures().Where(f => f.Id == "OShop.VAT").Any()
             };
 
-            var billingAddress = _contentManager.Get(model.BillingAddressId);
+            var billingAddress = _contentManager.Get(model.BillingAddressId, VersionOptions.Latest);
             if (billingAddress != null) {
                 model.BillingAddress = _contentManager.BuildDisplay(billingAddress);
             }
 
             if (model.ShippingRequired && _shippingService != null) {
-                var shippingAddress = _contentManager.Get(model.ShippingAddressId);
+                var shippingAddress = _contentManager.Get(model.ShippingAddressId, VersionOptions.Latest);
                 if (shippingAddress != null) {
                     model.ShippingAddress = _contentManager.BuildDisplay(shippingAddress);
                 }

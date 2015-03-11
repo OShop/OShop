@@ -34,6 +34,13 @@ namespace OShop.Migrations {
                  .Column<string>("Data", c => c.Unlimited())
                  .Column<decimal>("Price"));
 
+            SchemaBuilder.CreateTable("OrderShippingPartRecord", table => table
+               .ContentPartRecord()
+               .Column<string>("ShippingAddress", c => c.Unlimited())
+               .Column<int>("ShippingStatus")
+               .Column<string>("ShippingInfos", c => c.Unlimited())
+            );
+
             ContentDefinitionManager.AlterPartDefinition("ShippingPart", part => part
                  .Attachable()
                  .WithDescription("Add shipping information to your products"));
@@ -48,22 +55,11 @@ namespace OShop.Migrations {
                 .WithPart("TitlePart")
                 );
 
-            return 1;
-        }
-
-        public int UpdateFrom1() {
-            SchemaBuilder.CreateTable("OrderShippingPartRecord", table => table
-               .ContentPartRecord()
-               .Column<string>("ShippingAddress", c => c.Unlimited())
-               .Column<int>("ShippingStatus")
-               .Column<string>("ShippingInfos", c => c.Unlimited())
-            );
-
             ContentDefinitionManager.AlterTypeDefinition("Order", type => type
                 .WithPart("OrderShippingPart")
             );
 
-            return 2;
+            return 1;
         }
 
     }

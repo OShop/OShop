@@ -11,39 +11,45 @@ namespace OShop.Security {
         public void Checking(CheckAccessContext context) { }
 
         public void Adjust(CheckAccessContext context) {
-            if (!context.Granted &&
-                context.Content.Is<ICommonPart>() &&
-                (context.Content.Is<CustomerPart>() || context.Content.Is<CustomerAddressPart>())) {
+            if (context.Content.Is<CustomerPart>() || context.Content.Is<CustomerAddressPart>()) {
 
                 if (context.Permission.Name == Orchard.Core.Contents.Permissions.PublishContent.Name) {
+                    context.Granted = false;
                     context.Adjusted = true;
                     context.Permission = HasOwnership(context.User, context.Content) ? CustomersPermissions.EditOwnCustomerAccount : CustomersPermissions.ManageCustomerAccounts;
                 }
                 else if (context.Permission.Name == Orchard.Core.Contents.Permissions.PublishOwnContent.Name) {
+                    context.Granted = false;
                     context.Adjusted = true;
                     context.Permission = CustomersPermissions.EditOwnCustomerAccount;
                 }
                 else if (context.Permission.Name == Orchard.Core.Contents.Permissions.EditContent.Name) {
+                    context.Granted = false;
                     context.Adjusted = true;
                     context.Permission = HasOwnership(context.User, context.Content) ? CustomersPermissions.EditOwnCustomerAccount : CustomersPermissions.ManageCustomerAccounts;
                 }
                 else if (context.Permission.Name == Orchard.Core.Contents.Permissions.EditOwnContent.Name) {
+                    context.Granted = false;
                     context.Adjusted = true;
                     context.Permission = CustomersPermissions.EditOwnCustomerAccount;
                 }
                 else if (context.Permission.Name == Orchard.Core.Contents.Permissions.DeleteContent.Name) {
+                    context.Granted = false;
                     context.Adjusted = true;
                     context.Permission = HasOwnership(context.User, context.Content) ? CustomersPermissions.EditOwnCustomerAccount : CustomersPermissions.ManageCustomerAccounts;
                 }
                 else if (context.Permission.Name == Orchard.Core.Contents.Permissions.DeleteOwnContent.Name) {
+                    context.Granted = false;
                     context.Adjusted = true;
                     context.Permission = CustomersPermissions.EditOwnCustomerAccount;
                 }
                 else if (context.Permission.Name == Orchard.Core.Contents.Permissions.ViewContent.Name) {
+                    context.Granted = false;
                     context.Adjusted = true;
                     context.Permission = HasOwnership(context.User, context.Content) ? CustomersPermissions.ViewOwnCustomerAccount : CustomersPermissions.ViewCustomerAccounts;
                 }
                 else if (context.Permission.Name == Orchard.Core.Contents.Permissions.ViewOwnContent.Name) {
+                    context.Granted = false;
                     context.Adjusted = true;
                     context.Permission = CustomersPermissions.ViewOwnCustomerAccount;
                 }
@@ -55,12 +61,16 @@ namespace OShop.Security {
         private static bool HasOwnership(IUser user, IContent content) {
             if (user == null || content == null)
                 return false;
+            CustomerPart customer;
+            customer = content.As<CustomerPart>();
+            if (customer == null) {
+                var address = content.As<CustomerAddressPart>();
+                if (address != null) {
+                    customer = address.Customer;
+                }
+            }
 
-            var common = content.As<ICommonPart>();
-            if (common == null || common.Owner == null)
-                return false;
-
-            return user.Id == common.Owner.Id;
+            return customer != null && user.Id == customer.UserId;
         }
     }
 }

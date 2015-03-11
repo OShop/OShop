@@ -31,17 +31,21 @@ namespace OShop.Services.ShoppingCartResolvers {
             Int32 billingAddressId = ShoppingCartService.GetProperty<int>("BillingAddressId");
             Int32 shippingAddressId = ShoppingCartService.GetProperty<int>("ShippingAddressId");
 
-            var addresses = _customersService.GetMyAddresses();
+            var customer = _customersService.GetCustomer();
+
+            if (customer == null) {
+                return;
+            }
 
             if (billingAddressId > 0) {
-                var billingAddress = addresses.Where(a => a.Id == billingAddressId).FirstOrDefault();
+                var billingAddress = customer.Addresses.Where(a => a.ContentItem.Id == billingAddressId).FirstOrDefault();
                 if (billingAddress != null) {
                     Cart.Properties["BillingAddress"] = billingAddress;
                 }
             }
 
             if (shippingAddressId > 0) {
-                var shippingAddress = addresses.Where(a => a.Id == shippingAddressId).FirstOrDefault();
+                var shippingAddress = customer.Addresses.Where(a => a.ContentItem.Id == shippingAddressId).FirstOrDefault();
                 if (shippingAddress != null) {
                     // Set address
                     Cart.Properties["ShippingAddress"] = shippingAddress;
@@ -60,12 +64,15 @@ namespace OShop.Services.ShoppingCartResolvers {
         }
 
         public void BuildOrder(IShoppingCartService ShoppingCartService, ref IContent Order) {
-            var addresses = _customersService.GetMyAddresses();
+            var customer = _customersService.GetCustomer();
+
+            if (customer == null) {
+                return;
+            }
 
             var orderPart = Order.As<OrderPart>();
             if (orderPart != null) {
                 //  CustomerInfos
-                var customer = _customersService.GetCustomer();
                 var customerInfos = orderPart.CustomerInfos ?? new CustomerInfos();
                 customerInfos.FirstName = customer.FirstName;
                 customerInfos.LastName = customer.LastName;
@@ -75,7 +82,7 @@ namespace OShop.Services.ShoppingCartResolvers {
                 //  Billing address
                 Int32 billingAddressId = ShoppingCartService.GetProperty<int>("BillingAddressId");
                 if (billingAddressId > 0) {
-                    var billingAddress = addresses.Where(a => a.Id == billingAddressId).FirstOrDefault();
+                    var billingAddress = customer.Addresses.Where(a => a.Id == billingAddressId).FirstOrDefault();
                     if (billingAddress != null) {
                         orderPart.BillingAddress = _locationsService.FormatAddress(billingAddress);
                     }
@@ -87,7 +94,7 @@ namespace OShop.Services.ShoppingCartResolvers {
                 //  Shipping address
                 Int32 shippingAddressId = ShoppingCartService.GetProperty<int>("ShippingAddressId");
                 if (shippingAddressId > 0) {
-                    var shippingAddress = addresses.Where(a => a.Id == shippingAddressId).FirstOrDefault();
+                    var shippingAddress = customer.Addresses.Where(a => a.Id == shippingAddressId).FirstOrDefault();
                     if (shippingAddress != null) {
                         // Set address
                         shippingPart.ShippingAddress = _locationsService.FormatAddress(shippingAddress);

@@ -10,7 +10,7 @@ namespace OShop.Fields {
                 return Storage.Get<Int32>("CountryId");
             }
             set {
-                Storage.Set("CountryId", value != null ? value : 0);
+                Storage.Set("CountryId", value);
             }
         }
 
@@ -19,7 +19,7 @@ namespace OShop.Fields {
                 return Storage.Get<Int32>("StateId");
             }
             set {
-                Storage.Set("StateId", value != null ? value : 0);
+                Storage.Set("StateId", value);
             }
         }
     }

@@ -31,13 +31,16 @@ namespace OShop.Services {
                 return null;
             }
 
-            return GetCustomer(user.Id);
+            return GetCustomerForUser(user.Id);
         }
 
-        public CustomerPart GetCustomer(int UserId) {
+        public CustomerPart GetCustomer(int CustomerId) {
+            return _contentManager.Get<CustomerPart>(CustomerId);
+        }
+
+        private CustomerPart GetCustomerForUser(int UserId) {
             var customerPart = _contentManager.Query<CustomerPart, CustomerPartRecord>()
-                .Join<CommonPartRecord>()
-                .Where(c => c.OwnerId == UserId).Slice(1)
+                .Where(c => c.UserId == UserId).Slice(1)
                 .FirstOrDefault();
 
             if (customerPart != null) {
@@ -48,21 +51,19 @@ namespace OShop.Services {
             }
         }
 
-        public IEnumerable<CustomerAddressPart> GetMyAddresses() {
-            var user = _authenticationService.GetAuthenticatedUser();
-
-            if (user == null) {
+        public IEnumerable<CustomerAddressPart> GetAddressesForCustomer(CustomerPart Customer) {
+            if (Customer == null) {
                 return new List<CustomerAddressPart>();
             }
 
-            return GetAddressesByOwner(user.Id);
+            return GetAddressesForCustomer(Customer.ContentItem.Id);
         }
 
-        public IEnumerable<CustomerAddressPart> GetAddressesByOwner(int UserId) {
+        public IEnumerable<CustomerAddressPart> GetAddressesForCustomer(int CustomerId) {
             return _contentManager.Query<CustomerAddressPart, CustomerAddressPartRecord>()
-                .Join<CommonPartRecord>()
-                .Where(c => c.OwnerId == UserId)
+                .Where(c => c.CustomerId == CustomerId)
                 .List();
         }
+
     }
 }

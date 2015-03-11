@@ -7,6 +7,23 @@ using System.Web;
 
 namespace OShop.ViewModels {
     public class CustomerAddressEditViewModel {
+        public CustomerAddressEditViewModel() { }
+
+        public CustomerAddressEditViewModel(CustomerAddressPart part) {
+                AddressAlias = part.AddressAlias;
+                IsDefault = part.IsDefault;
+                Company = part.Company;
+                FirstName = part.FirstName;
+                LastName = part.LastName;
+                Address1 = part.Address1;
+                Address2 = part.Address2;
+                Zipcode = part.Zipcode;
+                City = part.City;
+                CountryId = part.CountryId;
+                StateId = part.StateId;
+                CustomerId = part.Customer != null ? part.Customer.ContentItem.Id : 0;
+        }
+        
         public Boolean IsDefault { get; set; }
         [Required]
         public String AddressAlias { get; set; }
@@ -26,5 +43,6 @@ namespace OShop.ViewModels {
         public IEnumerable<LocationsStateRecord> States { get; set; }
         public int CountryId { get; set; }
         public int StateId { get; set; }
+        public int CustomerId { get; set; }
     }
 }

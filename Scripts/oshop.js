@@ -18,7 +18,7 @@
             $(addressPreviewPlaceholder).load(addressPreviewPath + $addressSelector.val());
         };
         UpdatePreview();
-        this.change(UpdatePreview);
+        $addressSelector.change(UpdatePreview);
 
         return this;
     };

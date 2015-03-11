@@ -10,12 +10,14 @@ namespace OShop.Migrations {
         public int Create() {
             SchemaBuilder.CreateTable("CustomerPartRecord", table => table
                  .ContentPartRecord()
+                 .Column<int>("UserId")
                  .Column<string>("FirstName")
                  .Column<string>("LastName")
                  .Column<int>("DefaultAddressId"));
 
             SchemaBuilder.CreateTable("CustomerAddressPartRecord", table => table
                  .ContentPartRecord()
+                 .Column<int>("CustomerPartRecordId", c => c.NotNull())
                  .Column<string>("AddressAlias")
                  .Column<string>("Company")
                  .Column<string>("FirstName")
@@ -47,8 +49,8 @@ namespace OShop.Migrations {
                 .Creatable(false)
                 );
 
-
             return 1;
         }
+
     }
 }
