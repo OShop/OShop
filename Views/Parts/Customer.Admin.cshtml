@@ -5,9 +5,9 @@
     Layout.Title = T("Customer account");
 }
 
-<div>
-    @customer.FirstName @customer.LastName
-    @if (Authorizer.Authorize(Permissions.EditContent, customer)) {
-        @Html.ItemEditLink(T("Edit").Text, customer.ContentItem)
-    }
-</div>
+@customer.FirstName @customer.LastName
+@if (Authorizer.Authorize(Permissions.EditContent, customer)) {
+    <div class="manage">
+        <a href="@Url.ItemEditUrl(customer)" class="button">@T("Edit")</a>
+    </div>
+}

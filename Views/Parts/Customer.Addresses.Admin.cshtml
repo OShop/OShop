@@ -2,17 +2,15 @@
 @using OShop.Models
 
 @{
+    Style.Require("OShopAdmin");
     Script.Require("OShop");
 
     CustomerPart contentPart = Model.ContentPart;
 }
 
 
-<fieldset>
-    <legend>@T("Customer addresses :")</legend>
-    @if (Authorizer.Authorize(Permissions.EditContent, contentPart)) {
-        @Html.ActionLink(T("Create new address").Text, "Create", "Admin", new { Area = "Contents", Id = "CustomerAddress", CustomerId = contentPart.ContentItem.Id, returnUrl = Context.Request.RawUrl }, null)<br/>
-    }
+<fieldset class="admin-customer-addresses">
+    <legend>@T("Addresses")</legend>
     @using (Html.BeginFormAntiForgeryPost()) {
     if (contentPart.Addresses.Any()) {
         <select id="CustomerAddress" name="CustomerAddressId">
@@ -20,13 +18,16 @@
                 <option value="@address.ContentItem.Id" @(address.IsDefault ? "selected" : "")>@(address.AddressAlias + (address.IsDefault ? T(" (Default)").Text : ""))</option>
             }
         </select>
+        if (Authorizer.Authorize(Permissions.EditContent, contentPart)) {
+            <button type="submit" name="Action" value="Edit">@T("Edit")</button>
+            <button type="submit" name="Action" value="Remove" class="oshop-confirm" data-msg="@T("Are you sure you want to remove this address ?")">@T("Remove")</button>
+        }
     }
     else {
-        <span>@T("Customer has no registered address.")</span>
+        <div>@T("Customer has no registered address.")</div>
     }
     if (Authorizer.Authorize(Permissions.EditContent, contentPart)) {
-        <button type="submit" name="Action" value="Edit">@T("Edit")</button>
-        <button type="submit" name="Action" value="Remove" class="oshop-confirm" data-msg="@T("Are you sure you want to remove this address ?")">@T("Remove")</button>
+        @Html.ActionLink(T("Create new").Text, "Create", "Admin", new { Area = "Contents", Id = "CustomerAddress", CustomerId = contentPart.ContentItem.Id, returnUrl = Context.Request.RawUrl }, new { @class = "button" })<br />
     }
     }
     <div id="CustomerAddressPreview" class="address-preview">
