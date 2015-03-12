@@ -21,7 +21,9 @@ namespace OShop.Handlers {
             Filters.Add(StorageFilter.For(repository));
 
             OnCreating<OrderPart>((context, part) => {
-                part.Reference = ordersService.BuildOrderReference();
+                if (String.IsNullOrWhiteSpace(part.Reference)) {
+                    part.Reference = ordersService.BuildOrderReference();
+                }
             });
         }
 
