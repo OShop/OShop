@@ -3,18 +3,16 @@ using Orchard.ContentManagement;
 using Orchard.Environment.Extensions;
 using OShop.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace OShop.Services.ShoppingCartResolvers {
     [OrchardFeature("OShop.Customers")]
-    public class CustomerAddressResolver : IShoppingCartBuilder, IOrderBuilder {
+    public class CustomerResolver : IShoppingCartBuilder, IOrderBuilder {
         private readonly ICustomersService _customersService;
         private readonly ILocationsService _locationsService;
         private readonly IWorkContextAccessor _workContextAccessor;
 
-        public CustomerAddressResolver (
+        public CustomerResolver (
             ICustomersService customersService,
             ILocationsService locationsService,
             IWorkContextAccessor workContextAccessor) {
@@ -87,6 +85,11 @@ namespace OShop.Services.ShoppingCartResolvers {
                         orderPart.BillingAddress = _locationsService.FormatAddress(billingAddress);
                     }
                 }
+            }
+
+            var customerOrderPart = Order.As<CustomerOrderPart>();
+            if (customerOrderPart != null) {
+                customerOrderPart.Customer = customer;
             }
 
             var shippingPart = Order.As<OrderShippingPart>();

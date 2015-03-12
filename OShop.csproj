@@ -268,7 +268,7 @@
     <Compile Include="Services\IShoppingCartService.cs" />
     <Compile Include="Services\IVatService.cs" />
     <Compile Include="Services\LocationsService.cs" />
-    <Compile Include="Services\ShoppingCartResolvers\CustomerAddressResolver.cs" />
+    <Compile Include="Services\ShoppingCartResolvers\CustomerResolver.cs" />
     <Compile Include="Services\ShoppingCartResolvers\ProductResolver.cs" />
     <Compile Include="Services\ShoppingCartResolvers\ShippingInfoResolver.cs" />
     <Compile Include="Services\ShippingService.cs" />
