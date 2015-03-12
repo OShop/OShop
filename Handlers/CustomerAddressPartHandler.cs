@@ -1,13 +1,8 @@
-﻿using Orchard.ContentManagement;
-using Orchard.ContentManagement.Handlers;
+﻿using Orchard.ContentManagement.Handlers;
 using Orchard.Data;
 using Orchard.Environment.Extensions;
 using OShop.Models;
 using OShop.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace OShop.Handlers {
     [OrchardFeature("OShop.Customers")]
