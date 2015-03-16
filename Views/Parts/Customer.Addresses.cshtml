@@ -11,9 +11,9 @@
     @Html.ActionLink(T("Create new address").Text, "CreateAddress", new { area = "OShop" })
 }
 @if (contentPart.Addresses.Any()) {
+    <h2>@T("Your addresses")</h2>
     using (Html.BeginFormAntiForgeryPost(Url.Action("Index", "Customer", new { area = "OShop" }))) {
         <fieldset>
-            <label for="CustomerAddress">@T("Your addresses :")</label>
             <select id="CustomerAddress" name="CustomerAddressId">
                 @foreach (var address in contentPart.Addresses) {
                     <option value="@address.ContentItem.Id" @(address.IsDefault ? "selected" : "")>@address.AddressAlias</option>

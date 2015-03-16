@@ -41,8 +41,8 @@
         Parts_Contents_Clone_SummaryAdmin="-"/>
     </Match>
     <Match DisplayType="DetailAdmin">
-      <Place Parts_Customer="Content:1;Alternate=Parts_Customer_Admin"
-        Parts_Customer_Addresses="Content:10;Alternate=Parts_Customer_Addresses_Admin"/>
+      <Place Parts_Customer="Content:1"
+        Parts_Customer_Addresses_Admin="Content:5"/>
       <Place Parts_Customer_Orders_Admin="Content:6"/>
     </Match>
   </Match>

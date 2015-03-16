@@ -32,15 +32,26 @@ namespace OShop.Drivers {
         public IOrchardServices Services { get; private set; }
 
         protected override DriverResult Display(CustomerPart part, string displayType, dynamic shapeHelper) {
-            bool allowEdit = Services.Authorizer.Authorize(Orchard.Core.Contents.Permissions.EditContent, part);
-            return Combined(
-                ContentShape("Parts_Customer", () => shapeHelper.Parts_Customer(
-                    ContentPart: part)
-                ),
-                ContentShape("Parts_Customer_Addresses", () => shapeHelper.Parts_Customer_Addresses(
-                    ContentPart: part)
-                )
-            );
+            if (AdminFilter.IsApplied(Services.WorkContext.HttpContext.Request.RequestContext)) {
+                return Combined(
+                    ContentShape("Parts_Customer_Admin", () => shapeHelper.Parts_Customer_Admin(
+                        ContentPart: part)
+                    ),
+                    ContentShape("Parts_Customer_Addresses_Admin", () => shapeHelper.Parts_Customer_Addresses_Admin(
+                        ContentPart: part)
+                    )
+                );
+            }
+            else {
+                return Combined(
+                    ContentShape("Parts_Customer", () => shapeHelper.Parts_Customer(
+                        ContentPart: part)
+                    ),
+                    ContentShape("Parts_Customer_Addresses", () => shapeHelper.Parts_Customer_Addresses(
+                        ContentPart: part)
+                    )
+                );
+            }
         }
 
         // GET
