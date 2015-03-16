@@ -1,32 +1,20 @@
 ﻿using Orchard;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.Drivers;
-using Orchard.Core.Common.Models;
 using Orchard.Environment.Extensions;
-using Orchard.Security;
 using Orchard.UI.Admin;
 using OShop.Models;
-using OShop.Permissions;
-using OShop.Services;
-using OShop.ViewModels;
-using System.Collections.Generic;
 
 namespace OShop.Drivers {
     [OrchardFeature("OShop.Customers")]
     public class CustomerPartDriver : ContentPartDriver<CustomerPart> {
-        private readonly IAuthenticationService _authenticationService;
-        private readonly ICustomersService _customersService;
 
         protected override string Prefix { get { return "Customer"; } }
 
         public CustomerPartDriver(
-            IAuthenticationService authenticationService,
-            ICustomersService customersService,
             IOrchardServices orchardServices
             ) {
-            _authenticationService = authenticationService;
             Services = orchardServices;
-            _customersService = customersService;
         }
 
         public IOrchardServices Services { get; private set; }
@@ -76,14 +64,8 @@ namespace OShop.Drivers {
 
         // POST
         protected override DriverResult Editor(CustomerPart part, IUpdateModel updater, dynamic shapeHelper) {
-            if (updater.TryUpdateModel(part, Prefix, null, null)) {
-                if (part.User == null) {
-                    var user = _authenticationService.GetAuthenticatedUser();
-                    if (user != null) {
-                        part.UserId = user.ContentItem.Id;
-                    }
-                }
-            }
+            updater.TryUpdateModel(part, Prefix, null, null);
+
             return Editor(part, shapeHelper);
         }
     }

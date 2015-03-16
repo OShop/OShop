@@ -143,6 +143,10 @@ namespace OShop.Controllers
             }
 
             var model = _contentManager.UpdateEditor(customer, this);
+            customerPart = customer.As<CustomerPart>();
+            if (customerPart != null) {
+                customerPart.User = Services.WorkContext.CurrentUser;
+            }
 
             if (!ModelState.IsValid) {
                 _transactionManager.Cancel();
