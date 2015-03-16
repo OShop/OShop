@@ -24,12 +24,16 @@ table.products td.na {
 table.products h3 {
   display: inline;
 }
-fieldset.admin-customer-addresses {
+fieldset.admin-customer-addresses,
+fieldset.admin-customer-orders {
   border: 1px solid #CCC;
   padding: 0px 10px 10px;
   margin-bottom: 5px;
-  float: left;
 }
-fieldset.admin-customer-addresses > legend {
+fieldset.admin-customer-addresses > legend,
+fieldset.admin-customer-orders > legend {
   padding: 5px;
+}
+fieldset.admin-customer-addresses {
+  float: left;
 }

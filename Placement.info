@@ -28,6 +28,7 @@
   <Match DisplayType="Detail">
     <Place Parts_Customer="Content:3"/>
     <Place Parts_Customer_Addresses="Content:5"/>
+    <Place Parts_Customer_Orders="Content:6"/>
   </Match>
   <Place Parts_Customer_Edit="Content:3"/>
   <Place Parts_Customer_AdminEdit="Content:3"/>
@@ -42,6 +43,7 @@
     <Match DisplayType="DetailAdmin">
       <Place Parts_Customer="Content:1;Alternate=Parts_Customer_Admin"
         Parts_Customer_Addresses="Content:10;Alternate=Parts_Customer_Addresses_Admin"/>
+      <Place Parts_Customer_Orders_Admin="Content:6"/>
     </Match>
   </Match>
   <Match ContentType="CustomerAddress">

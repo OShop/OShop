@@ -151,6 +151,8 @@
     <Content Include="Views\EditorTemplates\Parts\Customer.AdminEdit.cshtml" />
     <Content Include="Views\Parts\Customer.Admin.cshtml" />
     <Content Include="Views\Parts\Customer.Addresses.Admin.cshtml" />
+    <Content Include="Views\Parts\Customer.Orders.cshtml" />
+    <Content Include="Views\Parts\Customer.Orders.Admin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Orchard.Core">
@@ -176,6 +178,8 @@
     <Compile Include="Controllers\ShoppingCartController.cs" />
     <Compile Include="Controllers\VatAdminController.cs" />
     <Compile Include="Drivers\CustomerAddressPartDriver.cs" />
+    <Compile Include="Drivers\CustomerOrderPartDriver.cs" />
+    <Compile Include="Drivers\OrdersCustomerPartDriver.cs" />
     <Compile Include="Drivers\CustomerPartDriver.cs" />
     <Compile Include="Drivers\LocationFieldDriver.cs" />
     <Compile Include="Drivers\OrderShippingPartDriver.cs" />
