@@ -70,6 +70,7 @@ namespace OShop.Permissions {
                 new PermissionStereotype {
                     Name = "Authenticated",
                     Permissions = new[] {
+                        OrdersPermissions.ViewOwnOrders,
                         CustomersPermissions.ViewOwnCustomerAccount
                     }
                 }

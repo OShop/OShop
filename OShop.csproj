@@ -258,9 +258,12 @@
     <Compile Include="Navigation\ShippingAdminMenu.cs" />
     <Compile Include="Navigation\VatAdminMenu.cs" />
     <Compile Include="Navigation\ProductsAdminMenu.cs" />
+    <Compile Include="Permissions\CheckoutPermissions.cs" />
+    <Compile Include="Permissions\OrdersPermissions.cs" />
     <Compile Include="Permissions\CustomersPermissions.cs" />
     <Compile Include="Permissions\OShopPermissions.cs" />
     <Compile Include="Resources\OShopResources.cs" />
+    <Compile Include="Security\OrdersAuthorizationEventHandler.cs" />
     <Compile Include="Security\CustomersAuthorizationEventHandler.cs" />
     <Compile Include="Services\CustomersService.cs" />
     <Compile Include="Services\DefaultCurrencyProvider.cs" />
