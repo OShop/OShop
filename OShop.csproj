@@ -151,6 +151,7 @@
     <Content Include="Views\EditorTemplates\Parts\Customer.AdminEdit.cshtml" />
     <Content Include="Views\Parts\Customer.Admin.cshtml" />
     <Content Include="Views\Parts\Customer.Addresses.Admin.cshtml" />
+    <Content Include="Views\OrdersAdmin\Index.cshtml" />
     <Content Include="Views\Parts\Customer.Orders.cshtml" />
     <Content Include="Views\Parts\Customer.Orders.Admin.cshtml" />
   </ItemGroup>
@@ -167,6 +168,7 @@
   <ItemGroup>
     <Compile Include="Controllers\CheckoutController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
+    <Compile Include="Controllers\OrdersAdminController.cs" />
     <Compile Include="Controllers\CustomersAdminController.cs" />
     <Compile Include="Controllers\LocationsAdminController.cs" />
     <Compile Include="Controllers\LocationsController.cs" />
@@ -250,6 +252,7 @@
     <Compile Include="Models\ShoppingCartWidgetPart.cs" />
     <Compile Include="Models\VatRecord.cs" />
     <Compile Include="Navigation\AdminMenu.cs" />
+    <Compile Include="Navigation\OrdersAdminMenu.cs" />
     <Compile Include="Navigation\LocationsAdminMenu.cs" />
     <Compile Include="Navigation\CustomersAdminMenu.cs" />
     <Compile Include="Navigation\ShippingAdminMenu.cs" />

@@ -64,4 +64,7 @@
     <Place Parts_Order_ShippingStatus="Meta:10.3"/>
     <Place Parts_Order_ShippingInfos="Content:10"/>
   </Match>
+  <Match DisplayType="SummaryAdmin">
+    <Place Parts_Order_Summary="-"/>
+  </Match>
 </Placement>
