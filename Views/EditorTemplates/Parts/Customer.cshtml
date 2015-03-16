@@ -12,4 +12,14 @@
         @Html.TextBoxFor(m => m.LastName, new { @class = "text medium" })
         @Html.ValidationMessageFor(m => m.LastName, "*")
     </div>
+    <div>
+        @Html.LabelFor(m => m.Email, T("Email").Text, new { @class = "required" })
+        @if (Model.User == null) {
+            @Html.TextBoxFor(m => m.Email, new { @class = "text medium" })
+            @Html.ValidationMessageFor(m => m.Email, "*")
+        }
+        else {
+            @Html.TextBoxFor(m => m.Email, new { @class = "text medium", @readonly = "readonly" })
+        }
+    </div>
 </fieldset>

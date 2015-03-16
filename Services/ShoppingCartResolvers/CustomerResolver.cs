@@ -70,13 +70,6 @@ namespace OShop.Services.ShoppingCartResolvers {
 
             var orderPart = Order.As<OrderPart>();
             if (orderPart != null) {
-                //  CustomerInfos
-                var customerInfos = orderPart.CustomerInfos ?? new CustomerInfos();
-                customerInfos.FirstName = customer.FirstName;
-                customerInfos.LastName = customer.LastName;
-                customerInfos.EMail = customer.Email;
-                orderPart.CustomerInfos = customerInfos;
-
                 //  Billing address
                 Int32 billingAddressId = ShoppingCartService.GetProperty<int>("BillingAddressId");
                 if (billingAddressId > 0) {

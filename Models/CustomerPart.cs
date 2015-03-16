@@ -33,8 +33,10 @@ namespace OShop.Models {
             get { return this.FirstName + " " + this.LastName; }
         }
 
+        [EmailAddress]
         public String Email {
-            get { return this.User != null ? this.User.Email : String.Empty; }
+            get { return this.User != null ? this.User.Email : this.Retrieve(x => x.Email); }
+            set { this.Store(x => x.Email, value); }
         }
 
         public Int32 UserId {

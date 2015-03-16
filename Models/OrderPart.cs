@@ -15,11 +15,6 @@ namespace OShop.Models {
             set { this.Store(x => x.Reference, value); }
         }
 
-        public CustomerInfos CustomerInfos {
-            get { return JsonConvert.DeserializeObject<CustomerInfos>(this.Retrieve(x => x.CustomerInfos, "")) ?? new CustomerInfos(); }
-            set { this.Store(x => x.CustomerInfos, JsonConvert.SerializeObject(value)); }
-        }
-
         public string BillingAddress {
             get { return this.Retrieve(x => x.BillingAddress); }
             set { this.Store(x => x.BillingAddress, value); }
@@ -39,13 +34,6 @@ namespace OShop.Models {
             get { return JsonConvert.DeserializeObject<IList<OrderLog>>(this.Retrieve(x => x.Logs, "")) ?? new List<OrderLog>(); }
             set { this.Store(x => x.Logs, JsonConvert.SerializeObject(value)); }
         }
-    }
-
-    public class CustomerInfos {
-        public string FirstName;
-        public string LastName;
-        public string EMail;
-        public string Phone;
     }
 
     public enum OrderStatus : int {

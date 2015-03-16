@@ -1,0 +1,11 @@
+﻿@using OShop.Models
+@{
+    CustomerOrderPart part = Model;
+}
+
+@if (part.Customer != null) {
+    <fieldset>
+        <legend>@T("Customer account")</legend>
+        @Html.ItemAdminLink(part.Customer)
+    </fieldset>
+}

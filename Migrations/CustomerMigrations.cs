@@ -13,6 +13,7 @@ namespace OShop.Migrations {
                  .Column<int>("UserId")
                  .Column<string>("FirstName")
                  .Column<string>("LastName")
+                 .Column<string>("Email")
                  .Column<int>("DefaultAddressId"));
 
             SchemaBuilder.CreateTable("CustomerAddressPartRecord", table => table

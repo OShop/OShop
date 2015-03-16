@@ -1,0 +1,13 @@
+﻿@using OShop.Models
+@{
+    CustomerOrderPart part = Model.ContentPart;
+}
+
+@if (part.Customer != null) {
+    <div class="order-customer">
+        <h3>@T("Customer :")</h3>
+        @T("First name : {0}", part.Customer.FirstName)<br />
+        @T("Last name : {0}", part.Customer.LastName)<br />
+        @T("E-mail : {0}", part.Customer.Email)
+    </div>
+}

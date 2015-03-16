@@ -135,7 +135,7 @@
     <Content Include="Views\Customer\Edit.cshtml" />
     <Content Include="Views\Customer\EditAddress.cshtml" />
     <Content Include="Views\Parts\Order.Reference.cshtml" />
-    <Content Include="Views\Parts\Order.Customer.cshtml" />
+    <Content Include="Views\Parts\CustomerOrder.cshtml" />
     <Content Include="Views\Parts\Order.BillingAddress.cshtml" />
     <Content Include="Views\Parts\Order.Status.cshtml" />
     <Content Include="Views\Parts\Order.Items.cshtml" />
@@ -154,6 +154,7 @@
     <Content Include="Views\OrdersAdmin\Index.cshtml" />
     <Content Include="Views\Parts\Customer.Orders.cshtml" />
     <Content Include="Views\Parts\Customer.Orders.Admin.cshtml" />
+    <Content Include="Views\EditorTemplates\Parts\CustomerOrder.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Orchard.Core">

@@ -29,8 +29,6 @@ namespace OShop.Drivers {
                     ContentPart: part)),
                 ContentShape("Parts_Order_Reference", () => shapeHelper.Parts_Order_Reference(
                     ContentPart: part)),
-                ContentShape("Parts_Order_Customer", () => shapeHelper.Parts_Order_Customer(
-                    ContentPart: part)),
                 ContentShape("Parts_Order_BillingAddress", () => shapeHelper.Parts_Order_BillingAddress(
                     ContentPart: part)),
                 ContentShape("Parts_Order_Status", () => shapeHelper.Parts_Order_Status(

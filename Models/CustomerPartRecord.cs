@@ -14,6 +14,7 @@ namespace OShop.Models {
         public virtual Int32 UserId { get; set; }
         public virtual String FirstName { get; set; }
         public virtual String LastName { get; set; }
+        public virtual String Email { get; set; }
         public virtual Int32 DefaultAddressId { get; set; }
 
         [CascadeAllDeleteOrphan]
