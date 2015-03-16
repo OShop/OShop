@@ -56,7 +56,7 @@ namespace OShop.Controllers
         }
 
         [Themed]
-        public ActionResult Display(string id) {
+        public ActionResult Detail(string id) {
             var order = _ordersService.GetOrderByReference(id);
 
             if (order == null) {

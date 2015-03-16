@@ -169,7 +169,7 @@ namespace OShop.Controllers
 
                 _shoppingCartService.Empty();
 
-                return RedirectToAction("Display", "Orders", new { area = "OShop", id = order.As<OrderPart>().Reference });
+                return RedirectToAction("Detail", "Orders", new { area = "OShop", id = order.As<OrderPart>().Reference });
             }
             else {
                 return ValidateOrder();
