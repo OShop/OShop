@@ -22,7 +22,7 @@ namespace OShop.Navigation {
                     .Permission(OShopPermissions.AccessShopPanel)
                     .Add(subMenu => subMenu
                         .Caption(T("Settings"))
-                        .Position("10")
+                        .Position("20")
                         .Action("Index", "Settings", new { area = "OShop"})
                         .Permission(OShopPermissions.ManageShopSettings)
                         .Add(tab => tab

@@ -20,7 +20,7 @@ namespace OShop.Navigation {
                     .Caption(T("OShop"))
                     .Add(subMenu => subMenu
                         .Caption(T("Shipping"))
-                        .Position("8")
+                        .Position("9")
                         .Permission(OShopPermissions.ManageShopSettings)
                         .Add(tab => tab
                             .Caption(T("Providers"))
