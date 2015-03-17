@@ -95,7 +95,7 @@ namespace OShop.Controllers
         [Authorize]
         [OutputCache(Duration = 0)]
         public ActionResult PreviewAddress(int id) {
-            var address = _contentManager.Get<CustomerAddressPart>(id);
+            var address = _customersService.GetAddress(id);
             if (address == null) {
                 return new HttpNotFoundResult();
             }
@@ -110,10 +110,15 @@ namespace OShop.Controllers
         [Themed]
         [Authorize]
         public ActionResult Create(string returnUrl = null) {
-            var customer = _customersService.GetCustomer();
-            if (customer == null) {
+            var customerPart = _customersService.GetCustomer();
+            if (customerPart == null) {
                 if (Services.Authorizer.Authorize(CustomersPermissions.EditOwnCustomerAccount, T("You are not allowed to create an account."))) {
-                    return View(_contentManager.BuildEditor(_contentManager.New("Customer")));
+                    var customer = _contentManager.New("Customer");
+                    customerPart = customer.As<CustomerPart>();
+                    if (customerPart != null) {
+                        customerPart.User = Services.WorkContext.CurrentUser;
+                    } 
+                    return View(_contentManager.BuildEditor(customer));
                 }
                 else {
                     return this.RedirectLocal(returnUrl, () => new HttpUnauthorizedResult());
@@ -124,6 +129,7 @@ namespace OShop.Controllers
             }
         }
 
+        [Themed]
         [Authorize]
         [HttpPost, ActionName("Create")]
         [FormValueRequired("submit.Save")]
@@ -161,10 +167,10 @@ namespace OShop.Controllers
         [Themed]
         [Authorize]
         public ActionResult Edit(string returnUrl = null) {
-            var customer = _customersService.GetCustomer();
-            if (customer != null) {
+            var customerPart = _customersService.GetCustomer();
+            if (customerPart != null) {
                 if (Services.Authorizer.Authorize(CustomersPermissions.EditOwnCustomerAccount, T("You are not allowed to edit this account."))) {
-                    return View(_contentManager.BuildEditor(customer.ContentItem));
+                    return View(_contentManager.BuildEditor(_contentManager.Get(customerPart.Id, VersionOptions.Latest)));
                 }
                 else {
                     return this.RedirectLocal(returnUrl, () => new HttpUnauthorizedResult());
@@ -181,7 +187,7 @@ namespace OShop.Controllers
         public ActionResult EditPost(string returnUrl = null) {
             var customerPart = _customersService.GetCustomer();
 
-            var customer = _contentManager.Get(customerPart.ContentItem.Id, VersionOptions.DraftRequired);
+            var customer = _contentManager.Get(customerPart.Id, VersionOptions.DraftRequired);
 
             if (!Services.Authorizer.Authorize(CustomersPermissions.EditOwnCustomerAccount, T("You are not allowed to edit this account."))) {
                 return new HttpUnauthorizedResult();
@@ -250,7 +256,7 @@ namespace OShop.Controllers
         [Themed]
         [Authorize]
         public ActionResult EditAddress(int id, string returnUrl = null) {
-            var address = _contentManager.Get<CustomerAddressPart>(id);
+            var address = _contentManager.Get<CustomerAddressPart>(id, VersionOptions.Latest);
             if (address != null) {
                 if (Services.Authorizer.Authorize(Orchard.Core.Contents.Permissions.EditContent, address, T("You are not allowed to edit this address."))) {
                     return View(_contentManager.BuildEditor(address));
@@ -269,7 +275,7 @@ namespace OShop.Controllers
         [HttpPost, ActionName("EditAddress")]
         [FormValueRequired("submit.Save")]
         public ActionResult EditAddressPost(int id, string returnUrl = null) {
-            var address = _contentManager.Get<CustomerAddressPart>(id);
+            var address = _contentManager.Get<CustomerAddressPart>(id, VersionOptions.DraftRequired);
             if (address == null) {
                 return HttpNotFound();
             }
