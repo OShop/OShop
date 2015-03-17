@@ -7,17 +7,10 @@ using System.Web;
 
 namespace OShop.Models {
     public class CustomerPartRecord : ContentPartVersionRecord {
-        public CustomerPartRecord() {
-            CustomerAddressPartRecords = new List<CustomerAddressPartRecord>();
-        }
-
         public virtual Int32 UserId { get; set; }
         public virtual String FirstName { get; set; }
         public virtual String LastName { get; set; }
         public virtual String Email { get; set; }
         public virtual Int32 DefaultAddressId { get; set; }
-
-        [CascadeAllDeleteOrphan]
-        public virtual IList<CustomerAddressPartRecord> CustomerAddressPartRecords { get; set; }
     }
 }
