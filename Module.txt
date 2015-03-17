@@ -51,4 +51,4 @@ Features:
 		Name: OShop Orders
 		Category: Commerce
         Description: Provides orders management.
-		Dependencies: OShop
+		Dependencies: OShop, OShop.Locations

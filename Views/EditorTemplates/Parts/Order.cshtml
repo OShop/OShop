@@ -1,0 +1,10 @@
+﻿@model OShop.Models.OrderPart
+@{
+    if (Model.ContentItem.Id > 0) {
+        Layout.Title = T("Order {0}", Model.Reference);
+    }
+}
+
+<fieldset>
+    <legend>@T("Customer")</legend>
+</fieldset>

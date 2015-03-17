@@ -155,6 +155,7 @@
     <Content Include="Views\Parts\Customer.Orders.cshtml" />
     <Content Include="Views\Parts\Customer.Orders.Admin.cshtml" />
     <Content Include="Views\EditorTemplates\Parts\CustomerOrder.cshtml" />
+    <Content Include="Views\EditorTemplates\Parts\Order.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Orchard.Core">
@@ -222,6 +223,8 @@
     <Compile Include="Models\CustomerOrderPartRecord.cs" />
     <Compile Include="Models\CustomerPart.cs" />
     <Compile Include="Models\CustomerPartRecord.cs" />
+    <Compile Include="Models\IShippingAddress.cs" />
+    <Compile Include="Models\IBillingAddress.cs" />
     <Compile Include="Models\ICurrencySettings.cs" />
     <Compile Include="Models\IOrderAddress.cs" />
     <Compile Include="Models\IShippingInfo.cs" />
@@ -230,7 +233,6 @@
     <Compile Include="Models\LocationsCountryRecord.cs" />
     <Compile Include="Models\LocationsStateRecord.cs" />
     <Compile Include="Models\NumberFormats.cs" />
-    <Compile Include="Models\OrderAddress.cs" />
     <Compile Include="Models\OrderPart.cs" />
     <Compile Include="Models\OrderPartRecord.cs" />
     <Compile Include="Models\OrderShippingPart.cs" />

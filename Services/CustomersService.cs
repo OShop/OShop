@@ -65,5 +65,8 @@ namespace OShop.Services {
                 .List();
         }
 
+        public CustomerAddressPart GetAddress(int CustomerAddressId) {
+            return _contentManager.Get<CustomerAddressPart>(CustomerAddressId, VersionOptions.AllVersions);
+        }
     }
 }

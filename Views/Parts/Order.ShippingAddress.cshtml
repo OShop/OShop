@@ -3,9 +3,10 @@
 
 @{
     OrderShippingPart orderShipping = Model.ContentPart;
+    String Address = Model.Address;
 }
 
 <div class="order-address order-shippingaddress">
     <h3>@T("Shipping Address :")</h3>
-    @Html.Raw(orderShipping.ShippingAddress.ReplaceNewLinesWith("<br />"))
+    @Html.Raw(Address.ReplaceNewLinesWith("<br />"))
 </div>

@@ -15,11 +15,6 @@ namespace OShop.Models {
             set { this.Store(x => x.Reference, value); }
         }
 
-        public string BillingAddress {
-            get { return this.Retrieve(x => x.BillingAddress); }
-            set { this.Store(x => x.BillingAddress, value); }
-        }
-
         public OrderStatus OrderStatus {
             get { return (OrderStatus)this.Retrieve(x => x.OrderStatus); }
             set { this.Store(x => x.OrderStatus, value); }

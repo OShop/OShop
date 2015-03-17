@@ -7,11 +7,6 @@ using System.Web;
 
 namespace OShop.Models {
     public class OrderShippingPart : ContentPart<OrderShippingPartRecord> {
-        public string ShippingAddress {
-            get { return this.Retrieve(x => x.ShippingAddress); }
-            set { this.Store(x => x.ShippingAddress, value); }
-        }
-
         public ShippingStatus ShippingStatus {
             get { return (ShippingStatus)this.Retrieve(x => x.ShippingStatus); }
             set { this.Store(x => x.ShippingStatus, (int)value); }

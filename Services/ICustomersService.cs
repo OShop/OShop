@@ -9,5 +9,6 @@ namespace OShop.Services {
         CustomerPart GetCustomer(Int32 CustomerId);
         IEnumerable<CustomerAddressPart> GetAddressesForCustomer(CustomerPart Customer);
         IEnumerable<CustomerAddressPart> GetAddressesForCustomer(Int32 CustomerId);
+        CustomerAddressPart GetAddress(Int32 CustomerAddressId);
     }
 }

@@ -10,8 +10,6 @@ namespace OShop.Migrations {
             SchemaBuilder.CreateTable("OrderPartRecord", table => table
                 .ContentPartRecord()
                 .Column<string>("Reference", c => c.WithLength(16).Unique())
-                .Column<string>("CustomerInfos", c => c.Unlimited())
-                .Column<string>("BillingAddress", c => c.Unlimited())
                 .Column<int>("OrderStatus")
                 .Column<string>("Items", c => c.Unlimited())
                 .Column<string>("Logs", c => c.Unlimited())
@@ -26,5 +24,6 @@ namespace OShop.Migrations {
 
             return 1;
         }
+
     }
 }

@@ -68,21 +68,17 @@ namespace OShop.Services.ShoppingCartResolvers {
                 return;
             }
 
-            var orderPart = Order.As<OrderPart>();
-            if (orderPart != null) {
-                //  Billing address
+            var customerOrderPart = Order.As<CustomerOrderPart>();
+            if (customerOrderPart != null) {
+                customerOrderPart.Customer = customer;
+
                 Int32 billingAddressId = ShoppingCartService.GetProperty<int>("BillingAddressId");
                 if (billingAddressId > 0) {
                     var billingAddress = customer.Addresses.Where(a => a.Id == billingAddressId).FirstOrDefault();
                     if (billingAddress != null) {
-                        orderPart.BillingAddress = _locationsService.FormatAddress(billingAddress);
+                        customerOrderPart.BillingAddress = billingAddress;
                     }
                 }
-            }
-
-            var customerOrderPart = Order.As<CustomerOrderPart>();
-            if (customerOrderPart != null) {
-                customerOrderPart.Customer = customer;
             }
 
             var shippingPart = Order.As<OrderShippingPart>();
@@ -93,7 +89,9 @@ namespace OShop.Services.ShoppingCartResolvers {
                     var shippingAddress = customer.Addresses.Where(a => a.Id == shippingAddressId).FirstOrDefault();
                     if (shippingAddress != null) {
                         // Set address
-                        shippingPart.ShippingAddress = _locationsService.FormatAddress(shippingAddress);
+                        if (customerOrderPart != null) {
+                            customerOrderPart.ShippingAddress = shippingAddress;
+                        }
 
                         // Set shipping zone
                         var workContext = _workContextAccessor.GetContext();

@@ -36,7 +36,6 @@ namespace OShop.Migrations {
 
             SchemaBuilder.CreateTable("OrderShippingPartRecord", table => table
                .ContentPartRecord()
-               .Column<string>("ShippingAddress", c => c.Unlimited())
                .Column<int>("ShippingStatus")
                .Column<string>("ShippingInfos", c => c.Unlimited())
             );

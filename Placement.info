@@ -53,6 +53,7 @@
   </Match>
   <!-- Orders -->
   <Place Parts_Order_Summary="Header:5"/>
+  <Place Parts_Order_Edit="Content:1.1"/>
   <Match DisplayType="Detail">
     <Place Parts_Order_Summary="-"/>
     <Place Parts_Order="Header:before"/>
