@@ -14,7 +14,7 @@ using System.Linq;
 using System.Web;
 
 namespace OShop.Drivers {
-    [OrchardFeature("OShop.Orders")]
+    [OrchardFeature("OShop.Customers")]
     public class OrdersCustomerPartDriver : ContentPartDriver<CustomerPart> {
         private readonly IContentManager _contentManager;
         private readonly ICustomersService _customersService;
