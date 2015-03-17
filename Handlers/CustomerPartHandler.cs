@@ -47,7 +47,7 @@ namespace OShop.Handlers {
                 {"Area", "OShop"},
                 {"Controller", "CustomersAdmin"},
                 {"Action", "Detail"},
-                {"Id", customer.ContentItem.Id}
+                {"Id", customer.Id}
             };
         }
     }

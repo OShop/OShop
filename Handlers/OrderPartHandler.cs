@@ -1,13 +1,11 @@
-﻿using Newtonsoft.Json;
+﻿using Orchard.ContentManagement;
 using Orchard.ContentManagement.Handlers;
 using Orchard.Data;
 using Orchard.Environment.Extensions;
 using OShop.Models;
 using OShop.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using System.Web.Routing;
 
 namespace OShop.Handlers {
     [OrchardFeature("OShop.Orders")]
@@ -27,5 +25,19 @@ namespace OShop.Handlers {
             });
         }
 
+        protected override void GetItemMetadata(GetContentItemMetadataContext context) {
+            var order = context.ContentItem.As<OrderPart>();
+
+            if (order == null)
+                return;
+
+            // Admin link shows customer details
+            context.Metadata.AdminRouteValues = new RouteValueDictionary {
+                {"Area", "OShop"},
+                {"Controller", "OrdersAdmin"},
+                {"Action", "Detail"},
+                {"Id", order.Id}
+            };
+        }
     }
 }
