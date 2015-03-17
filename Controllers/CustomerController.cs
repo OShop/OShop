@@ -200,6 +200,8 @@ namespace OShop.Controllers
                 return View(model);
             }
 
+            _contentManager.Publish(customer);
+
             Services.Notifier.Information(T("Your customer account was successfully updated."));
 
             return this.RedirectLocal(returnUrl, () => RedirectToAction("Index"));
@@ -290,6 +292,8 @@ namespace OShop.Controllers
                 _transactionManager.Cancel();
                 return View(model);
             }
+
+            _contentManager.Publish(address.ContentItem);
 
             Services.Notifier.Information(T("Your address was successfully updated."));
 
