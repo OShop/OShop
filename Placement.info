@@ -25,27 +25,26 @@
     <Place Parts_Common_Metadata_Summary="-"/>
   </Match>
   <!-- Customer -->
-  <Match DisplayType="Detail">
-    <Place Parts_Customer="Content:3"/>
-    <Place Parts_Customer_Addresses="Content:5"/>
-    <Place Parts_Customer_Orders="Content:6"/>
-    <Place Parts_CustomerOrder="Header:1"/>
-  </Match>
   <Place Parts_Customer_Edit="Content:3"/>
   <Place Parts_Customer_AdminEdit="Content:3"/>
   <Place Parts_CustomerAddress="Content:1"/>
   <Place Parts_CustomerAddress_Edit="Content:1"/>
   <Place Parts_CustomerOrder_Edit="Content:1"/>
+  <Match DisplayType="Detail">
+    <Place Parts_Customer="Content:3"/>
+    <Place Parts_Customer_Addresses="Content:5"/>
+    <Place Parts_Customer_Orders="Content:6"/>
+    <Place Parts_CustomerOrder="Header:1"/>
+    <!-- Admin -->
+    <Place Parts_Customer_Admin="Content:1"/>
+    <Place Parts_Customer_Addresses_Admin="Content:5"/>
+    <Place Parts_Customer_Orders_Admin="Content:6"/>
+  </Match>
   <Match ContentType="Customer">
     <Place Parts_Common_Metadata="-"/>
     <Match DisplayType="SummaryAdmin">
       <Place Parts_Contents_Publish_SummaryAdmin="-"
         Parts_Contents_Clone_SummaryAdmin="-"/>
-    </Match>
-    <Match DisplayType="DetailAdmin">
-      <Place Parts_Customer_Admin="Content:1"
-        Parts_Customer_Addresses_Admin="Content:5"/>
-      <Place Parts_Customer_Orders_Admin="Content:6"/>
     </Match>
   </Match>
   <Match ContentType="CustomerAddress">

@@ -119,7 +119,7 @@ namespace OShop.Controllers
 
             var order = _contentManager.Get<OrderPart>(id, VersionOptions.Latest);
             if (order != null) {
-                return new ShapeResult(this, _contentManager.BuildDisplay(order.ContentItem, "DetailAdmin"));
+                return new ShapeResult(this, _contentManager.BuildDisplay(order.ContentItem, "Detail"));
             }
             else {
                 return new HttpNotFoundResult();
