@@ -9,7 +9,7 @@ namespace OShop.Migrations {
     public class CustomerMigrations : DataMigrationImpl {
         public int Create() {
             SchemaBuilder.CreateTable("CustomerPartRecord", table => table
-                 .ContentPartRecord()
+                 .ContentPartVersionRecord()
                  .Column<int>("UserId")
                  .Column<string>("FirstName")
                  .Column<string>("LastName")
@@ -17,7 +17,7 @@ namespace OShop.Migrations {
                  .Column<int>("DefaultAddressId"));
 
             SchemaBuilder.CreateTable("CustomerAddressPartRecord", table => table
-                 .ContentPartRecord()
+                 .ContentPartVersionRecord()
                  .Column<int>("CustomerId", c => c.NotNull())
                  .Column<string>("AddressAlias")
                  .Column<string>("Company")
@@ -33,8 +33,11 @@ namespace OShop.Migrations {
             SchemaBuilder.CreateTable("CustomerOrderPartRecord", table => table
                  .ContentPartRecord()
                  .Column<int>("CustomerId")
+                 .Column<int>("CustomerVersion")
                  .Column<int>("BillingAddressId")
+                 .Column<int>("BillingAddressVersion")
                  .Column<int>("ShippingAddressId")
+                 .Column<int>("ShippingAddressVersion")
                  );
 
             ContentDefinitionManager.AlterPartDefinition("CustomerPart", part => part

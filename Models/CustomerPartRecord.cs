@@ -6,7 +6,7 @@ using System.Linq;
 using System.Web;
 
 namespace OShop.Models {
-    public class CustomerPartRecord : ContentPartRecord {
+    public class CustomerPartRecord : ContentPartVersionRecord {
         public CustomerPartRecord() {
             CustomerAddressPartRecords = new List<CustomerAddressPartRecord>();
         }

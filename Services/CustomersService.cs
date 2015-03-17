@@ -1,14 +1,10 @@
-﻿using Orchard;
-using Orchard.ContentManagement;
-using Orchard.Core.Common.Models;
+﻿using Orchard.ContentManagement;
 using Orchard.Environment.Extensions;
 using Orchard.Security;
-using Orchard.Services;
 using OShop.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace OShop.Services {
     [OrchardFeature("OShop.Customers")]
@@ -34,8 +30,8 @@ namespace OShop.Services {
             return GetCustomerForUser(user.Id);
         }
 
-        public CustomerPart GetCustomer(int CustomerId) {
-            return _contentManager.Get<CustomerPart>(CustomerId);
+        public CustomerPart GetCustomer(int CustomerId, Int32? VersionNumber = null) {
+            return _contentManager.Get<CustomerPart>(CustomerId, VersionNumber.HasValue ? VersionOptions.Number(VersionNumber.Value) : VersionOptions.Published);
         }
 
         private CustomerPart GetCustomerForUser(int UserId) {
@@ -65,8 +61,8 @@ namespace OShop.Services {
                 .List();
         }
 
-        public CustomerAddressPart GetAddress(int CustomerAddressId) {
-            return _contentManager.Get<CustomerAddressPart>(CustomerAddressId, VersionOptions.AllVersions);
+        public CustomerAddressPart GetAddress(int CustomerAddressId, Int32? VersionNumber = null) {
+            return _contentManager.Get<CustomerAddressPart>(CustomerAddressId, VersionNumber.HasValue ? VersionOptions.Number(VersionNumber.Value) : VersionOptions.Published);
         }
     }
 }

@@ -2,7 +2,7 @@
 using System;
 
 namespace OShop.Models {
-    public class CustomerAddressPartRecord : ContentPartRecord {
+    public class CustomerAddressPartRecord : ContentPartVersionRecord {
         public virtual String AddressAlias { get; set; }
         public virtual String Company { get; set; }
         public virtual String FirstName { get; set; }
