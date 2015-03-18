@@ -71,41 +71,6 @@ namespace OShop.Drivers {
                 )
             );
         }
-/*        protected override DriverResult Editor(CustomerAddressPart part, dynamic shapeHelper) {
-            var httpContext = Services.WorkContext.HttpContext;
-            int countryId = part.CountryId;
-            
-            if (httpContext.Request.Form[Prefix + ".CountryId"] != null) {
-                countryId = Int32.Parse(httpContext.Request.Form[Prefix + ".CountryId"]);
-            }
-            else if (countryId <= 0) {
-                countryId = _locationService.GetDefaultCountryId();
-            }
-            
-            var model = new CustomerAddressEditViewModel() {
-                AddressAlias = part.AddressAlias,
-                IsDefault = part.IsDefault,
-                Company = part.Company,
-                FirstName = part.FirstName,
-                LastName = part.LastName,
-                Address1 = part.Address1,
-                Address2 = part.Address2,
-                Zipcode = part.Zipcode,
-                City = part.City,
-                CountryId = countryId,
-                StateId = part.StateId,
-                Countries = _locationService.GetEnabledCountries(),
-                States = _locationService.GetEnabledStates(countryId)
-            };
-
-            return ContentShape("Parts_CustomerAddress_Edit",
-                () => shapeHelper.EditorTemplate(
-                    TemplateName: TemplateName,
-                    Model: model,
-                    Prefix: Prefix
-                )
-            );
-        }*/
 
         // POST
         protected override DriverResult Editor(CustomerAddressPart part, IUpdateModel updater, dynamic shapeHelper) {
@@ -135,41 +100,5 @@ namespace OShop.Drivers {
 
             return Editor(part, shapeHelper);
         }
-/*        protected override DriverResult Editor(CustomerAddressPart part, IUpdateModel updater, dynamic shapeHelper) {
-            var model = new CustomerAddressEditViewModel();
-
-            Boolean modelValid = updater.TryUpdateModel(model, Prefix, null, null);
-
-            if (model.CountryId <= 0) {
-                updater.AddModelError("CountryId", T("Please select your country."));
-            }
-            else {
-                var states = _locationService.GetStates(model.CountryId);
-                if (states.Any()) {
-                    if (model.StateId <= 0 || !states.Where(s=>s.Id == model.StateId).Any()) {
-                        updater.AddModelError("StateId", T("Please select your state."));
-                    }
-                }
-            }
-            part.IsDefault = model.IsDefault;
-            part.AddressAlias = model.AddressAlias;
-            part.Company = model.Company;
-            part.FirstName = model.FirstName;
-            part.LastName = model.LastName;
-            part.Address1 = model.Address1;
-            part.Address2 = model.Address2;
-            part.Zipcode = model.Zipcode;
-            part.City = model.City;
-            part.CountryId = model.CountryId;
-            part.StateId = model.StateId;
-
-            if (modelValid) {
-                if (part.Customer == null) {
-                    part.Customer = _customersService.GetCustomer();
-                }
-            }
-
-            return Editor(part, shapeHelper);
-        }*/
     }
 }
