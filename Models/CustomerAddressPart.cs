@@ -8,6 +8,11 @@ namespace OShop.Models {
     public class CustomerAddressPart : ContentPart<CustomerAddressPartRecord>, IOrderAddress, ITitleAspect {
         internal readonly LazyField<CustomerPart> _customer = new LazyField<CustomerPart>();
 
+        internal Int32 CustomerId {
+            get { return this.Retrieve(x => x.CustomerId); }
+            set { this.Store(x => x.CustomerId, value); }
+        }
+
         public string Title {
             get { return this.AddressAlias; }
         }
