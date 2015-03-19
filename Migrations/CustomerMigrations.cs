@@ -33,11 +33,11 @@ namespace OShop.Migrations {
             SchemaBuilder.CreateTable("CustomerOrderPartRecord", table => table
                  .ContentPartRecord()
                  .Column<int>("CustomerId")
-                 .Column<int>("CustomerVersion")
+                 .Column<int>("CustomerVersionId")
                  .Column<int>("BillingAddressId")
-                 .Column<int>("BillingAddressVersion")
+                 .Column<int>("BillingAddressVersionId")
                  .Column<int>("ShippingAddressId")
-                 .Column<int>("ShippingAddressVersion")
+                 .Column<int>("ShippingAddressVersionId")
                  );
 
             ContentDefinitionManager.AlterPartDefinition("CustomerPart", part => part

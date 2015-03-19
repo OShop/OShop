@@ -12,9 +12,9 @@ namespace OShop.Models {
             set { Store(x => x.CustomerId, value); }
         }
 
-        internal int CustomerVersion {
-            get { return Retrieve(x => x.CustomerVersion); }
-            set { Store(x => x.CustomerVersion, value); }
+        internal int CustomerVersionId {
+            get { return Retrieve(x => x.CustomerVersionId); }
+            set { Store(x => x.CustomerVersionId, value); }
         }
 
         internal int BillingAddressId {
@@ -22,9 +22,9 @@ namespace OShop.Models {
             set { Store(x => x.BillingAddressId, value); }
         }
 
-        internal int BillingAddressVersion {
-            get { return Retrieve(x => x.BillingAddressVersion); }
-            set { Store(x => x.BillingAddressVersion, value); }
+        internal int BillingAddressVersionId {
+            get { return Retrieve(x => x.BillingAddressVersionId); }
+            set { Store(x => x.BillingAddressVersionId, value); }
         }
 
         internal int ShippingAddressId {
@@ -32,9 +32,9 @@ namespace OShop.Models {
             set { Store(x => x.ShippingAddressId, value); }
         }
 
-        internal int ShippingAddressVersion {
-            get { return Retrieve(x => x.ShippingAddressVersion); }
-            set { Store(x => x.ShippingAddressVersion, value); }
+        internal int ShippingAddressVersionId {
+            get { return Retrieve(x => x.ShippingAddressVersionId); }
+            set { Store(x => x.ShippingAddressVersionId, value); }
         }
 
         public CustomerPart Customer {

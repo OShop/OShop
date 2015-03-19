@@ -30,8 +30,8 @@ namespace OShop.Services {
             return GetCustomerForUser(user.Id);
         }
 
-        public CustomerPart GetCustomer(int CustomerId, Int32? VersionNumber = null) {
-            return _contentManager.Get<CustomerPart>(CustomerId, VersionNumber.HasValue ? VersionOptions.Number(VersionNumber.Value) : VersionOptions.Published);
+        public CustomerPart GetCustomer(int CustomerId, Int32? VersionRecordId = null) {
+            return _contentManager.Get<CustomerPart>(CustomerId, VersionRecordId.HasValue ? VersionOptions.VersionRecord(VersionRecordId.Value) : VersionOptions.Published);
         }
 
         private CustomerPart GetCustomerForUser(int UserId) {
@@ -61,8 +61,8 @@ namespace OShop.Services {
                 .List();
         }
 
-        public CustomerAddressPart GetAddress(int CustomerAddressId, Int32? VersionNumber = null) {
-            return _contentManager.Get<CustomerAddressPart>(CustomerAddressId, VersionNumber.HasValue ? VersionOptions.Number(VersionNumber.Value) : VersionOptions.Published);
+        public CustomerAddressPart GetAddress(int CustomerAddressId, Int32? VersionRecordId = null) {
+            return _contentManager.Get<CustomerAddressPart>(CustomerAddressId, VersionRecordId.HasValue ? VersionOptions.VersionRecord(VersionRecordId.Value) : VersionOptions.Published);
         }
     }
 }
