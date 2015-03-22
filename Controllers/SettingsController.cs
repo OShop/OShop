@@ -50,15 +50,9 @@ namespace OShop.Controllers
             if (!Services.Authorizer.Authorize(OShopPermissions.ManageShopSettings, T("Not allowed to manage Shop Settings")))
                 return new HttpUnauthorizedResult();
 
-            if (ModelState.IsValid) {
-                var settings = Services.WorkContext.CurrentSite.As<OShopSettingsPart>();
-                settings.CurrencyIsoCode = model.CurrencyIsoCode;
-                settings.CurrencySymbol = model.CurrencySymbol;
-                settings.CurrencyDecimalDigits = model.CurrencyDecimalDigits;
-                settings.CurrencyNumberFormat = model.CurrencyNumberFormat;
-                settings.CurrencyNegativePattern = model.CurrencyNegativePattern;
-                settings.CurrencyPositivePattern = model.CurrencyPositivePattern;
+            var settings = Services.WorkContext.CurrentSite.As<OShopSettingsPart>();
 
+            if (TryUpdateModel(settings)) {
                 Services.Notifier.Information(T("OShop Settings saved successfully."));
             }
             else {
