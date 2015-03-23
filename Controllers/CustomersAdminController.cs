@@ -48,7 +48,24 @@ namespace OShop.Controllers
                 return new HttpUnauthorizedResult();
 
             var pager = new Pager(_siteService.GetSiteSettings(), pagerParameters);
-            var query = _contentManager.Query<CustomerPart, CustomerPartRecord>(VersionOptions.Latest);
+
+            var versionOptions = VersionOptions.Latest;
+            switch (model.Options.ContentsStatus) {
+                case ContentsStatus.Published:
+                    versionOptions = VersionOptions.Published;
+                    break;
+                case ContentsStatus.Draft:
+                    versionOptions = VersionOptions.Draft;
+                    break;
+                case ContentsStatus.AllVersions:
+                    versionOptions = VersionOptions.AllVersions;
+                    break;
+                default:
+                    versionOptions = VersionOptions.Latest;
+                    break;
+            }
+
+            var query = _contentManager.Query<CustomerPart, CustomerPartRecord>(versionOptions);
 
             switch (model.Options.OrderBy) {
                 case ContentsOrder.Modified:
