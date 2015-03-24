@@ -6,6 +6,7 @@ using Orchard.Environment.Extensions;
 using Orchard.Services;
 using OShop.Models;
 using OShop.Services.ShoppingCartResolvers;
+using OShop.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -222,7 +223,7 @@ namespace OShop.Services {
         public ShoppingCart BuildCart() {
             ShoppingCart cart = new ShoppingCart();
             foreach (var builder in _shoppingCartBuilders.OrderByDescending(r => r.Priority)) {
-                builder.BuildCart(this, ref cart);
+                builder.BuildCart(this, cart);
             }
             return cart;
         }
@@ -230,7 +231,7 @@ namespace OShop.Services {
         public IContent BuildOrder() {
             IContent order = _contentManager.New("Order");
             foreach (var builder in _orderBuilders.OrderByDescending(r => r.Priority)) {
-                builder.BuildOrder(this, ref order);
+                builder.BuildOrder(this, order);
             }
             return order;
         }

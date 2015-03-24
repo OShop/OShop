@@ -46,7 +46,6 @@ namespace OShop.Models {
         public string Description;
         public decimal UnitPrice;
         public int Quantity;
-        public int VatId;
     }
 
     public class OrderLog {

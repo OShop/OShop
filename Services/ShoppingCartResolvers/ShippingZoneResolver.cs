@@ -1,7 +1,9 @@
-﻿using Orchard.Environment.Extensions;
+﻿using Orchard.ContentManagement;
+using Orchard.Environment.Extensions;
 using OShop.Helpers;
 using OShop.Models;
 using System;
+using System.Web.Mvc;
 
 namespace OShop.Services.ShoppingCartResolvers {
     [OrchardFeature("OShop.Shipping")]
@@ -17,7 +19,7 @@ namespace OShop.Services.ShoppingCartResolvers {
             get { return 900; }
         }
 
-        public void BuildCart(IShoppingCartService ShoppingCartService, ref ShoppingCart Cart) {
+        public void BuildCart(IShoppingCartService ShoppingCartService, ShoppingCart Cart) {
             LocationsStateRecord state = null;
             LocationsCountryRecord country = null;
 

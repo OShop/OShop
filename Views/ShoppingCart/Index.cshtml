@@ -37,8 +37,8 @@
                         <td>@entry.Item.SKU</td>
                         <td>
                             <div class="designation">
-                                @if (entry.Item.Content != null) {
-                                    @Html.ItemDisplayLink(entry.Item.Designation, entry.Item.Content)
+                                @if (entry.Item.ContentItem != null) {
+                                    @Html.ItemDisplayLink(entry.Item.Designation, entry.Item.ContentItem)
                                 }
                                 else {
                                     @entry.Item.Designation
@@ -64,7 +64,7 @@
                             <input type="number" name="@String.Format("CartItems[{0}].Quantity", i)" value="@entry.Quantity" class="quantity oshop-autoupdate" />
                         </td>
                         <td>
-                            @if (Model.VatEnabled && entry.Item.VAT != null) {
+                            @if (Model.VatEnabled && entry.Item.GetVatRate() != null) {
                                 @String.Format(Model.NumberFormat, "{0:C}", entry.VatIncludedSubTotal())
                             }
                             else {
@@ -98,7 +98,7 @@
                             </td>
                             <td>
                                 @if (Model.VatEnabled) {
-                                    @String.Format(Model.NumberFormat, "{0:C}", shippingOption.Provider.VAT.GetVatIncludedPrice(shippingOption.Option.Price))
+                                    @String.Format(Model.NumberFormat, "{0:C}", shippingOption.Provider.GetVatRate().GetVatIncludedPrice(shippingOption.Option.Price))
                                 }
                                 else {
                                     @String.Format(Model.NumberFormat, "{0:C}", shippingOption.Option.Price)
@@ -156,7 +156,7 @@
                                         @Display(BuildDisplay(provider.Provider, "Summary"))
                                         <span>
                                             @if (Model.VatEnabled) {
-                                                @String.Format(Model.NumberFormat, "{0:C}", provider.Provider.VAT.GetVatIncludedPrice(provider.Option.Price))
+                                                @String.Format(Model.NumberFormat, "{0:C}", provider.Provider.GetVatRate().GetVatIncludedPrice(provider.Option.Price))
                                             }
                                             else {
                                                 @String.Format(Model.NumberFormat, "{0:C}", provider.Option.Price)

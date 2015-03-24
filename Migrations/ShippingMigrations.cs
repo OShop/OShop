@@ -15,10 +15,6 @@ namespace OShop.Migrations {
                  .Column<double>("Width")
                  .Column<double>("Height"));
 
-            SchemaBuilder.CreateTable("ShippingProviderPartRecord", table => table
-                .ContentPartRecord()
-                .Column<int>("VatRecord_Id"));
-
             SchemaBuilder.CreateTable("ShippingZoneRecord", table => table
                  .Column<int>("Id", c => c.PrimaryKey().Identity())
                  .Column<bool>("Enabled")

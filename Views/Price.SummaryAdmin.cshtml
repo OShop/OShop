@@ -1,0 +1,7 @@
+﻿@using OShop.Models
+@{
+    Style.Require("OShopAdmin");
+    IPrice part = Model.ContentPart;
+}
+
+<span class="price">@String.Format(Model.NumberFormat, "{0:C}", part.Price)</span>

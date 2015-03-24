@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using Orchard.ContentManagement;
+using OShop.Helpers;
 
 namespace OShop.Models {
-    public class ShoppingCartItem {
-        public int Id;
+    public class ShoppingCartItem : IPrice {
+        public int Id { get; set; }
         public IShopItem Item;
         public int Quantity;
 
@@ -15,5 +13,12 @@ namespace OShop.Models {
             }
         }
 
+        public decimal Price {
+            get { return this.SubTotal(); }
+        }
+
+        public ContentItem ContentItem {
+            get { return Item.ContentItem; }
+        }
     }
 }

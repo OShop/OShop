@@ -14,23 +14,12 @@ namespace OShop.Handlers {
         private readonly IShippingService _shippingService;
 
         public ShippingProviderPartHandler(
-            IRepository<ShippingProviderPartRecord> repository,
             IShippingService shippingService) {
 
             _shippingService = shippingService;
 
-            Filters.Add(StorageFilter.For(repository));
-
-            OnInitializing<ShippingProviderPart>((context, part) => {
-                part._options.Loader(value => value = new List<ShippingOptionRecord>());
-            });
-
-            OnCreated<ShippingProviderPart>((context, part) => {
-                part._options.Loader(value => value = _shippingService.GetOptions(part));
-            });
-
-            OnLoaded<ShippingProviderPart>((context, part) => {
-                part._options.Loader(value => value = _shippingService.GetOptions(part));
+            OnActivated<ShippingProviderPart>((context, part) => {
+                part._options.Loader(options => _shippingService.GetOptions(part));
             });
 
             OnRemoved<ShippingProviderPart>((context, part) => {

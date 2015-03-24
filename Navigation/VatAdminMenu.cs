@@ -23,7 +23,14 @@ namespace OShop.Navigation {
                         .Add(tab => tab
                             .Caption(T("VAT"))
                             .Position("5")
-                            .Action("List", "VatAdmin", new { area = "OShop" })
+                            .Action("Index", "VatAdmin", new { area = "OShop" })
+                            .Permission(OShopPermissions.ManageShopSettings)
+                            .LocalNav()
+                        )
+                        .Add(tab => tab
+                            .Caption(T("VAT rates"))
+                            .Position("5.1")
+                            .Action("Rates", "VatAdmin", new { area = "OShop" })
                             .Permission(OShopPermissions.ManageShopSettings)
                             .LocalNav()
                         )

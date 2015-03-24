@@ -49,12 +49,7 @@
                                 @*@Html.LabelFor(m => m.ShippingProviderId, provider.Provider.As<ITitleAspect>().Title, new { @for = "ShippingOption" + provider.Provider.Id })*@
                                 @Display(BuildDisplay(provider.Provider, "Summary"))
                                 <span class="price">
-                                    @if (Model.VatEnabled) {
-                                        @String.Format(Model.NumberFormat, "{0:C}", provider.Provider.VAT.GetVatIncludedPrice(provider.Option.Price))
-                                    }
-                                    else {
-                                        @String.Format(Model.NumberFormat, "{0:C}", provider.Option.Price)
-                                    }
+                                    @String.Format(Model.NumberFormat, "{0:C}", provider.Provider.GetVatRate().GetVatIncludedPrice(provider.Option.Price))
                                 </span>
                             </li>
                         }

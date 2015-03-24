@@ -1,0 +1,15 @@
+﻿@model OShop.Models.VatRatePart
+
+<fieldset>
+    <legend>@T("VAT Rate")</legend>
+    <div>
+        @Html.LabelFor(m => m.Name, T("Name").Text, new { @class = "required" })
+        @Html.TextBoxFor(m => m.Name, new { @class = "text medium" })
+        @Html.ValidationMessageFor(m => m.Name, "*")
+    </div>
+    <div>
+        @Html.LabelFor(m => m.Rate, T("Rate").Text, new { @class = "required" })
+        @Html.TextBoxFor(m => m.Rate, new { @class = "text small" })
+        @Html.ValidationMessageFor(m => m.Rate, "*")
+    </div>
+</fieldset>

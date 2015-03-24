@@ -2,13 +2,19 @@
   <!-- Products -->
   <Place Parts_Product_Edit="Content:3" />
   <Match DisplayType="Detail">
-    <Place Parts_Product_Sku="Content:3" />
-    <Place Parts_Product_Price="Content:3.1" />
+    <Place Parts_Product="Content:3" />
+    <Place Price="Content:3.1" />
+  </Match>
+  <Match DisplayType="SummaryAdmin">
+    <Place Parts_Product="Content:1" />
+    <Place Price="Content:10" />
   </Match>
   <!-- VAT -->
+  <Place Parts_VatRate="Header:1" />
+  <Place Parts_VatRate_Edit="Content:1" />
   <Place Parts_Vat_Edit="Content:3.1" />
-  <Match DisplayType="Detail">
-    <Place Parts_Product_Vat="Content:3.2" />
+  <Match DisplayType="SummaryAdmin">
+    <Place Parts_Vat_SummaryAdmin="Content:10.1" />
   </Match>
   <!-- Shopping Cart -->
   <Match DisplayType="Detail">

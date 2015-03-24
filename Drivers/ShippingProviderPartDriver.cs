@@ -15,7 +15,6 @@ namespace OShop.Drivers {
     [OrchardFeature("OShop.Shipping")]
     public class ShippingProviderPartDriver : ContentPartDriver<ShippingProviderPart> {
         private readonly ICurrencyProvider _currencyProvider;
-        private readonly IFeatureManager _featureManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IShippingService _shippingService;
 
@@ -23,11 +22,9 @@ namespace OShop.Drivers {
 
         public ShippingProviderPartDriver(
             ICurrencyProvider currencyProvider,
-            IFeatureManager featureManager,
             IHttpContextAccessor httpContextAccessor,
             IShippingService shippingService) {
             _currencyProvider = currencyProvider;
-            _featureManager = featureManager;
             _httpContextAccessor = httpContextAccessor;
             _shippingService = shippingService;
         }
@@ -38,8 +35,7 @@ namespace OShop.Drivers {
         protected override DriverResult Editor(ShippingProviderPart part, dynamic shapeHelper) {
             var model = new ShippingProviderPartEditViewModel() {
                 NumberFormat = _currencyProvider.NumberFormat,
-                Part = part,
-                VatEnabled = _featureManager.GetEnabledFeatures().Where(f => f.Id == "OShop.VAT").Any()
+                Part = part
             };
 
             return ContentShape("Parts_ShippingProvider_Edit",

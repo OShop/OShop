@@ -1,0 +1,24 @@
+﻿@model OShop.Models.VatSettingsPart
+
+@{
+    Layout.Title = T("VAT Settings");
+}
+
+@using (Html.BeginFormAntiForgeryPost()) {
+    @Html.ValidationSummary()
+    <fieldset>
+        <legend>@T("Price display")</legend>
+        <div>
+            @Html.CheckBoxFor(m => m.ShowVatPriceInFrontEnd)
+            @Html.LabelFor(m => m.ShowVatPriceInFrontEnd, T("Show VAT price in front-end").Text, new { @class = "forcheckbox" })
+        </div>
+        <div>
+            @Html.CheckBoxFor(m => m.ShowVatPriceInAdmin)
+            @Html.LabelFor(m => m.ShowVatPriceInAdmin, T("Show VAT price in admin dashboard").Text, new { @class = "forcheckbox" })
+        </div>
+    </fieldset>
+
+    <div>
+        <button type="submit" name="submit.Save" value="create">@T("Save")</button>
+    </div>
+}

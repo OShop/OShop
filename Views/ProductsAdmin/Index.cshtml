@@ -1,5 +1,4 @@
-﻿@model OShop.ViewModels.ProductListViewModel
-@using OShop.Helpers
+﻿@using OShop.Helpers
 @using OShop.Models
 @using Orchard.ContentManagement
 @using Orchard.Core.Contents.ViewModels;
@@ -25,7 +24,7 @@
         @Html.ActionLink(createLinkText.Text, "Create", "ProductsAdmin", new { Area = "OShop", Id = (string)Model.Options.SelectedFilter }, new { @class = "button primaryAction" })
     }
 </div>
-@using (Html.BeginFormAntiForgeryPost(Url.Action("List", "ProductsAdmin", new { area = "OShop", returnUrl = Context.Request.RawUrl }))) {
+@using (Html.BeginFormAntiForgeryPost(Url.Action("Index", "ProductsAdmin", new { area = "OShop", returnUrl = Context.Request.RawUrl }))) {
     <fieldset class="bulk-actions">
         <label for="publishActions">@T("Actions:")</label>
         <select id="publishActions" name="Options.BulkAction">
@@ -59,48 +58,8 @@
         </select>
         <button type="submit" name="submit.Filter" value="yes please">@T("Apply")</button>
     </fieldset>
-    <fieldset>
-        <table class="items products">
-            <thead>
-                <tr>
-                    <th scope="col"><input type="checkbox" class="check-all" /></th>
-                    <th scope="col">@T("SKU")</th>
-                    <th scope="col" style="width: 100%;">@T("Name")</th>
-                    <th scope="col">@T("Price")</th>
-                    @if (Model.VatEnabled) {
-                        <th scope="col">@T("VAT")</th>
-                        <th scope="col">@T("VAT Inc.")</th>
-                    }
-                </tr>
-
-            </thead>
-            @foreach (ContentItem contentItem in Model.Products) {
-                var productPart = contentItem.As<ProductPart>();
-                <tr>
-                    <td>
-                        <input type="checkbox" value="@contentItem.Id" name="itemIds" />
-                    </td>
-                    <td scope="col">@productPart.SKU</td>
-                    <td scope="col" class="name">
-                        <h3>@Html.ItemAdminLink(contentItem)</h3> - <span class="contentType">@contentItem.TypeDefinition.DisplayName</span>
-                    </td>
-                    <td scope="col" class="price">@String.Format(Model.NumberFormat, "{0:C}", productPart.UnitPrice)</td>
-                    @if (Model.VatEnabled) {
-                        if (productPart.VAT != null) {
-                            <td scope="col" class="percent" title="@productPart.VAT.Name">@T("{0:P}", productPart.VAT.Rate)</td>
-                            <td scope="col" class="price">
-                                @String.Format(Model.NumberFormat, "{0:C}", productPart.VAT.GetVatIncludedPrice(productPart.UnitPrice))
-                            </td>
-                        }
-                        else {
-                            <td scope="col" class="na" title="@T("No VAT defined on this product")">-</td>
-                            <td scope="col" class="price">@String.Format(Model.NumberFormat, "{0:C}", productPart.UnitPrice)</td>
-                        }
-                    }
-                </tr>
-            }
-        </table>
-
+    <fieldset class="contentItems bulk-items">
+        @Display(Model.ContentItems)
     </fieldset>
     @Display(Model.Pager)
 }

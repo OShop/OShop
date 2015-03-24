@@ -20,7 +20,7 @@ namespace OShop.Services.ShoppingCartResolvers {
             get { return 100; }
         }
 
-        public void BuildCart(IShoppingCartService ShoppingCartService, ref ShoppingCart Cart) {
+        public void BuildCart(IShoppingCartService ShoppingCartService, ShoppingCart Cart) {
             var cartRecords = ShoppingCartService.ListItems();
             var products = ListProducts(cartRecords);
 
@@ -37,7 +37,7 @@ namespace OShop.Services.ShoppingCartResolvers {
             }
         }
 
-        public void BuildOrder(IShoppingCartService ShoppingCartService, ref IContent Order) {
+        public void BuildOrder(IShoppingCartService ShoppingCartService, IContent Order) {
             var orderPart = Order.As<OrderPart>();
             if (orderPart != null) {
                 var cartRecords = ShoppingCartService.ListItems();
@@ -54,8 +54,7 @@ namespace OShop.Services.ShoppingCartResolvers {
                             Designation = product.Designation,
                             Description = product.Description,
                             UnitPrice = product.UnitPrice,
-                            Quantity = cartRecord.Quantity,
-                            VatId = product.VAT != null ? product.VAT.Id : 0
+                            Quantity = cartRecord.Quantity
                         });
                     }
                 }

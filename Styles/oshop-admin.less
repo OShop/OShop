@@ -19,20 +19,6 @@ table.items {
     }
 }
 
-table.products {
-    td {
-        &.price, &.percent {
-            text-align: right;
-        }
-        &.na {
-            text-align: center;
-        }
-    }
-    h3 {
-        display: inline;
-    }
-}
-
 fieldset.admin-customer-addresses,
 fieldset.admin-customer-orders {
     border: 1px solid #CCC;
@@ -45,4 +31,11 @@ fieldset.admin-customer-orders {
 
 fieldset.admin-customer-addresses {
     float: left;
+}
+
+.contentItems {
+    .vat,
+    .price {
+        float: right;
+    }
 }

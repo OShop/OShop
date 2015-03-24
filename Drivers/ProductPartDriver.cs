@@ -23,14 +23,12 @@ namespace OShop.Drivers {
 
         protected override DriverResult Display(ProductPart part, string displayType, dynamic shapeHelper) {
             return Combined(
-                ContentShape("Parts_Product_Price", () => shapeHelper.Parts_Product_Price(
+                ContentShape("Parts_Product", () => shapeHelper.Parts_Product(
+                    ContentPart: part)),
+                ContentShape("Price", () => shapeHelper.Price(
                     NumberFormat: _currencyProvider.NumberFormat,
-                    ContentPart: part,
-                    UnitPrice: part.UnitPrice)),
-                ContentShape("Parts_Product_Sku", () => shapeHelper.Parts_Product_Sku(
-                    NumberFormat: _currencyProvider.NumberFormat,
-                    ContentPart: part,
-                    SKU: part.SKU)));
+                    ContentPart: part))
+            );
         }
 
         // GET
@@ -39,7 +37,8 @@ namespace OShop.Drivers {
                 () => shapeHelper.EditorTemplate(
                     TemplateName: TemplateName,
                     Model: part,
-                    Prefix: Prefix));
+                    Prefix: Prefix)
+            );
         }
 
         // POST

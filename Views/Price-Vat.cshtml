@@ -1,0 +1,18 @@
+﻿@using Orchard.UI.Admin
+@using Orchard.ContentManagement
+@using OShop.Helpers
+@using OShop.Models
+@{
+    IPrice part = Model.ContentPart;
+}
+
+@if (WorkContext.CurrentSite.As<VatSettingsPart>().ShowVatPriceInFrontEnd) {
+    <span class="price">
+        @String.Format(Model.NumberFormat, "{0:C}", part.GetVatRate().GetVatIncludedPrice(part.Price))&nbsp;@T("VAT Inc.")
+    </span>
+}
+else {
+    <span class="price">
+        @String.Format(Model.NumberFormat, "{0:C}", part.Price)&nbsp;@T("VAT Ex.")
+    </span>
+}

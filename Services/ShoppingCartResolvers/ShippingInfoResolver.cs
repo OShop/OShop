@@ -23,7 +23,7 @@ namespace OShop.Services.ShoppingCartResolvers {
             get { return 50; }
         }
 
-        public void BuildCart(IShoppingCartService ShoppingCartService, ref ShoppingCart Cart) {
+        public void BuildCart(IShoppingCartService ShoppingCartService, ShoppingCart Cart) {
             var cartRecords = ShoppingCartService.ListItems();
             var shippingParts = ListShippingParts(cartRecords);
 
@@ -40,7 +40,7 @@ namespace OShop.Services.ShoppingCartResolvers {
             }
         }
 
-        public void BuildOrder(IShoppingCartService ShoppingCartService, ref IContent Order) {
+        public void BuildOrder(IShoppingCartService ShoppingCartService, IContent Order) {
             var cartRecords = ShoppingCartService.ListItems();
             var shippingParts = ListShippingParts(cartRecords);
 

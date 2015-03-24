@@ -32,7 +32,6 @@ namespace OShop.Controllers
         private readonly ICurrencyProvider _currencyProvider;
         private readonly IContentManager _contentManager;
         private readonly IContentDefinitionManager _contentDefinitionManager;
-        private readonly IFeatureManager _featureManager;
         private readonly ITransactionManager _transactionManager;
         private readonly ISiteService _siteService;
 
@@ -41,7 +40,6 @@ namespace OShop.Controllers
             IOrchardServices orchardServices,
             IContentManager contentManager,
             IContentDefinitionManager contentDefinitionManager,
-            IFeatureManager featureManager,
             ITransactionManager transactionManager,
             ISiteService siteService,
             IShapeFactory shapeFactory) {
@@ -49,7 +47,6 @@ namespace OShop.Controllers
             Services = orchardServices;
             _contentManager = contentManager;
             _contentDefinitionManager = contentDefinitionManager;
-            _featureManager = featureManager;
             _transactionManager = transactionManager;
             _siteService = siteService;
 
@@ -61,7 +58,7 @@ namespace OShop.Controllers
         public IOrchardServices Services { get; private set; }
         public Localizer T { get; set; }
 
-        public ActionResult List(ProductListViewModel model, PagerParameters pagerParameters)
+        public ActionResult Index(ListContentsViewModel model, PagerParameters pagerParameters)
         {
             if (!Services.Authorizer.Authorize(Permissions.OShopPermissions.AccessShopPanel, T("Not allowed to manage products")))
                 return new HttpUnauthorizedResult();
@@ -124,22 +121,20 @@ namespace OShop.Controllers
             var pagerShape = Shape.Pager(pager).TotalItemCount(query.Count());
             var pageOfContentItems = query.Slice(pager.GetStartIndex(), pager.PageSize).ToList();
 
-            var viewModel = new ProductListViewModel() {
-                Products = pageOfContentItems,
-                Pager = pagerShape,
-                Options = model.Options,
-                NumberFormat = _currencyProvider.NumberFormat,
-                TypeDisplayName = model.TypeDisplayName ?? "",
-                // Optional features
-                VatEnabled = _featureManager.GetEnabledFeatures().Where(f=>f.Id == "OShop.VAT").Any()
-            };
+            var list = Shape.List();
+            list.AddRange(pageOfContentItems.Select(ci => _contentManager.BuildDisplay(ci, "SummaryAdmin")));
+
+            var viewModel = Shape.ViewModel()
+                .ContentItems(list)
+                .Pager(pagerShape)
+                .Options(model.Options);
 
             return View(viewModel);
         }
 
-        [HttpPost, ActionName("List")]
+        [HttpPost, ActionName("Index")]
         [FormValueRequired("submit.Filter")]
-        public ActionResult ListFilterPOST(ContentOptions options) {
+        public ActionResult IndexFilterPOST(ContentOptions options) {
             var routeValues = ControllerContext.RouteData.Values;
             if (options != null) {
                 routeValues["Options.OrderBy"] = options.OrderBy;
@@ -152,12 +147,12 @@ namespace OShop.Controllers
                 }
             }
 
-            return RedirectToAction("List", routeValues);
+            return RedirectToAction("Index", routeValues);
         }
 
-        [HttpPost, ActionName("List")]
+        [HttpPost, ActionName("Index")]
         [FormValueRequired("submit.BulkEdit")]
-        public ActionResult ListPOST(ContentOptions options, IEnumerable<int> itemIds, string returnUrl) {
+        public ActionResult IndexPOST(ContentOptions options, IEnumerable<int> itemIds, string returnUrl) {
             if (itemIds != null) {
                 var checkedContentItems = _contentManager.GetMany<ContentItem>(itemIds, VersionOptions.Latest, QueryHints.Empty);
                 switch (options.BulkAction) {
@@ -201,7 +196,7 @@ namespace OShop.Controllers
                 }
             }
 
-            return this.RedirectLocal(returnUrl, () => RedirectToAction("List"));
+            return this.RedirectLocal(returnUrl, () => RedirectToAction("Index"));
         }
 
         public ActionResult Create() {

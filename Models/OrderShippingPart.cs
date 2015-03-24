@@ -29,6 +29,5 @@ namespace OShop.Models {
         public string Designation;
         public string Description;
         public decimal Price;
-        public int VatId;
     }
 }

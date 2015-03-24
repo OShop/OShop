@@ -10,6 +10,6 @@ using System.Threading.Tasks;
 namespace OShop.Services.ShoppingCartResolvers {
     public interface IOrderBuilder : IDependency {
         Int32 Priority { get; }
-        void BuildOrder(IShoppingCartService ShoppingCartService, ref IContent Order);
+        void BuildOrder(IShoppingCartService ShoppingCartService, IContent Order);
     }
 }

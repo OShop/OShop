@@ -20,7 +20,6 @@ namespace OShop.Services {
 
         public DefaultCurrencyProvider(IOrchardServices services) {
             Services = services;
-
         }
 
         public IOrchardServices Services { get; set; }

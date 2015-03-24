@@ -7,10 +7,34 @@ namespace OShop.Migrations {
     [OrchardFeature("OShop.VAT")]
     public class VatMigrations : DataMigrationImpl {
         public int Create() {
-            SchemaBuilder.CreateTable("VatRecord", table => table
-                 .Column<int>("Id", c => c.PrimaryKey().Identity())
+            SchemaBuilder.CreateTable("VatRatePartRecord", table => table
+                 .ContentPartVersionRecord()
                  .Column<string>("Name")
                  .Column<decimal>("Rate"));
+
+            SchemaBuilder.CreateTable("VatPartRecord", table => table
+                 .ContentPartVersionRecord()
+                 .Column<int>("VatRateId")
+                 .Column<int>("VatRateVersionId"));
+
+            ContentDefinitionManager.AlterPartDefinition("VatRatePart", part => part
+                .Attachable(false)
+                );
+
+            ContentDefinitionManager.AlterPartDefinition("VatPart", part => part
+                .Attachable()
+                .WithDescription("Adds VAT rate to you products.")
+                );
+
+            ContentDefinitionManager.AlterTypeDefinition("VatRate", type => type
+                .WithPart("CommonPart")
+                .WithPart("VatRatePart")
+                .Creatable(false)
+                );
+
+            ContentDefinitionManager.AlterTypeDefinition("ShippingProvider", type => type
+                .WithPart("VatPart")
+                );
 
             return 1;
         }

@@ -26,7 +26,7 @@ namespace OShop.Services.ShoppingCartResolvers {
             get { return 10; }
         }
 
-        public void BuildCart(IShoppingCartService ShoppingCartService, ref ShoppingCart Cart) {
+        public void BuildCart(IShoppingCartService ShoppingCartService, ShoppingCart Cart) {
             if (!Cart.IsShippingRequired()) {
                 Cart.Properties.Remove("ShippingOption");
                 return;
@@ -66,7 +66,7 @@ namespace OShop.Services.ShoppingCartResolvers {
 
         }
 
-        public void BuildOrder(IShoppingCartService ShoppingCartService, ref IContent Order) {
+        public void BuildOrder(IShoppingCartService ShoppingCartService, IContent Order) {
             var orderPart = Order.As<OrderPart>();
             var shippingPart = Order.As<OrderShippingPart>();
 
@@ -92,8 +92,7 @@ namespace OShop.Services.ShoppingCartResolvers {
                     shippingPart.ShippingInfos = new OrderShippingInfos {
                         Designation = selectedOption.Provider.As<ITitleAspect>().Title,
                         Description = selectedOption.Option.Name,
-                        Price = selectedOption.Option.Price,
-                        VatId = selectedOption.Provider.VAT != null ? selectedOption.Provider.VAT.Id : 0
+                        Price = selectedOption.Option.Price
                     };
                     shippingPart.ShippingStatus = ShippingStatus.Pending;
                 }

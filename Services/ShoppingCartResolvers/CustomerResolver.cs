@@ -25,7 +25,7 @@ namespace OShop.Services.ShoppingCartResolvers {
             get { return 800; }
         }
 
-        public void BuildCart(IShoppingCartService ShoppingCartService, ref ShoppingCart Cart) {
+        public void BuildCart(IShoppingCartService ShoppingCartService, ShoppingCart Cart) {
             Int32 billingAddressId = ShoppingCartService.GetProperty<int>("BillingAddressId");
             Int32 shippingAddressId = ShoppingCartService.GetProperty<int>("ShippingAddressId");
 
@@ -61,7 +61,7 @@ namespace OShop.Services.ShoppingCartResolvers {
             }
         }
 
-        public void BuildOrder(IShoppingCartService ShoppingCartService, ref IContent Order) {
+        public void BuildOrder(IShoppingCartService ShoppingCartService, IContent Order) {
             var customer = _customersService.GetCustomer();
 
             if (customer == null) {

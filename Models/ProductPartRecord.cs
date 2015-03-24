@@ -11,6 +11,5 @@ namespace OShop.Models {
     public class ProductPartRecord : ContentPartVersionRecord {
         public virtual decimal UnitPrice { get; set; }
         public virtual string SKU { get; set; }
-        public virtual VatRecord VatRecord { get; set; }
     }
 }

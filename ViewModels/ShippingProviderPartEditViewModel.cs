@@ -9,6 +9,5 @@ namespace OShop.ViewModels {
     public class ShippingProviderPartEditViewModel {
         public ShippingProviderPart Part { get; set; }
         public NumberFormatInfo NumberFormat { get; set; }
-        public Boolean VatEnabled { get; set; }
     }
 }

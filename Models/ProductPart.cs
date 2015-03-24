@@ -18,12 +18,6 @@ namespace OShop.Models {
             set { this.Store(x => x.SKU, value); }
         }
 
-        public VatRecord VAT {
-            get { return Record.VatRecord; }
-            set { Record.VatRecord = value; }
-        }
-
-
         public IContent Content {
             get { return this.As<IContent>(); }
         }
@@ -42,6 +36,10 @@ namespace OShop.Models {
 
         public decimal GetUnitPrice(int Quantity = 1) {
             return this.UnitPrice;
+        }
+
+        public decimal Price {
+            get { return GetUnitPrice(); }
         }
     }
 }

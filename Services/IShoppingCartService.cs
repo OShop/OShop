@@ -1,11 +1,8 @@
 ﻿using Orchard;
 using Orchard.ContentManagement;
 using OShop.Models;
-using System;
+using OShop.ViewModels;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OShop.Services {
     public interface IShoppingCartService : IDependency {
@@ -20,6 +17,7 @@ namespace OShop.Services {
         void RemoveProperty(string Key);
 
         ShoppingCart BuildCart();
+
         IContent BuildOrder();
     }
 }

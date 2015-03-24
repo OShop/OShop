@@ -156,6 +156,17 @@
     <Content Include="Views\Parts\Customer.Orders.Admin.cshtml" />
     <Content Include="Views\EditorTemplates\Parts\CustomerOrder.cshtml" />
     <Content Include="Views\EditorTemplates\Parts\Order.cshtml" />
+    <Content Include="Views\Parts\VatRate.cshtml" />
+    <Content Include="Views\EditorTemplates\Parts\VatRate.cshtml" />
+    <Content Include="Views\VatAdmin\Rates.cshtml" />
+    <Content Include="Views\Price-Vat.cshtml" />
+    <Content Include="Views\VatAdmin\Index.cshtml" />
+    <Content Include="Views\Parts\Vat.SummaryAdmin.cshtml" />
+    <Content Include="Views\Price.SummaryAdmin.cshtml" />
+    <Content Include="Views\Price.SummaryAdmin-Vat.cshtml" />
+    <Content Include="Views\ProductsAdmin\Index.cshtml" />
+    <Content Include="Views\ShoppingCart.cshtml" />
+    <Content Include="Views\ShoppingCart.Items.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Orchard.Core">
@@ -193,8 +204,8 @@
     <Compile Include="Drivers\ShippingProviderPartDriver.cs" />
     <Compile Include="Drivers\ShoppingCartProductPartDriver.cs" />
     <Compile Include="Drivers\ShoppingCartWidgetPartDriver.cs" />
-    <Compile Include="Drivers\VatShippingProviderPartDriver.cs" />
-    <Compile Include="Drivers\VatProductPartDriver.cs" />
+    <Compile Include="Drivers\VatPartDriver.cs" />
+    <Compile Include="Drivers\VatRatePartDriver.cs" />
     <Compile Include="Fields\LocationField.cs" />
     <Compile Include="Handlers\CustomerOrderPartHandler.cs" />
     <Compile Include="Handlers\CustomerAddressPartHandler.cs" />
@@ -205,6 +216,9 @@
     <Compile Include="Handlers\OrderShippingPartHandler.cs" />
     <Compile Include="Handlers\ShippingPartHandler.cs" />
     <Compile Include="Handlers\ShippingProviderPartHandler.cs" />
+    <Compile Include="Handlers\VatPartHandler.cs" />
+    <Compile Include="Handlers\VatRatePartHandler.cs" />
+    <Compile Include="Handlers\VatSettingsPartHandler.cs" />
     <Compile Include="Helpers\CustomersHelpers.cs" />
     <Compile Include="Helpers\LocationsExtensions.cs" />
     <Compile Include="Helpers\ShippingExtensions.cs" />
@@ -223,6 +237,7 @@
     <Compile Include="Models\CustomerOrderPartRecord.cs" />
     <Compile Include="Models\CustomerPart.cs" />
     <Compile Include="Models\CustomerPartRecord.cs" />
+    <Compile Include="Models\IPrice.cs" />
     <Compile Include="Models\IShippingAddress.cs" />
     <Compile Include="Models\IBillingAddress.cs" />
     <Compile Include="Models\ICurrencySettings.cs" />
@@ -246,14 +261,17 @@
     <Compile Include="Models\ShippingPartRecord.cs" />
     <Compile Include="Models\ShippingProviderOption.cs" />
     <Compile Include="Models\ShippingProviderPart.cs" />
-    <Compile Include="Models\ShippingProviderPartRecord.cs" />
     <Compile Include="Models\ShippingZoneRecord.cs" />
     <Compile Include="Models\ShoppingCart.cs" />
     <Compile Include="Models\ShoppingCartItem.cs" />
     <Compile Include="Models\ShoppingCartItemRecord.cs" />
     <Compile Include="Models\ShoppingCartRecord.cs" />
     <Compile Include="Models\ShoppingCartWidgetPart.cs" />
-    <Compile Include="Models\VatRecord.cs" />
+    <Compile Include="Models\VatPart.cs" />
+    <Compile Include="Models\VatPartRecord.cs" />
+    <Compile Include="Models\VatRatePart.cs" />
+    <Compile Include="Models\VatRatePartRecord.cs" />
+    <Compile Include="Models\VatSettingsPart.cs" />
     <Compile Include="Navigation\AdminMenu.cs" />
     <Compile Include="Navigation\OrdersAdminMenu.cs" />
     <Compile Include="Navigation\LocationsAdminMenu.cs" />
@@ -291,6 +309,8 @@
     <Compile Include="Services\VatService.cs" />
     <Compile Include="Settings\LocationFieldEditorEvents.cs" />
     <Compile Include="Settings\LocationFieldSettings.cs" />
+    <Compile Include="Shapes\OShopShapeProvider.cs" />
+    <Compile Include="Shapes\VatShapeProvider.cs" />
     <Compile Include="Tokens\LocationsTokens.cs" />
     <Compile Include="ViewModels\CheckoutIndexViewModel.cs" />
     <Compile Include="ViewModels\CustomerAddressEditViewModel.cs" />
@@ -305,7 +325,6 @@
     <Compile Include="ViewModels\LocationsCountriesIndexViewModel.cs" />
     <Compile Include="ViewModels\OrdersIndexViewModel.cs" />
     <Compile Include="ViewModels\OShopSettingsViewsModel.cs" />
-    <Compile Include="ViewModels\ProductListViewModel.cs" />
     <Compile Include="ViewModels\ShippingOptionEditViewModel.cs" />
     <Compile Include="ViewModels\ShoppingCartWidgetViewModel.cs" />
     <Compile Include="ViewModels\VatEditViewModel.cs" />
@@ -325,34 +344,19 @@
     <Content Include="Placement.info" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Parts\Product.Price.cshtml" />
+    <Content Include="Views\Price.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Parts\Product.Sku.cshtml" />
+    <Content Include="Views\Parts\Product.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Settings\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\ProductsAdmin\List.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\VatAdmin\Create.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\VatAdmin\List.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\VatAdmin\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\EditorTemplates\Parts\Vat.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\ProductsAdmin\Create.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Parts\Product.Vat.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Orchard.Tokens\Orchard.Tokens.csproj">

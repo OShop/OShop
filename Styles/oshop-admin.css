@@ -14,16 +14,6 @@ table.items .bulk-lfloor {
   margin: 0 .6em;
   vertical-align: top;
 }
-table.products td.price,
-table.products td.percent {
-  text-align: right;
-}
-table.products td.na {
-  text-align: center;
-}
-table.products h3 {
-  display: inline;
-}
 fieldset.admin-customer-addresses,
 fieldset.admin-customer-orders {
   border: 1px solid #CCC;
@@ -36,4 +26,8 @@ fieldset.admin-customer-orders > legend {
 }
 fieldset.admin-customer-addresses {
   float: left;
+}
+.contentItems .vat,
+.contentItems .price {
+  float: right;
 }

@@ -1,0 +1,14 @@
+﻿@using OShop.Models
+@{
+    Layout.Title = T("My shopping cart");
+
+    Script.Require("OShop");
+}
+
+<article class="shopping-cart">
+    @using (Html.BeginFormAntiForgeryPost()) {
+        foreach (dynamic shape in ((ShoppingCart)Model.Cart).Shapes) {
+            @Display(shape);
+        }
+    }
+</article>

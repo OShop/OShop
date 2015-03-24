@@ -6,14 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace OShop.Models {
-    public interface IShopItem {
-        int Id { get; }
+    public interface IShopItem : IContent, IPrice {
         string ItemType { get; }
         string SKU { get; }
-        IContent Content { get; }
         string Designation { get; }
         string Description { get; }
         decimal GetUnitPrice(int Quantity = 1);
-        VatRecord VAT { get; }
     }
 }

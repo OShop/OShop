@@ -8,14 +8,15 @@ namespace OShop.Migrations {
     public class ProductsMigrations : DataMigrationImpl {
         public int Create() {
             SchemaBuilder.CreateTable("ProductPartRecord", table => table
-                 .ContentPartVersionRecord()
-                 .Column<decimal>("UnitPrice", c => c.NotNull())
-                 .Column<string>("SKU")
-                 .Column<int>("VatRecord_Id"));
+                .ContentPartVersionRecord()
+                .Column<decimal>("UnitPrice", c => c.NotNull())
+                .Column<string>("SKU")
+            );
 
             ContentDefinitionManager.AlterPartDefinition("ProductPart", part => part
-                 .Attachable()
-                 .WithDescription("Allows content to be sold as a Product"));
+                .Attachable()
+                .WithDescription("Allows content to be sold as a Product")
+            );
             return 1;
         }
     }

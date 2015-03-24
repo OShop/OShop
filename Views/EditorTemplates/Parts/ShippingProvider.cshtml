@@ -14,10 +14,6 @@
                 <th scope="col">@T("Zone")</th>
                 <th scope="col">@T("Priority")</th>
                 <th scope="col">@T("Price")</th>
-                @if (Model.VatEnabled) {
-                    <th scope="col">@T("VAT")</th>
-                    <th scope="col">@T("VAT Inc.")</th>
-                }
                 <th scope="col">@T("Actions")</th>
             </tr>
         </thead>
@@ -35,18 +31,6 @@
                 <td scope="col">@(option.ShippingZoneRecord != null ? option.ShippingZoneRecord.Name : "-")</td>
                 <td scope="col">@option.Priority</td>
                 <td scope="col">@String.Format(Model.NumberFormat, "{0:C}", option.Price)</td>
-                @if (Model.VatEnabled) {
-                    if (Model.Part.VAT != null) {
-                        <td scope="col" class="percent" title="@Model.Part.VAT.Name">@T("{0:P}", Model.Part.VAT.Rate)</td>
-                        <td scope="col" class="price">
-                            @String.Format(Model.NumberFormat, "{0:C}", Model.Part.VAT.GetVatIncludedPrice(option.Price))
-                        </td>
-                    }
-                    else {
-                        <td scope="col" class="na" title="@T("No VAT defined on this product")">-</td>
-                        <td scope="col" class="price">@String.Format(Model.NumberFormat, "{0:C}", option.Price)</td>
-                    }
-                }
                 <td scope="col">
                     @if (option.Enabled) {
                         @Html.ActionLink(T("Disable").Text, "DisableOption", "ShippingProvidersAdmin", new { Area = "OShop", Id = option.Id }, new { @class = "button" })
@@ -64,7 +48,7 @@
                 <td scope="col">
                     <input type="text" name="ShippingProvider.New.Option" class="text large" />
                 </td>
-                <td scope="col" colspan="@(Model.VatEnabled ? 5 : 3)"></td>
+                <td scope="col" colspan="3"></td>
                 <td scope="col">
                     <button type="submit" name="submit.Save" value="ShippingProvider.New">@T("Add option")</button>
                 </td>

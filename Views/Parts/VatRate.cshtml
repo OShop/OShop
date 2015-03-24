@@ -1,0 +1,6 @@
+﻿@using OShop.Models
+@{
+    VatRatePart part = Model.ContentPart;
+}
+
+<span>@T("{0:P}", part.Rate)</span>
