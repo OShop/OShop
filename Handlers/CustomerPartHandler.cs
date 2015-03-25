@@ -25,6 +25,13 @@ namespace OShop.Handlers {
                     return user;
                 });
 
+                // Default address field
+                part._defaultAddress.Loader(address => customersService.GetAddress(part.DefaultAddressId));
+                part._defaultAddress.Setter(address => {
+                    part.DefaultAddressId = (address != null ? address.Id : 0);
+                    return address;
+                });
+
                 // Addresses field
                 part._addresses.Loader(addresses => customersService.GetAddressesForCustomer(part));
             });

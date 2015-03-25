@@ -10,6 +10,7 @@ using System.ComponentModel.DataAnnotations;
 namespace OShop.Models {
     public class CustomerPart : ContentPart<CustomerPartRecord>, ITitleAspect {
         internal readonly LazyField<IEnumerable<CustomerAddressPart>> _addresses = new LazyField<IEnumerable<CustomerAddressPart>>();
+        internal readonly LazyField<CustomerAddressPart> _defaultAddress = new LazyField<CustomerAddressPart>();
         internal readonly LazyField<IUser> _user = new LazyField<IUser>();
 
         [Required]
@@ -47,6 +48,11 @@ namespace OShop.Models {
         public IUser User {
             get { return _user.Value; }
             set { _user.Value = value; }
+        }
+
+        public CustomerAddressPart DefaultAddress {
+            get { return _defaultAddress.Value; }
+            set { _defaultAddress.Value = value; }
         }
 
         public IEnumerable<CustomerAddressPart> Addresses {
