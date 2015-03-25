@@ -6,7 +6,7 @@
 }
 
 @if (cart.Items.Any()) {
-    <article>@T.Plural("1 item", "{0} items", cart.Items.ItemsCount()) : @String.Format(Model.NumberFormat, "{0:C}", cart.VatIncludedCartTotal())</article>
+    <article>@T.Plural("1 item", "{0} items", cart.Items.ItemsCount()) : @String.Format(Model.NumberFormat, "{0:C}", cart.CartTotal())</article>
     @Html.ActionLink(T("My cart").Text, "Index", "ShoppingCart", new { area = "OShop" }, new { })
 }
 else {

@@ -12,12 +12,10 @@
 <table class="cart-items">
     <thead>
         <tr>
-            <th>@T("SKU")</th>
             <th>@T("Product")</th>
             <th>@T("Unit Price")</th>
             <th>@T("Qty.")</th>
             <th>@T("Total")</th>
-            <th></th>
         </tr>
     </thead>
     @{
@@ -25,19 +23,18 @@
     }
     @foreach (var entry in cart.Items) {
         <tr>
-            <td>@entry.Item.SKU</td>
             <td>
+            @if (entry.Item.ContentItem != null) {
+                @Display(BuildDisplay(entry.Item, "Summary"))
+            }
+            else {
                 <div class="designation">
-                    @if (entry.Item.ContentItem != null) {
-                        @Html.ItemDisplayLink(entry.Item.Designation, entry.Item.ContentItem)
-                    }
-                    else {
-                        @entry.Item.Designation
-                    }
+                    @entry.Item.Designation
                 </div>
-                @if (!String.IsNullOrWhiteSpace(entry.Item.Description)) {
+                if (!String.IsNullOrWhiteSpace(entry.Item.Description)) {
                     <div class="description">@entry.Item.Description</div>
                 }
+            }
             </td>
             <td>
                 @String.Format(Model.NumberFormat, "{0:C}", entry.VatIncludedUnitPrice())
@@ -45,12 +42,10 @@
             <td>
                 <input type="hidden" name="@String.Format("CartItems[{0}].Id", i)" value="@entry.Id" />
                 <input type="number" name="@String.Format("CartItems[{0}].Quantity", i)" value="@entry.Quantity" class="quantity oshop-autoupdate" />
+                <button type="submit" name="@String.Format("CartItems[{0}].IsRemoved", i)" class="oshop-confirm" data-msg="@T("Are you sure you want to remove this item from your cart ?")" value="true">@T("Remove")</button>
             </td>
             <td>
                 @String.Format(Model.NumberFormat, "{0:C}", entry.VatIncludedSubTotal())
-            </td>
-            <td>
-                <button type="submit" name="@String.Format("CartItems[{0}].IsRemoved", i)" class="oshop-confirm" data-msg="@T("Are you sure you want to remove this item from your cart ?")" value="true">@T("Remove")</button>
             </td>
         </tr>
         i++;
@@ -58,7 +53,7 @@
     <tfoot>
         @if (shippingOption != null) {
             <tr class="total">
-                <td colspan="4">
+                <td colspan="3">
                     @T("Items total")
                 </td>
                 <td>
@@ -66,7 +61,7 @@
                 </td>
             </tr>
             <tr class="total">
-                <td colspan="4">
+                <td colspan="3">
                     @T("Shipping")
                 </td>
                 <td>
@@ -75,7 +70,7 @@
             </tr>
         }
         <tr class="total">
-            <td colspan="4">
+            <td colspan="3">
                 @T("Total")
             </td>
             <td>
