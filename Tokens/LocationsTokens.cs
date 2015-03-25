@@ -2,20 +2,11 @@
 using Orchard.Localization;
 using Orchard.Tokens;
 using OShop.Models;
-using OShop.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace OShop.Tokens {
     [OrchardFeature("OShop.Locations")]
     public class LocationsTokens : ITokenProvider {
-        private readonly ILocationsService _locationService;
-
-        public LocationsTokens(ILocationsService locationService) {
-            _locationService = locationService;
-
+        public LocationsTokens() {
             T = NullLocalizer.Instance;
         }
 
@@ -54,10 +45,10 @@ namespace OShop.Tokens {
                 .Token("Address2", address => address.Address2)
                 .Token("Zipcode", address => address.Zipcode)
                 .Token("City", address => address.City)
-                .Token("Country", address => _locationService.GetCountry(address.CountryId).Name)
-                .Chain("Country", "Country", address => _locationService.GetCountry(address.CountryId))
-                .Token("State", address => _locationService.GetState(address.StateId).Name)
-                .Chain("State", "State", address => _locationService.GetState(address.StateId))
+                .Token("Country", address => address.Country.Name)
+                .Chain("Country", "Country", address => address.Country)
+                .Token("State", address => address.State.Name)
+                .Chain("State", "State", address => address.State)
                 ;
             context.For<LocationsCountryRecord>("Country")
                 .Token("Name", country => country.Name)

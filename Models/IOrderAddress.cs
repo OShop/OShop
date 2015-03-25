@@ -13,7 +13,7 @@ namespace OShop.Models {
         String Address2 { get; }
         String Zipcode { get; }
         String City { get; }
-        Int32 CountryId { get; }
-        Int32 StateId { get; }
+        LocationsCountryRecord Country { get; }
+        LocationsStateRecord State { get; }
     }
 }

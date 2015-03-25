@@ -7,6 +7,8 @@ using System.ComponentModel.DataAnnotations;
 namespace OShop.Models {
     public class CustomerAddressPart : ContentPart<CustomerAddressPartRecord>, IOrderAddress, ITitleAspect {
         internal readonly LazyField<CustomerPart> _customer = new LazyField<CustomerPart>();
+        internal readonly LazyField<LocationsCountryRecord> _country = new LazyField<LocationsCountryRecord>();
+        internal readonly LazyField<LocationsStateRecord> _state = new LazyField<LocationsStateRecord>();
 
         internal Int32 CustomerId {
             get { return this.Retrieve(x => x.CustomerId); }
@@ -81,6 +83,16 @@ namespace OShop.Models {
         public CustomerPart Customer {
             get { return _customer.Value; }
             set { _customer.Value = value; }
+        }
+
+        public LocationsCountryRecord Country {
+            get { return _country.Value; }
+            set { _country.Value = value; }
+        }
+
+        public LocationsStateRecord State {
+            get { return _state.Value; }
+            set { _state.Value = value; }
         }
     }
 }

@@ -118,14 +118,13 @@ namespace OShop.Services {
         }
 
         public string FormatAddress(IOrderAddress address) {
-            var country = GetCountry(address.CountryId);
-            if (country == null || String.IsNullOrWhiteSpace(country.AddressFormat)) {
+            if (address.Country == null || String.IsNullOrWhiteSpace(address.Country.AddressFormat)) {
                 // TODO : Provide default format
                 return "";
             }
             else {
                 return _tokenizer.Replace(
-                    country.AddressFormat,
+                    address.Country.AddressFormat,
                     new Dictionary<string, object> { { "OrderAddress", address } }
                 ).Trim(new char[]{' ', '-', '\r', '\n'});
             }
