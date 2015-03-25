@@ -4,7 +4,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace OShop.Models {
-    public class VatRatePart : ContentPart<VatRatePartRecord>, ITitleAspect {
+    public class VatRatePart : ContentPart<VatRatePartRecord>, ITax, ITitleAspect {
         [Required]
         public String Name {
             get { return this.Retrieve(x => x.Name); }

@@ -248,6 +248,7 @@
     <Compile Include="Models\IOrderAddress.cs" />
     <Compile Include="Models\IShippingInfo.cs" />
     <Compile Include="Models\IShopItem.cs" />
+    <Compile Include="Models\ITax.cs" />
     <Compile Include="Models\ItemShippingInfo.cs" />
     <Compile Include="Models\LocationsCountryRecord.cs" />
     <Compile Include="Models\LocationsStateRecord.cs" />
