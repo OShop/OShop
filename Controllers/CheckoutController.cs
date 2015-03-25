@@ -1,10 +1,9 @@
 ﻿using Orchard;
 using Orchard.ContentManagement;
+using Orchard.DisplayManagement;
 using Orchard.Environment.Extensions;
-using Orchard.Environment.Features;
 using Orchard.Localization;
 using Orchard.Mvc;
-using Orchard.Security;
 using Orchard.Themes;
 using Orchard.UI.Notify;
 using OShop.Helpers;
@@ -25,23 +24,23 @@ namespace OShop.Controllers
         private readonly IShoppingCartService _shoppingCartService;
         private readonly ICurrencyProvider _currencyProvider;
         private readonly IContentManager _contentManager;
-        private readonly IFeatureManager _featureManager;
         private readonly IShippingService _shippingService;
+        private readonly dynamic _shapeFactory;
 
         public CheckoutController(
             ICustomersService customersService,
             IShoppingCartService shoppingCartService,
             ICurrencyProvider currencyProvider,
             IContentManager contentManager,
-            IFeatureManager featureManager,
             IOrchardServices services,
+            IShapeFactory shapeFactory,
             IShippingService shippingService = null
             ) {
             _customersService = customersService;
             _shoppingCartService = shoppingCartService;
             _currencyProvider = currencyProvider;
             _contentManager = contentManager;
-            _featureManager = featureManager;
+            _shapeFactory = shapeFactory;
             _shippingService = shippingService;
             Services = services;
             T = NullLocalizer.Instance;
@@ -64,64 +63,35 @@ namespace OShop.Controllers
                 return RedirectToAction("Index", "ShoppingCart", new { area = "OShop" });
             }
 
-            // Billing address
-            Int32 billingAddressId = _shoppingCartService.GetProperty<Int32>("BillingAddressId");
-            if (billingAddressId <= 0) {
-                if (customer.DefaultAddressId > 0 && customer.Addresses.Where(a => a.Id == customer.DefaultAddressId).Any()) {
-                    billingAddressId = customer.DefaultAddressId;
-                    _shoppingCartService.SetProperty<Int32>("BillingAddressId", billingAddressId);
-                }
-                else if(customer.Addresses.Any()) {
-                    billingAddressId = customer.Addresses.First().ContentItem.Id;
-                    _shoppingCartService.SetProperty<Int32>("BillingAddressId", billingAddressId);
-                }
-            }
-
-            // Shipping address
-            Int32 shippingAddressId = _shoppingCartService.GetProperty<Int32>("ShippingAddressId");
-            if (shippingAddressId <= 0) {
-                if (customer.DefaultAddressId > 0 && customer.Addresses.Where(a => a.Id == customer.DefaultAddressId).Any()) {
-                    shippingAddressId = customer.DefaultAddressId;
-                    _shoppingCartService.SetProperty<Int32>("ShippingAddressId", shippingAddressId);
-                }
-                else if (customer.Addresses.Any()) {
-                    shippingAddressId = customer.Addresses.First().ContentItem.Id;
-                    _shoppingCartService.SetProperty<Int32>("ShippingAddressId", shippingAddressId);
-                }
-            }
+            // Set flag for CustomerResolver
+            _shoppingCartService.SetProperty<String>("Checkout", "Checkout");
 
             ShoppingCart cart = _shoppingCartService.BuildCart();
 
-            var model = new CheckoutIndexViewModel() {
-                ShippingRequired = cart.IsShippingRequired(),
-                Addresses = customer.Addresses,
-                BillingAddressId = billingAddressId > 0 ? billingAddressId : customer.DefaultAddressId,
-                ShippingAddressId = shippingAddressId > 0 ? shippingAddressId : customer.DefaultAddressId,
-                NumberFormat = _currencyProvider.NumberFormat,
-                VatEnabled = _featureManager.GetEnabledFeatures().Where(f => f.Id == "OShop.VAT").Any()
-            };
+            var checkoutShape = _shapeFactory.Checkout()
+                .Cart(cart)
+                .Addresses(customer.Addresses);
 
-            var billingAddress = _contentManager.Get(model.BillingAddressId, VersionOptions.Latest);
-            if (billingAddress != null) {
-                model.BillingAddress = _contentManager.BuildDisplay(billingAddress);
+            if (_shippingService != null && cart.IsShippingRequired()) {
+                // Shipping option selection
+                checkoutShape.ShippingOptions = _shapeFactory.ShoppingCart_ShippingOptions()
+                    .Cart(cart)
+                    .ContentItems(_shapeFactory.List()
+                        .AddRange(_shippingService.GetSuitableProviderOptions(
+                                cart.Properties["ShippingZone"] as ShippingZoneRecord,
+                                cart.Properties["ShippingInfos"] as IList<Tuple<int, IShippingInfo>> ?? new List<Tuple<int, IShippingInfo>>(),
+                                cart.ItemsTotal()
+                            ).OrderBy(p => p.Option.Price)
+                            .Select(sp => _shapeFactory.ShoppingCart_ShippingOption()
+                                .Cart(cart)
+                                .ProviderOption(sp)
+                                .NumberFormat(_currencyProvider.NumberFormat)
+                            )
+                        )
+                    );
             }
 
-            if (model.ShippingRequired && _shippingService != null) {
-                var shippingAddress = _contentManager.Get(model.ShippingAddressId, VersionOptions.Latest);
-                if (shippingAddress != null) {
-                    model.ShippingAddress = _contentManager.BuildDisplay(shippingAddress);
-                }
-
-                model.ShippingProviders = _shippingService.GetSuitableProviderOptions(
-                    cart.Properties["ShippingZone"] as ShippingZoneRecord,
-                    cart.Properties["ShippingInfos"] as IList<Tuple<int, IShippingInfo>> ?? new List<Tuple<int, IShippingInfo>>(),
-                    cart.ItemsTotal()
-                ).OrderBy(p => p.Option.Price);
-                var shippingOption = cart.Properties["ShippingOption"] as ShippingProviderOption;
-                model.ShippingProviderId = shippingOption != null ? shippingOption.Provider.Id : 0;
-            }
-
-            return View(model);
+            return new ShapeResult(this, checkoutShape);
         }
 
         [Themed]
@@ -155,8 +125,9 @@ namespace OShop.Controllers
         public ActionResult ValidateOrder() {
             var order = _shoppingCartService.BuildOrder();
             TempData["OShop.Checkout.Order"] = order;
-            
-            return View(_contentManager.BuildDisplay(order));
+
+            return new ShapeResult(this, _shapeFactory.Checkout_Validate()
+                .Order(order));
         }
 
         [Themed]
@@ -201,7 +172,6 @@ namespace OShop.Controllers
             }
             else {
                 return RedirectToAction("ValidateOrder");
-                //return RedirectToAction("Index", "Order", new { area = "OShop", ReturnUrl = Url.Action("Index", "Checkout", new { area = "OShop" }) });
             }
         }
 

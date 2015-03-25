@@ -6,7 +6,7 @@ using System;
 using System.Linq;
 
 namespace OShop.Services.ShoppingCartResolvers {
-    [OrchardFeature("OShop.Customers")]
+    [OrchardFeature("OShop.Checkout")]
     public class CustomerResolver : IShoppingCartBuilder, IOrderBuilder {
         private readonly ICustomersService _customersService;
         private readonly ILocationsService _locationsService;
@@ -32,19 +32,34 @@ namespace OShop.Services.ShoppingCartResolvers {
                 return;
             }
 
-            var billingAddress = customer.Addresses.Where(a => a.Id == ShoppingCartService.GetProperty<int>("BillingAddressId")).FirstOrDefault() ?? customer.DefaultAddress;
-            var shippingAddress = customer.Addresses.Where(a => a.Id == ShoppingCartService.GetProperty<int>("ShippingAddressId")).FirstOrDefault() ?? customer.DefaultAddress;
+            // Get "Checkout" property to know the Checkout provider beeing used
+            var checkout = ShoppingCartService.GetProperty<string>("Checkout");
 
-            if (billingAddress != null) {
-                Cart.Properties["BillingAddress"] = billingAddress;
-                Cart.Properties["BillingCountry"] = billingAddress.Country;
-                Cart.Properties["BillingState"] = billingAddress.State;
+            if (string.IsNullOrWhiteSpace(checkout) && customer.DefaultAddress != null) {
+                // Override default location
+                ShoppingCartService.SetProperty<int>("CountryId", customer.DefaultAddress.CountryId);
+                ShoppingCartService.SetProperty<int>("StateId", customer.DefaultAddress.StateId);
+
+                Cart.Properties["BillingCountry"] = customer.DefaultAddress.Country;
+                Cart.Properties["BillingState"] = customer.DefaultAddress.State;
+                Cart.Properties["ShippingCountry"] = customer.DefaultAddress.Country;
+                Cart.Properties["ShippingState"] = customer.DefaultAddress.State;
             }
+            else if (checkout == "Checkout") {
+                var billingAddress = customer.Addresses.Where(a => a.Id == ShoppingCartService.GetProperty<int>("BillingAddressId")).FirstOrDefault() ?? customer.DefaultAddress ?? customer.Addresses.FirstOrDefault();
+                var shippingAddress = customer.Addresses.Where(a => a.Id == ShoppingCartService.GetProperty<int>("ShippingAddressId")).FirstOrDefault() ?? customer.DefaultAddress ?? customer.Addresses.FirstOrDefault();
 
-            if (shippingAddress != null) {
-                Cart.Properties["ShippingAddress"] = shippingAddress;
-                Cart.Properties["ShippingCountry"] = shippingAddress.Country;
-                Cart.Properties["ShippingState"] = shippingAddress.State;
+                if (billingAddress != null) {
+                    Cart.Properties["BillingAddress"] = billingAddress;
+                    Cart.Properties["BillingCountry"] = billingAddress.Country;
+                    Cart.Properties["BillingState"] = billingAddress.State;
+                }
+
+                if (shippingAddress != null) {
+                    Cart.Properties["ShippingAddress"] = shippingAddress;
+                    Cart.Properties["ShippingCountry"] = shippingAddress.Country;
+                    Cart.Properties["ShippingState"] = shippingAddress.State;
+                }
             }
         }
 

@@ -2,7 +2,7 @@
     Layout.Title = T("Validate your order").Text;
 }
 
-@Display(Model)
+@Display(BuildDisplay(Model.Order))
 
 @using (Html.BeginFormAntiForgeryPost()) {
     <fieldset class="checkout-actions">

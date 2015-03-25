@@ -1,17 +1,19 @@
-﻿@model OShop.ViewModels.CheckoutIndexViewModel
-@using Orchard.ContentManagement
-@using Orchard.ContentManagement.Aspects
+﻿@using OShop.Models
 @using OShop.Helpers
 @{
     Script.Require("OShop");
 
     Layout.Title = T("Check-out");
+    IEnumerable<CustomerAddressPart> addresses = Model.Addresses;
+    ShoppingCart cart = Model.Cart;
+    var billingAddress = cart.Properties["BillingAddress"] as CustomerAddressPart;
+    var shippingAddress = cart.Properties["ShippingAddress"] as CustomerAddressPart;
 }
 
-<div class="checkout">
+<article class="checkout">
     @Html.ValidationSummary()
     @using (Html.BeginFormAntiForgeryPost()) {
-        if (Model.Addresses.Any()) {
+        if (addresses.Any()) {
             <div class="addresses">
                 <h2>@T("Your address :")</h2>
                 <fieldset>
@@ -19,47 +21,34 @@
                 </fieldset>
                 <fieldset>
                     <legend>@T("Billing address")</legend>
-                    @Html.DropDownListFor(m => m.BillingAddressId, Model.Addresses.BuildAddressSelectList(), new { @class = "oshop-autoupdate" })
+                    <select name="BillingAddressId" class="oshop-autoupdate">
+                        @foreach (var address in addresses) {
+                        <option value="@address.Id" @(billingAddress != null && billingAddress.Id == address.Id ? "selected" : "")>@address.AddressAlias@(address.IsDefault ? T(" (Default)").Text : "")</option>
+                        }
+                    </select>
                     <button type="submit" name="Action" value="EditBillingAddress">@T("Edit")</button>
                     <button type="submit" name="Action" value="RemoveBillingAddress" class="oshop-confirm" data-msg="@T("Are you sure you want to remove this address ?")">@T("Remove")</button>
                     <div class="address-preview">
-                        @Display(Model.BillingAddress)
+                        @Display(BuildDisplay(billingAddress))
                     </div>
                 </fieldset>
-                @if (Model.ShippingRequired) {
+                @if (cart.IsShippingRequired()) {
                     <fieldset>
                         <legend>@T("Shipping address")</legend>
-                        @Html.DropDownListFor(m => m.ShippingAddressId, Model.Addresses.BuildAddressSelectList(), new { @class = "oshop-autoupdate" })
+                        <select name="ShippingAddressId" class="oshop-autoupdate">
+                            @foreach (var address in addresses) {
+                                <option value="@address.Id" @(shippingAddress != null && shippingAddress.Id == address.Id ? "selected" : "")>@address.AddressAlias@(address.IsDefault ? T(" (Default)").Text : "")</option>
+                            }
+                        </select>
                         <button type="submit" name="Action" value="EditShippingAddress">@T("Edit")</button>
                         <button type="submit" name="Action" value="RemoveShippingAddress" class="oshop-confirm" data-msg="@T("Are you sure you want to remove this address ?")">@T("Remove")</button>
                         <div class="address-preview">
-                            @Display(Model.ShippingAddress)
+                            @Display(BuildDisplay(shippingAddress))
                         </div>
                     </fieldset>
                 }
             </div>
-            if (Model.ShippingRequired) {
-                <div class="shipping">
-                    <h2>@T("Shipping method :")</h2>
-                    @if (Model.ShippingProviders.Any()) {
-                    <ul>
-                        @foreach (var provider in Model.ShippingProviders) {
-                            <li>
-                                @Html.RadioButtonFor(m => m.ShippingProviderId, provider.Provider.Id, new { id = "ShippingOption" + provider.Provider.Id, @class = "oshop-autoupdate" })
-                                @*@Html.LabelFor(m => m.ShippingProviderId, provider.Provider.As<ITitleAspect>().Title, new { @for = "ShippingOption" + provider.Provider.Id })*@
-                                @Display(BuildDisplay(provider.Provider, "Summary"))
-                                <span class="price">
-                                    @String.Format(Model.NumberFormat, "{0:C}", provider.Provider.GetVatRate().GetVatIncludedPrice(provider.Option.Price))
-                                </span>
-                            </li>
-                        }
-                    </ul>
-                    }
-                    else {
-                    <div>@T("There is no shipping option for your order / location. Please contact us.")</div>
-                    }
-                </div>
-            }
+            @Display(Model.ShippingOptions)
             <fieldset class="checkout-actions">
                 @Html.ActionLink(T("Return").Text, "Index", "ShoppingCart", new { area = "OShop" }, new { @class = "button" })
                 <button type="submit" name="Action" value="Validate">@T("Validate")</button>
@@ -69,4 +58,4 @@
             <span>@T("You have no address, please")&nbsp;@Html.ActionLink(T("create one.").Text, "CreateAddress", "Customer", new { area = "OShop", returnUrl = Url.Action("Index", "Checkout", new { area = "OShop" }) }, new { })</span>
         }
     }
-</div>
+</article>

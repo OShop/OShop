@@ -119,7 +119,6 @@
     <Content Include="Views\ShippingProvidersAdmin\Index.cshtml" />
     <Content Include="Views\EditorTemplates\Parts\ShippingProvider.cshtml" />
     <Content Include="Views\ShippingProvidersAdmin\EditOption.cshtml" />
-    <Content Include="Views\Checkout\Index.cshtml" />
     <Content Include="Views\Parts\Customer.cshtml" />
     <Content Include="Views\EditorTemplates\Parts\Customer.cshtml" />
     <Content Include="Views\Customer\Create.cshtml" />
@@ -138,7 +137,6 @@
     <Content Include="Views\Parts\Order.Status.cshtml" />
     <Content Include="Views\Parts\Order.Items.cshtml" />
     <Content Include="Views\Parts\Order.Logs.cshtml" />
-    <Content Include="Views\Checkout\ValidateOrder.cshtml" />
     <Content Include="Views\Parts\Order.ShippingAddress.cshtml" />
     <Content Include="Views\Parts\Order.ShippingStatus.cshtml" />
     <Content Include="Views\Parts\Order.ShippingInfos.cshtml" />
@@ -171,6 +169,8 @@
     <Content Include="Views\ShoppingCart.ShippingOption.cshtml" />
     <Content Include="Views\ShoppingCart.Widget.cshtml" />
     <Content Include="Views\ShoppingCart.Actions.cshtml" />
+    <Content Include="Views\Checkout.cshtml" />
+    <Content Include="Views\Checkout.Validate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Orchard.Core">
