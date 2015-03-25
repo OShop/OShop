@@ -8,30 +8,16 @@ using System.Web.Mvc;
 namespace OShop.Services.ShoppingCartResolvers {
     [OrchardFeature("OShop.Shipping")]
     public class ShippingZoneResolver : IShoppingCartBuilder {
-        private readonly ILocationsService _locationsService;
-
-        public ShippingZoneResolver(
-            ILocationsService locationsService) {
-            _locationsService = locationsService;
+        public ShippingZoneResolver() {
         }
 
         public Int32 Priority {
-            get { return 900; }
+            get { return 800; }
         }
 
         public void BuildCart(IShoppingCartService ShoppingCartService, ShoppingCart Cart) {
-            LocationsStateRecord state = null;
-            LocationsCountryRecord country = null;
-
-            // Based on user selected location
-            Int32 countryId = ShoppingCartService.GetProperty<int>("CountryId");
-            if (countryId > 0) {
-                country = _locationsService.GetCountry(countryId);
-                Int32 stateId = ShoppingCartService.GetProperty<int>("StateId");
-                if (stateId > 0) {
-                    state = _locationsService.GetState(stateId);
-                }
-            }
+            var country = Cart.Properties["ShippingCountry"] as LocationsCountryRecord;
+            var state = Cart.Properties["ShippingState"] as LocationsStateRecord;
 
             if (state != null && state.Enabled && state.ShippingZoneRecord != null) {
                 Cart.Properties["ShippingZone"] = state.ShippingZoneRecord;

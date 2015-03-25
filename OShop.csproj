@@ -304,6 +304,7 @@
     <Compile Include="Services\ShoppingCartResolvers\ShippingInfoResolver.cs" />
     <Compile Include="Services\ShippingService.cs" />
     <Compile Include="Services\ShoppingCartResolvers\ShippingOptionResolver.cs" />
+    <Compile Include="Services\ShoppingCartResolvers\LocationResolver.cs" />
     <Compile Include="Services\ShoppingCartResolvers\ShippingZoneResolver.cs" />
     <Compile Include="Services\ShoppingCartService.cs" />
     <Compile Include="Services\VatService.cs" />

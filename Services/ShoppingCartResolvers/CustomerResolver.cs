@@ -22,42 +22,29 @@ namespace OShop.Services.ShoppingCartResolvers {
         }
 
         public int Priority {
-            get { return 800; }
+            get { return 900; }
         }
 
         public void BuildCart(IShoppingCartService ShoppingCartService, ShoppingCart Cart) {
-            Int32 billingAddressId = ShoppingCartService.GetProperty<int>("BillingAddressId");
-            Int32 shippingAddressId = ShoppingCartService.GetProperty<int>("ShippingAddressId");
-
             var customer = _customersService.GetCustomer();
 
             if (customer == null) {
                 return;
             }
 
-            if (billingAddressId > 0) {
-                var billingAddress = customer.Addresses.Where(a => a.ContentItem.Id == billingAddressId).FirstOrDefault();
-                if (billingAddress != null) {
-                    Cart.Properties["BillingAddress"] = billingAddress;
-                }
+            var billingAddress = customer.Addresses.Where(a => a.Id == ShoppingCartService.GetProperty<int>("BillingAddressId")).FirstOrDefault() ?? customer.DefaultAddress;
+            var shippingAddress = customer.Addresses.Where(a => a.Id == ShoppingCartService.GetProperty<int>("ShippingAddressId")).FirstOrDefault() ?? customer.DefaultAddress;
+
+            if (billingAddress != null) {
+                Cart.Properties["BillingAddress"] = billingAddress;
+                Cart.Properties["BillingCountry"] = billingAddress.Country;
+                Cart.Properties["BillingState"] = billingAddress.State;
             }
 
-            if (shippingAddressId > 0) {
-                var shippingAddress = customer.Addresses.Where(a => a.ContentItem.Id == shippingAddressId).FirstOrDefault();
-                if (shippingAddress != null) {
-                    // Set address
-                    Cart.Properties["ShippingAddress"] = shippingAddress;
-
-                    // Set shipping zone
-                    var state = _locationsService.GetState(shippingAddress.StateId);
-                    var country = _locationsService.GetCountry(shippingAddress.CountryId);
-                    if (state != null && state.Enabled && state.ShippingZoneRecord != null) {
-                        Cart.Properties["ShippingZone"] = state.ShippingZoneRecord;
-                    }
-                    else if (country != null && country.Enabled && country.ShippingZoneRecord != null) {
-                        Cart.Properties["ShippingZone"] = country.ShippingZoneRecord;
-                    }
-                }
+            if (shippingAddress != null) {
+                Cart.Properties["ShippingAddress"] = shippingAddress;
+                Cart.Properties["ShippingCountry"] = shippingAddress.Country;
+                Cart.Properties["ShippingState"] = shippingAddress.State;
             }
         }
 
