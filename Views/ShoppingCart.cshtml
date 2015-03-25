@@ -7,8 +7,9 @@
 
 <article class="shopping-cart">
     @using (Html.BeginFormAntiForgeryPost()) {
-        foreach (dynamic shape in ((ShoppingCart)Model.Cart).Shapes) {
-            @Display(shape);
-        }
+        @Display(Model.CartItems)
+        @Display(Model.LocationEdit)
+        @Display(Model.ShippingOptions)
+        @Display(Model.Actions)
     }
 </article>

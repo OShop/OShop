@@ -1,0 +1,22 @@
+﻿@using Orchard.Utility.Extensions
+@using OShop.Services
+
+<footer class="cart-actions">
+    <button type="submit" name="Action" value="Update">@T("Update")</button>
+    @*@if (Model.Cart.IsValid) {
+            if (Model.CheckoutEnabled) {
+                <button type="submit" name="Action" value="Checkout">@T("Check out")</button>
+            }
+            if (Model.ExpressCheckoutEnabled) {
+                <button type="submit" name="Action" value="ExpressCheckout">@T("Check out")</button>
+            }
+        }*@
+
+    @if (Model.Cart.IsValid && Model.CheckoutProviders != null) {
+        <div class="checkout">
+            @foreach (ICheckoutProvider provider in Model.CheckoutProviders) {
+                <button type="submit" name="Checkout" value="@provider.Name" class="@provider.Name.HtmlClassify()">@provider.Label</button>
+            }
+        </div>
+    }
+</footer>

@@ -1,5 +1,0 @@
-﻿@model OShop.ViewModels.ShoppingCartWidgetViewModel
-@using OShop.Helpers;
-
-<span>@T.Plural("1 item", "{0} items", Model.Cart.Items.ItemsCount()) : @String.Format(Model.NumberFormat, "{0:C}", (Model.VatEnabled ? Model.Cart.VatIncludedCartTotal() : Model.Cart.CartTotal()))</span><br />
-@Html.ActionLink(T("My cart").Text, "Index", "ShoppingCart", new { area = "OShop" }, new { })

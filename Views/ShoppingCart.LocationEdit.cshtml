@@ -1,0 +1,28 @@
+﻿@using OShop.Helpers
+@using OShop.Models
+@{
+    Script.Require("OShop");
+}
+
+<fieldset>
+    <legend>@T("Location")</legend>
+    <span class="hint">@T("Select your location to estimate taxes and shipping.")</span>
+    <div>
+        <label for="CountryId">@T("Country")</label>
+        <select id="CountryId" name="CountryId" class="oshop-autoupdate">
+            @foreach (LocationsCountryRecord country in Model.Countries) {
+                <option value="@country.Id" @(Model.CountryId == country.Id ? "selected" : "")>@country.Name</option>
+            }
+        </select>
+    </div>
+    @if (((IEnumerable<LocationsStateRecord>)Model.States).Any()) {
+        <div>
+            <label for="StateId">@T("State")</label>
+            <select id="StateId" name="StateId" class="oshop-autoupdate">
+                @foreach (LocationsStateRecord state in Model.States) {
+                    <option value="@state.Id" @(Model.StateId == state.Id ? "selected" : "")>@state.Name</option>
+                }
+            </select>
+        </div>
+    }
+</fieldset>

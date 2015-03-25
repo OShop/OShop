@@ -1,5 +1,6 @@
-﻿using Orchard.Environment.Extensions;
-using Orchard.Environment.Features;
+﻿using Orchard.DisplayManagement;
+using Orchard.Environment.Extensions;
+using Orchard.Mvc;
 using Orchard.Themes;
 using OShop.Helpers;
 using OShop.Models;
@@ -17,20 +18,23 @@ namespace OShop.Controllers
     {
         private readonly IShoppingCartService _shoppingCartService;
         private readonly ICurrencyProvider _currencyProvider;
-        private readonly IFeatureManager _featureManager;
-
+        private readonly IEnumerable<ICheckoutProvider> _checkoutProviders;
         private readonly ILocationsService _locationService;
         private readonly IShippingService _shippingService;
+        private readonly dynamic _shapeFactory;
+
 
         public ShoppingCartController(
             IShoppingCartService shoppingCartService,
             ICurrencyProvider currencyProvider,
-            IFeatureManager featureManager,
+            IEnumerable<ICheckoutProvider> checkoutProviders,
+            IShapeFactory shapeFactory,
             ILocationsService locationService = null,
             IShippingService shippingService = null) {
             _shoppingCartService = shoppingCartService;
             _currencyProvider = currencyProvider;
-            _featureManager = featureManager;
+            _checkoutProviders = checkoutProviders;
+            _shapeFactory = shapeFactory;
             _locationService = locationService;
             _shippingService = shippingService;
         }
@@ -39,58 +43,60 @@ namespace OShop.Controllers
         [OutputCache(Duration = 0)]
         public ActionResult Index()
         {
-
             ShoppingCart cart = _shoppingCartService.BuildCart();
 
-            var model = new ShoppingCartIndexViewModel() {
-                Cart = cart,
-                NumberFormat = _currencyProvider.NumberFormat,
-                // Optional features
-                VatEnabled = _featureManager.GetEnabledFeatures().Where(f => f.Id == "OShop.VAT").Any(),
-                CheckoutEnabled = _featureManager.GetEnabledFeatures().Where(f => f.Id == "OShop.Checkout").Any(),
-                ExpressCheckoutEnabled = _featureManager.GetEnabledFeatures().Where(f => f.Id == "OShop.ExpressCheckout").Any()
-            };
-
-            if (_locationService != null) {
-                var billingAddress = cart.Properties["BillingAddress"] as IOrderAddress;
-                if (billingAddress != null) {
-                    // Addresses selected
-                    model.BillingCountry = _locationService.GetCountry(billingAddress.CountryId);
-                    model.BillingState = _locationService.GetState(billingAddress.StateId);
-                    var shippingAddress = cart.Properties["ShippingAddress"] as IOrderAddress ?? billingAddress;
-                    if (shippingAddress != null) {
-                        model.ShippingCountry = _locationService.GetCountry(shippingAddress.CountryId);
-                        model.ShippingState = _locationService.GetState(shippingAddress.StateId);
-                    }
-                    else {
-                        model.ShippingCountry = model.BillingCountry;
-                        model.ShippingState = model.BillingState;
-                    }
-                }
-                else {
-                    // No address selected => show location selection
-                    model.Countries = _locationService.GetEnabledCountries();
-                    model.States = _locationService.GetEnabledStates(_shoppingCartService.GetProperty<int>("CountryId"));
-                }
+            if (!cart.Items.Any()) {
+                return new ShapeResult(this, _shapeFactory.ShoppingCart_Empty());
             }
 
-            if (_shippingService != null) {
-                model.ShippingProviders = _shippingService.GetSuitableProviderOptions(
-                    cart.Properties["ShippingZone"] as ShippingZoneRecord,
-                    cart.Properties["ShippingInfos"] as IList<Tuple<int, IShippingInfo>> ?? new List<Tuple<int, IShippingInfo>>(),
-                    cart.ItemsTotal()
-                ).OrderBy(p => p.Option.Price);
+            var shoppingCartShape = _shapeFactory.ShoppingCart();
 
-                var shippingOption = cart.Properties["ShippingOption"] as ShippingProviderOption;
-                model.ShippingProviderId = shippingOption != null ? shippingOption.Provider.Id : 0;
+            shoppingCartShape.CartItems = _shapeFactory.ShoppingCart_CartItems()
+                .Cart(cart)
+                .NumberFormat(_currencyProvider.NumberFormat);
+
+            if (_locationService != null && cart.Properties["BillingAddress"] as IOrderAddress == null) {
+                // No address selected => show location selection
+                int countryId = _shoppingCartService.GetProperty<int>("CountryId");
+
+                shoppingCartShape.LocationEdit = _shapeFactory.ShoppingCart_LocationEdit()
+                    .CountryId(countryId)
+                    .StateId(_shoppingCartService.GetProperty<int>("StateId"))
+                    .Countries(_locationService.GetEnabledCountries())
+                    .States(_locationService.GetEnabledStates(countryId));
             }
 
-            return View(model);
+            if (_shippingService != null && cart.IsShippingRequired()) {
+                // Shipping option selection
+                shoppingCartShape.ShippingOptions = _shapeFactory.ShoppingCart_ShippingOptions()
+                    .Cart(cart)
+                    .ContentItems(_shapeFactory.List()
+                        .AddRange(_shippingService.GetSuitableProviderOptions(
+                                cart.Properties["ShippingZone"] as ShippingZoneRecord,
+                                cart.Properties["ShippingInfos"] as IList<Tuple<int, IShippingInfo>> ?? new List<Tuple<int, IShippingInfo>>(),
+                                cart.ItemsTotal()
+                            ).OrderBy(p => p.Option.Price)
+                            .Select(sp => _shapeFactory.ShoppingCart_ShippingOption()
+                                .Cart(cart)
+                                .ProviderOption(sp)
+                                .NumberFormat(_currencyProvider.NumberFormat)
+                            )
+                        )
+                    );
+
+            }
+
+            // Actions
+            shoppingCartShape.Actions = _shapeFactory.ShoppingCart_Actions()
+                .Cart(cart)
+                .CheckoutProviders(_checkoutProviders.OrderByDescending(cp => cp.Priority));
+
+            return new ShapeResult(this, shoppingCartShape);
         }
 
         [Themed]
         [HttpPost, ActionName("Index")]
-        public ActionResult IndexPost(ShoppingCartIndexViewModel model) {
+        public ActionResult IndexPost(ShoppingCartIndexViewModel model, string Checkout) {
             if (model.CartItems != null) {
                 UpdateCart(model.CartItems);
             }
@@ -112,7 +118,6 @@ namespace OShop.Controllers
                     _shoppingCartService.RemoveProperty("CountryId");
                     _shoppingCartService.RemoveProperty("StateId");
                 }
-
             }
 
             if (_shippingService != null) {
@@ -124,12 +129,14 @@ namespace OShop.Controllers
                 }
             }
 
-            if (model.Action == "Checkout") {
-                return RedirectToAction("Index", "Checkout", new { area = "OShop" });
+            if (!String.IsNullOrEmpty(Checkout)) {
+                var checkoutProvider = _checkoutProviders.Where(cp => cp.Name == Checkout).OrderByDescending(cp => cp.Priority).FirstOrDefault();
+                if (checkoutProvider != null && checkoutProvider.CheckoutRoute != null) {
+                    return RedirectToRoute(checkoutProvider.CheckoutRoute);
+                }
             }
-            else {
-                return Index();
-            }
+
+            return Index();
         }
 
         public ActionResult Add(int id, int quantity = 1, string itemType = ProductPart.PartItemType, string returnUrl = null) {
@@ -154,14 +161,11 @@ namespace OShop.Controllers
         [OutputCache(Duration = 0)]
         public ActionResult Widget() {
             ShoppingCart cart = _shoppingCartService.BuildCart();
-            var model = new ShoppingCartWidgetViewModel() {
-                Cart = cart,
-                NumberFormat = _currencyProvider.NumberFormat,
-                // Optional features
-                VatEnabled = _featureManager.GetEnabledFeatures().Where(f => f.Id == "OShop.VAT").Any()
-            };
 
-            return View(model);
+            return new ShapeResult(this, _shapeFactory.ShoppingCart_Widget()
+                .Cart(cart)
+                .NumberFormat(_currencyProvider.NumberFormat)
+            );
         }
 
         private RedirectResult ReturnOrIndex(string returnUrl = null) {
@@ -180,6 +184,5 @@ namespace OShop.Controllers
                 }
             }
         }
-
     }
 }

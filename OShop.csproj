@@ -105,7 +105,6 @@
     <Content Include="Properties\AssemblyInfo.cs" />
     <Content Include="Module.txt" />
     <Content Include="Views\Parts\Product.AddToCart.cshtml" />
-    <Content Include="Views\ShoppingCart\Index.cshtml" />
     <Content Include="Views\Parts\ShoppingCartWidget.cshtml" />
     <Content Include="Views\EditorTemplates\Parts\Shipping.cshtml" />
     <Content Include="Views\LocationsAdmin\Index.cshtml" />
@@ -120,7 +119,6 @@
     <Content Include="Views\ShippingProvidersAdmin\Index.cshtml" />
     <Content Include="Views\EditorTemplates\Parts\ShippingProvider.cshtml" />
     <Content Include="Views\ShippingProvidersAdmin\EditOption.cshtml" />
-    <Content Include="Views\ShoppingCart\Widget.cshtml" />
     <Content Include="Views\Checkout\Index.cshtml" />
     <Content Include="Views\Parts\Customer.cshtml" />
     <Content Include="Views\EditorTemplates\Parts\Customer.cshtml" />
@@ -166,7 +164,13 @@
     <Content Include="Views\Price.SummaryAdmin-Vat.cshtml" />
     <Content Include="Views\ProductsAdmin\Index.cshtml" />
     <Content Include="Views\ShoppingCart.cshtml" />
-    <Content Include="Views\ShoppingCart.Items.cshtml" />
+    <Content Include="Views\ShoppingCart.CartItems.cshtml" />
+    <Content Include="Views\ShoppingCart.LocationEdit.cshtml" />
+    <Content Include="Views\ShoppingCart.Empty.cshtml" />
+    <Content Include="Views\ShoppingCart.ShippingOptions.cshtml" />
+    <Content Include="Views\ShoppingCart.ShippingOption.cshtml" />
+    <Content Include="Views\ShoppingCart.Widget.cshtml" />
+    <Content Include="Views\ShoppingCart.Actions.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Orchard.Core">
@@ -286,8 +290,10 @@
     <Compile Include="Resources\OShopResources.cs" />
     <Compile Include="Security\OrdersAuthorizationEventHandler.cs" />
     <Compile Include="Security\CustomersAuthorizationEventHandler.cs" />
+    <Compile Include="Services\CheckoutService.cs" />
     <Compile Include="Services\CustomersService.cs" />
     <Compile Include="Services\DefaultCurrencyProvider.cs" />
+    <Compile Include="Services\ICheckoutProvider.cs" />
     <Compile Include="Services\ICurrencyProvider.cs" />
     <Compile Include="Services\ICustomersService.cs" />
     <Compile Include="Services\ILocationsService.cs" />

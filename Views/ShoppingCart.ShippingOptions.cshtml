@@ -1,0 +1,13 @@
+﻿@using OShop.Models
+@{
+    var country = Model.Cart.Properties["ShippingCountry"] as LocationsCountryRecord;
+    var state = Model.Cart.Properties["ShippingState"] as LocationsStateRecord;
+}
+
+<fieldset>
+    <legend>@T("Shipping method :")</legend>
+    @if (country != null) {
+        <span class="hint">@T("Shipping options for {0}.", country.Name + (state != null ? " - " + state.Name : ""))</span>
+    }
+    @Display(Model.ContentItems)
+</fieldset>
