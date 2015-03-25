@@ -35,6 +35,7 @@ namespace OShop.Services.ShoppingCartResolvers {
             else {
                 // Set default country
                 country = _locationsService.GetDefaultCountry();
+                ShoppingCartService.SetProperty<int>("CountryId", country.Id);
             }
 
             Cart.Properties["BillingCountry"] = country;
