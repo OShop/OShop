@@ -114,7 +114,7 @@ namespace OShop.Services {
         }
 
         public IEnumerable<LocationsStateRecord> GetEnabledStates(int CountryId) {
-            return _stateRepository.Fetch(s => s.Enabled && s.LocationsCountryRecord.Id == CountryId).OrderBy(s => s.Name);
+            return _stateRepository.Fetch(s => s.Enabled && s.LocationsCountryRecord.Enabled && s.LocationsCountryRecord.Id == CountryId).OrderBy(s => s.Name);
         }
 
         public string FormatAddress(IOrderAddress address) {
