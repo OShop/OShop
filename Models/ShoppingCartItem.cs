@@ -2,7 +2,7 @@
 using OShop.Helpers;
 
 namespace OShop.Models {
-    public class ShoppingCartItem : IPrice {
+    public class ShoppingCartItem {
         public int Id { get; set; }
         public IShopItem Item;
         public int Quantity;
@@ -11,14 +11,6 @@ namespace OShop.Models {
             get {
                 return Item.GetUnitPrice(Quantity);
             }
-        }
-
-        public decimal Price {
-            get { return this.SubTotal(); }
-        }
-
-        public ContentItem ContentItem {
-            get { return Item.ContentItem; }
         }
     }
 }

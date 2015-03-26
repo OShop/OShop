@@ -227,6 +227,7 @@
     <Compile Include="Helpers\LocationsExtensions.cs" />
     <Compile Include="Helpers\ShippingExtensions.cs" />
     <Compile Include="Helpers\ShoppingCartExtensions.cs" />
+    <Compile Include="Helpers\TaxExtensions.cs" />
     <Compile Include="Helpers\VatExtensions.cs" />
     <Compile Include="Migrations\CustomerMigrations.cs" />
     <Compile Include="Migrations\LocationsMigrations.cs" />

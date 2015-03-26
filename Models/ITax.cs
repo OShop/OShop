@@ -2,7 +2,7 @@
 using System;
 
 namespace OShop.Models {
-    public interface ITax : IContent {
+    public interface ITax {
         String Name { get; }
         Decimal Rate { get; }
     }
