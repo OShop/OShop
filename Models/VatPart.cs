@@ -19,7 +19,7 @@ namespace OShop.Models {
             set { this.Store(x => x.VatRateVersionId, value); }
         }
 
-        public VatRatePart Rate {
+        public VatRatePart VatRate {
             get { return _vatRate.Value; }
             set { _vatRate.Value = value; }
         }

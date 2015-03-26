@@ -48,13 +48,13 @@ namespace OShop.Drivers {
             if (!vatRates.Any()) {
                 Services.Notifier.Warning(T("There is no VAT rate available, please create one."));
             }
-            if (part.Rate != null && !part.Rate.IsPublished()) {
-                if (part.Rate.HasPublished()) {
+            if (part.VatRate != null && !part.VatRate.IsPublished()) {
+                if (part.VatRate.HasPublished()) {
                     Services.Notifier.Warning(T("Selected VAT rate has been updated. You should save your content to use the new one."));
                 }
                 else {
                     Services.Notifier.Warning(T("Selected VAT rate has been removed. You should select a new one."));
-                    vatRates.Insert(0, part.Rate);
+                    vatRates.Insert(0, part.VatRate);
                 }
             }
 
@@ -63,7 +63,7 @@ namespace OShop.Drivers {
                     TemplateName: TemplateName,
                     Model: new VatEditViewModel() {
                         VatRates = vatRates,
-                        SelectedRateId = part.Rate != null ? part.Rate.Id : 0
+                        SelectedRateId = part.VatRate != null ? part.VatRate.Id : 0
                     },
                     Prefix: Prefix
                 )
@@ -74,7 +74,7 @@ namespace OShop.Drivers {
         protected override DriverResult Editor(VatPart part, Orchard.ContentManagement.IUpdateModel updater, dynamic shapeHelper) {
             var model = new VatEditViewModel();
             if (updater.TryUpdateModel(model, Prefix, null, null)) {
-                part.Rate = _vatService.GetVatRate(model.SelectedRateId);
+                part.VatRate = _vatService.GetVatRate(model.SelectedRateId);
             }
 
             return Editor(part, shapeHelper);
