@@ -308,12 +308,14 @@
     <Compile Include="Services\IVatService.cs" />
     <Compile Include="Services\LocationsService.cs" />
     <Compile Include="Services\ShoppingCartResolvers\CustomerResolver.cs" />
+    <Compile Include="Services\ShoppingCartResolvers\ShippingVatResolver.cs" />
     <Compile Include="Services\ShoppingCartResolvers\ProductResolver.cs" />
     <Compile Include="Services\ShoppingCartResolvers\ShippingInfoResolver.cs" />
     <Compile Include="Services\ShippingService.cs" />
     <Compile Include="Services\ShoppingCartResolvers\ShippingOptionResolver.cs" />
     <Compile Include="Services\ShoppingCartResolvers\LocationResolver.cs" />
     <Compile Include="Services\ShoppingCartResolvers\ShippingZoneResolver.cs" />
+    <Compile Include="Services\ShoppingCartResolvers\ItemsVatResolver.cs" />
     <Compile Include="Services\ShoppingCartService.cs" />
     <Compile Include="Services\VatService.cs" />
     <Compile Include="Settings\LocationFieldEditorEvents.cs" />

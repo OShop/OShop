@@ -23,12 +23,12 @@ namespace OShop.Services.ShoppingCartResolvers {
         }
 
         public Int32 Priority {
-            get { return 10; }
+            get { return 200; }
         }
 
         public void BuildCart(IShoppingCartService ShoppingCartService, ShoppingCart Cart) {
             if (!Cart.IsShippingRequired()) {
-                Cart.Properties.Remove("ShippingOption");
+                Cart.Shipping = null;
                 return;
             }
 
@@ -36,7 +36,7 @@ namespace OShop.Services.ShoppingCartResolvers {
             if (zone == null) {
                 // Need a shipping zone
                 //Cart.InvalidCart();
-                Cart.Properties.Remove("ShippingOption");
+                Cart.Shipping = null;
                 return;
             }
 
@@ -49,7 +49,7 @@ namespace OShop.Services.ShoppingCartResolvers {
             if (!suitableProviders.Any()) {
                 // Need a suitable shipping provider
                 //Cart.InvalidCart();
-                Cart.Properties.Remove("ShippingOption");
+                Cart.Shipping = null;
                 return;
             }
 
@@ -57,11 +57,11 @@ namespace OShop.Services.ShoppingCartResolvers {
             var selectedProvider = suitableProviders.Where(p => p.Provider.Id == selectedProviderId).FirstOrDefault();
             if (selectedProvider != null) {
                 // Apply selected provider
-                Cart.Properties["ShippingOption"] = selectedProvider;
+                Cart.Shipping = selectedProvider;
             }
             else {
                 // Set cheapest option
-                Cart.Properties["ShippingOption"] = suitableProviders.OrderBy(p => p.Option.Price).FirstOrDefault();
+                Cart.Shipping = suitableProviders.OrderBy(p => p.Option.Price).FirstOrDefault();
             }
 
         }

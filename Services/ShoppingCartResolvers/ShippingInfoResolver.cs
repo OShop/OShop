@@ -20,7 +20,7 @@ namespace OShop.Services.ShoppingCartResolvers {
         }
 
         public Int32 Priority {
-            get { return 50; }
+            get { return 300; }
         }
 
         public void BuildCart(IShoppingCartService ShoppingCartService, ShoppingCart Cart) {
