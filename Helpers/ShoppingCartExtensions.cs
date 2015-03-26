@@ -17,13 +17,13 @@ namespace OShop.Helpers {
             return Cart.Items.Sum(ci => ci.SubTotal());
         }
 
+        public static decimal TaxesTotal(this ShoppingCart Cart) {
+            return Cart.Taxes.Sum(t => t.Tax.Rate * t.TaxBase);
+        }
+
         public static decimal CartTotal(this ShoppingCart Cart) {
-            var shippingOption = Cart.Properties["ShippingOption"] as ShippingProviderOption;
-            if (shippingOption != null) {
-                return Cart.ItemsTotal() + shippingOption.Option.Price;
-            } else {
-                return Cart.ItemsTotal();
-            }
+            var shipping = Cart.Shipping as IPrice;
+            return Cart.ItemsTotal() + (shipping != null ? shipping.Price : 0) + Cart.TaxesTotal();
         }
     }
 }

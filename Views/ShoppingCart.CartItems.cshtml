@@ -3,7 +3,7 @@
 
 @{
     ShoppingCart cart = Model.Cart;
-    var shippingOption = cart.Properties["ShippingOption"] as ShippingProviderOption;
+    var shipping = cart.Shipping as IPrice;
 }
 
 <div class="cart-actions-head">
@@ -24,20 +24,20 @@
     @foreach (var entry in cart.Items) {
         <tr>
             <td>
-            @if (entry.Item.ContentItem != null) {
-                @Display(BuildDisplay(entry.Item, "Summary"))
-            }
-            else {
-                <div class="designation">
-                    @entry.Item.Designation
-                </div>
-                if (!String.IsNullOrWhiteSpace(entry.Item.Description)) {
-                    <div class="description">@entry.Item.Description</div>
+                @if (entry.Item.ContentItem != null) {
+                    @Display(BuildDisplay(entry.Item, "Summary"))
                 }
-            }
+                else {
+                    <div class="designation">
+                        @entry.Item.Designation
+                    </div>
+                    if (!String.IsNullOrWhiteSpace(entry.Item.Description)) {
+                        <div class="description">@entry.Item.Description</div>
+                    }
+                }
             </td>
             <td>
-                @String.Format(Model.NumberFormat, "{0:C}", entry.VatIncludedUnitPrice())
+                @String.Format(Model.NumberFormat, "{0:C}", entry.Item.VatIncluded(entry.UnitPrice))
             </td>
             <td>
                 <input type="hidden" name="@String.Format("CartItems[{0}].Id", i)" value="@entry.Id" />
@@ -45,19 +45,19 @@
                 <button type="submit" name="@String.Format("CartItems[{0}].IsRemoved", i)" class="oshop-confirm" data-msg="@T("Are you sure you want to remove this item from your cart ?")" value="true">@T("Remove")</button>
             </td>
             <td>
-                @String.Format(Model.NumberFormat, "{0:C}", entry.VatIncludedSubTotal())
+                @String.Format(Model.NumberFormat, "{0:C}", entry.Item.VatIncluded(entry.SubTotal()))
             </td>
         </tr>
-        i++;
+                i++;
     }
     <tfoot>
-        @if (shippingOption != null) {
+        @if (shipping != null) {
             <tr class="total">
                 <td colspan="3">
                     @T("Items total")
                 </td>
                 <td>
-                    @String.Format(Model.NumberFormat, "{0:C}", cart.VatIncludedItemsTotal())
+                    @String.Format(Model.NumberFormat, "{0:C}", cart.ItemsTotal())
                 </td>
             </tr>
             <tr class="total">
@@ -65,7 +65,17 @@
                     @T("Shipping")
                 </td>
                 <td>
-                    @String.Format(Model.NumberFormat, "{0:C}", shippingOption.Provider.GetVatRate().GetVatIncludedPrice(shippingOption.Option.Price))
+                    @String.Format(Model.NumberFormat, "{0:C}", shipping.Price)
+                </td>
+            </tr>
+        }
+        @if (cart.Taxes.Any()) {
+            <tr class="total">
+                <td colspan="3">
+                    @T("Taxes")
+                </td>
+                <td>
+                    @String.Format(Model.NumberFormat, "{0:C}", cart.TaxesTotal())
                 </td>
             </tr>
         }
@@ -74,7 +84,7 @@
                 @T("Total")
             </td>
             <td>
-                @String.Format(Model.NumberFormat, "{0:C}", cart.VatIncludedCartTotal())
+                @String.Format(Model.NumberFormat, "{0:C}", cart.CartTotal())
             </td>
         </tr>
     </tfoot>
