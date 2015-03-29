@@ -84,7 +84,7 @@ namespace OShop.Services.ShoppingCartResolvers {
                 var suitableProviders = _shippingService.GetSuitableProviderOptions(
                     workContext.GetState<ShippingZoneRecord>("OShop.Orders.ShippingZone"),
                     workContext.GetState<IList<Tuple<int, IShippingInfo>>>("OShop.Orders.ShippingInfos") ?? new List<Tuple<int, IShippingInfo>>(),
-                    orderPart.Items.Sum(i => i.UnitPrice * i.Quantity)
+                    orderPart.Details.Sum(d => d.Item.GetUnitPrice(d.Quantity) * d.Quantity)
                 );
 
                 var selectedOption = suitableProviders.Where(po => po.Provider.Id == selectedProviderId).FirstOrDefault();

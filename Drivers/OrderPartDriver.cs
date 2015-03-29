@@ -39,7 +39,7 @@ namespace OShop.Drivers {
                         : null,
                 ContentShape("Parts_Order_Status", () => shapeHelper.Parts_Order_Status(
                     ContentPart: part)),
-                ContentShape("Parts_Order_Items", () => shapeHelper.Parts_Order_Items(
+                ContentShape("Parts_Order_Details", () => shapeHelper.Parts_Order_Details(
                     ContentPart: part,
                     NumberFormat: _currencyProvider.NumberFormat)),
                 ContentShape("Parts_Order_Logs", () => shapeHelper.Parts_Order_Logs(

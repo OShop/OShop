@@ -42,7 +42,7 @@ namespace OShop.Services.ShoppingCartResolvers {
             if (orderPart != null) {
                 var cartRecords = ShoppingCartService.ListItems();
                 var products = ListProducts(cartRecords);
-                var orderItems = orderPart.Items ?? new List<OrderItem>();
+/*                var orderItems = orderPart.Items ?? new List<OrderItem>();
                 foreach (var cartRecord in cartRecords.Where(cr => cr.ItemType == ProductPart.PartItemType)) {
                     var product = products.Where(p => p.Id == cartRecord.ItemId).FirstOrDefault();
 
@@ -58,7 +58,17 @@ namespace OShop.Services.ShoppingCartResolvers {
                         });
                     }
                 }
-                orderPart.Items = orderItems;
+                orderPart.Items = orderItems;*/
+                foreach (var cartRecord in cartRecords.Where(cr => cr.ItemType == ProductPart.PartItemType)) {
+                    var product = products.Where(p => p.Id == cartRecord.ItemId).FirstOrDefault();
+
+                    if (product != null) {
+                        orderPart.Details.Add(new OrderDetail() {
+                            Item = product,
+                            Quantity = cartRecord.Quantity
+                        });
+                    }
+                }
             }
         }
 

@@ -1,11 +1,14 @@
 ﻿using Newtonsoft.Json;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.Aspects;
+using Orchard.ContentManagement.Utilities;
 using System;
 using System.Collections.Generic;
 
 namespace OShop.Models {
     public class OrderPart : ContentPart<OrderPartRecord>, ITitleAspect {
+        internal readonly LazyField<List<OrderDetail>> _details = new LazyField<List<OrderDetail>>();
+
         public string Title {
             get { return this.Reference; }
         }
@@ -20,9 +23,8 @@ namespace OShop.Models {
             set { this.Store(x => x.OrderStatus, value); }
         }
 
-        public IList<OrderItem> Items {
-            get { return JsonConvert.DeserializeObject<IList<OrderItem>>(this.Retrieve(x => x.Items, "")) ?? new List<OrderItem>(); }
-            set { this.Store(x => x.Items, JsonConvert.SerializeObject(value)); }
+        public List<OrderDetail> Details {
+            get { return _details.Value; }
         }
 
         public IList<OrderLog> Logs {
@@ -36,16 +38,6 @@ namespace OShop.Models {
         Pending = 0,
         Processing = 1,
         Completed = 2
-    }
-
-    public class OrderItem {
-        public int Id;
-        public string SKU;
-        public int ContentId;
-        public string Designation;
-        public string Description;
-        public decimal UnitPrice;
-        public int Quantity;
     }
 
     public class OrderLog {

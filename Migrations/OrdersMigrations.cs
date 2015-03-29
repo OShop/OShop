@@ -11,8 +11,15 @@ namespace OShop.Migrations {
                 .ContentPartRecord()
                 .Column<string>("Reference", c => c.WithLength(16).Unique())
                 .Column<int>("OrderStatus")
-                .Column<string>("Items", c => c.Unlimited())
                 .Column<string>("Logs", c => c.Unlimited())
+            );
+
+            SchemaBuilder.CreateTable("OrderDetailRecord", table => table
+                 .Column<int>("Id", c => c.PrimaryKey().Identity())
+                 .Column<int>("OrderId")
+                 .Column<int>("ContentId")
+                 .Column<int>("ContentVersionId")
+                 .Column<int>("Quantity")
             );
 
             ContentDefinitionManager.AlterTypeDefinition("Order", type => type

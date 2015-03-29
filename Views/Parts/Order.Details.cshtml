@@ -2,7 +2,7 @@
 @using System.Globalization
 
 @{
-    IList<OrderItem> items = ((OrderPart)Model.ContentPart).Items;
+    var details = ((OrderPart)Model.ContentPart).Details;
     NumberFormatInfo numberFormat = Model.NumberFormat;
 }
 
@@ -17,25 +17,25 @@
             <th></th>
         </tr>
     </thead>
-    @foreach (var item in items) {
+    @foreach (var detail in details) {
     <tr>
         <td>
-            @item.SKU
+            @detail.Item.SKU
         </td>
         <td>
-            @item.Designation
-            @if (!String.IsNullOrWhiteSpace(item.Description)) {
-                <span class="description">@item.Description</span>
+            @detail.Item.Designation
+            @if (!String.IsNullOrWhiteSpace(detail.Item.Description)) {
+                <span class="description">@detail.Item.Description</span>
             }
         </td>
         <td>
-            @String.Format(numberFormat, "{0:C}", item.UnitPrice)
+            @String.Format(numberFormat, "{0:C}", detail.Item.GetUnitPrice(detail.Quantity))
         </td>
         <td>
-            @item.Quantity
+            @detail.Quantity
         </td>
         <td>
-            @String.Format(numberFormat, "{0:C}", item.UnitPrice * item.Quantity)
+            @String.Format(numberFormat, "{0:C}", detail.Item.GetUnitPrice(detail.Quantity) * detail.Quantity)
         </td>
     </tr>
     }
