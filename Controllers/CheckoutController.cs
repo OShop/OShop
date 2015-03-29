@@ -161,7 +161,7 @@ namespace OShop.Controllers
                     isValid = false;
                     Services.Notifier.Error(T("Please provide your shipping address."));
                 }
-                if (cart.Properties["ShippingOption"] as ShippingProviderOption == null) {
+                if (cart.Shipping as ShippingProviderOption == null) {
                     isValid = false;
                     Services.Notifier.Error(T("Please select a shipping method."));
                 }
