@@ -22,21 +22,21 @@ namespace OShop.Handlers {
                 part._customer.Loader(customer => _customersService.GetCustomer(part.CustomerId, part.CustomerVersionId));
                 part._customer.Setter(customer => {
                     part.CustomerId = customer.Id;
-                    part.CustomerVersionId = customer.ContentItem.Version;
+                    part.CustomerVersionId = customer.ContentItem.VersionRecord.Id;
                     return customer;
                 });
 
                 part._billingAddress.Loader(address => _customersService.GetAddress(part.BillingAddressId, part.BillingAddressVersionId));
                 part._billingAddress.Setter(address => {
                     part.BillingAddressId = address.Id;
-                    part.BillingAddressVersionId = address.ContentItem.Version;
+                    part.BillingAddressVersionId = address.ContentItem.VersionRecord.Id;
                     return address;
                 });
 
                 part._shippingAddress.Loader(address => _customersService.GetAddress(part.ShippingAddressId, part.ShippingAddressVersionId));
                 part._shippingAddress.Setter(address => {
                     part.ShippingAddressId = address.Id;
-                    part.ShippingAddressVersionId = address.ContentItem.Version;
+                    part.ShippingAddressVersionId = address.ContentItem.VersionRecord.Id;
                     return address;
                 });
             });

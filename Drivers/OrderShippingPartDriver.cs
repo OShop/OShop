@@ -29,7 +29,7 @@ namespace OShop.Drivers {
                     ContentShape("Parts_Order_ShippingAddress", () => shapeHelper.Parts_Order_ShippingAddress(
                         ContentPart: part,
                         Address: _locationsService.FormatAddress(shippingAddress.ShippingAddress)))
-                        : null,
+                    : null,
                 ContentShape("Parts_Order_ShippingStatus", () => shapeHelper.Parts_Order_ShippingStatus(
                     ContentPart: part)),
                 ContentShape("Parts_Order_ShippingProvider", () => shapeHelper.Parts_Order_ShippingProvider(

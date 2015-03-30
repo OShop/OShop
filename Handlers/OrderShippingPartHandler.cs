@@ -23,7 +23,7 @@ namespace OShop.Handlers {
                 part._provider.Loader(provider => _shippingService.GetProvider(part.ProviderId, part.ProviderVersionId));
                 part._provider.Setter(provider => {
                     part.ProviderId = provider.Id;
-                    part.ProviderVersionId = provider.ContentItem.Version;
+                    part.ProviderVersionId = provider.ContentItem.VersionRecord.Id;
                     return provider;
                 });
             });
