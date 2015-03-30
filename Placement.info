@@ -69,7 +69,7 @@
     <Place Parts_Order_Logs="Footer:5"/>
     <Place Parts_Order_ShippingAddress="Header:6"/>
     <Place Parts_Order_ShippingStatus="Meta:10.3"/>
-    <Place Parts_Order_ShippingInfos="Content:10"/>
+    <Place Parts_Order_ShippingProvider="Content:10"/>
   </Match>
   <Match DisplayType="SummaryAdmin">
     <Place Parts_Order_Summary="-"/>

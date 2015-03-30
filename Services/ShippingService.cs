@@ -90,6 +90,10 @@ namespace OShop.Services {
             _optionRepository.Delete(record);
         }
 
+        public ShippingProviderPart GetProvider(int ProviderId, int? VersionRecordId = null) {
+            return _contentManager.Get<ShippingProviderPart>(ProviderId, VersionRecordId.HasValue ? VersionOptions.VersionRecord(VersionRecordId.Value) : VersionOptions.Published);
+        }
+
         public ShippingOptionRecord GetOption(int Id) {
             return _optionRepository.Get(Id);
         }
@@ -204,6 +208,5 @@ namespace OShop.Services {
                     return 0;
             }
         }
-
     }
 }

@@ -89,11 +89,8 @@ namespace OShop.Services.ShoppingCartResolvers {
 
                 var selectedOption = suitableProviders.Where(po => po.Provider.Id == selectedProviderId).FirstOrDefault();
                 if (selectedOption != null) {
-                    shippingPart.ShippingInfos = new OrderShippingInfos {
-                        Designation = selectedOption.Provider.As<ITitleAspect>().Title,
-                        Description = selectedOption.Option.Name,
-                        Price = selectedOption.Option.Price
-                    };
+                    shippingPart.Provider = selectedOption.Provider;
+                    shippingPart.Price = selectedOption.Option.Price;
                     shippingPart.ShippingStatus = ShippingStatus.Pending;
                 }
             }

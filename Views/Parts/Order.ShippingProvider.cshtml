@@ -1,0 +1,12 @@
+﻿@using OShop.Models
+
+@{
+    OrderShippingPart contentPart = Model.ContentPart;
+}
+
+@if (contentPart.Provider != null) {
+    <div class="order-shipping">
+        <h3>@T("Shipping :")</h3>
+        @Display(BuildDisplay(contentPart.Provider, "Summary"))
+    </div>
+}

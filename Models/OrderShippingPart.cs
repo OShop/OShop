@@ -1,20 +1,33 @@
-﻿using Newtonsoft.Json;
-using Orchard.ContentManagement;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using Orchard.ContentManagement;
+using Orchard.ContentManagement.Utilities;
 
 namespace OShop.Models {
     public class OrderShippingPart : ContentPart<OrderShippingPartRecord> {
+        internal readonly LazyField<ShippingProviderPart> _provider = new LazyField<ShippingProviderPart>();
+
         public ShippingStatus ShippingStatus {
             get { return (ShippingStatus)this.Retrieve(x => x.ShippingStatus); }
             set { this.Store(x => x.ShippingStatus, (int)value); }
         }
 
-        public OrderShippingInfos ShippingInfos {
-            get { return JsonConvert.DeserializeObject<OrderShippingInfos>(this.Retrieve(x => x.ShippingInfos, "")); }
-            set { this.Store(x => x.ShippingInfos, JsonConvert.SerializeObject(value)); }
+        internal int ProviderId {
+            get { return Retrieve(x => x.ProviderId); }
+            set { Store(x => x.ProviderId, value); }
+        }
+
+        internal int ProviderVersionId {
+            get { return Retrieve(x => x.ProviderVersionId); }
+            set { Store(x => x.ProviderVersionId, value); }
+        }
+
+        public ShippingProviderPart Provider {
+            get { return _provider.Value; }
+            set { _provider.Value = value; }
+        }
+
+        public decimal Price {
+            get { return this.Retrieve(x => x.Price); }
+            set { this.Store(x => x.Price, value); }
         }
     }
 
@@ -23,11 +36,5 @@ namespace OShop.Models {
         Pending = 1,
         Shipped = 2,
         Delivered = 3
-    }
-
-    public class OrderShippingInfos {
-        public string Designation;
-        public string Description;
-        public decimal Price;
     }
 }

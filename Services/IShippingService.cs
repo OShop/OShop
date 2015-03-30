@@ -21,6 +21,7 @@ namespace OShop.Services {
         void UpdateOption(ShippingOptionRecord record);
         void DeleteOption(int OptionId);
         void DeleteOption(ShippingOptionRecord record);
+        ShippingProviderPart GetProvider(Int32 ProviderId, Int32? VersionRecordId = null);
         ShippingOptionRecord GetOption(int Id);
         IEnumerable<ShippingOptionRecord> GetOptions(ShippingProviderPart part);
         IEnumerable<ShippingProviderOption> GetSuitableProviderOptions(ShippingZoneRecord Zone, IList<Tuple<int, IShippingInfo>> ShippingInfos, Decimal ItemsTotal = 0);

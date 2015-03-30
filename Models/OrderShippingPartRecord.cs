@@ -7,6 +7,8 @@ using System.Web;
 namespace OShop.Models {
     public class OrderShippingPartRecord : ContentPartRecord {
         public virtual int ShippingStatus { get; set; }
-        public virtual string ShippingInfos { get; set; }
+        public virtual int ProviderId { get; set; }
+        public virtual int ProviderVersionId { get; set; }
+        public virtual decimal Price { get; set; }
     }
 }

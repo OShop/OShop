@@ -32,7 +32,7 @@ namespace OShop.Drivers {
                         : null,
                 ContentShape("Parts_Order_ShippingStatus", () => shapeHelper.Parts_Order_ShippingStatus(
                     ContentPart: part)),
-                ContentShape("Parts_Order_ShippingInfos", () => shapeHelper.Parts_Order_ShippingInfos(
+                ContentShape("Parts_Order_ShippingProvider", () => shapeHelper.Parts_Order_ShippingProvider(
                     ContentPart: part))
             );
         }
