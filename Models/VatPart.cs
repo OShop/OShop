@@ -14,11 +14,6 @@ namespace OShop.Models {
             set { this.Store(x => x.VatRateId, value); }
         }
 
-        internal Int32 VatRateVersionId {
-            get { return this.Retrieve(x => x.VatRateVersionId); }
-            set { this.Store(x => x.VatRateVersionId, value); }
-        }
-
         public VatRatePart VatRate {
             get { return _vatRate.Value; }
             set { _vatRate.Value = value; }

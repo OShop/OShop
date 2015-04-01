@@ -14,8 +14,7 @@ namespace OShop.Migrations {
 
             SchemaBuilder.CreateTable("VatPartRecord", table => table
                  .ContentPartVersionRecord()
-                 .Column<int>("VatRateId")
-                 .Column<int>("VatRateVersionId"));
+                 .Column<int>("VatRateId"));
 
             ContentDefinitionManager.AlterPartDefinition("VatRatePart", part => part
                 .Attachable(false)
@@ -35,6 +34,10 @@ namespace OShop.Migrations {
             ContentDefinitionManager.AlterTypeDefinition("ShippingProvider", type => type
                 .WithPart("VatPart")
                 );
+
+            ContentDefinitionManager.AlterTypeDefinition("Order", type => type
+                .WithPart("OrderVatPart")
+            );
 
             return 1;
         }

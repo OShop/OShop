@@ -22,16 +22,9 @@ namespace OShop.Handlers {
             Filters.Add(StorageFilter.For(repository));
 
             OnActivated<VatPart>((context, part) => {
-                part._vatRate.Loader(rate => part.VatRateId > 0 ? _vatService.GetVatRate(part.VatRateId, part.VatRateVersionId) : null);
+                part._vatRate.Loader(rate => part.VatRateId > 0 ? _vatService.GetVatRate(part.VatRateId) : null);
                 part._vatRate.Setter(rate => {
-                    if (rate != null && rate.ContentItem != null) {
-                        part.VatRateId = rate.Id;
-                        part.VatRateVersionId = rate.ContentItem.VersionRecord.Id;
-                    }
-                    else {
-                        part.VatRateId = 0;
-                        part.VatRateVersionId = 0;
-                    }
+                    part.VatRateId = rate != null && rate.ContentItem != null ? rate.Id : 0;
                     return rate;
                 });
             });

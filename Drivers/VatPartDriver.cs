@@ -44,18 +44,9 @@ namespace OShop.Drivers {
 
         // GET
         protected override DriverResult Editor(VatPart part, dynamic shapeHelper) {
-            List<VatRatePart> vatRates = new List<VatRatePart>(_vatService.ListVatRates());
+            var vatRates = _vatService.ListVatRates();
             if (!vatRates.Any()) {
                 Services.Notifier.Warning(T("There is no VAT rate available, please create one."));
-            }
-            if (part.VatRate != null && !part.VatRate.IsPublished()) {
-                if (part.VatRate.HasPublished()) {
-                    Services.Notifier.Warning(T("Selected VAT rate has been updated. You should save your content to use the new one."));
-                }
-                else {
-                    Services.Notifier.Warning(T("Selected VAT rate has been removed. You should select a new one."));
-                    vatRates.Insert(0, part.VatRate);
-                }
             }
 
             return ContentShape("Parts_Vat_Edit",
