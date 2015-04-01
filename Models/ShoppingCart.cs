@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using OShop.Helpers;
 
 namespace OShop.Models {
     public class ShoppingCart {
@@ -55,21 +56,7 @@ namespace OShop.Models {
         }
 
         public void AddTax(ITax tax, decimal taxBase) {
-            var taxAmount = _taxes.Where(ta => ta.Tax.Name == tax.Name && ta.Tax.Rate == tax.Rate).FirstOrDefault();
-            if (taxAmount == null) {
-                taxAmount = new TaxAmount(tax);
-                _taxes.Add(taxAmount);
-            }
-            taxAmount.TaxBase += taxBase;
+            _taxes.AddTax(tax, taxBase);
         }
-    }
-
-    public class TaxAmount {
-        public TaxAmount(ITax tax) {
-            Tax = tax;
-        }
-
-        public decimal TaxBase;
-        public ITax Tax;
     }
 }

@@ -42,31 +42,11 @@ namespace OShop.Services.ShoppingCartResolvers {
             if (orderPart != null) {
                 var cartRecords = ShoppingCartService.ListItems();
                 var products = ListProducts(cartRecords);
-/*                var orderItems = orderPart.Items ?? new List<OrderItem>();
                 foreach (var cartRecord in cartRecords.Where(cr => cr.ItemType == ProductPart.PartItemType)) {
                     var product = products.Where(p => p.Id == cartRecord.ItemId).FirstOrDefault();
 
                     if (product != null) {
-                        orderItems.Add(new OrderItem {
-                            Id = cartRecord.Id,
-                            SKU = product.SKU,
-                            ContentId = product.Content.Id,
-                            Designation = product.Designation,
-                            Description = product.Description,
-                            UnitPrice = product.UnitPrice,
-                            Quantity = cartRecord.Quantity
-                        });
-                    }
-                }
-                orderPart.Items = orderItems;*/
-                foreach (var cartRecord in cartRecords.Where(cr => cr.ItemType == ProductPart.PartItemType)) {
-                    var product = products.Where(p => p.Id == cartRecord.ItemId).FirstOrDefault();
-
-                    if (product != null) {
-                        orderPart.Details.Add(new OrderDetail() {
-                            Item = product,
-                            Quantity = cartRecord.Quantity
-                        });
+                        orderPart.Details.Add(new OrderDetail(product, cartRecord.Quantity));
                     }
                 }
             }

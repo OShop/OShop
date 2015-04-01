@@ -19,8 +19,8 @@ namespace OShop.Services {
         }
 
 
-        public VatRatePart GetVatRate(int Id, int? VersionRecordId = null) {
-            return _contentManager.Get<VatRatePart>(Id, VersionRecordId.HasValue ? VersionOptions.VersionRecord(VersionRecordId.Value) : VersionOptions.Published);
+        public VatRatePart GetVatRate(int Id) {
+            return _contentManager.Get<VatRatePart>(Id, VersionOptions.Published);
         }
 
         public IEnumerable<VatRatePart> ListVatRates() {

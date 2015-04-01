@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace OShop.Services {
     public interface IVatService : IDependency {
-        VatRatePart GetVatRate(Int32 Id, Int32? VersionRecordId = null);
+        VatRatePart GetVatRate(Int32 Id);
         IEnumerable<VatRatePart> ListVatRates();
     }
 }

@@ -26,11 +26,7 @@ namespace OShop.Handlers {
             OnActivated<OrderPart>((context, part) => {
                 // Details
                 part._details.Loader(details => _orderDetailsRepository.Fetch(d => d.OrderId == part.Id)
-                    .Select(d => new OrderDetail() {
-                        Id = d.Id,
-                        Quantity = d.Quantity,
-                        Item = contentManager.Get(d.ContentId, VersionOptions.VersionRecord(d.ContentVersionId)).As<IShopItem>()
-                    })
+                    .Select(d => new OrderDetail(d))
                     .ToList());
             });
 
@@ -70,23 +66,19 @@ namespace OShop.Handlers {
             }
 
             var oldDetails = _orderDetailsRepository.Fetch(d => d.OrderId == part.Id);
-            foreach (var detail in part.Details.Where(d => !oldDetails.Where(od => od.Id == d.Id).Any() && d.Item != null)) {
+            foreach (var detail in part.Details.Where(d => !oldDetails.Where(od => od.Id == d.Id).Any())) {
                 // New details
-                _orderDetailsRepository.Create(new OrderDetailRecord() {
-                    OrderId = part.Id,
-                    ContentId = detail.Item.Id,
-                    ContentVersionId = detail.Item.ContentItem.VersionRecord.Id,
-                    Quantity = detail.Quantity
-                });
+                var newRecord = detail.Record;
+                newRecord.OrderId = part.Id;
+                _orderDetailsRepository.Create(newRecord);
             }
             foreach (var detail in part.Details.Join(oldDetails, d => d.Id, od => od.Id, (d, od) => new { updated = d, stored = od})) {
                 // Updated details
                 if (detail.updated.Quantity <= 0) {
                     _orderDetailsRepository.Delete(detail.stored);
                 }
-                if (detail.stored.Quantity != detail.updated.Quantity) {
-                    detail.stored.Quantity = detail.updated.Quantity;
-                    _orderDetailsRepository.Update(detail.stored);
+                else {
+                    _orderDetailsRepository.Update(detail.updated.Record);
                 }
             }
             foreach (var removed in oldDetails.Where(od => !part.Details.Where(d => d.Id == od.Id).Any())) {

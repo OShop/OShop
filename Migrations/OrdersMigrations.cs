@@ -17,9 +17,16 @@ namespace OShop.Migrations {
             SchemaBuilder.CreateTable("OrderDetailRecord", table => table
                  .Column<int>("Id", c => c.PrimaryKey().Identity())
                  .Column<int>("OrderId")
+                 .Column<string>("DetailType")
                  .Column<int>("ContentId")
-                 .Column<int>("ContentVersionId")
+                 .Column<string>("SKU")
+                 .Column<string>("Designation")
+                 .Column<string>("Description")
+                 .Column<decimal>("UnitPrice")
                  .Column<int>("Quantity")
+                 .Column<decimal>("ReductionPercent")
+                 .Column<decimal>("ReductionAmount")
+                 .Column<string>("Data", c => c.Unlimited())
             );
 
             ContentDefinitionManager.AlterTypeDefinition("Order", type => type
@@ -31,6 +38,5 @@ namespace OShop.Migrations {
 
             return 1;
         }
-
     }
 }

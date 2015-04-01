@@ -135,7 +135,7 @@
     <Content Include="Views\Parts\CustomerOrder.cshtml" />
     <Content Include="Views\Parts\Order.BillingAddress.cshtml" />
     <Content Include="Views\Parts\Order.Status.cshtml" />
-    <Content Include="Views\Parts\Order.Details.cshtml" />
+    <Content Include="Views\Parts\Order.Products.cshtml" />
     <Content Include="Views\Parts\Order.Logs.cshtml" />
     <Content Include="Views\Parts\Order.ShippingAddress.cshtml" />
     <Content Include="Views\Parts\Order.ShippingStatus.cshtml" />
@@ -171,6 +171,8 @@
     <Content Include="Views\ShoppingCart.Actions.cshtml" />
     <Content Include="Views\Checkout.cshtml" />
     <Content Include="Views\Checkout.Validate.cshtml" />
+    <Content Include="Views\Content-Order.Detail.cshtml" />
+    <Content Include="Views\Parts\Order.SubTotal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Orchard.Core">
@@ -198,11 +200,13 @@
     <Compile Include="Controllers\VatAdminController.cs" />
     <Compile Include="Drivers\CustomerAddressPartDriver.cs" />
     <Compile Include="Drivers\CustomerOrderPartDriver.cs" />
-    <Compile Include="Drivers\OrdersCustomerPartDriver.cs" />
+    <Compile Include="Drivers\CustomerOrdersPartDriver.cs" />
     <Compile Include="Drivers\CustomerPartDriver.cs" />
     <Compile Include="Drivers\LocationFieldDriver.cs" />
+    <Compile Include="Drivers\OrderProductsPartDriver.cs" />
     <Compile Include="Drivers\OrderShippingPartDriver.cs" />
     <Compile Include="Drivers\OrderPartDriver.cs" />
+    <Compile Include="Drivers\OrderVatPartDriver.cs" />
     <Compile Include="Drivers\ProductPartDriver.cs" />
     <Compile Include="Drivers\ShippingPartDriver.cs" />
     <Compile Include="Drivers\ShippingProviderPartDriver.cs" />
@@ -215,6 +219,8 @@
     <Compile Include="Handlers\CustomerAddressPartHandler.cs" />
     <Compile Include="Handlers\CustomerPartHandler.cs" />
     <Compile Include="Handlers\OrderPartHandler.cs" />
+    <Compile Include="Handlers\OrderProductsPartHandler.cs" />
+    <Compile Include="Handlers\OrderVatPartHandler.cs" />
     <Compile Include="Handlers\OShopSettingsPartHandler.cs" />
     <Compile Include="Handlers\ProductPartHandler.cs" />
     <Compile Include="Handlers\OrderShippingPartHandler.cs" />
@@ -242,6 +248,7 @@
     <Compile Include="Models\CustomerOrderPartRecord.cs" />
     <Compile Include="Models\CustomerPart.cs" />
     <Compile Include="Models\CustomerPartRecord.cs" />
+    <Compile Include="Models\IOrderSubTotal.cs" />
     <Compile Include="Models\IPrice.cs" />
     <Compile Include="Models\IShippingAddress.cs" />
     <Compile Include="Models\IBillingAddress.cs" />
@@ -258,8 +265,10 @@
     <Compile Include="Models\OrderDetailRecord.cs" />
     <Compile Include="Models\OrderPart.cs" />
     <Compile Include="Models\OrderPartRecord.cs" />
+    <Compile Include="Models\OrderProductsPart.cs" />
     <Compile Include="Models\OrderShippingPart.cs" />
     <Compile Include="Models\OrderShippingPartRecord.cs" />
+    <Compile Include="Models\OrderVatPart.cs" />
     <Compile Include="Models\OShopSettingsPart.cs" />
     <Compile Include="Models\ProductPart.cs" />
     <Compile Include="Models\ProductPartRecord.cs" />
@@ -275,6 +284,8 @@
     <Compile Include="Models\ShoppingCartItemRecord.cs" />
     <Compile Include="Models\ShoppingCartRecord.cs" />
     <Compile Include="Models\ShoppingCartWidgetPart.cs" />
+    <Compile Include="Models\Tax.cs" />
+    <Compile Include="Models\TaxAmount.cs" />
     <Compile Include="Models\VatPart.cs" />
     <Compile Include="Models\VatPartRecord.cs" />
     <Compile Include="Models\VatRatePart.cs" />
@@ -310,6 +321,7 @@
     <Compile Include="Services\IVatService.cs" />
     <Compile Include="Services\LocationsService.cs" />
     <Compile Include="Services\ShoppingCartResolvers\CustomerResolver.cs" />
+    <Compile Include="Services\ShoppingCartResolvers\OrderVatResolver.cs" />
     <Compile Include="Services\ShoppingCartResolvers\ShippingVatResolver.cs" />
     <Compile Include="Services\ShoppingCartResolvers\ProductResolver.cs" />
     <Compile Include="Services\ShoppingCartResolvers\ShippingInfoResolver.cs" />

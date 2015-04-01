@@ -1,0 +1,30 @@
+﻿@using OShop.Models
+@using System.Globalization
+
+@{
+    OrderProductsPart part = Model.ContentPart;
+    NumberFormatInfo numberFormat = Model.NumberFormat;
+}
+
+@foreach (var detail in part.ProductDetails) {
+<tr>
+    <td>
+        @detail.SKU
+    </td>
+    <td>
+        @detail.Designation
+        @if (!String.IsNullOrWhiteSpace(detail.Description)) {
+            <span class="description">@detail.Description</span>
+        }
+    </td>
+    <td>
+        @String.Format(numberFormat, "{0:C}", detail.UnitPrice)
+    </td>
+    <td>
+        @detail.Quantity
+    </td>
+    <td>
+        @String.Format(numberFormat, "{0:C}", detail.Total)
+    </td>
+</tr>
+}

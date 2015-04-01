@@ -1,0 +1,46 @@
+﻿@using Orchard.Utility.Extensions;
+@{
+    if (Model.Title != null) {
+        Layout.Title = Model.Title;
+    }
+
+    Model.Classes.Add("content-item");
+    
+    var contentTypeClassName = ((string)Model.ContentItem.ContentType).HtmlClassify();
+    Model.Classes.Add(contentTypeClassName);
+    
+    var tag = Tag(Model, "article");
+}
+@tag.StartElement
+    <header>
+        @Display(Model.Header)
+        @if (Model.Meta != null) {
+            <div class="metadata">
+                @Display(Model.Meta)
+            </div>
+        }
+    </header>
+    <table class="order-details">
+        <thead>
+            <tr>
+                <th>@T("SKU")</th>
+                <th>@T("Product")</th>
+                <th>@T("Unit Price")</th>
+                <th>@T("Qty.")</th>
+                <th>@T("Total")</th>
+            </tr>
+        </thead>
+        <tbody>
+            @Display(Model.Details)
+        </tbody>
+        <tfoot>
+            @Display(Model.Totals)
+        </tfoot>
+    </table>
+    @Display(Model.Content)
+    @if(Model.Footer != null) {
+        <footer>
+            @Display(Model.Footer)
+        </footer>
+    }
+@tag.EndElement

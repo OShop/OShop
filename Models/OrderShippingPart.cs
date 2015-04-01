@@ -1,33 +1,23 @@
 ﻿using Orchard.ContentManagement;
 using Orchard.ContentManagement.Utilities;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace OShop.Models {
-    public class OrderShippingPart : ContentPart<OrderShippingPartRecord> {
-        internal readonly LazyField<ShippingProviderPart> _provider = new LazyField<ShippingProviderPart>();
+    public class OrderShippingPart : ContentPart<OrderShippingPartRecord>, IOrderSubTotal {
+        internal readonly LazyField<IEnumerable<OrderDetail>> _shippingDetails = new LazyField<IEnumerable<OrderDetail>>();
 
         public ShippingStatus ShippingStatus {
             get { return (ShippingStatus)this.Retrieve(x => x.ShippingStatus); }
             set { this.Store(x => x.ShippingStatus, (int)value); }
         }
 
-        internal int ProviderId {
-            get { return Retrieve(x => x.ProviderId); }
-            set { Store(x => x.ProviderId, value); }
+        public IEnumerable<OrderDetail> ShippingDetails {
+            get { return _shippingDetails.Value; }
         }
 
-        internal int ProviderVersionId {
-            get { return Retrieve(x => x.ProviderVersionId); }
-            set { Store(x => x.ProviderVersionId, value); }
-        }
-
-        public ShippingProviderPart Provider {
-            get { return _provider.Value; }
-            set { _provider.Value = value; }
-        }
-
-        public decimal Price {
-            get { return this.Retrieve(x => x.Price); }
-            set { this.Store(x => x.Price, value); }
+        public decimal SubTotal {
+            get { return ShippingDetails.Sum(d => d.Total); }
         }
     }
 

@@ -84,13 +84,18 @@ namespace OShop.Services.ShoppingCartResolvers {
                 var suitableProviders = _shippingService.GetSuitableProviderOptions(
                     workContext.GetState<ShippingZoneRecord>("OShop.Orders.ShippingZone"),
                     workContext.GetState<IList<Tuple<int, IShippingInfo>>>("OShop.Orders.ShippingInfos") ?? new List<Tuple<int, IShippingInfo>>(),
-                    orderPart.Details.Sum(d => d.Item.GetUnitPrice(d.Quantity) * d.Quantity)
+                    orderPart.Details.Sum(d => d.Total)
                 );
 
                 var selectedOption = suitableProviders.Where(po => po.Provider.Id == selectedProviderId).FirstOrDefault();
                 if (selectedOption != null) {
-                    shippingPart.Provider = selectedOption.Provider;
-                    shippingPart.Price = selectedOption.Option.Price;
+                    orderPart.Details.Add(new OrderDetail("Shipping") {
+                        ContentId = selectedOption.Id,
+                        Designation = selectedOption.Provider.As<ITitleAspect>().Title,
+                        Description = selectedOption.Option.Name,
+                        UnitPrice = selectedOption.Price,
+                        Quantity = 1
+                    });
                     shippingPart.ShippingStatus = ShippingStatus.Pending;
                 }
             }

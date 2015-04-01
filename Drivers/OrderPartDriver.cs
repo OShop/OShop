@@ -1,8 +1,10 @@
 ﻿using Orchard.ContentManagement;
 using Orchard.ContentManagement.Drivers;
 using Orchard.Environment.Extensions;
+using Orchard.Localization;
 using OShop.Models;
 using OShop.Services;
+using System.Linq;
 
 namespace OShop.Drivers {
     [OrchardFeature("OShop.Orders")]
@@ -12,15 +14,19 @@ namespace OShop.Drivers {
 
         private const string TemplateName = "Parts/Order";
 
+        protected override string Prefix { get { return "Order"; } }
+
         public OrderPartDriver(
             ICurrencyProvider currencyProvider,
             ILocationsService locationsService
             ) {
             _currencyProvider = currencyProvider;
             _locationsService = locationsService;
+
+            T = NullLocalizer.Instance;
         }
 
-        protected override string Prefix { get { return "Order"; } }
+        public Localizer T { get; set; }
 
         protected override DriverResult Display(OrderPart part, string displayType, dynamic shapeHelper) {
             IBillingAddress billingAddress = part.As<IBillingAddress>();
@@ -39,8 +45,9 @@ namespace OShop.Drivers {
                         : null,
                 ContentShape("Parts_Order_Status", () => shapeHelper.Parts_Order_Status(
                     ContentPart: part)),
-                ContentShape("Parts_Order_Details", () => shapeHelper.Parts_Order_Details(
-                    ContentPart: part,
+                ContentShape("Parts_Order_Total", () => shapeHelper.Parts_Order_SubTotal(
+                    Label: T("Order total"),
+                    SubTotal: part.ContentItem.Parts.Select(p => p as IOrderSubTotal != null ? (p as IOrderSubTotal).SubTotal : 0).Sum(),
                     NumberFormat: _currencyProvider.NumberFormat)),
                 ContentShape("Parts_Order_Logs", () => shapeHelper.Parts_Order_Logs(
                     ContentPart: part))
