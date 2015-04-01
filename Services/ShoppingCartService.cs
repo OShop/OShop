@@ -203,8 +203,8 @@ namespace OShop.Services {
         public T GetProperty<T>(string Key) {
             var cart = GetCartRecord();
 
-            if (cart != null) {
-                return cart.Properties.Value<T>(Key);
+            if (cart != null && cart.Properties[Key] != null) {
+                return cart.Properties[Key].ToObject<T>();
             }
 
             return default(T);

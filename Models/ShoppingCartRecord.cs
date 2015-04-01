@@ -24,7 +24,7 @@ namespace OShop.Models {
                 return this.Data != null ? JObject.Parse(this.Data) : new JObject();
             }
             set {
-                this.Data = new JObject(value).ToString(Formatting.None);
+                this.Data = value.ToString(Formatting.None);
             }
         }
     }
