@@ -2,24 +2,21 @@
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.Drivers;
 using Orchard.Core.Common.Models;
-using Orchard.DisplayManagement;
 using Orchard.Environment.Extensions;
 using Orchard.UI.Admin;
 using Orchard.UI.Navigation;
 using OShop.Models;
 using OShop.Services;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace OShop.Drivers {
     [OrchardFeature("OShop.Customers")]
-    public class OrdersCustomerPartDriver : ContentPartDriver<CustomerPart> {
+    public class CustomerOrdersPartDriver : ContentPartDriver<CustomerPart> {
         private readonly IContentManager _contentManager;
         private readonly ICustomersService _customersService;
 
-        public OrdersCustomerPartDriver(
+        public CustomerOrdersPartDriver(
             IContentManager contentManager,
             ICustomersService customersService,
             IOrchardServices services
