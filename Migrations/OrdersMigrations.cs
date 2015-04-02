@@ -11,6 +11,7 @@ namespace OShop.Migrations {
                 .ContentPartRecord()
                 .Column<string>("Reference", c => c.WithLength(16).Unique())
                 .Column<int>("OrderStatus")
+                .Column<decimal>("OrderTotal")
                 .Column<string>("Logs", c => c.Unlimited())
             );
 

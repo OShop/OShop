@@ -2,6 +2,10 @@
 
 @{
     OrderPart order = Model.ContentPart;
+    var title = T("Order {0}", order.Reference);
 }
 
-<h1>@Html.ActionLink(T("Order {0}", order.Reference).Text, "Detail", "Orders", new { area = "OShop", id = order.Reference }, null)</h1>
+<a href="@Url.Action("Detail", "Orders", new { area = "OShop", id = order.Reference })" title="@title">
+    @title
+    <span class="order-total">@String.Format(Model.NumberFormat, "({0:C})", order.OrderTotal)</span>
+</a>

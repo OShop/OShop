@@ -9,6 +9,7 @@ using System.Linq;
 namespace OShop.Models {
     public class OrderPart : ContentPart<OrderPartRecord>, ITitleAspect {
         internal readonly LazyField<List<OrderDetail>> _details = new LazyField<List<OrderDetail>>();
+        internal readonly LazyField<decimal> _orderTotal = new LazyField<decimal>();
 
         public string Title {
             get { return this.Reference; }
@@ -22,6 +23,11 @@ namespace OShop.Models {
         public OrderStatus OrderStatus {
             get { return (OrderStatus)this.Retrieve(x => x.OrderStatus); }
             set { this.Store(x => x.OrderStatus, value); }
+        }
+
+        public decimal OrderTotal {
+            get { return _orderTotal.Value; }
+            internal set { this.Store(x => x.OrderTotal, value); }
         }
 
         public List<OrderDetail> Details {

@@ -35,7 +35,8 @@ namespace OShop.Drivers {
                 ContentShape("Parts_Order", () => shapeHelper.Parts_Order(
                     ContentPart: part)),
                 ContentShape("Parts_Order_Summary", () => shapeHelper.Parts_Order_Summary(
-                    ContentPart: part)),
+                    ContentPart: part,
+                    NumberFormat: _currencyProvider.NumberFormat)),
                 ContentShape("Parts_Order_Reference", () => shapeHelper.Parts_Order_Reference(
                     ContentPart: part)),
                 billingAddress != null && billingAddress.BillingAddress != null ?
@@ -47,7 +48,7 @@ namespace OShop.Drivers {
                     ContentPart: part)),
                 ContentShape("Parts_Order_Total", () => shapeHelper.Parts_Order_SubTotal(
                     Label: T("Order total"),
-                    SubTotal: part.ContentItem.Parts.Select(p => p as IOrderSubTotal != null ? (p as IOrderSubTotal).SubTotal : 0).Sum(),
+                    SubTotal: part.OrderTotal,
                     NumberFormat: _currencyProvider.NumberFormat)),
                 ContentShape("Parts_Order_Logs", () => shapeHelper.Parts_Order_Logs(
                     ContentPart: part))

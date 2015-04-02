@@ -28,16 +28,31 @@ namespace OShop.Handlers {
                 part._details.Loader(details => _orderDetailsRepository.Fetch(d => d.OrderId == part.Id)
                     .Select(d => new OrderDetail(d))
                     .ToList());
+
+                // Order total
+                part._orderTotal.Loader(orderTotal => BuildOrderTotal(part));
+            });
+
+            OnLoading<OrderPart>((context, part) => {
+                // Order total
+                part._orderTotal.Loader(orderTotal => part.Retrieve(x => x.OrderTotal));
             });
 
             OnCreating<OrderPart>((context, part) => {
                 if (String.IsNullOrWhiteSpace(part.Reference)) {
                     part.Reference = ordersService.BuildOrderReference();
                 }
+                // Order total
+                part.OrderTotal = BuildOrderTotal(part);
             });
 
             OnCreated<OrderPart>((context, part) => {
                 SaveDetails(part);
+            });
+
+            OnUpdating<OrderPart>((context, part) => {
+                // Order total
+                part.OrderTotal = BuildOrderTotal(part);
             });
 
             OnUpdated<OrderPart>((context, part) => {
@@ -85,6 +100,10 @@ namespace OShop.Handlers {
                 // Removed details
                 _orderDetailsRepository.Delete(removed);
             }
+        }
+
+        private decimal BuildOrderTotal(OrderPart part) {
+            return part.ContentItem.Parts.Select(p => p as IOrderSubTotal != null ? (p as IOrderSubTotal).SubTotal : 0).Sum();
         }
     }
 }
