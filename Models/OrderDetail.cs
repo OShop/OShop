@@ -89,8 +89,8 @@ namespace OShop.Models {
             get { return (UnitPrice - UnitPrice * ReductionPercent) * Quantity - ReductionAmount; }
         }
 
-        #region Attributes
-        private JObject Attributes {
+        #region Properties
+        private JObject Properties {
             get {
                 return _record.Data != null ? JObject.Parse(_record.Data) : new JObject();
             }
@@ -99,20 +99,20 @@ namespace OShop.Models {
             }
         }
 
-        public void SetAttribute<T>(string Key, T Value) {
-            var _attributes = Attributes;
+        public void SetProperty<T>(string Key, T Value) {
+            var _attributes = Properties;
             _attributes[Key] = JToken.FromObject(Value);
-            Attributes = _attributes;
+            Properties = _attributes;
         }
 
         public T GetProperty<T>(string Key) {
-            return Attributes[Key] != null ? Attributes[Key].ToObject<T>() : default(T);
+            return Properties[Key] != null ? Properties[Key].ToObject<T>() : default(T);
         }
 
         public void RemoveProperty(string Key) {
-            var _attributes = Attributes;
+            var _attributes = Properties;
             _attributes.Remove(Key);
-            Attributes = _attributes;
+            Properties = _attributes;
         }
         
         #endregion
