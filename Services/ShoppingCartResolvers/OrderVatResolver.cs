@@ -25,7 +25,7 @@ namespace OShop.Services.ShoppingCartResolvers {
                 var vatParts = _contentManager.GetMany<VatPart>(orderPart.Details.Select(d => d.ContentId), VersionOptions.Published, QueryHints.Empty);
                 foreach(var vatDetailPair in orderPart.Details.Join(vatParts, od => od.ContentId, vat => vat.Id, (od, vat) => new { Detail = od, Vat = vat})) {
                     if (vatDetailPair.Vat.VatRate != null) {
-                        vatDetailPair.Detail.SetAttribute("VAT", new Tax(vatDetailPair.Vat.VatRate));
+                        vatDetailPair.Detail.SetProperty("VAT", new Tax(vatDetailPair.Vat.VatRate));
                     }
                 }
             }
