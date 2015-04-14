@@ -42,20 +42,19 @@ namespace OShop.Handlers {
                 if (String.IsNullOrWhiteSpace(part.Reference)) {
                     part.Reference = ordersService.BuildOrderReference();
                 }
-                // Order total
-                part.OrderTotal = BuildOrderTotal(part);
             });
 
             OnCreated<OrderPart>((context, part) => {
+                // Order total
+                part.OrderTotal = BuildOrderTotal(part);
+
                 SaveDetails(part);
             });
 
-            OnUpdating<OrderPart>((context, part) => {
+            OnUpdated<OrderPart>((context, part) => {
                 // Order total
                 part.OrderTotal = BuildOrderTotal(part);
-            });
 
-            OnUpdated<OrderPart>((context, part) => {
                 SaveDetails(part);
             });
         }
