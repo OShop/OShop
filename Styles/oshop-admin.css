@@ -28,6 +28,7 @@ fieldset.admin-customer-addresses {
   float: left;
 }
 .contentItems .vat,
-.contentItems .price {
+.contentItems .price,
+.contentItems .order {
   float: right;
 }

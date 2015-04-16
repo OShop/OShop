@@ -37,6 +37,9 @@ namespace OShop.Drivers {
                 ContentShape("Parts_Order_Summary", () => shapeHelper.Parts_Order_Summary(
                     ContentPart: part,
                     NumberFormat: _currencyProvider.NumberFormat)),
+                ContentShape("Parts_Order_SummaryAdmin", () => shapeHelper.Parts_Order_SummaryAdmin(
+                    ContentPart: part,
+                    NumberFormat: _currencyProvider.NumberFormat)),
                 ContentShape("Parts_Order_Reference", () => shapeHelper.Parts_Order_Reference(
                     ContentPart: part)),
                 billingAddress != null && billingAddress.BillingAddress != null ?
@@ -64,7 +67,7 @@ namespace OShop.Drivers {
         }
 
         protected override DriverResult Editor(OrderPart part, IUpdateModel updater, dynamic shapeHelper) {
-
+            updater.TryUpdateModel(part, Prefix, null, null);
             return Editor(part, shapeHelper);
         }
     }

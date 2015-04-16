@@ -173,6 +173,7 @@
     <Content Include="Views\Content-Order.Detail.cshtml" />
     <Content Include="Views\Parts\Order.SubTotal.cshtml" />
     <Content Include="Views\Parts\Payment.cshtml" />
+    <Content Include="Views\Parts\Order.SummaryAdmin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Orchard.Core">

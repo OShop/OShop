@@ -22,7 +22,7 @@ namespace OShop.Models {
 
         public OrderStatus OrderStatus {
             get { return (OrderStatus)this.Retrieve(x => x.OrderStatus); }
-            set { this.Store(x => x.OrderStatus, value); }
+            set { this.Store(x => x.OrderStatus, (int)value); }
         }
 
         public decimal OrderTotal {

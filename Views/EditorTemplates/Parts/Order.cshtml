@@ -6,5 +6,6 @@
 }
 
 <fieldset>
-    <legend>@T("Customer")</legend>
+    @Html.LabelFor(m => m.OrderStatus)
+    @Html.EnumDropDownListFor(m => m.OrderStatus)
 </fieldset>
