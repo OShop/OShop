@@ -173,6 +173,7 @@
     <Content Include="Views\Checkout.Validate.cshtml" />
     <Content Include="Views\Content-Order.Detail.cshtml" />
     <Content Include="Views\Parts\Order.SubTotal.cshtml" />
+    <Content Include="Views\Parts\Payment.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Orchard.Core">
@@ -207,6 +208,7 @@
     <Compile Include="Drivers\OrderShippingPartDriver.cs" />
     <Compile Include="Drivers\OrderPartDriver.cs" />
     <Compile Include="Drivers\OrderVatPartDriver.cs" />
+    <Compile Include="Drivers\PaymentPartDriver.cs" />
     <Compile Include="Drivers\ProductPartDriver.cs" />
     <Compile Include="Drivers\ShippingPartDriver.cs" />
     <Compile Include="Drivers\ShippingProviderPartDriver.cs" />
@@ -222,6 +224,7 @@
     <Compile Include="Handlers\OrderProductsPartHandler.cs" />
     <Compile Include="Handlers\OrderVatPartHandler.cs" />
     <Compile Include="Handlers\OShopSettingsPartHandler.cs" />
+    <Compile Include="Handlers\PaymentPartHandler.cs" />
     <Compile Include="Handlers\ProductPartHandler.cs" />
     <Compile Include="Handlers\OrderShippingPartHandler.cs" />
     <Compile Include="Handlers\ShippingPartHandler.cs" />
@@ -238,6 +241,7 @@
     <Compile Include="Migrations\CustomerMigrations.cs" />
     <Compile Include="Migrations\LocationsMigrations.cs" />
     <Compile Include="Migrations\OrdersMigrations.cs" />
+    <Compile Include="Migrations\PaymentMigrations.cs" />
     <Compile Include="Migrations\ProductsMigrations.cs" />
     <Compile Include="Migrations\ShippingMigrations.cs" />
     <Compile Include="Migrations\ShoppingCartMigrations.cs" />
@@ -249,6 +253,7 @@
     <Compile Include="Models\CustomerPart.cs" />
     <Compile Include="Models\CustomerPartRecord.cs" />
     <Compile Include="Models\IOrderSubTotal.cs" />
+    <Compile Include="Models\IPayable.cs" />
     <Compile Include="Models\IPrice.cs" />
     <Compile Include="Models\IShippingAddress.cs" />
     <Compile Include="Models\IBillingAddress.cs" />
@@ -270,6 +275,9 @@
     <Compile Include="Models\OrderShippingPartRecord.cs" />
     <Compile Include="Models\OrderVatPart.cs" />
     <Compile Include="Models\OShopSettingsPart.cs" />
+    <Compile Include="Models\PaymentPart.cs" />
+    <Compile Include="Models\PaymentPartRecord.cs" />
+    <Compile Include="Models\PaymentTransactionRecord.cs" />
     <Compile Include="Models\ProductPart.cs" />
     <Compile Include="Models\ProductPartRecord.cs" />
     <Compile Include="Models\ShippingContraint.cs" />

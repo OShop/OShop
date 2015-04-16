@@ -52,3 +52,8 @@ Features:
 		Category: Commerce
         Description: Provides orders management.
 		Dependencies: OShop, OShop.Locations
+	OShop.Payment:
+		Name: OShop Payment
+		Category: Commerce
+        Description: Enables payment features.
+		Dependencies: OShop

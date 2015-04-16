@@ -78,4 +78,6 @@
   <Match DisplayType="SummaryAdmin">
     <Place Parts_Order_Summary="-"/>
   </Match>
+  <!-- Payment -->
+  <Place Parts_Payment="Content:20"/>
 </Placement>

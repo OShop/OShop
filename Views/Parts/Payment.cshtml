@@ -1,0 +1,9 @@
+﻿@using OShop.Models
+@{
+    PaymentPart part = Model.ContentPart;
+}
+
+<div class="order-shipping">
+    <h3>@T("Payment :")</h3>
+    @T("Amount paid : ")@String.Format(Model.NumberFormat, "{0:C}", part.AmountPaid)
+</div>
