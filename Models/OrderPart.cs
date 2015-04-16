@@ -34,11 +34,6 @@ namespace OShop.Models {
             get { return _details.Value; }
         }
 
-        public IList<OrderLog> Logs {
-            get { return JsonConvert.DeserializeObject<IList<OrderLog>>(this.Retrieve(x => x.Logs, "")) ?? new List<OrderLog>(); }
-            set { this.Store(x => x.Logs, JsonConvert.SerializeObject(value)); }
-        }
-
         decimal IPayable.PayableAmount {
             get { return this.OrderTotal; }
         }

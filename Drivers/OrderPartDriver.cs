@@ -49,9 +49,7 @@ namespace OShop.Drivers {
                 ContentShape("Parts_Order_Total", () => shapeHelper.Parts_Order_SubTotal(
                     Label: T("Order total"),
                     SubTotal: part.OrderTotal,
-                    NumberFormat: _currencyProvider.NumberFormat)),
-                ContentShape("Parts_Order_Logs", () => shapeHelper.Parts_Order_Logs(
-                    ContentPart: part))
+                    NumberFormat: _currencyProvider.NumberFormat))
             );
         }
 

@@ -136,7 +136,6 @@
     <Content Include="Views\Parts\Order.BillingAddress.cshtml" />
     <Content Include="Views\Parts\Order.Status.cshtml" />
     <Content Include="Views\Parts\Order.Products.cshtml" />
-    <Content Include="Views\Parts\Order.Logs.cshtml" />
     <Content Include="Views\Parts\Order.ShippingAddress.cshtml" />
     <Content Include="Views\Parts\Order.ShippingStatus.cshtml" />
     <Content Include="Views\Parts\Order.ShippingProvider.cshtml" />
