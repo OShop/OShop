@@ -34,9 +34,6 @@ namespace OShop.Migrations {
                .ContentPartRecord()
                .Column<int>("ShippingStatus")
                .Column<int>("ShippingAddressId")
-               .Column<int>("ProviderId")
-               .Column<int>("ProviderVersionId")
-               .Column<int>("Price")
             );
 
             ContentDefinitionManager.AlterPartDefinition("ShippingPart", part => part
