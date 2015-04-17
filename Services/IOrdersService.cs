@@ -13,6 +13,5 @@ namespace OShop.Services {
         OrderPart GetOrderByReference(string Refrence);
         IEnumerable<OrderPart> GetMyOrders();
         IEnumerable<OrderPart> GetOrdersByOwner(Int32 UserId);
-
     }
 }

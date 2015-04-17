@@ -29,8 +29,6 @@ namespace OShop.Drivers {
         public Localizer T { get; set; }
 
         protected override DriverResult Display(OrderPart part, string displayType, dynamic shapeHelper) {
-            IBillingAddress billingAddress = part.As<IBillingAddress>();
-
             return Combined(
                 ContentShape("Parts_Order", () => shapeHelper.Parts_Order(
                     ContentPart: part)),
@@ -42,11 +40,9 @@ namespace OShop.Drivers {
                     NumberFormat: _currencyProvider.NumberFormat)),
                 ContentShape("Parts_Order_Reference", () => shapeHelper.Parts_Order_Reference(
                     ContentPart: part)),
-                billingAddress != null && billingAddress.BillingAddress != null ?
-                    ContentShape("Parts_Order_BillingAddress", () => shapeHelper.Parts_Order_BillingAddress(
-                        ContentPart: part,
-                        Address: _locationsService.FormatAddress(billingAddress.BillingAddress)))
-                        : null,
+                ContentShape("Parts_Order_BillingAddress", () => shapeHelper.Parts_Order_BillingAddress(
+                    ContentPart: part,
+                    Address: _locationsService.FormatAddress(part.BillingAddress))),
                 ContentShape("Parts_Order_Status", () => shapeHelper.Parts_Order_Status(
                     ContentPart: part)),
                 ContentShape("Parts_Order_Total", () => shapeHelper.Parts_Order_SubTotal(

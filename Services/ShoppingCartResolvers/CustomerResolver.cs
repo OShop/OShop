@@ -1,6 +1,7 @@
 ﻿using Orchard;
 using Orchard.ContentManagement;
 using Orchard.Environment.Extensions;
+using OShop.Helpers;
 using OShop.Models;
 using System;
 using System.Linq;
@@ -9,15 +10,12 @@ namespace OShop.Services.ShoppingCartResolvers {
     [OrchardFeature("OShop.Checkout")]
     public class CustomerResolver : IShoppingCartBuilder, IOrderBuilder {
         private readonly ICustomersService _customersService;
-        private readonly ILocationsService _locationsService;
         private readonly IWorkContextAccessor _workContextAccessor;
 
         public CustomerResolver (
             ICustomersService customersService,
-            ILocationsService locationsService,
             IWorkContextAccessor workContextAccessor) {
             _customersService = customersService;
-            _locationsService = locationsService;
             _workContextAccessor = workContextAccessor;
         }
 
@@ -70,41 +68,53 @@ namespace OShop.Services.ShoppingCartResolvers {
                 return;
             }
 
+            OrderAddressRecord billingAddress = null, shippingAddress = null;
+            Int32 billingAddressId = ShoppingCartService.GetProperty<int>("BillingAddressId");
+            if (billingAddressId > 0) {
+                var customerBillingAddress = customer.Addresses.Where(a => a.Id == billingAddressId).FirstOrDefault();
+                if (customerBillingAddress != null) {
+                    billingAddress = new OrderAddressRecord();
+                    customerBillingAddress.CopyTo(billingAddress);
+                }
+            }
+            Int32 shippingAddressId = ShoppingCartService.GetProperty<int>("ShippingAddressId");
+            if (shippingAddressId > 0) {
+                if (shippingAddressId == billingAddressId) {
+                    shippingAddress = billingAddress;
+                }
+                else {
+                    var customerShippingAddress = customer.Addresses.Where(a => a.Id == shippingAddressId).FirstOrDefault();
+                    if (customerShippingAddress != null) {
+                        shippingAddress = new OrderAddressRecord();
+                        customerShippingAddress.CopyTo(shippingAddress);
+                    }
+                }
+            }
+
             var customerOrderPart = Order.As<CustomerOrderPart>();
             if (customerOrderPart != null) {
                 customerOrderPart.Customer = customer;
+            }
 
-                Int32 billingAddressId = ShoppingCartService.GetProperty<int>("BillingAddressId");
-                if (billingAddressId > 0) {
-                    var billingAddress = customer.Addresses.Where(a => a.Id == billingAddressId).FirstOrDefault();
-                    if (billingAddress != null) {
-                        customerOrderPart.BillingAddress = billingAddress;
-                    }
-                }
+            var orderPart = Order.As<OrderPart>();
+            if (orderPart != null && billingAddress != null) {
+                orderPart.BillingAddress = billingAddress;
             }
 
             var shippingPart = Order.As<OrderShippingPart>();
             if (shippingPart != null) {
                 //  Shipping address
-                Int32 shippingAddressId = ShoppingCartService.GetProperty<int>("ShippingAddressId");
-                if (shippingAddressId > 0) {
-                    var shippingAddress = customer.Addresses.Where(a => a.Id == shippingAddressId).FirstOrDefault();
-                    if (shippingAddress != null) {
-                        // Set address
-                        if (customerOrderPart != null) {
-                            customerOrderPart.ShippingAddress = shippingAddress;
-                        }
+                if (shippingAddress != null) {
+                    // Set address
+                    shippingPart.ShippingAddress = shippingAddress;
 
-                        // Set shipping zone
-                        var workContext = _workContextAccessor.GetContext();
-                        var state = _locationsService.GetState(shippingAddress.StateId);
-                        var country = _locationsService.GetCountry(shippingAddress.CountryId);
-                        if (state != null && state.Enabled && state.ShippingZoneRecord != null) {
-                            workContext.SetState("OShop.Orders.ShippingZone", state.ShippingZoneRecord);
-                        }
-                        else if (country != null && country.Enabled && country.ShippingZoneRecord != null) {
-                            workContext.SetState("OShop.Orders.ShippingZone", country.ShippingZoneRecord);
-                        }
+                    // Set shipping zone
+                    var workContext = _workContextAccessor.GetContext();
+                    if (shippingAddress.State != null && shippingAddress.State.Enabled && shippingAddress.State.ShippingZoneRecord != null) {
+                        workContext.SetState("OShop.Orders.ShippingZone", shippingAddress.State.ShippingZoneRecord);
+                    }
+                    else if (shippingAddress.Country != null && shippingAddress.Country.Enabled && shippingAddress.Country.ShippingZoneRecord != null) {
+                        workContext.SetState("OShop.Orders.ShippingZone", shippingAddress.Country.ShippingZoneRecord);
                     }
                 }
             }

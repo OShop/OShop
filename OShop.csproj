@@ -232,6 +232,7 @@
     <Compile Include="Handlers\VatPartHandler.cs" />
     <Compile Include="Handlers\VatRatePartHandler.cs" />
     <Compile Include="Handlers\VatSettingsPartHandler.cs" />
+    <Compile Include="Helpers\AddressExtensions.cs" />
     <Compile Include="Helpers\CustomersHelpers.cs" />
     <Compile Include="Helpers\LocationsExtensions.cs" />
     <Compile Include="Helpers\ShippingExtensions.cs" />
@@ -255,8 +256,6 @@
     <Compile Include="Models\IOrderSubTotal.cs" />
     <Compile Include="Models\IPayable.cs" />
     <Compile Include="Models\IPrice.cs" />
-    <Compile Include="Models\IShippingAddress.cs" />
-    <Compile Include="Models\IBillingAddress.cs" />
     <Compile Include="Models\ICurrencySettings.cs" />
     <Compile Include="Models\IOrderAddress.cs" />
     <Compile Include="Models\IShippingInfo.cs" />
@@ -266,6 +265,7 @@
     <Compile Include="Models\LocationsCountryRecord.cs" />
     <Compile Include="Models\LocationsStateRecord.cs" />
     <Compile Include="Models\NumberFormats.cs" />
+    <Compile Include="Models\OrderAddressRecord.cs" />
     <Compile Include="Models\OrderDetail.cs" />
     <Compile Include="Models\OrderDetailRecord.cs" />
     <Compile Include="Models\OrderPart.cs" />

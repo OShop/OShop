@@ -6,9 +6,9 @@ using System.Collections.Generic;
 namespace OShop.Services {
     public interface ICustomersService : IDependency {
         CustomerPart GetCustomer();
-        CustomerPart GetCustomer(Int32 CustomerId, Int32? VersionRecordId = null);
+        CustomerPart GetCustomer(Int32 CustomerId);
         IEnumerable<CustomerAddressPart> GetAddressesForCustomer(CustomerPart Customer);
         IEnumerable<CustomerAddressPart> GetAddressesForCustomer(Int32 CustomerId);
-        CustomerAddressPart GetAddress(Int32 CustomerAddressId, Int32? VersionRecordId = null);
+        CustomerAddressPart GetAddress(Int32 CustomerAddressId);
     }
 }

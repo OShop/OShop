@@ -2,6 +2,7 @@
 using Orchard.ContentManagement.Handlers;
 using Orchard.Data;
 using Orchard.Environment.Extensions;
+using OShop.Helpers;
 using OShop.Models;
 using OShop.Services;
 using System;
@@ -17,8 +18,8 @@ namespace OShop.Handlers {
             IRepository<OrderPartRecord> repository,
             IContentManager contentManager,
             IRepository<OrderDetailRecord> orderDetailsRepository,
-            IOrdersService ordersService
-            ) {
+            IOrdersService ordersService,
+            IRepository<OrderAddressRecord> orderAddressRepository) {
             _orderDetailsRepository = orderDetailsRepository;
 
             Filters.Add(StorageFilter.For(repository));
@@ -31,6 +32,9 @@ namespace OShop.Handlers {
 
                 // Order total
                 part._orderTotal.Loader(orderTotal => BuildOrderTotal(part));
+
+                // BillingAddress
+                part._billingAddress.Loader(shippingAddress => orderAddressRepository.Get(part.BillingAddressId));
             });
 
             OnLoading<OrderPart>((context, part) => {
@@ -49,6 +53,7 @@ namespace OShop.Handlers {
                 part.OrderTotal = BuildOrderTotal(part);
 
                 SaveDetails(part);
+                part.BillingAddressId = orderAddressRepository.CreateOrUpdate(part.BillingAddress);
             });
 
             OnUpdated<OrderPart>((context, part) => {
@@ -56,6 +61,7 @@ namespace OShop.Handlers {
                 part.OrderTotal = BuildOrderTotal(part);
 
                 SaveDetails(part);
+                part.BillingAddressId = orderAddressRepository.CreateOrUpdate(part.BillingAddress);
             });
         }
 
@@ -101,7 +107,7 @@ namespace OShop.Handlers {
             }
         }
 
-        private decimal BuildOrderTotal(OrderPart part) {
+        private static decimal BuildOrderTotal(OrderPart part) {
             return part.ContentItem.Parts.Select(p => p as IOrderSubTotal != null ? (p as IOrderSubTotal).SubTotal : 0).Sum();
         }
     }

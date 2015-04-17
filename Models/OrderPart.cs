@@ -10,6 +10,7 @@ namespace OShop.Models {
     public class OrderPart : ContentPart<OrderPartRecord>, ITitleAspect, IPayable {
         internal readonly LazyField<List<OrderDetail>> _details = new LazyField<List<OrderDetail>>();
         internal readonly LazyField<decimal> _orderTotal = new LazyField<decimal>();
+        internal readonly LazyField<OrderAddressRecord> _billingAddress = new LazyField<OrderAddressRecord>();
 
         public string Title {
             get { return this.Reference; }
@@ -18,6 +19,16 @@ namespace OShop.Models {
         public string Reference {
             get { return this.Retrieve(x => x.Reference); }
             set { this.Store(x => x.Reference, value); }
+        }
+
+        public int BillingAddressId {
+            get { return this.Retrieve(x => x.BillingAddressId); }
+            set { this.Store(x => x.BillingAddressId, value); }
+        }
+
+        public OrderAddressRecord BillingAddress {
+            get { return _billingAddress.Value; }
+            set { _billingAddress.Value = value; }
         }
 
         public OrderStatus OrderStatus {

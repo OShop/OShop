@@ -1,5 +1,6 @@
 ﻿using Orchard.ContentManagement;
 using Orchard.Core.Common.Models;
+using Orchard.Data;
 using Orchard.Environment.Extensions;
 using Orchard.Security;
 using Orchard.Services;
@@ -19,8 +20,7 @@ namespace OShop.Services {
         public OrdersService(
             IContentManager contentManager,
             IAuthenticationService authenticationService,
-            IClock clock
-            ) {
+            IClock clock) {
             _contentManager = contentManager;
             _authenticationService = authenticationService;
             _clock = clock;
@@ -60,6 +60,5 @@ namespace OShop.Services {
                 .ForPart<OrderPart>()
                 .List();
         }
-
     }
 }

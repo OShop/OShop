@@ -32,14 +32,10 @@ namespace OShop.Drivers {
                 return null;
             }
 
-            IShippingAddress shippingAddress = part.As<IShippingAddress>();
-
             return Combined(
-                shippingAddress != null && shippingAddress.ShippingAddress != null ?
-                    ContentShape("Parts_Order_ShippingAddress", () => shapeHelper.Parts_Order_ShippingAddress(
-                        ContentPart: part,
-                        Address: _locationsService.FormatAddress(shippingAddress.ShippingAddress)))
-                    : null,
+                ContentShape("Parts_Order_ShippingAddress", () => shapeHelper.Parts_Order_ShippingAddress(
+                    ContentPart: part,
+                    Address: _locationsService.FormatAddress(part.ShippingAddress))),
                 ContentShape("Parts_Order_ShippingStatus", () => shapeHelper.Parts_Order_ShippingStatus(
                     ContentPart: part)),
                 ContentShape("Parts_Order_ShippingProvider", () => shapeHelper.Parts_Order_ShippingProvider(
