@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace OShop.Helpers {
+namespace OShop.Extensions {
     public static class CustomersHelpers {
         public static IEnumerable<SelectListItem> BuildAddressSelectList(this IEnumerable<CustomerAddressPart> AddressRecords, bool CreateEmpry = false, string EmptyString = "") {
             var result = new List<SelectListItem>();

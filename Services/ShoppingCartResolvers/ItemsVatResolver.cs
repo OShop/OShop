@@ -1,5 +1,5 @@
 ﻿using Orchard.Environment.Extensions;
-using OShop.Helpers;
+using OShop.Extensions;
 using OShop.Models;
 
 namespace OShop.Services.ShoppingCartResolvers {

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
-namespace OShop.Helpers {
+namespace OShop.Extensions {
     public static class VatExtensions {
         public static LocalizedString DisplayName(this VatRatePart part, Localizer T) {
             return T("{0} ({1:P})", part.Name, part.Rate);

@@ -2,7 +2,7 @@
 using Orchard.Environment.Extensions;
 using Orchard.Mvc;
 using Orchard.Themes;
-using OShop.Helpers;
+using OShop.Extensions;
 using OShop.Models;
 using OShop.Services;
 using OShop.ViewModels;

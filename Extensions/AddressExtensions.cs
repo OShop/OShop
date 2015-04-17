@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace OShop.Helpers {
+namespace OShop.Extensions {
     public static class AddressExtensions {
         public static void CopyTo(this IOrderAddress srcAddress, IOrderAddress destAddress) {
             destAddress.Company = srcAddress.Company;

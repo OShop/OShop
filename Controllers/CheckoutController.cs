@@ -6,7 +6,7 @@ using Orchard.Localization;
 using Orchard.Mvc;
 using Orchard.Themes;
 using Orchard.UI.Notify;
-using OShop.Helpers;
+using OShop.Extensions;
 using OShop.Models;
 using OShop.Services;
 using OShop.ViewModels;

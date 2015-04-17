@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace OShop.Helpers {
+namespace OShop.Extensions {
     public static class ShippingExtensions {
         public static bool IsShippingRequired(this ShoppingCart Cart) {
             var shippingInfos = Cart.Properties["ShippingInfos"] as IList<Tuple<int, IShippingInfo>>;

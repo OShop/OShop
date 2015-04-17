@@ -1,7 +1,7 @@
 ﻿using Orchard.Data;
 using Orchard.Environment.Extensions;
 using OShop.Models;
-using OShop.Helpers;
+using OShop.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;

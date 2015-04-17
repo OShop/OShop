@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace OShop.Helpers {
+namespace OShop.Extensions {
     public static class ShoppingCartExtensions {
         // TODO: Don't count items like discount or voucher
         public static int ItemsCount(this IEnumerable<ShoppingCartItem> Items) {

@@ -1,5 +1,5 @@
 ﻿using Orchard.ContentManagement;
-using OShop.Helpers;
+using OShop.Extensions;
 
 namespace OShop.Models {
     public class ShoppingCartItem {
