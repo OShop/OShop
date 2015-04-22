@@ -2,8 +2,11 @@
 using Orchard.ContentManagement.Drivers;
 using Orchard.Environment.Extensions;
 using Orchard.Localization;
+using Orchard.Mvc;
 using OShop.Models;
 using OShop.Services;
+using OShop.ViewModels;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace OShop.Drivers {
@@ -18,8 +21,7 @@ namespace OShop.Drivers {
 
         public OrderPartDriver(
             ICurrencyProvider currencyProvider,
-            ILocationsService locationsService
-            ) {
+            ILocationsService locationsService) {
             _currencyProvider = currencyProvider;
             _locationsService = locationsService;
 
@@ -53,17 +55,26 @@ namespace OShop.Drivers {
         }
 
         protected override DriverResult Editor(OrderPart part, dynamic shapeHelper) {
+            var model = new OrderPartEditViewModel() {
+                Reference = part.Reference,
+                OrderStatus = part.OrderStatus,
+            };
+
+            if (part.BillingAddress != null) {
+                model.BillingAddress = _locationsService.FormatAddress(part.BillingAddress);
+            }
+
             return Combined(
-                ContentShape("Parts_Order_Edit",
-                () => shapeHelper.EditorTemplate(
+                ContentShape("Parts_Order_Edit", () => shapeHelper.EditorTemplate(
                     TemplateName: TemplateName,
-                    Model: part,
+                    Model: model,
                     Prefix: Prefix))
             );
         }
 
         protected override DriverResult Editor(OrderPart part, IUpdateModel updater, dynamic shapeHelper) {
             updater.TryUpdateModel(part, Prefix, null, null);
+
             return Editor(part, shapeHelper);
         }
     }

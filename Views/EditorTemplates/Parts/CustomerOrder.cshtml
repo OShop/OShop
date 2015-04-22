@@ -1,10 +1,12 @@
 ﻿@using OShop.Models
+@using Orchard.Utility.Extensions
 @{
+    Style.Require("OShopAdmin");
     CustomerOrderPart part = Model;
 }
 
 @if (part.Customer != null) {
-    <fieldset>
+    <fieldset class="@part.PartDefinition.Name.HtmlClassify()">
         <legend>@T("Customer account")</legend>
         @Html.ItemAdminLink(part.Customer)
     </fieldset>

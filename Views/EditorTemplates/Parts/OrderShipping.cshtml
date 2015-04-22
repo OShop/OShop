@@ -1,0 +1,16 @@
+﻿@model OShop.ViewModels.OrderShippingPartEditViewModel
+@using Orchard.Utility.Extensions
+
+<div class="ordershipping-part">
+    <fieldset>
+        <legend>@T("Shipping")</legend>
+        <div>
+            <label for="@Html.FieldIdFor(m => m.ShippingStatus)" class="inline">@T("Status")</label>
+            @Html.EnumDropDownListFor(m => m.ShippingStatus)
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>@T("Shipping address")</legend>
+        @Html.Raw(Model.ShippingAddress.ReplaceNewLinesWith("<br />"))
+    </fieldset>
+</div>

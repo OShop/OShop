@@ -1,10 +1,8 @@
-﻿using Newtonsoft.Json;
-using Orchard.ContentManagement;
+﻿using Orchard.ContentManagement;
 using Orchard.ContentManagement.Aspects;
 using Orchard.ContentManagement.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace OShop.Models {
     public class OrderPart : ContentPart<OrderPartRecord>, ITitleAspect, IPayable {

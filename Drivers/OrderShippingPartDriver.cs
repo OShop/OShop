@@ -4,6 +4,7 @@ using Orchard.Environment.Extensions;
 using Orchard.Localization;
 using OShop.Models;
 using OShop.Services;
+using OShop.ViewModels;
 
 namespace OShop.Drivers {
     [OrchardFeature("OShop.Shipping")]
@@ -46,6 +47,29 @@ namespace OShop.Drivers {
                     SubTotal: part.SubTotal,
                     NumberFormat: _currencyProvider.NumberFormat))
             );
+        }
+
+        protected override DriverResult Editor(OrderShippingPart part, dynamic shapeHelper) {
+            var model = new OrderShippingPartEditViewModel() {
+                ShippingStatus = part.ShippingStatus,
+            };
+
+            if (part.ShippingAddress != null) {
+                model.ShippingAddress = _locationsService.FormatAddress(part.ShippingAddress);
+            }
+
+            return Combined(
+                ContentShape("Parts_OrderShipping_Edit", () => shapeHelper.EditorTemplate(
+                    TemplateName: TemplateName,
+                    Model: model,
+                    Prefix: Prefix))
+            );
+        }
+
+        protected override DriverResult Editor(OrderShippingPart part, IUpdateModel updater, dynamic shapeHelper) {
+            updater.TryUpdateModel(part, Prefix, null, null);
+
+            return Editor(part, shapeHelper);
         }
 
     }

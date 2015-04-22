@@ -59,6 +59,7 @@
   <!-- Orders -->
   <Place Parts_Order_Summary="Header:5"/>
   <Place Parts_Order_Edit="Content:1.1"/>
+  <Place Parts_OrderShipping_Edit="Content:1.2"/>
   <Match DisplayType="Detail">
     <Place Parts_Order_Summary="-"/>
     <Place Parts_Order="Header:before"/>

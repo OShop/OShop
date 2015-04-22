@@ -3,6 +3,10 @@
     margin-right: 1.5em;
 }
 
+label.inline {
+    display: inline;
+}
+
 table.items {
     td {
         white-space:nowrap;
@@ -21,16 +25,31 @@ table.items {
 
 fieldset.admin-customer-addresses,
 fieldset.admin-customer-orders {
-    border: 1px solid #CCC;
-    padding : 0px 10px 10px;
-    margin-bottom: 5px;
-    > legend {
-        padding: 5px;
-    }
+    .bordered-fieldset;
 }
 
 fieldset.admin-customer-addresses {
     float: left;
+}
+
+.edit-item-content {
+    .customer-order-part,
+    .order-part > fieldset,
+    .ordershipping-part > fieldset {
+        .bordered-fieldset;
+    }
+    .order-part,
+    .ordershipping-part {
+        box-sizing: border-box;
+        float: left;
+        width: 50%;
+    }
+    .order-part {
+        padding-right: 8px;
+    }
+    .ordershipping-part {
+        padding-left: 8px;
+    }
 }
 
 .contentItems {
@@ -38,5 +57,17 @@ fieldset.admin-customer-addresses {
     .price,
     .order {
         float: right;
+    }
+}
+
+/*
+    Mixins
+*/
+.bordered-fieldset() {
+    border: 1px solid #CCC;
+    padding : 0px 10px 10px;
+    margin-bottom: 5px;
+    > legend {
+        padding: 5px;
     }
 }

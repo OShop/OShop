@@ -1,11 +1,25 @@
-﻿@model OShop.Models.OrderPart
+﻿@model OShop.ViewModels.OrderPartEditViewModel
+@using Orchard.Utility.Extensions
 @{
-    if (Model.ContentItem.Id > 0) {
+    Style.Require("OShopAdmin");
+    if (!String.IsNullOrWhiteSpace(Model.Reference)) {
         Layout.Title = T("Order {0}", Model.Reference);
+    }
+    else {
+        Layout.Title = T("New order");
     }
 }
 
-<fieldset>
-    @Html.LabelFor(m => m.OrderStatus)
-    @Html.EnumDropDownListFor(m => m.OrderStatus)
-</fieldset>
+<div class="order-part">
+    <fieldset>
+        <legend>@T("Order")</legend>
+        <div>
+            <label for="@Html.FieldIdFor(m => m.OrderStatus)" class="inline">@T("Status")</label>
+            @Html.EnumDropDownListFor(m => m.OrderStatus)
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>@T("Billing address")</legend>
+        @Html.Raw(Model.BillingAddress.ReplaceNewLinesWith("<br />"))
+    </fieldset>
+</div>
