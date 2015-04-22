@@ -57,10 +57,11 @@
     <Place Parts_Common_Metadata="-"/>
   </Match>
   <!-- Orders -->
-  <Place Parts_Order_Summary="Header:5"/>
+  <Place Parts_Order_Summary="Content:5"/>
   <Place Parts_Order_Edit="Content:1.1"/>
-  <Place Parts_OrderShipping_Edit="Content:1.2"/>
+  <Place Parts_Order_Shipping_Edit="Content:1.2"/>
   <Place Parts_Order_Products_Edit="Content:5"/>
+  <Place Parts_Order_ShippingDetails_Edit="Content:8"/>
   <Match DisplayType="Detail">
     <Place Parts_Order_Summary="-"/>
     <Place Parts_Order="Header:before"/>

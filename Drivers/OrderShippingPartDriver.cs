@@ -12,8 +12,6 @@ namespace OShop.Drivers {
         private readonly ICurrencyProvider _currencyProvider;
         private readonly ILocationsService _locationsService;
 
-        private const string TemplateName = "Parts/OrderShipping";
-
         protected override string Prefix { get { return "OrderShipping"; } }
 
         public OrderShippingPartDriver(
@@ -59,9 +57,13 @@ namespace OShop.Drivers {
             }
 
             return Combined(
-                ContentShape("Parts_OrderShipping_Edit", () => shapeHelper.EditorTemplate(
-                    TemplateName: TemplateName,
+                ContentShape("Parts_Order_Shipping_Edit", () => shapeHelper.EditorTemplate(
+                    TemplateName: "Parts/Order.Shipping",
                     Model: model,
+                    Prefix: Prefix)),
+                ContentShape("Parts_Order_ShippingDetails_Edit", () => shapeHelper.EditorTemplate(
+                    TemplateName: "Parts/Order.ShippingDetails",
+                    Model: part,
                     Prefix: Prefix))
             );
         }

@@ -1,0 +1,51 @@
+﻿@model OShop.Models.OrderShippingPart
+@using System.Globalization
+
+@{
+    var numberFormat = WorkContext.GetState<NumberFormatInfo>("CurrentNumberFormat");
+}
+
+<fieldset class="edit-order-details">
+    <legend>@T("Shipping")</legend>
+    <table>
+        <thead>
+            <tr>
+                <th>@T("Shipping provider")</th>
+                <th>@T("Unit Price")</th>
+                <th>@T("Qty.")</th>
+                <th>@T("Total")</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var detail in Model.ShippingDetails) {
+            <tr>
+                <td>
+                    @detail.Designation
+                    @if (!String.IsNullOrWhiteSpace(detail.Description)) {
+                        <span class="description">@detail.Description</span>
+                    }
+                </td>
+                <td>
+                    @String.Format(numberFormat, "{0:C}", detail.UnitPrice)
+                </td>
+                <td>
+                    @detail.Quantity
+                </td>
+                <td>
+                    @String.Format(numberFormat, "{0:C}", detail.Total)
+                </td>
+            </tr>
+        }
+        </tbody>
+        <tfoot>
+            @if (Model.ShippingDetails.Any()) {
+                <tr>
+                    <th colspan="3">@T("Shipping total")</th>
+                    <td>@String.Format(numberFormat, "{0:C}", Model.SubTotal)</td>
+                </tr>
+            }
+        </tfoot>
+    </table>
+</fieldset>
+
+

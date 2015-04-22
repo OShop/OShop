@@ -174,8 +174,9 @@
     <Content Include="Views\Parts\Order.SubTotal.cshtml" />
     <Content Include="Views\Parts\Payment.cshtml" />
     <Content Include="Views\Parts\Order.SummaryAdmin.cshtml" />
-    <Content Include="Views\EditorTemplates\Parts\OrderShipping.cshtml" />
+    <Content Include="Views\EditorTemplates\Parts\Order.Shipping.cshtml" />
     <Content Include="Views\EditorTemplates\Parts\Order.Products.cshtml" />
+    <Content Include="Views\EditorTemplates\Parts\Order.ShippingDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Orchard.Core">
