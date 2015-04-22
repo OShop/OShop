@@ -62,6 +62,7 @@
   <Place Parts_Order_Shipping_Edit="Content:1.2"/>
   <Place Parts_Order_Products_Edit="Content:5"/>
   <Place Parts_Order_ShippingDetails_Edit="Content:8"/>
+  <Place Parts_Order_Vat_Edit="Content:9"/>
   <Match DisplayType="Detail">
     <Place Parts_Order_Summary="-"/>
     <Place Parts_Order="Header:before"/>

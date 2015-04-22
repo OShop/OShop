@@ -13,6 +13,10 @@ namespace OShop.Drivers {
     public class OrderVatPartDriver : ContentPartDriver<OrderVatPart> {
         private readonly ICurrencyProvider _currencyProvider;
 
+        private const string TemplateName = "Parts/Order.Vat";
+
+        protected override string Prefix { get { return "OrderVat"; } }
+
         public OrderVatPartDriver(ICurrencyProvider currencyProvider) {
             _currencyProvider = currencyProvider;
 
@@ -28,6 +32,18 @@ namespace OShop.Drivers {
                     SubTotal: part.SubTotal,
                     NumberFormat: _currencyProvider.NumberFormat))
             );
+        }
+
+        protected override DriverResult Editor(OrderVatPart part, dynamic shapeHelper) {
+            return ContentShape("Parts_Order_Vat_Edit", () => shapeHelper.EditorTemplate(
+                    TemplateName: TemplateName,
+                    Model: part,
+                    Prefix: Prefix)
+                );
+        }
+
+        protected override DriverResult Editor(OrderVatPart part, Orchard.ContentManagement.IUpdateModel updater, dynamic shapeHelper) {
+            return Editor(part, shapeHelper);
         }
     }
 }
