@@ -1,9 +1,10 @@
 ﻿@using OShop.Models
+@using OShop.Extensions
 @using System.Globalization
 
 @{
     OrderProductsPart part = Model.ContentPart;
-    NumberFormatInfo numberFormat = Model.NumberFormat;
+    var numberFormat = WorkContext.NumberFormat();
 }
 
 @foreach (var detail in part.ProductDetails) {

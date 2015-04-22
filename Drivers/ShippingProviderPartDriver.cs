@@ -14,17 +14,14 @@ using System.Web;
 namespace OShop.Drivers {
     [OrchardFeature("OShop.Shipping")]
     public class ShippingProviderPartDriver : ContentPartDriver<ShippingProviderPart> {
-        private readonly ICurrencyProvider _currencyProvider;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IShippingService _shippingService;
 
         private const string TemplateName = "Parts/ShippingProvider";
 
         public ShippingProviderPartDriver(
-            ICurrencyProvider currencyProvider,
             IHttpContextAccessor httpContextAccessor,
             IShippingService shippingService) {
-            _currencyProvider = currencyProvider;
             _httpContextAccessor = httpContextAccessor;
             _shippingService = shippingService;
         }
@@ -33,15 +30,10 @@ namespace OShop.Drivers {
 
         // GET
         protected override DriverResult Editor(ShippingProviderPart part, dynamic shapeHelper) {
-            var model = new ShippingProviderPartEditViewModel() {
-                NumberFormat = _currencyProvider.NumberFormat,
-                Part = part
-            };
-
             return ContentShape("Parts_ShippingProvider_Edit",
                 () => shapeHelper.EditorTemplate(
                     TemplateName: TemplateName,
-                    Model: model,
+                    Model: part,
                     Prefix: Prefix));
         }
 

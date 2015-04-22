@@ -220,6 +220,7 @@
     <Compile Include="Drivers\ShoppingCartWidgetPartDriver.cs" />
     <Compile Include="Drivers\VatPartDriver.cs" />
     <Compile Include="Drivers\VatRatePartDriver.cs" />
+    <Compile Include="Extensions\CurrencyExtensions.cs" />
     <Compile Include="Fields\LocationField.cs" />
     <Compile Include="Handlers\CustomerOrderPartHandler.cs" />
     <Compile Include="Handlers\CustomerAddressPartHandler.cs" />
@@ -368,7 +369,6 @@
     <Compile Include="ViewModels\ShippingOptionEditViewModel.cs" />
     <Compile Include="ViewModels\ShoppingCartWidgetViewModel.cs" />
     <Compile Include="ViewModels\VatEditViewModel.cs" />
-    <Compile Include="ViewModels\ShippingProviderPartEditViewModel.cs" />
     <Compile Include="ViewModels\ShippingZonesAddViewModel.cs" />
     <Compile Include="ViewModels\ShippingZonesIndexViewModel.cs" />
     <Compile Include="ViewModels\ShoppingCartIndexViewModel.cs" />

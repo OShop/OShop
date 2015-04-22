@@ -1,5 +1,5 @@
 ﻿@using OShop.Models
-
+@using OShop.Extensions
 @{
     OrderPart order = Model.ContentPart;
     var title = T("Order {0}", order.Reference);
@@ -7,5 +7,5 @@
 
 <a href="@Url.Action("Detail", "Orders", new { area = "OShop", id = order.Reference })" title="@title">
     @title
-    <span class="order-total">@String.Format(Model.NumberFormat, "({0:C})", order.OrderTotal)</span>
+    <span class="order-total">@String.Format(WorkContext.NumberFormat(), "({0:C})", order.OrderTotal)</span>
 </a>

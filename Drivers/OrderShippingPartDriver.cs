@@ -9,16 +9,12 @@ using OShop.ViewModels;
 namespace OShop.Drivers {
     [OrchardFeature("OShop.Shipping")]
     public class OrderShippingPartDriver : ContentPartDriver<OrderShippingPart> {
-        private readonly ICurrencyProvider _currencyProvider;
         private readonly ILocationsService _locationsService;
 
         protected override string Prefix { get { return "OrderShipping"; } }
 
         public OrderShippingPartDriver(
-            ICurrencyProvider currencyProvider,
-            ILocationsService locationsService
-            ) {
-            _currencyProvider = currencyProvider;
+            ILocationsService locationsService) {
             _locationsService = locationsService;
 
             T = NullLocalizer.Instance;
@@ -38,12 +34,10 @@ namespace OShop.Drivers {
                 ContentShape("Parts_Order_ShippingStatus", () => shapeHelper.Parts_Order_ShippingStatus(
                     ContentPart: part)),
                 ContentShape("Parts_Order_ShippingProvider", () => shapeHelper.Parts_Order_ShippingProvider(
-                    ContentPart: part,
-                    NumberFormat: _currencyProvider.NumberFormat)),
+                    ContentPart: part)),
                 ContentShape("Parts_Order_Shipping_SubTotal", () => shapeHelper.Parts_Order_SubTotal(
                     Label: T("Shipping"),
-                    SubTotal: part.SubTotal,
-                    NumberFormat: _currencyProvider.NumberFormat))
+                    SubTotal: part.SubTotal))
             );
         }
 

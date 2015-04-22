@@ -12,7 +12,6 @@ using System.Linq;
 namespace OShop.Drivers {
     [OrchardFeature("OShop.Orders")]
     public class OrderPartDriver : ContentPartDriver<OrderPart> {
-        private readonly ICurrencyProvider _currencyProvider;
         private readonly ILocationsService _locationsService;
 
         private const string TemplateName = "Parts/Order";
@@ -20,9 +19,7 @@ namespace OShop.Drivers {
         protected override string Prefix { get { return "Order"; } }
 
         public OrderPartDriver(
-            ICurrencyProvider currencyProvider,
             ILocationsService locationsService) {
-            _currencyProvider = currencyProvider;
             _locationsService = locationsService;
 
             T = NullLocalizer.Instance;
@@ -35,11 +32,9 @@ namespace OShop.Drivers {
                 ContentShape("Parts_Order", () => shapeHelper.Parts_Order(
                     ContentPart: part)),
                 ContentShape("Parts_Order_Summary", () => shapeHelper.Parts_Order_Summary(
-                    ContentPart: part,
-                    NumberFormat: _currencyProvider.NumberFormat)),
+                    ContentPart: part)),
                 ContentShape("Parts_Order_SummaryAdmin", () => shapeHelper.Parts_Order_SummaryAdmin(
-                    ContentPart: part,
-                    NumberFormat: _currencyProvider.NumberFormat)),
+                    ContentPart: part)),
                 ContentShape("Parts_Order_Reference", () => shapeHelper.Parts_Order_Reference(
                     ContentPart: part)),
                 ContentShape("Parts_Order_BillingAddress", () => shapeHelper.Parts_Order_BillingAddress(
@@ -49,8 +44,7 @@ namespace OShop.Drivers {
                     ContentPart: part)),
                 ContentShape("Parts_Order_Total", () => shapeHelper.Parts_Order_SubTotal(
                     Label: T("Order total"),
-                    SubTotal: part.OrderTotal,
-                    NumberFormat: _currencyProvider.NumberFormat))
+                    SubTotal: part.OrderTotal))
             );
         }
 

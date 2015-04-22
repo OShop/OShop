@@ -1,8 +1,7 @@
 ﻿@model OShop.Models.OrderProductsPart
-@using System.Globalization
-
+@using OShop.Extensions
 @{
-    var numberFormat = WorkContext.GetState<NumberFormatInfo>("CurrentNumberFormat");
+    var numberFormat = WorkContext.NumberFormat();
 }
 
 <fieldset class="edit-order-details">

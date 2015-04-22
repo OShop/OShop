@@ -11,12 +11,9 @@ using System.Web;
 namespace OShop.Drivers {
     [OrchardFeature("OShop.Products")]
     public class ProductPartDriver : ContentPartDriver<ProductPart> {
-        private readonly ICurrencyProvider _currencyProvider;
-
         private const string TemplateName = "Parts/Product";
 
-        public ProductPartDriver(ICurrencyProvider currencyProvider) {
-            _currencyProvider = currencyProvider;
+        public ProductPartDriver() {
         }
 
         protected override string Prefix { get { return "Product"; } }
@@ -26,7 +23,6 @@ namespace OShop.Drivers {
                 ContentShape("Parts_Product", () => shapeHelper.Parts_Product(
                     ContentPart: part)),
                 ContentShape("Price", () => shapeHelper.Price(
-                    NumberFormat: _currencyProvider.NumberFormat,
                     ContentPart: part))
             );
         }

@@ -5,4 +5,4 @@
 }
 <input type="radio" name="ShippingProviderId" value="@option.Id" class="oshop-autoupdate" @(selectedOption != null && selectedOption.Id == option.Id ? "checked" : "")/>
 @Display(BuildDisplay(option.Provider, "Summary"))
-@Display(New.Price().ContentPart(option).NumberFormat(Model.NumberFormat))
+@Display(New.Price().ContentPart(option))

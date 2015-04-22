@@ -29,21 +29,18 @@ namespace OShop.Controllers
     [OrchardFeature("OShop.Products")]
     public class ProductsAdminController : Controller
     {
-        private readonly ICurrencyProvider _currencyProvider;
         private readonly IContentManager _contentManager;
         private readonly IContentDefinitionManager _contentDefinitionManager;
         private readonly ITransactionManager _transactionManager;
         private readonly ISiteService _siteService;
 
         public ProductsAdminController(
-            ICurrencyProvider currencyProvider,
             IOrchardServices orchardServices,
             IContentManager contentManager,
             IContentDefinitionManager contentDefinitionManager,
             ITransactionManager transactionManager,
             ISiteService siteService,
             IShapeFactory shapeFactory) {
-            _currencyProvider = currencyProvider;
             Services = orchardServices;
             _contentManager = contentManager;
             _contentDefinitionManager = contentDefinitionManager;

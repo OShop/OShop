@@ -22,7 +22,6 @@ namespace OShop.Controllers
     {
         private readonly ICustomersService _customersService;
         private readonly IShoppingCartService _shoppingCartService;
-        private readonly ICurrencyProvider _currencyProvider;
         private readonly IContentManager _contentManager;
         private readonly IShippingService _shippingService;
         private readonly dynamic _shapeFactory;
@@ -30,15 +29,12 @@ namespace OShop.Controllers
         public CheckoutController(
             ICustomersService customersService,
             IShoppingCartService shoppingCartService,
-            ICurrencyProvider currencyProvider,
             IContentManager contentManager,
             IOrchardServices services,
             IShapeFactory shapeFactory,
-            IShippingService shippingService = null
-            ) {
+            IShippingService shippingService = null) {
             _customersService = customersService;
             _shoppingCartService = shoppingCartService;
-            _currencyProvider = currencyProvider;
             _contentManager = contentManager;
             _shapeFactory = shapeFactory;
             _shippingService = shippingService;
@@ -85,7 +81,6 @@ namespace OShop.Controllers
                             .Select(sp => _shapeFactory.ShoppingCart_ShippingOption()
                                 .Cart(cart)
                                 .ProviderOption(sp)
-                                .NumberFormat(_currencyProvider.NumberFormat)
                             )
                         )
                     );

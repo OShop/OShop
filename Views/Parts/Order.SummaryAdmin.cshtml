@@ -1,5 +1,5 @@
 ﻿@using OShop.Models
-
+@using OShop.Extensions
 @{
     Style.Require("OShopAdmin");
     OrderPart part = Model.ContentPart;
@@ -7,5 +7,5 @@
 
 <span class="order">
     @T("Order status") : @T(part.OrderStatus.ToString())&nbsp;&#124;&nbsp;
-    @T("Order total") : @String.Format(Model.NumberFormat, "{0:C}", part.OrderTotal)
+    @T("Order total") : @String.Format(WorkContext.NumberFormat(), "{0:C}", part.OrderTotal)
 </span>

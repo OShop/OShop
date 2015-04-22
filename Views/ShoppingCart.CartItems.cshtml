@@ -4,6 +4,7 @@
 @{
     ShoppingCart cart = Model.Cart;
     var shipping = cart.Shipping as IPrice;
+    var numberFormat = WorkContext.NumberFormat();
 }
 
 <div class="cart-actions-head">
@@ -45,7 +46,7 @@
                 <button type="submit" name="@String.Format("CartItems[{0}].IsRemoved", i)" class="oshop-confirm" data-msg="@T("Are you sure you want to remove this item from your cart ?")" value="true">@T("Remove")</button>
             </td>
             <td>
-                @String.Format(Model.NumberFormat, "{0:C}", entry.Item.VatIncluded(entry.SubTotal()))
+                @String.Format(numberFormat, "{0:C}", entry.Item.VatIncluded(entry.SubTotal()))
             </td>
         </tr>
                 i++;
@@ -57,7 +58,7 @@
                     @T("Items total")
                 </td>
                 <td>
-                    @String.Format(Model.NumberFormat, "{0:C}", cart.ItemsTotal())
+                    @String.Format(numberFormat, "{0:C}", cart.ItemsTotal())
                 </td>
             </tr>
             <tr class="total">
@@ -65,7 +66,7 @@
                     @T("Shipping")
                 </td>
                 <td>
-                    @String.Format(Model.NumberFormat, "{0:C}", shipping.Price)
+                    @String.Format(numberFormat, "{0:C}", shipping.Price)
                 </td>
             </tr>
         }
@@ -75,7 +76,7 @@
                     @T("Taxes")
                 </td>
                 <td>
-                    @String.Format(Model.NumberFormat, "{0:C}", cart.TaxesTotal())
+                    @String.Format(numberFormat, "{0:C}", cart.TaxesTotal())
                 </td>
             </tr>
         }
@@ -84,7 +85,7 @@
                 @T("Total")
             </td>
             <td>
-                @String.Format(Model.NumberFormat, "{0:C}", cart.CartTotal())
+                @String.Format(numberFormat, "{0:C}", cart.CartTotal())
             </td>
         </tr>
     </tfoot>

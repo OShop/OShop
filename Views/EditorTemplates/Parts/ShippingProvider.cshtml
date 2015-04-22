@@ -1,4 +1,4 @@
-﻿@model OShop.ViewModels.ShippingProviderPartEditViewModel
+﻿@model OShop.Models.ShippingProviderPart
 @using OShop.Extensions
 
 @{
@@ -17,7 +17,7 @@
                 <th scope="col">@T("Actions")</th>
             </tr>
         </thead>
-        @foreach (var option in Model.Part.Options.OrderByDescending(o => o.Priority)) {
+        @foreach (var option in Model.Options.OrderByDescending(o => o.Priority)) {
             <tr>
                 <td scope="col">
                     @if (!option.Enabled) {
@@ -30,7 +30,7 @@
                 </td>
                 <td scope="col">@(option.ShippingZoneRecord != null ? option.ShippingZoneRecord.Name : "-")</td>
                 <td scope="col">@option.Priority</td>
-                <td scope="col">@String.Format(Model.NumberFormat, "{0:C}", option.Price)</td>
+                <td scope="col">@String.Format(WorkContext.NumberFormat(), "{0:C}", option.Price)</td>
                 <td scope="col">
                     @if (option.Enabled) {
                         @Html.ActionLink(T("Disable").Text, "DisableOption", "ShippingProvidersAdmin", new { Area = "OShop", Id = option.Id }, new { @class = "button" })

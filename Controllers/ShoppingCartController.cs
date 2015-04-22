@@ -17,7 +17,6 @@ namespace OShop.Controllers
     public class ShoppingCartController : Controller
     {
         private readonly IShoppingCartService _shoppingCartService;
-        private readonly ICurrencyProvider _currencyProvider;
         private readonly IEnumerable<ICheckoutProvider> _checkoutProviders;
         private readonly ILocationsService _locationService;
         private readonly IShippingService _shippingService;
@@ -26,13 +25,11 @@ namespace OShop.Controllers
 
         public ShoppingCartController(
             IShoppingCartService shoppingCartService,
-            ICurrencyProvider currencyProvider,
             IEnumerable<ICheckoutProvider> checkoutProviders,
             IShapeFactory shapeFactory,
             ILocationsService locationService = null,
             IShippingService shippingService = null) {
             _shoppingCartService = shoppingCartService;
-            _currencyProvider = currencyProvider;
             _checkoutProviders = checkoutProviders;
             _shapeFactory = shapeFactory;
             _locationService = locationService;
@@ -52,8 +49,7 @@ namespace OShop.Controllers
             var shoppingCartShape = _shapeFactory.ShoppingCart();
 
             shoppingCartShape.CartItems = _shapeFactory.ShoppingCart_CartItems()
-                .Cart(cart)
-                .NumberFormat(_currencyProvider.NumberFormat);
+                .Cart(cart);
 
             if (_locationService != null && cart.Properties["BillingAddress"] as IOrderAddress == null) {
                 // No address selected => show location selection
@@ -79,7 +75,6 @@ namespace OShop.Controllers
                             .Select(sp => _shapeFactory.ShoppingCart_ShippingOption()
                                 .Cart(cart)
                                 .ProviderOption(sp)
-                                .NumberFormat(_currencyProvider.NumberFormat)
                             )
                         )
                     );
@@ -164,7 +159,6 @@ namespace OShop.Controllers
 
             return new ShapeResult(this, _shapeFactory.ShoppingCart_Widget()
                 .Cart(cart)
-                .NumberFormat(_currencyProvider.NumberFormat)
             );
         }
 

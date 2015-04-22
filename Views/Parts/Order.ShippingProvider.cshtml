@@ -1,5 +1,5 @@
 ﻿@using OShop.Models
-
+@using OShop.Extensions
 @{
     OrderShippingPart contentPart = Model.ContentPart;
 }
@@ -13,7 +13,7 @@
                 @if (!String.IsNullOrWhiteSpace(detail.Description)) {
                     <span class="description">@detail.Description</span>
                 }
-                <span class="price">@String.Format(Model.NumberFormat, "{0:C}", detail.Total)</span>
+                <span class="price">@String.Format(WorkContext.NumberFormat(), "{0:C}", detail.Total)</span>
             </div>
         }
     </div>
