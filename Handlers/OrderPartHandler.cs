@@ -65,21 +65,6 @@ namespace OShop.Handlers {
             });
         }
 
-        protected override void GetItemMetadata(GetContentItemMetadataContext context) {
-            var order = context.ContentItem.As<OrderPart>();
-
-            if (order == null)
-                return;
-
-            // Admin link shows customer details
-            context.Metadata.AdminRouteValues = new RouteValueDictionary {
-                {"Area", "OShop"},
-                {"Controller", "OrdersAdmin"},
-                {"Action", "Detail"},
-                {"Id", order.Id}
-            };
-        }
-
         private void SaveDetails(OrderPart part) {
             if (part.Id <= 0) {
                 return;

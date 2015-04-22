@@ -112,28 +112,5 @@ namespace OShop.Controllers
 
             return this.RedirectLocal(returnUrl, () => RedirectToAction("Index"));
         }
-
-        public ActionResult Detail(int id) {
-            if (!Services.Authorizer.Authorize(Permissions.OrdersPermissions.ViewOrders, T("Not allowed to view orders")))
-                return new HttpUnauthorizedResult();
-
-            var order = _contentManager.Get<OrderPart>(id, VersionOptions.Latest);
-            if (order != null) {
-                return new ShapeResult(this, _contentManager.BuildDisplay(order.ContentItem, "Detail"));
-            }
-            else {
-                return new HttpNotFoundResult();
-            }
-        }
-
-        [HttpPost, ActionName("Detail")]
-        [FormValueRequired("Action")]
-        public ActionResult DetailPost(int id, string Action) {
-            switch (Action) {
-                default:
-                    return Detail(id);
-            }
-        }
-
     }
 }
