@@ -35,7 +35,8 @@ fieldset.admin-customer-addresses {
 .edit-item-content {
     .customer-order-part,
     .order-part > fieldset,
-    .ordershipping-part > fieldset {
+    .ordershipping-part > fieldset,
+    .orderproducts-part {
         .bordered-fieldset;
     }
     .order-part,
@@ -49,6 +50,22 @@ fieldset.admin-customer-addresses {
     }
     .ordershipping-part {
         padding-left: 8px;
+    }
+}
+
+.edit-order-details {
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    table, th, td {
+        border: 1px solid #CCC;
+    }
+    th, td {
+        padding: 4px;
+    }
+    th {
+        background-color: #DDD;
     }
 }
 

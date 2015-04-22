@@ -1,0 +1,55 @@
+﻿@model OShop.Models.OrderProductsPart
+@using System.Globalization
+
+@{
+    var numberFormat = WorkContext.GetState<NumberFormatInfo>("CurrentNumberFormat");
+}
+
+<fieldset class="edit-order-details">
+    <legend>@T("Products")</legend>
+    <table>
+        <thead>
+            <tr>
+                <th>@T("SKU")</th>
+                <th>@T("Product")</th>
+                <th>@T("Unit Price")</th>
+                <th>@T("Qty.")</th>
+                <th>@T("Total")</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var detail in Model.ProductDetails) {
+            <tr>
+                <td>
+                    @detail.SKU
+                </td>
+                <td>
+                    @detail.Designation
+                    @if (!String.IsNullOrWhiteSpace(detail.Description)) {
+                        <span class="description">@detail.Description</span>
+                    }
+                </td>
+                <td>
+                    @String.Format(numberFormat, "{0:C}", detail.UnitPrice)
+                </td>
+                <td>
+                    @detail.Quantity
+                </td>
+                <td>
+                    @String.Format(numberFormat, "{0:C}", detail.Total)
+                </td>
+            </tr>
+        }
+        </tbody>
+        <tfoot>
+            @if (Model.ProductDetails.Any()) {
+                <tr>
+                    <th colspan="4">@T("Products total")</th>
+                    <td>@String.Format(numberFormat, "{0:C}", Model.SubTotal)</td>
+                </tr>
+            }
+        </tfoot>
+    </table>
+</fieldset>
+
+

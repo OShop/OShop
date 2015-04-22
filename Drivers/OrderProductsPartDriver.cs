@@ -13,6 +13,10 @@ namespace OShop.Drivers {
     public class OrderProductsPartDriver : ContentPartDriver<OrderProductsPart> {
         private readonly ICurrencyProvider _currencyProvider;
 
+        private const string TemplateName = "Parts/Order.Products";
+
+        protected override string Prefix { get { return "OrderProducts"; } }
+
         public OrderProductsPartDriver(
             ICurrencyProvider currencyProvider
             ) {
@@ -33,6 +37,20 @@ namespace OShop.Drivers {
                     SubTotal: part.ProductDetails.Sum(d => d.Total),
                     NumberFormat: _currencyProvider.NumberFormat))
             );
+        }
+
+        protected override DriverResult Editor(OrderProductsPart part, dynamic shapeHelper) {
+            return ContentShape("Parts_Order_Products_Edit", () => shapeHelper.EditorTemplate(
+                    TemplateName: TemplateName,
+                    Model: part,
+                    Prefix: Prefix)
+                );
+        }
+
+        protected override DriverResult Editor(OrderProductsPart part, Orchard.ContentManagement.IUpdateModel updater, dynamic shapeHelper) {
+
+
+            return Editor(part, shapeHelper);
         }
     }
 }

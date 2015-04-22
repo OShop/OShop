@@ -32,14 +32,16 @@ fieldset.admin-customer-addresses {
 }
 .edit-item-content .customer-order-part,
 .edit-item-content .order-part > fieldset,
-.edit-item-content .ordershipping-part > fieldset {
+.edit-item-content .ordershipping-part > fieldset,
+.edit-item-content .orderproducts-part {
   border: 1px solid #CCC;
   padding: 0px 10px 10px;
   margin-bottom: 5px;
 }
 .edit-item-content .customer-order-part > legend,
 .edit-item-content .order-part > fieldset > legend,
-.edit-item-content .ordershipping-part > fieldset > legend {
+.edit-item-content .ordershipping-part > fieldset > legend,
+.edit-item-content .orderproducts-part > legend {
   padding: 5px;
 }
 .edit-item-content .order-part,
@@ -53,6 +55,22 @@ fieldset.admin-customer-addresses {
 }
 .edit-item-content .ordershipping-part {
   padding-left: 8px;
+}
+.edit-order-details table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.edit-order-details table,
+.edit-order-details th,
+.edit-order-details td {
+  border: 1px solid #CCC;
+}
+.edit-order-details th,
+.edit-order-details td {
+  padding: 4px;
+}
+.edit-order-details th {
+  background-color: #DDD;
 }
 .contentItems .vat,
 .contentItems .price,
