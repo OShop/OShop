@@ -57,8 +57,10 @@ fieldset.admin-customer-addresses {
   padding-left: 8px;
 }
 .edit-order-details table {
-  width: 100%;
   border-collapse: collapse;
+}
+.edit-order-details table.full-width {
+  width: 100%;
 }
 .edit-order-details table,
 .edit-order-details th,

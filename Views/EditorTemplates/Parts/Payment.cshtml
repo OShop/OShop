@@ -1,0 +1,76 @@
+﻿@model OShop.ViewModels.PaymentEditViewModel
+@using OShop.Extensions
+@{
+    var numberFormat = WorkContext.NumberFormat();
+}
+
+<fieldset class="edit-order-details">
+    <legend>@T("Payments")</legend>
+    <table>
+        <thead>
+            <tr>
+                <th>@T("Date")</th>
+                <th>@T("Method")</th>
+                <th>@T("Transaction ID")</th>
+                <th>@T("Amount")</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var transaction in Model.Transactions) {
+                <tr>
+                    <td>
+                        @Display.DateTime(DateTimeUtc: transaction.Date, CustomFormat: T("g"))
+                    </td>
+                    <td>
+                        @transaction.Method
+                    </td>
+                    <td>
+                        @transaction.TransactionId
+                    </td>
+                    <td>
+                        @String.Format(numberFormat, "{0:C}", transaction.Amount)
+                    </td>
+                </tr>
+            }
+            @if (Authorizer.Authorize(OShop.Permissions.PaymentPermissions.ManagePayments)) {
+                <tr>
+                    <td>
+                        @Html.EditorFor(m => m.NewTransaction.Date)
+                    </td>
+                    <td>
+                        @Html.EditorFor(m => m.NewTransaction.Method)
+                    </td>
+                    <td>
+                        @Html.EditorFor(m => m.NewTransaction.TransactionId)
+                    </td>
+                    <td>
+                        @Html.EditorFor(m => m.NewTransaction.Amount)&nbsp;@numberFormat.CurrencySymbol
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+
+
+
+
+
+
+        <tfoot>
+            <tr>
+                <th colspan="3">@T("Amount paid")</th>
+                <td>@String.Format(numberFormat, "{0:C}", Model.AmountPaid)</td>
+            </tr>
+            <tr>
+                <th colspan="3">@T("Payable amount")</th>
+                <td>@String.Format(numberFormat, "{0:C}", Model.PayableAmount)</td>
+            </tr>
+            <tr>
+                <th colspan="3">@T("Outstanding amount")</th>
+                <td>@String.Format(numberFormat, "{0:C}", Model.PayableAmount - Model.AmountPaid)</td>
+            </tr>
+        </tfoot>
+    </table>
+</fieldset>
+
+

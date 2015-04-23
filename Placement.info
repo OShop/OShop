@@ -83,6 +83,7 @@
     <Place Parts_Order_SummaryAdmin="Content:10"/>
   </Match>
   <!-- Payment -->
+  <Place Parts_Payment_Edit="Content:10"/>
   <Match DisplayType="Detail">
     <Place Parts_Payment="Content:20"/>
   </Match>

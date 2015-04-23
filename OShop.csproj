@@ -178,6 +178,7 @@
     <Content Include="Views\EditorTemplates\Parts\Order.Products.cshtml" />
     <Content Include="Views\EditorTemplates\Parts\Order.ShippingDetails.cshtml" />
     <Content Include="Views\EditorTemplates\Parts\Order.Vat.cshtml" />
+    <Content Include="Views\EditorTemplates\Parts\Payment.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Orchard.Core">
@@ -315,6 +316,7 @@
     <Compile Include="Permissions\OrdersPermissions.cs" />
     <Compile Include="Permissions\CustomersPermissions.cs" />
     <Compile Include="Permissions\OShopPermissions.cs" />
+    <Compile Include="Permissions\PaymentPermissions.cs" />
     <Compile Include="Resources\OShopResources.cs" />
     <Compile Include="Security\OrdersAuthorizationEventHandler.cs" />
     <Compile Include="Security\CustomersAuthorizationEventHandler.cs" />
@@ -327,8 +329,10 @@
     <Compile Include="Services\ICustomersService.cs" />
     <Compile Include="Services\ILocationsService.cs" />
     <Compile Include="Services\IOrdersService.cs" />
+    <Compile Include="Services\IPaymentService.cs" />
     <Compile Include="Services\IShippingService.cs" />
     <Compile Include="Services\OrdersService.cs" />
+    <Compile Include="Services\PaymentService.cs" />
     <Compile Include="Services\ShoppingCartResolvers\IOrderBuilder.cs" />
     <Compile Include="Services\ShoppingCartResolvers\IShoppingCartBuilder.cs" />
     <Compile Include="Services\IShoppingCartService.cs" />
@@ -366,6 +370,7 @@
     <Compile Include="ViewModels\OrderShippingPartEditViewModel.cs" />
     <Compile Include="ViewModels\OrdersIndexViewModel.cs" />
     <Compile Include="ViewModels\OShopSettingsViewsModel.cs" />
+    <Compile Include="ViewModels\PaymentEditViewModel.cs" />
     <Compile Include="ViewModels\ShippingOptionEditViewModel.cs" />
     <Compile Include="ViewModels\ShoppingCartWidgetViewModel.cs" />
     <Compile Include="ViewModels\VatEditViewModel.cs" />
