@@ -57,3 +57,8 @@ Features:
 		Category: Commerce
         Description: Enables payment features.
 		Dependencies: OShop
+	OShop.OfflinePayment:
+		Name: OShop Offline Payment
+		Category: Commerce
+        Description: Enables offline payment.
+		Dependencies: OShop, OShop.Payment

@@ -24,6 +24,7 @@ namespace OShop.Controllers
         private readonly IShoppingCartService _shoppingCartService;
         private readonly IContentManager _contentManager;
         private readonly IShippingService _shippingService;
+        private readonly IEnumerable<IPaymentProvider> _paymentProviders;
         private readonly dynamic _shapeFactory;
 
         public CheckoutController(
@@ -32,12 +33,14 @@ namespace OShop.Controllers
             IContentManager contentManager,
             IOrchardServices services,
             IShapeFactory shapeFactory,
+            IEnumerable<IPaymentProvider> paymentProviders,
             IShippingService shippingService = null) {
             _customersService = customersService;
             _shoppingCartService = shoppingCartService;
             _contentManager = contentManager;
             _shapeFactory = shapeFactory;
             _shippingService = shippingService;
+            _paymentProviders = paymentProviders.OrderByDescending(p => p.Priority);
             Services = services;
             T = NullLocalizer.Instance;
         }
@@ -121,19 +124,28 @@ namespace OShop.Controllers
             var order = _shoppingCartService.BuildOrder();
             TempData["OShop.Checkout.Order"] = order;
 
-            return new ShapeResult(this, _shapeFactory.Checkout_Validate()
-                .Order(order));
+            return new ShapeResult(this, _shapeFactory.Checkout_Validate(Order: order, PaymentProviders: _paymentProviders));
         }
 
         [Themed]
         [Authorize]
         [HttpPost, ActionName("ValidateOrder")]
-        public ActionResult ValidateOrderPost() {
+        public ActionResult ValidateOrderPost(string Payment) {
             var order = TempData["OShop.Checkout.Order"] as IContent;
             if (order != null) {
                 _contentManager.Create(order);
-
                 _shoppingCartService.Empty();
+
+                var paymentPart = order.As<PaymentPart>();
+                if (paymentPart != null && !String.IsNullOrWhiteSpace(Payment)) {
+                    var paymentProvider = _paymentProviders.Where(p => p.Name == Payment).FirstOrDefault();
+                    if (paymentProvider != null) {
+                        var paymentRoute = paymentProvider.GetPaymentRoute(paymentPart);
+                        if (paymentRoute != null) {
+                            return RedirectToRoute(paymentRoute);
+                        }
+                    }
+                }
 
                 return RedirectToAction("Detail", "Orders", new { area = "OShop", id = order.As<OrderPart>().Reference });
             }

@@ -1,12 +1,30 @@
-﻿@{
+﻿@using OShop.Services
+@using Orchard.Utility.Extensions
+@{
     Layout.Title = T("Validate your order").Text;
+    IEnumerable<IPaymentProvider> providers = Model.PaymentProviders;
 }
 
 @Display(BuildDisplay(Model.Order))
 
 @using (Html.BeginFormAntiForgeryPost()) {
+    if (providers.Any()) {
+        <ul class="checkout-payments">
+            @foreach (var provider in providers) {
+                <li class="@provider.Name.HtmlClassify()">
+                    @provider.Label
+                    @if (provider.Description != null) {
+                        <span class="hint">@provider.Description</span>
+                    }
+                    <button type="submit" name="payment" value="@provider.Name">@T("Validate")</button>
+                </li>
+            }
+        </ul>
+    }
     <fieldset class="checkout-actions">
         @Html.ActionLink(T("Return").Text, "Index", "Checkout", new { area = "OShop" }, new { @class = "button" })
-        <button type="submit" name="Action" value="Validate">@T("Validate")</button>
+        @if (!providers.Any()) {
+            <button type="submit" name="Action" value="Validate">@T("Validate")</button>
+        }
     </fieldset>
 }
