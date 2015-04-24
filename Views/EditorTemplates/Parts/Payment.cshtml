@@ -1,7 +1,11 @@
 ﻿@model OShop.ViewModels.PaymentEditViewModel
 @using OShop.Extensions
+@using OShop.Models
 @{
+    Style.Require("OShopAdmin");
+    Script.Require("OShopAdmin");
     var numberFormat = WorkContext.NumberFormat();
+    bool allowEdit = Authorizer.Authorize(OShop.Permissions.PaymentPermissions.ManagePayments);
 }
 
 <fieldset class="edit-order-details">
@@ -12,27 +16,63 @@
                 <th>@T("Date")</th>
                 <th>@T("Method")</th>
                 <th>@T("Transaction ID")</th>
+                <th>@T("Status")</th>
                 <th>@T("Amount")</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var transaction in Model.Transactions) {
-                <tr>
-                    <td>
-                        @Display.DateTime(DateTimeUtc: transaction.Date, CustomFormat: T("g"))
+            @for (int i = 0; i < Model.Transactions.Length; i++) {
+                <tr class="oshop-editable" data-fieldid="@Html.FieldIdFor(m => m.Transactions[i])">
+                    <td class="oshop-hidden">
+                        @Html.HiddenFor(m => m.Transactions[i].Id)
+                        @Html.HiddenFor(m => m.Transactions[i].IsUpdated)
                     </td>
-                    <td>
-                        @transaction.Method
+                    <td class="display">
+                        @Model.Transactions[i].Date.Date&nbsp;@Model.Transactions[i].Date.Time
                     </td>
-                    <td>
-                        @transaction.TransactionId
+                    <td class="display">
+                        @Model.Transactions[i].Method
                     </td>
-                    <td>
-                        @String.Format(numberFormat, "{0:C}", transaction.Amount)
+                    <td class="display">
+                        @Model.Transactions[i].TransactionId
                     </td>
+                    <td class="display">
+                        @T(Model.Transactions[i].Status.ToString())
+                    </td>
+                    <td class="display">
+                        @String.Format(numberFormat, "{0:C}", Model.Transactions[i].Amount)
+                    </td>
+                    @if (allowEdit) {
+                        <td class="display">
+                            <button type="button" name="edit">@T("Edit")</button>
+                        </td>
+                        <td class="edit">
+                            @Html.EditorFor(m => m.Transactions[i].Date)
+                        </td>
+                        <td class="edit">
+                            @Html.EditorFor(m => m.Transactions[i].Method)
+                        </td>
+                        <td class="edit">
+                            @Html.EditorFor(m => m.Transactions[i].TransactionId)
+                        </td>
+                        <td class="edit">
+                            @Html.DropDownListFor(m => m.Transactions[i].Status, Enum.GetNames(typeof(TransactionStatus)).Select(s => new SelectListItem() {
+                       Value = s,
+                       Text = T(s).Text
+                   }))
+                        </td>
+                        <td class="edit">
+                            @(numberFormat.CurrencyPositivePattern % 2 == 0 ? numberFormat.CurrencySymbol + " " : "")
+                            @Html.EditorFor(m => m.Transactions[i].Amount)
+                            @(numberFormat.CurrencyPositivePattern % 2 == 1 ? " " + numberFormat.CurrencySymbol : "")
+                        </td>
+                        <td class="edit">
+                            <button type="button" name="cancel">@T("Cancel")</button>
+                        </td>
+                    }
                 </tr>
             }
-            @if (Authorizer.Authorize(OShop.Permissions.PaymentPermissions.ManagePayments)) {
+            @if (allowEdit) {
                 <tr>
                     <td>
                         @Html.EditorFor(m => m.NewTransaction.Date)
@@ -44,33 +84,35 @@
                         @Html.EditorFor(m => m.NewTransaction.TransactionId)
                     </td>
                     <td>
-                        @Html.EditorFor(m => m.NewTransaction.Amount)&nbsp;@numberFormat.CurrencySymbol
+                        @Html.DropDownListFor(m => m.NewTransaction.Status, Enum.GetNames(typeof(TransactionStatus)).Select(s => new SelectListItem() {
+                           Value = s,
+                           Text = T(s).Text
+                       }))
+                    </td>
+                    <td>
+                        @(numberFormat.CurrencyPositivePattern % 2 == 0 ? numberFormat.CurrencySymbol + " " : "")
+                        @Html.EditorFor(m => m.NewTransaction.Amount)
+                        @(numberFormat.CurrencyPositivePattern % 2 == 1 ? " " + numberFormat.CurrencySymbol : "")
+                    </td>
+                    <td>
+                        <button type="submit" name="submit.Save" value="submit.Save">@T("Add")</button>
                     </td>
                 </tr>
             }
         </tbody>
-
-
-
-
-
-
-
         <tfoot>
             <tr>
-                <th colspan="3">@T("Amount paid")</th>
+                <th colspan="4">@T("Amount paid")</th>
                 <td>@String.Format(numberFormat, "{0:C}", Model.AmountPaid)</td>
             </tr>
             <tr>
-                <th colspan="3">@T("Payable amount")</th>
+                <th colspan="4">@T("Payable amount")</th>
                 <td>@String.Format(numberFormat, "{0:C}", Model.PayableAmount)</td>
             </tr>
             <tr>
-                <th colspan="3">@T("Outstanding amount")</th>
+                <th colspan="4">@T("Outstanding amount")</th>
                 <td>@String.Format(numberFormat, "{0:C}", Model.PayableAmount - Model.AmountPaid)</td>
             </tr>
         </tfoot>
     </table>
 </fieldset>
-
-

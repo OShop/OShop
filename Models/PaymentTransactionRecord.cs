@@ -11,5 +11,12 @@ namespace OShop.Models {
         public virtual decimal Amount { get; set; }
         public virtual string Method { get; set; }
         public virtual string TransactionId { get; set; }
+        public virtual TransactionStatus Status { get; set; }
+    }
+
+    public enum TransactionStatus {
+        Canceled = -1,
+        Pending = 0,
+        Validated = 1
     }
 }

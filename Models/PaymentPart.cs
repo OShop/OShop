@@ -12,7 +12,7 @@ namespace OShop.Models {
         }
 
         public decimal AmountPaid {
-            get { return Transactions.Sum(t => t.Amount); }
+            get { return Transactions.Where(t => t.Status >= TransactionStatus.Validated).Sum(t => t.Amount); }
         }
 
         public decimal PayableAmount {

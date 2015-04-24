@@ -74,6 +74,11 @@ fieldset.admin-customer-addresses {
 .edit-order-details th {
   background-color: #DDD;
 }
+tr.oshop-editable > .edit,
+tr.oshop-edited > .display,
+td.oshop-hidden {
+  display: none;
+}
 .contentItems .vat,
 .contentItems .price,
 .contentItems .order {

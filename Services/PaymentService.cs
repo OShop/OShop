@@ -19,14 +19,38 @@ namespace OShop.Services {
             _clock = clock;
         }
 
-        public void AddTransaction(PaymentPart part, string Method, decimal Amount, string TransactionId = "", DateTime? Date = null) {
+        public void AddTransaction(PaymentPart Part, string Method, decimal Amount, string TransactionId = "", TransactionStatus Status = TransactionStatus.Pending, DateTime? Date = null) {
             _transactionRepository.Create(new PaymentTransactionRecord() {
-                PaymentPartRecord = part.Record,
+                PaymentPartRecord = Part.Record,
                 Method = Method,
                 TransactionId = TransactionId,
                 Amount = Amount,
-                Date = Date.HasValue ? Date.Value : _clock.UtcNow
+                Date = Date.HasValue ? Date.Value : _clock.UtcNow,
+                Status = Status
             });
+        }
+
+
+        public void UpdateTransaction(int Id, string Method = null, decimal? Amount = null, string TransactionId = null, TransactionStatus? Status = null, DateTime? Date = null) {
+            var transaction = _transactionRepository.Get(Id);
+            if (transaction != null) {
+                if (Method != null) {
+                    transaction.Method = Method;
+                }
+                if (Amount.HasValue) {
+                    transaction.Amount = Amount.Value;
+                }
+                if (TransactionId != null) {
+                    transaction.TransactionId = TransactionId;
+                }
+                if (Status.HasValue) {
+                    transaction.Status = Status.Value;
+                }
+                if (Date.HasValue) {
+                    transaction.Date = Date.Value;
+                }
+                _transactionRepository.Update(transaction);
+            }
         }
     }
 }
