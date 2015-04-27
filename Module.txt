@@ -1,7 +1,7 @@
 ﻿Name: OShop
 AntiForgery: enabled
 Author: Codinlab
-Website: https://oshop.codeplex.com/
+Website: https://github.com/OShop/OShop
 Version: 1.0
 OrchardVersion: 1.8
 Category: Commerce
