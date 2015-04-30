@@ -19,19 +19,21 @@ namespace OShop.Services {
             _clock = clock;
         }
 
-        public void AddTransaction(PaymentPart Part, string Method, decimal Amount, string TransactionId = "", TransactionStatus Status = TransactionStatus.Pending, DateTime? Date = null) {
-            _transactionRepository.Create(new PaymentTransactionRecord() {
+        public PaymentTransactionRecord AddTransaction(PaymentPart Part, string Method, decimal Amount, string TransactionId = "", TransactionStatus Status = TransactionStatus.Pending, DateTime? Date = null) {
+            var transaction = new PaymentTransactionRecord() {
                 PaymentPartRecord = Part.Record,
                 Method = Method,
                 TransactionId = TransactionId,
                 Amount = Amount,
                 Date = Date.HasValue ? Date.Value : _clock.UtcNow,
                 Status = Status
-            });
+            };
+            _transactionRepository.Create(transaction);
+            return transaction;
         }
 
 
-        public void UpdateTransaction(int Id, string Method = null, decimal? Amount = null, string TransactionId = null, TransactionStatus? Status = null, DateTime? Date = null) {
+        public PaymentTransactionRecord UpdateTransaction(int Id, string Method = null, decimal? Amount = null, string TransactionId = null, TransactionStatus? Status = null, DateTime? Date = null) {
             var transaction = _transactionRepository.Get(Id);
             if (transaction != null) {
                 if (Method != null) {
@@ -51,6 +53,7 @@ namespace OShop.Services {
                 }
                 _transactionRepository.Update(transaction);
             }
+            return transaction;
         }
     }
 }
