@@ -1,6 +1,7 @@
 ﻿using Orchard.ContentManagement;
 using Orchard.ContentManagement.Aspects;
 using Orchard.ContentManagement.Utilities;
+using Orchard.Localization;
 using System;
 using System.Collections.Generic;
 
@@ -9,6 +10,12 @@ namespace OShop.Models {
         internal readonly LazyField<List<OrderDetail>> _details = new LazyField<List<OrderDetail>>();
         internal readonly LazyField<decimal> _orderTotal = new LazyField<decimal>();
         internal readonly LazyField<OrderAddressRecord> _billingAddress = new LazyField<OrderAddressRecord>();
+
+        public OrderPart() {
+            T = NullLocalizer.Instance;
+        }
+
+        public Localizer T { get; set; }
 
         public string Title {
             get { return this.Reference; }
@@ -45,6 +52,10 @@ namespace OShop.Models {
 
         decimal IPayable.PayableAmount {
             get { return this.OrderTotal; }
+        }
+
+        string IPayable.Reference {
+            get { return T("Order {0}", this.Reference).Text; }
         }
     }
 

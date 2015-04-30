@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace OShop.Models {
     public interface IPayable : IContent {
+        string Reference { get; }
         decimal PayableAmount { get; }
     }
 }

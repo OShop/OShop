@@ -22,6 +22,13 @@ namespace OShop.Models {
             }
         }
 
+        public string Reference {
+            get {
+                var payable = this.As<IPayable>();
+                return payable != null ? payable.Reference : "";
+            }
+        }
+
         public PaymentStatus Status {
             get {
                 if (AmountPaid >= PayableAmount) {
