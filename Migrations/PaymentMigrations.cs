@@ -19,6 +19,7 @@ namespace OShop.Migrations {
                  .Column<string>("Method")
                  .Column<string>("TransactionId")
                  .Column<string>("Status", c => c.WithLength(16))
+                 .Column<string>("Data", c => c.Unlimited())
             );
 
             SchemaBuilder.CreateForeignKey("FK_PaymentTransactionRecord_PaymentPartRecord", "PaymentTransactionRecord", new[] { "PaymentPartRecord_Id" }, "PaymentPartRecord", new[] { "Id" });

@@ -12,6 +12,7 @@ namespace OShop.Models {
         public virtual string Method { get; set; }
         public virtual string TransactionId { get; set; }
         public virtual TransactionStatus Status { get; set; }
+        public virtual string Data { get; set; }
     }
 
     public enum TransactionStatus {
