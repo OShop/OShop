@@ -90,20 +90,29 @@ namespace OShop.Drivers {
                         if (date.HasValue
                             && !String.IsNullOrWhiteSpace(model.NewTransaction.Method)
                             && model.NewTransaction.Amount != 0) {
-                            _paymentService.AddTransaction(part, model.NewTransaction.Method, model.NewTransaction.Amount, model.NewTransaction.TransactionId, model.NewTransaction.Status, date);
+                                _paymentService.AddTransaction(part, new PaymentTransactionRecord() {
+                                    Date = date.Value,
+                                    Amount = model.NewTransaction.Amount,
+                                    Method = model.NewTransaction.Method,
+                                    TransactionId = model.NewTransaction.TransactionId,
+                                    Status = model.NewTransaction.Status
+                                });
                         }
                     }
                     if (model.Transactions != null) {
                         // Updated transactions
-                        foreach (var transaction in model.Transactions.Where(t => t.IsUpdated)) {
+                        foreach (var transactionVM in model.Transactions.Where(t => t.IsUpdated)) {
                             var date = _dateServices.ConvertFromLocalString(model.NewTransaction.Date.Date, model.NewTransaction.Date.Time);
-                            _paymentService.UpdateTransaction(
-                                transaction.Id,
-                                Method: transaction.Method,
-                                Amount: transaction.Amount,
-                                TransactionId: transaction.TransactionId,
-                                Status: transaction.Status,
-                                Date: date);
+                            var transactionRecord = _paymentService.GetTransaction(transactionVM.Id);
+                            if (transactionRecord != null) {
+                                if (date.HasValue) {
+                                    transactionRecord.Date = date.Value;
+                                }
+                                transactionRecord.Method = transactionVM.Method;
+                                transactionRecord.Amount = transactionVM.Amount;
+                                transactionRecord.TransactionId = transactionVM.TransactionId;
+                                transactionRecord.Status = transactionVM.Status;
+                            }
                         }
                     }
                 }
