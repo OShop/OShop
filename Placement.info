@@ -86,5 +86,6 @@
   <Place Parts_Payment_Edit="Content:10"/>
   <Match DisplayType="Detail">
     <Place Parts_Payment="Content:20"/>
+    <Place Parts_Payment_Providers="Content:20.1"/>
   </Match>
 </Placement>

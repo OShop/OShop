@@ -19,6 +19,7 @@ namespace OShop.Drivers {
         private readonly IClock _clock;
         private readonly IDateServices _dateServices;
         private readonly IPaymentService _paymentService;
+        private readonly IEnumerable<IPaymentProvider> _paymentProviders;
 
         private const string TemplateName = "Parts/Payment";
 
@@ -26,10 +27,12 @@ namespace OShop.Drivers {
             IClock clock,
             IDateServices dateServices,
             IPaymentService paymentService,
+            IEnumerable<IPaymentProvider> paymentProviders,
             IOrchardServices services) {
             _clock = clock;
             _dateServices = dateServices;
             _paymentService = paymentService;
+            _paymentProviders = paymentProviders.OrderByDescending(p => p.Priority);
             Services = services;
         }
 
@@ -38,9 +41,19 @@ namespace OShop.Drivers {
         protected override string Prefix { get { return "Payment"; } }
 
         protected override DriverResult Display(PaymentPart part, string displayType, dynamic shapeHelper) {
-            return ContentShape("Parts_Payment", () => shapeHelper.Parts_Payment(
-                ContentPartDriver: part
-            ));
+            bool showProviders = part.ContentItem.Id > 0 && _paymentProviders.Any() && part.Status < PaymentStatus.Completed;
+
+            return Combined(
+                ContentShape("Parts_Payment", () => shapeHelper.Parts_Payment(
+                    ContentPartDriver: part
+                )),
+                showProviders ?
+                ContentShape("Parts_Payment_Providers", () => shapeHelper.Parts_Payment_Providers(
+                    ContentPartDriver: part,
+                    Providers: _paymentProviders
+                ))
+                : null
+            );
         }
 
         protected override DriverResult Editor(PaymentPart part, dynamic shapeHelper) {

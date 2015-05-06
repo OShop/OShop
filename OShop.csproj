@@ -179,6 +179,7 @@
     <Content Include="Views\EditorTemplates\Parts\Order.ShippingDetails.cshtml" />
     <Content Include="Views\EditorTemplates\Parts\Order.Vat.cshtml" />
     <Content Include="Views\EditorTemplates\Parts\Payment.cshtml" />
+    <Content Include="Views\Parts\Payment.Providers.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Orchard.Core">

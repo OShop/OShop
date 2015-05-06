@@ -18,7 +18,7 @@ namespace OShop.Services {
         public Localizer T { get; set; }
 
         public int Priority {
-            get { return 100; }
+            get { return 10; }
         }
 
         public string Name {

@@ -1,0 +1,26 @@
+﻿@using OShop.Models
+@using OShop.Services
+@using Orchard.Utility.Extensions
+@{
+    PaymentPart part = Model.ContentPart;
+    IEnumerable<IPaymentProvider> providers = Model.Providers;
+}
+
+@if (providers.Any()) {
+    <ul class="checkout-payments">
+        @foreach (var provider in providers) {
+            <li class="@provider.Name.HtmlClassify()">
+                @provider.Label
+                @if (provider.Description != null) {
+                    <span class="hint">@provider.Description</span>
+            }
+                @{
+                var route = provider.GetPaymentRoute(part);
+                }
+                @if (route != null) {
+                    <a href="@Url.RouteUrl(route)" class="button">@T("Validate")</a>
+                }
+            </li>
+        }
+    </ul>
+}
