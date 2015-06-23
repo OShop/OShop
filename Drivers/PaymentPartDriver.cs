@@ -17,7 +17,7 @@ namespace OShop.Drivers {
     [OrchardFeature("OShop.Payment")]
     public class PaymentPartDriver : ContentPartDriver<PaymentPart> {
         private readonly IClock _clock;
-        private readonly IDateServices _dateServices;
+        private readonly IDateLocalizationServices _dateServices;
         private readonly IPaymentService _paymentService;
         private readonly IEnumerable<IPaymentProvider> _paymentProviders;
 
@@ -25,7 +25,7 @@ namespace OShop.Drivers {
 
         public PaymentPartDriver(
             IClock clock,
-            IDateServices dateServices,
+            IDateLocalizationServices dateServices,
             IPaymentService paymentService,
             IEnumerable<IPaymentProvider> paymentProviders,
             IOrchardServices services) {
@@ -65,8 +65,8 @@ namespace OShop.Drivers {
                     Date = new DateTimeEditor() {
                         ShowDate = true,
                         ShowTime = true,
-                        Date = _dateServices.ConvertToLocalDateString(t.Date),
-                        Time = _dateServices.ConvertToLocalTimeString(t.Date),
+                        Date = _dateServices.ConvertToLocalizedDateString(t.Date),
+                        Time = _dateServices.ConvertToLocalizedTimeString(t.Date),
                     },
                     Method = t.Method,
                     TransactionId = t.TransactionId,
@@ -77,8 +77,8 @@ namespace OShop.Drivers {
                     Date = new DateTimeEditor() {
                         ShowDate = true,
                         ShowTime = true,
-                        Date = _dateServices.ConvertToLocalDateString(_clock.UtcNow),
-                        Time = _dateServices.ConvertToLocalTimeString(_clock.UtcNow),
+                        Date = _dateServices.ConvertToLocalizedDateString(_clock.UtcNow),
+                        Time = _dateServices.ConvertToLocalizedTimeString(_clock.UtcNow),
                     },
                     Status = TransactionStatus.Validated,
                     Amount = part.PayableAmount - part.AmountPaid
@@ -99,7 +99,7 @@ namespace OShop.Drivers {
                 if (updater.TryUpdateModel(model, Prefix, null, null)) {
                     // New transaction
                     if (model.NewTransaction != null && model.NewTransaction.Date != null) {
-                        var date = _dateServices.ConvertFromLocalString(model.NewTransaction.Date.Date, model.NewTransaction.Date.Time);
+                        var date = _dateServices.ConvertFromLocalizedString(model.NewTransaction.Date.Date, model.NewTransaction.Date.Time);
                         if (date.HasValue
                             && !String.IsNullOrWhiteSpace(model.NewTransaction.Method)
                             && model.NewTransaction.Amount != 0) {
@@ -115,7 +115,7 @@ namespace OShop.Drivers {
                     if (model.Transactions != null) {
                         // Updated transactions
                         foreach (var transactionVM in model.Transactions.Where(t => t.IsUpdated)) {
-                            var date = _dateServices.ConvertFromLocalString(model.NewTransaction.Date.Date, model.NewTransaction.Date.Time);
+                            var date = _dateServices.ConvertFromLocalizedString(model.NewTransaction.Date.Date, model.NewTransaction.Date.Time);
                             var transactionRecord = _paymentService.GetTransaction(transactionVM.Id);
                             if (transactionRecord != null) {
                                 if (date.HasValue) {
