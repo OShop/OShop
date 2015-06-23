@@ -246,6 +246,8 @@ namespace OShop.Controllers
                 return View(model);
             }
 
+            customerAddress.As<CustomerAddressPart>().Customer = customer;
+
             if (IsDefaultAddress) {
                 SetDefaultAddress(customerAddress);
             }
