@@ -20,6 +20,10 @@ namespace OShop.Migrations {
                 .Attachable(false)
                 );
 
+            ContentDefinitionManager.AlterPartDefinition("OrderVatPart", part => part
+                .Attachable(false)
+                );
+
             ContentDefinitionManager.AlterPartDefinition("VatPart", part => part
                 .Attachable()
                 .WithDescription("Adds VAT rate to you products.")

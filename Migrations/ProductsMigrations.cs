@@ -18,8 +18,12 @@ namespace OShop.Migrations {
                 .WithDescription("Allows content to be sold as a Product")
             );
 
+            ContentDefinitionManager.AlterPartDefinition("OrderProductsPart", part => part
+                .Attachable(false)
+            );
+
             ContentDefinitionManager.AlterTypeDefinition("Order", type => type
-                .WithPart("OrderVatPart")
+                .WithPart("OrderProductsPart")
             );
 
             return 1;
