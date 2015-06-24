@@ -16,8 +16,8 @@ namespace OShop.Migrations {
                 .Column<string>("Address2")
                 .Column<string>("Zipcode")
                 .Column<string>("City")
-                .Column<int>("LocationsCountryRecord_Id", c => c.NotNull())
-                .Column<int>("LocationsStateRecord_Id", c => c.Nullable())
+                .Column<int>("Country_Id", c => c.NotNull())
+                .Column<int>("State_Id", c => c.Nullable())
             );
 
             SchemaBuilder.CreateTable("OrderPartRecord", table => table
