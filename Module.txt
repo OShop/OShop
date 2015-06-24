@@ -31,27 +31,27 @@ Features:
 		Name: OShop Shipping
 		Category: Commerce
         Description: Provides shipping service.
-		Dependencies: OShop, OShop.Locations
+		Dependencies: OShop.Locations
 	OShop.Customers:
 		Name: OShop Customers
 		Category: Commerce
         Description: Provides customer management.
-		Dependencies: OShop, OShop.Locations, Orchard.Users, Orchard.jQuery
+		Dependencies: OShop.Locations, Orchard.Users, Orchard.jQuery
 	OShop.Checkout:
 		Name: OShop customer check-out
 		Category: Commerce
         Description: Provides check-out service for customers.
-		Dependencies: OShop, OShop.Locations, OShop.Customers, OShop.ShoppingCart, OShop.Orders
+		Dependencies: OShop.Customers, OShop.ShoppingCart, OShop.Orders
 	OShop.ExpressCheckout:
 		Name: OShop express check-out
 		Category: Commerce
         Description: Provides check-out service without account.
-		Dependencies: OShop, OShop.Locations, OShop.ShoppingCart
+		Dependencies: OShop.Locations, OShop.ShoppingCart, OShop.Orders
 	OShop.Orders:
 		Name: OShop Orders
 		Category: Commerce
         Description: Provides orders management.
-		Dependencies: OShop, OShop.Locations
+		Dependencies: OShop.Locations
 	OShop.Payment:
 		Name: OShop Payment
 		Category: Commerce
@@ -61,4 +61,4 @@ Features:
 		Name: OShop Offline Payment
 		Category: Commerce
         Description: Enables offline payment.
-		Dependencies: OShop, OShop.Payment
+		Dependencies: OShop.Payment
