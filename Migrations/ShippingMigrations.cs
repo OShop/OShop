@@ -50,6 +50,10 @@ namespace OShop.Migrations {
                 .WithPart("TitlePart")
                 );
 
+            ContentDefinitionManager.AlterPartDefinition("OrderShippingPart", part => part
+                .Attachable(false)
+            );
+
             ContentDefinitionManager.AlterTypeDefinition("Order", type => type
                 .WithPart("OrderShippingPart")
             );
