@@ -2,7 +2,7 @@
 E-commerce module for Orchard CMS
 
 ## Project goals :
-* Targets Orchard 1.8 and later
+* Targets Orchard 1.9 and later
 * Working out of the box solution 
 * Highly customizable module
 * No dependencies on non-core modules
