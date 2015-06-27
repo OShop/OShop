@@ -52,8 +52,8 @@ namespace OShop.Drivers {
             var httpContext = Services.WorkContext.HttpContext;
             var model = new CustomerAddressEditViewModel(part);
             model.Countries = _locationService.GetEnabledCountries();
-            if (part.CountryId <= 0) {
-                part.CountryId = _locationService.GetDefaultCountryId();
+            if (model.CountryId <= 0) {
+                model.CountryId = _locationService.GetDefaultCountryId();
             }
 
             model.States = _locationService.GetEnabledStates(part.CountryId);

@@ -26,25 +26,23 @@
         var $stateSelectorHolder = $(this);
         var $stateSelectorControl = $(this).children("select");
 
-        var HideEmpty = function() {
-            if ($stateSelectorControl.children("option").length > 0) {
-                $stateSelectorHolder.show();
-            } else {
-                $stateSelectorHolder.hide();
-            }
-        }
-
-        $(countrySelector).change(function () {
+        var LoadStates = function () {
             $stateSelectorControl.empty();
             $.getJSON(statesServicePath + $(countrySelector).val(), function (data) {
                 $.each(data, function (i, state) {
                     $stateSelectorControl.append("<option value=\"" + state.id + "\">" + state.name + "</option>");
                 });
-                HideEmpty();
+                if ($stateSelectorControl.children("option").length > 0) {
+                    $stateSelectorHolder.show();
+                } else {
+                    $stateSelectorHolder.hide();
+                }
             });
-        });
+        }
 
-        HideEmpty();
+        $(countrySelector).change(LoadStates);
+
+        LoadStates();
 
         return this;
     };
