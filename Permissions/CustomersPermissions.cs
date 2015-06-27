@@ -71,7 +71,8 @@ namespace OShop.Permissions {
                     Name = "Authenticated",
                     Permissions = new[] {
                         OrdersPermissions.ViewOwnOrders,
-                        CustomersPermissions.ViewOwnCustomerAccount
+                        CustomersPermissions.ViewOwnCustomerAccount,
+                        CustomersPermissions.EditOwnCustomerAccount
                     }
                 }
             };
