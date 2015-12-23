@@ -2,9 +2,6 @@
 using Orchard.Localization;
 using OShop.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Routing;
 
 namespace OShop.Services {
@@ -34,7 +31,15 @@ namespace OShop.Services {
         }
 
         public RouteValueDictionary GetPaymentRoute(PaymentPart Part) {
-            return null;
+            if (Part == null) {
+                throw new ArgumentNullException("Part", "PaymentPart cannot be null.");
+            }
+            return new RouteValueDictionary(new {
+                Area = "OShop",
+                Controller = "OfflinePayment",
+                Action = "Create",
+                Id = Part.ContentItem.Id
+            });
         }
     }
 }

@@ -1,0 +1,41 @@
+﻿@model OShop.Models.OfflinePaymentSettingsPart
+@using Orchard.Environment.Configuration
+@{
+    Layout.Title = T("Offline Payment Settings");
+
+    Script.Require("ContentPicker").AtFoot();
+    var title = Model.Content == null ? new HtmlString(T("Empty").Text) : Html.ItemDisplayText(Model.Content);
+}
+
+@using (Html.BeginFormAntiForgeryPost()) {
+    @Html.ValidationSummary()
+    <fieldset>
+        <label>@T("Content Item")</label>
+        <span id="title-@Html.FieldIdFor(m => m.ContentItemId)" class="content-picker-title">@title</span>
+        <span id="btn-@Html.FieldIdFor(m => m.ContentItemId)" class="button">@T("Browse")</span>
+        @Html.HiddenFor(m => m.ContentItemId)
+        <span class="hint">@T("Select the Content Item to display offline payment instructions.")</span>
+    </fieldset>
+
+    <div>
+        <button type="submit" name="submit.Save" value="create">@T("Save")</button>
+    </div>
+}
+
+@using (Script.Foot()) {
+    <script type="text/javascript">
+//<![CDATA[
+    jQuery('#btn-@Html.FieldIdFor(m => m.ContentItemId)').click(function() {
+        jQuery('#btn-@Html.FieldIdFor(m => m.ContentItemId)').trigger("orchard-admin-contentpicker-open", {
+            callback: function(data) {
+
+                jQuery('#@Html.FieldIdFor(m => m.ContentItemId)').val(data.id);
+
+                jQuery('#title-@Html.FieldIdFor(m => m.ContentItemId)').text(data.displayText);
+            },
+            baseUrl: '@HttpUtility.JavaScriptStringEncode(Url.Content("~/" + WorkContext.Resolve<ShellSettings>().RequestUrlPrefix))'
+        });
+    });
+//]]>
+    </script>
+}

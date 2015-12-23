@@ -24,6 +24,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -48,6 +49,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\lib\newtonsoft.json\Newtonsoft.Json.dll</HintPath>
@@ -62,13 +67,33 @@
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Web.Mvc, Version=5.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\lib\aspnetmvc\System.Web.Mvc.dll</HintPath>
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Xml.Linq" />
@@ -95,6 +120,7 @@
     <Content Include="Scripts\oshop-admin.min.js.map">
       <DependentUpon>oshop-admin.min.js</DependentUpon>
     </Content>
+    <Content Include="packages.config" />
     <None Include="Styles\oshop-admin.less" />
     <Content Include="Styles\oshop-admin.css">
       <DependentUpon>oshop-admin.less</DependentUpon>
@@ -183,6 +209,7 @@
     <Content Include="Views\EditorTemplates\Parts\Order.Vat.cshtml" />
     <Content Include="Views\EditorTemplates\Parts\Payment.cshtml" />
     <Content Include="Views\Parts\Payment.Providers.cshtml" />
+    <Content Include="Views\OfflinePayment\Settings.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Orchard.Core">
@@ -197,6 +224,7 @@
   <ItemGroup>
     <Compile Include="Controllers\CheckoutController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
+    <Compile Include="Controllers\OfflinePaymentController.cs" />
     <Compile Include="Controllers\OrdersAdminController.cs" />
     <Compile Include="Controllers\CustomersAdminController.cs" />
     <Compile Include="Controllers\LocationsAdminController.cs" />
@@ -230,6 +258,7 @@
     <Compile Include="Handlers\CustomerOrderPartHandler.cs" />
     <Compile Include="Handlers\CustomerAddressPartHandler.cs" />
     <Compile Include="Handlers\CustomerPartHandler.cs" />
+    <Compile Include="Handlers\OfflinePaymentSettingsPartHandler.cs" />
     <Compile Include="Handlers\OrderPartHandler.cs" />
     <Compile Include="Handlers\OrderProductsPartHandler.cs" />
     <Compile Include="Handlers\OrderVatPartHandler.cs" />
@@ -275,6 +304,7 @@
     <Compile Include="Models\LocationsCountryRecord.cs" />
     <Compile Include="Models\LocationsStateRecord.cs" />
     <Compile Include="Models\NumberFormats.cs" />
+    <Compile Include="Models\OfflinePaymentSettingsPart.cs" />
     <Compile Include="Models\OrderAddressRecord.cs" />
     <Compile Include="Models\OrderDetail.cs" />
     <Compile Include="Models\OrderDetailRecord.cs" />
@@ -310,6 +340,7 @@
     <Compile Include="Models\VatRatePartRecord.cs" />
     <Compile Include="Models\VatSettingsPart.cs" />
     <Compile Include="Navigation\AdminMenu.cs" />
+    <Compile Include="Navigation\OfflinePaymentAdminMenu.cs" />
     <Compile Include="Navigation\OrdersAdminMenu.cs" />
     <Compile Include="Navigation\LocationsAdminMenu.cs" />
     <Compile Include="Navigation\CustomersAdminMenu.cs" />

@@ -61,4 +61,4 @@ Features:
 		Name: OShop Offline Payment
 		Category: Commerce
         Description: Enables offline payment.
-		Dependencies: OShop.Payment
+		Dependencies: OShop.Payment, Orchard.ContentPicker
