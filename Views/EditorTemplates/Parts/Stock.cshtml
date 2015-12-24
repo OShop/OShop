@@ -1,0 +1,31 @@
+﻿@model OShop.Models.StockPart
+
+@{
+    Script.Require("OShopAdmin");
+}
+
+<fieldset>
+    <legend>@T("Stock")</legend>
+    <div>
+        @Html.CheckBoxFor(m => m.EnableStockMgmt)
+        @Html.LabelFor(m => m.EnableStockMgmt, T("Enable stock management").Text, new { @class = "forcheckbox" })
+        @Html.ValidationMessageFor(m => m.EnableStockMgmt)
+    </div>
+    <div id="stock-details">
+        <div>
+            @Html.LabelFor(m => m.InStockQty, T("In stock Qty."))
+            @Html.TextBoxFor(m => m.InStockQty, new { @class = "text small" })
+            @Html.ValidationMessageFor(m => m.InStockQty, "*")
+        </div>
+        <div>
+            @Html.LabelFor(m => m.AlertQty, T("Alert Qty."))
+            @Html.TextBoxFor(m => m.AlertQty, new { @class = "text small" })
+            @Html.ValidationMessageFor(m => m.AlertQty, "*")
+        </div>
+        <div>
+            @Html.CheckBoxFor(m => m.AllowOutOfStock)
+            @Html.LabelFor(m => m.AllowOutOfStock, T("Allow out of stock orders").Text, new { @class = "forcheckbox" })
+            @Html.ValidationMessageFor(m => m.AllowOutOfStock)
+        </div>
+    </div>
+</fieldset>

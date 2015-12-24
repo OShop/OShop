@@ -12,6 +12,11 @@ Features:
 		Category: Commerce
         Description: Provides product part.
 		Dependencies: OShop
+    OShop.Stocks:
+		Name: OShop Stocks
+		Category: Commerce
+        Description: Provides stocks management.
+		Dependencies: OShop
     OShop.VAT:
 		Name: OShop VAT
 		Category: Commerce

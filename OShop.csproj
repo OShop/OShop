@@ -210,6 +210,7 @@
     <Content Include="Views\EditorTemplates\Parts\Payment.cshtml" />
     <Content Include="Views\Parts\Payment.Providers.cshtml" />
     <Content Include="Views\OfflinePayment\Settings.cshtml" />
+    <Content Include="Views\EditorTemplates\Parts\Stock.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Orchard.Core">
@@ -251,6 +252,7 @@
     <Compile Include="Drivers\ShippingProviderPartDriver.cs" />
     <Compile Include="Drivers\ShoppingCartProductPartDriver.cs" />
     <Compile Include="Drivers\ShoppingCartWidgetPartDriver.cs" />
+    <Compile Include="Drivers\StockPartDriver.cs" />
     <Compile Include="Drivers\VatPartDriver.cs" />
     <Compile Include="Drivers\VatRatePartDriver.cs" />
     <Compile Include="Extensions\CurrencyExtensions.cs" />
@@ -268,6 +270,7 @@
     <Compile Include="Handlers\OrderShippingPartHandler.cs" />
     <Compile Include="Handlers\ShippingPartHandler.cs" />
     <Compile Include="Handlers\ShippingProviderPartHandler.cs" />
+    <Compile Include="Handlers\StocksPartHandler.cs" />
     <Compile Include="Handlers\VatPartHandler.cs" />
     <Compile Include="Handlers\VatRatePartHandler.cs" />
     <Compile Include="Handlers\VatSettingsPartHandler.cs" />
@@ -285,6 +288,7 @@
     <Compile Include="Migrations\ProductsMigrations.cs" />
     <Compile Include="Migrations\ShippingMigrations.cs" />
     <Compile Include="Migrations\ShoppingCartMigrations.cs" />
+    <Compile Include="Migrations\StocksMigration.cs" />
     <Compile Include="Migrations\VatMigrations.cs" />
     <Compile Include="Models\CustomerAddressPart.cs" />
     <Compile Include="Models\CustomerAddressPartRecord.cs" />
@@ -332,6 +336,8 @@
     <Compile Include="Models\ShoppingCartItemRecord.cs" />
     <Compile Include="Models\ShoppingCartRecord.cs" />
     <Compile Include="Models\ShoppingCartWidgetPart.cs" />
+    <Compile Include="Models\StockPart.cs" />
+    <Compile Include="Models\StockPartRecord.cs" />
     <Compile Include="Models\Tax.cs" />
     <Compile Include="Models\TaxAmount.cs" />
     <Compile Include="Models\VatPart.cs" />

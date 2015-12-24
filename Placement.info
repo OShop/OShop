@@ -30,6 +30,8 @@
   <Match ContentType="ShippingProvider">
     <Place Parts_Common_Metadata_Summary="-"/>
   </Match>
+  <!-- Stocks -->
+  <Place Parts_Stock_Edit="Content:3.2" />
   <!-- Customer -->
   <Place Parts_Customer_Edit="Content:3"/>
   <Place Parts_Customer_AdminEdit="Content:3"/>

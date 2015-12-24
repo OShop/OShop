@@ -16,6 +16,22 @@
     DisplayShippingDetails();
 
     /*
+        StockPart editor
+        EditorTemplates/Parts/Stock.cshtml
+    */
+    function DisplayStockDetails() {
+        if ($("#Stock_EnableStockMgmt").prop("checked")) {
+            $("#stock-details").show();
+        } else {
+            $("#stock-details").hide();
+        }
+    };
+
+    $("#Stock_EnableStockMgmt").on("change", DisplayStockDetails);
+
+    DisplayStockDetails();
+
+    /*
         Order editing utilities
     */
     $(".oshop-editable button[name=edit]").on("click", function () {
