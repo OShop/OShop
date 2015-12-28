@@ -6,9 +6,6 @@
     Layout.Title = pageTitle;
 }
 
-<div class="manage">
-    @Html.ActionLink(createLinkText.Text, "Create", "Admin", new { Area = "Contents", Id = "Order" }, new { @class = "button primaryAction" })
-</div>
 @using (Html.BeginFormAntiForgeryPost()) {
     <fieldset class="bulk-actions">
         <label for="publishActions">@T("Actions:")</label>
