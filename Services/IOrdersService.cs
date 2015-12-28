@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace OShop.Services {
     public interface IOrdersService : IDependency {
+        void CreateOrder(IContent order);
         String BuildOrderReference();
         OrderPart GetOrderByReference(string Refrence);
         IEnumerable<OrderPart> GetMyOrders();

@@ -22,7 +22,7 @@ namespace OShop.Controllers
     {
         private readonly ICustomersService _customersService;
         private readonly IShoppingCartService _shoppingCartService;
-        private readonly IContentManager _contentManager;
+        private readonly IOrdersService _ordersService;
         private readonly IShippingService _shippingService;
         private readonly IEnumerable<IPaymentProvider> _paymentProviders;
         private readonly dynamic _shapeFactory;
@@ -30,14 +30,14 @@ namespace OShop.Controllers
         public CheckoutController(
             ICustomersService customersService,
             IShoppingCartService shoppingCartService,
-            IContentManager contentManager,
+            IOrdersService ordersService,
             IOrchardServices services,
             IShapeFactory shapeFactory,
             IEnumerable<IPaymentProvider> paymentProviders,
             IShippingService shippingService = null) {
             _customersService = customersService;
             _shoppingCartService = shoppingCartService;
-            _contentManager = contentManager;
+            _ordersService = ordersService;
             _shapeFactory = shapeFactory;
             _shippingService = shippingService;
             _paymentProviders = paymentProviders.OrderByDescending(p => p.Priority);
@@ -133,7 +133,7 @@ namespace OShop.Controllers
         public ActionResult ValidateOrderPost(string Payment) {
             var order = TempData["OShop.Checkout.Order"] as IContent;
             if (order != null) {
-                _contentManager.Create(order);
+                _ordersService.CreateOrder(order);
                 _shoppingCartService.Empty();
 
                 var paymentPart = order.As<PaymentPart>();

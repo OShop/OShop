@@ -26,6 +26,10 @@ namespace OShop.Services {
             _clock = clock;
         }
 
+        public void CreateOrder(IContent order) {
+            _contentManager.Create(order);
+        }
+
         public string BuildOrderReference() {
             String dateStr = _clock.UtcNow.ToLocalTime().ToString("yyyyMMddHHmmss");
             String newRef;
