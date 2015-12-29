@@ -11,6 +11,7 @@ namespace OShop.Migrations {
                 .ContentPartRecord()
                 .Column<bool>("EnableStockMgmt", c => c.NotNull())
                 .Column<int>("InStockQty", c => c.NotNull())
+                .Column<int>("InOrderQty", c => c.NotNull())
                 .Column<int>("AlertQty", c => c.NotNull())
                 .Column<bool>("AllowOutOfStock", c => c.NotNull())
             );

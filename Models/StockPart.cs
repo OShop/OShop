@@ -4,29 +4,30 @@ using System.ComponentModel.DataAnnotations;
 namespace OShop.Models {
     public class StockPart : ContentPart<StockPartRecord> {
         [Required]
-        public bool EnableStockMgmt
-        {
+        public bool EnableStockMgmt {
             get { return this.Retrieve(x => x.EnableStockMgmt); }
             set { this.Store(x => x.EnableStockMgmt, value); }
         }
 
         [Required]
-        public int InStockQty
-        {
+        public int InStockQty {
             get { return this.Retrieve(x => x.InStockQty); }
             set { this.Store(x => x.InStockQty, value); }
         }
 
+        public int InOrderQty {
+            get { return this.Retrieve(x => x.InOrderQty); }
+            set { this.Store(x => x.InOrderQty, value); }
+        }
+
         [Required]
-        public int AlertQty
-        {
+        public int AlertQty {
             get { return this.Retrieve(x => x.AlertQty); }
             set { this.Store(x => x.AlertQty, value); }
         }
 
         [Required]
-        public bool AllowOutOfStock
-        {
+        public bool AllowOutOfStock {
             get { return this.Retrieve(x => x.AllowOutOfStock); }
             set { this.Store(x => x.AllowOutOfStock, value); }
         }

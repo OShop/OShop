@@ -15,6 +15,7 @@
         <div>
             @Html.LabelFor(m => m.InStockQty, T("In stock Qty."))
             @Html.TextBoxFor(m => m.InStockQty, new { @class = "text small" })
+            <span class="hint">@T("{0} in order.", Model.InOrderQty)</span>
             @Html.ValidationMessageFor(m => m.InStockQty, "*")
         </div>
         <div>
