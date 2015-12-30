@@ -3,7 +3,6 @@ using Orchard.ContentManagement;
 using Orchard.Environment.Extensions;
 using OShop.Events;
 using OShop.Models;
-using System;
 
 namespace OShop.Handlers {
     [OrchardFeature("OShop.Stocks")]

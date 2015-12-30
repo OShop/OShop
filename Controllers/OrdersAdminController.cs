@@ -15,11 +15,9 @@ using OShop.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
-namespace OShop.Controllers
-{
+namespace OShop.Controllers {
     [Admin]
     [OrchardFeature("OShop.Orders")]
     public class OrdersAdminController : Controller

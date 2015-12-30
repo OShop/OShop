@@ -1,6 +1,5 @@
 ﻿using Orchard.ContentManagement;
 using Orchard.Core.Common.Models;
-using Orchard.Data;
 using Orchard.Environment.Extensions;
 using Orchard.Security;
 using Orchard.Services;
@@ -8,7 +7,6 @@ using OShop.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace OShop.Services {
     [OrchardFeature("OShop.Orders")]
