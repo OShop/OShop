@@ -1,5 +1,6 @@
 ﻿@model OShop.ViewModels.OrderPartEditViewModel
 @using Orchard.Utility.Extensions
+@using OShop.Models
 @{
     Style.Require("OShopAdmin");
     if (!String.IsNullOrWhiteSpace(Model.Reference)) {
@@ -15,7 +16,12 @@
         <legend>@T("Order")</legend>
         <div>
             <label for="@Html.FieldIdFor(m => m.OrderStatus)" class="inline">@T("Status")</label>
-            @Html.EnumDropDownListFor(m => m.OrderStatus)
+            <select id="@Html.FieldIdFor(m => m.OrderStatus)" name="@Html.FieldNameFor(m => m.OrderStatus)">
+                <option value="@((int)OrderStatus.Canceled)" @(Model.OrderStatus == OrderStatus.Canceled ? "selected=\"selected\"" : "")>@T("Canceled")</option>
+                <option value="@((int)OrderStatus.Pending)" @(Model.OrderStatus == OrderStatus.Pending ? "selected=\"selected\"" : "")>@T("Pending")</option>
+                <option value="@((int)OrderStatus.Processing)" @(Model.OrderStatus == OrderStatus.Processing ? "selected=\"selected\"" : "")>@T("Processing")</option>
+                <option value="@((int)OrderStatus.Completed)" @(Model.OrderStatus == OrderStatus.Completed ? "selected=\"selected\"" : "")>@T("Completed")</option>
+            </select>
         </div>
     </fieldset>
     <fieldset>
