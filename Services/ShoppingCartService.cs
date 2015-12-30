@@ -6,7 +6,6 @@ using Orchard.Environment.Extensions;
 using Orchard.Services;
 using OShop.Models;
 using OShop.Services.ShoppingCartResolvers;
-using OShop.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -126,11 +125,12 @@ namespace OShop.Services {
 
         public void Add(int ItemId, string ItemType = ProductPart.PartItemType, int Quantity = 1) {
             var cart = GetCartRecord(CreateIfNull: true);
+            var stock = _contentManager.Get(ItemId).As<IStock>();
 
             var item = cart.Items.Where(i=>i.ItemId == ItemId && i.ItemType == ItemType).FirstOrDefault();
             if (item != null) {
                 // Existing cart item
-                item.Quantity += Quantity;
+                item.Quantity = stock != null && stock.MaxOrderQty.HasValue ? Math.Max(stock.MaxOrderQty.Value, item.Quantity + Quantity) : item.Quantity + Quantity;
             }
             else {
                 // New cart item
@@ -138,7 +138,7 @@ namespace OShop.Services {
                     ShoppingCartRecord = cart,
                     ItemType = ItemType,
                     ItemId = ItemId,
-                    Quantity = Quantity
+                    Quantity = stock != null && stock.MaxOrderQty.HasValue ? Math.Min(stock.MaxOrderQty.Value, Quantity) : Quantity
                 });
             }
 
@@ -153,8 +153,10 @@ namespace OShop.Services {
             var item = _shoppingCartItemRepository.Get(Id);
 
             if (item != null) {
+                var stock = _contentManager.Get(item.ItemId).As<IStock>();
+
                 if (item.Quantity != Quantity) {
-                    item.Quantity = Quantity;
+                    item.Quantity = stock != null && stock.MaxOrderQty.HasValue ? Math.Min(stock.MaxOrderQty.Value, Quantity) : Quantity;
                 }
 
                 item.ShoppingCartRecord.ModifiedUtc = _clock.UtcNow;
