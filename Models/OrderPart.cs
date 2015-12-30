@@ -10,6 +10,7 @@ namespace OShop.Models {
         internal readonly LazyField<List<OrderDetail>> _details = new LazyField<List<OrderDetail>>();
         internal readonly LazyField<decimal> _orderTotal = new LazyField<decimal>();
         internal readonly LazyField<OrderAddressRecord> _billingAddress = new LazyField<OrderAddressRecord>();
+        internal OrderStatus OriginalStatus;
 
         public OrderPart() {
             T = NullLocalizer.Instance;

@@ -270,6 +270,7 @@
     <Compile Include="Handlers\OrderShippingPartHandler.cs" />
     <Compile Include="Handlers\ShippingPartHandler.cs" />
     <Compile Include="Handlers\ShippingProviderPartHandler.cs" />
+    <Compile Include="Handlers\StocksOrderEventHandler.cs" />
     <Compile Include="Handlers\StocksPartHandler.cs" />
     <Compile Include="Handlers\VatPartHandler.cs" />
     <Compile Include="Handlers\VatRatePartHandler.cs" />
@@ -369,7 +370,7 @@
     <Compile Include="Services\ICurrencyProvider.cs" />
     <Compile Include="Services\ICustomersService.cs" />
     <Compile Include="Services\ILocationsService.cs" />
-    <Compile Include="Services\IOrderEventHandler.cs" />
+    <Compile Include="Events\IOrderEventHandler.cs" />
     <Compile Include="Services\IOrdersService.cs" />
     <Compile Include="Services\IPaymentProvider.cs" />
     <Compile Include="Services\IPaymentService.cs" />

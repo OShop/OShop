@@ -2,31 +2,29 @@
 using Orchard.ContentManagement.Handlers;
 using Orchard.Data;
 using Orchard.Environment.Extensions;
+using OShop.Events;
 using OShop.Extensions;
 using OShop.Models;
 using OShop.Services;
 using System;
 using System.Linq;
-using System.Web.Routing;
 
 namespace OShop.Handlers {
     [OrchardFeature("OShop.Orders")]
     public class OrderPartHandler : ContentHandler {
-        private readonly IRepository<OrderDetailRecord> _orderDetailsRepository;
-
         public OrderPartHandler(
             IRepository<OrderPartRecord> repository,
             IContentManager contentManager,
             IRepository<OrderDetailRecord> orderDetailsRepository,
             IOrdersService ordersService,
-            IRepository<OrderAddressRecord> orderAddressRepository) {
-            _orderDetailsRepository = orderDetailsRepository;
+            IRepository<OrderAddressRecord> orderAddressRepository,
+            IOrderEventHandler orderEventHandler) {
 
             Filters.Add(StorageFilter.For(repository));
 
             OnActivated<OrderPart>((context, part) => {
                 // Details
-                part._details.Loader(details => _orderDetailsRepository.Fetch(d => d.OrderId == part.Id)
+                part._details.Loader(details => orderDetailsRepository.Fetch(d => d.OrderId == part.Id)
                     .Select(d => new OrderDetail(d))
                     .ToList());
 
@@ -52,43 +50,65 @@ namespace OShop.Handlers {
                 // Order total
                 part.OrderTotal = BuildOrderTotal(part);
 
-                SaveDetails(part);
+                SaveDetails(part, orderDetailsRepository, orderEventHandler);
                 part.BillingAddressId = orderAddressRepository.CreateOrUpdate(part.BillingAddress);
+
+                orderEventHandler.OrderCreated(context.ContentItem);
+            });
+
+            OnUpdating<OrderPart>((context, part) => {
+                // Status
+                part.OriginalStatus = part.OrderStatus;
             });
 
             OnUpdated<OrderPart>((context, part) => {
                 // Order total
                 part.OrderTotal = BuildOrderTotal(part);
 
-                SaveDetails(part);
+                SaveDetails(part, orderDetailsRepository, orderEventHandler);
                 part.BillingAddressId = orderAddressRepository.CreateOrUpdate(part.BillingAddress);
+
+                if(part.OrderStatus != part.OriginalStatus) {
+                    switch (part.OrderStatus) {
+                        case OrderStatus.Canceled:
+                            orderEventHandler.OrderCanceled(context.ContentItem);
+                            break;
+                        case OrderStatus.Completed:
+                            orderEventHandler.OrderCompleted(context.ContentItem);
+                            break;
+                    }
+                }
             });
         }
 
-        private void SaveDetails(OrderPart part) {
+        private void SaveDetails(OrderPart part, IRepository<OrderDetailRecord> detailsRepository, IOrderEventHandler orderEventHandler) {
             if (part.Id <= 0) {
                 return;
             }
 
-            var oldDetails = _orderDetailsRepository.Fetch(d => d.OrderId == part.Id);
+            var oldDetails = detailsRepository.Fetch(d => d.OrderId == part.Id);
             foreach (var detail in part.Details.Where(d => !oldDetails.Where(od => od.Id == d.Id).Any())) {
                 // New details
                 var newRecord = detail.Record;
                 newRecord.OrderId = part.Id;
-                _orderDetailsRepository.Create(newRecord);
+                detailsRepository.Create(newRecord);
+                orderEventHandler.OrderDetailCreated(part.ContentItem, newRecord);
             }
             foreach (var detail in part.Details.Join(oldDetails, d => d.Id, od => od.Id, (d, od) => new { updated = d, stored = od})) {
                 // Updated details
                 if (detail.updated.Quantity <= 0) {
-                    _orderDetailsRepository.Delete(detail.stored);
+                    detailsRepository.Delete(detail.stored);
+                    orderEventHandler.OrderDetailDeleted(part.ContentItem, detail.stored);
                 }
                 else {
-                    _orderDetailsRepository.Update(detail.updated.Record);
+                    detailsRepository.Update(detail.updated.Record);
+                    orderEventHandler.OrderDetailUpdated(part.ContentItem, detail.stored, detail.updated.Record);
                 }
             }
             foreach (var removed in oldDetails.Where(od => !part.Details.Where(d => d.Id == od.Id).Any())) {
                 // Removed details
-                _orderDetailsRepository.Delete(removed);
+                detailsRepository.Delete(removed);
+                orderEventHandler.OrderDetailDeleted(part.ContentItem, removed);
             }
         }
 
