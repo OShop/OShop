@@ -52,6 +52,11 @@ Features:
 		Category: Commerce
         Description: Provides orders management.
 		Dependencies: OShop.Locations
+	OShop.Orders.Workflows:
+		Name: OShop Orders Workflows Activities
+		Category: Commerce
+        Description: Provides Order based Workflow Activites.
+		Dependencies: OShop.Orders, Orchard.Workflows
 	OShop.Payment:
 		Name: OShop Payment
 		Category: Commerce

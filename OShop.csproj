@@ -223,6 +223,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activities\OrderActivity.cs" />
+    <Compile Include="Activities\OrderCanceledActivity.cs" />
+    <Compile Include="Activities\OrderCompletedActivity.cs" />
+    <Compile Include="Activities\OrderCreatedActivity.cs" />
     <Compile Include="Controllers\CheckoutController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\OfflinePaymentController.cs" />
@@ -282,6 +286,7 @@
     <Compile Include="Extensions\ShoppingCartExtensions.cs" />
     <Compile Include="Extensions\TaxExtensions.cs" />
     <Compile Include="Extensions\VatExtensions.cs" />
+    <Compile Include="Handlers\WorkflowOrderEventHandler.cs" />
     <Compile Include="Migrations\CustomerMigrations.cs" />
     <Compile Include="Migrations\LocationsMigrations.cs" />
     <Compile Include="Migrations\OrdersMigrations.cs" />
@@ -400,6 +405,8 @@
     <Compile Include="Shapes\OShopShapeProvider.cs" />
     <Compile Include="Shapes\VatShapeProvider.cs" />
     <Compile Include="Tokens\LocationsTokens.cs" />
+    <Compile Include="Tokens\CustomerOrderTokens.cs" />
+    <Compile Include="Tokens\OrderTokens.cs" />
     <Compile Include="ViewModels\CheckoutIndexViewModel.cs" />
     <Compile Include="ViewModels\CustomerAddressEditViewModel.cs" />
     <Compile Include="ViewModels\LocationFieldViewModel.cs" />
@@ -452,6 +459,10 @@
     <ProjectReference Include="..\Orchard.Tokens\Orchard.Tokens.csproj">
       <Project>{6f759635-13d7-4e94-bcc9-80445d63f117}</Project>
       <Name>Orchard.Tokens</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Orchard.Workflows\Orchard.Workflows.csproj">
+      <Project>{7059493c-8251-4764-9c1e-2368b8b485bc}</Project>
+      <Name>Orchard.Workflows</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
