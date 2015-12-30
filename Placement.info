@@ -32,6 +32,9 @@
   </Match>
   <!-- Stocks -->
   <Place Parts_Stock_Edit="Content:3.2" />
+  <Match DisplayType="Detail">
+    <Place Parts_Stock="Content:3.2" />
+  </Match>
   <!-- Customer -->
   <Place Parts_Customer_Edit="Content:3"/>
   <Place Parts_Customer_AdminEdit="Content:3"/>

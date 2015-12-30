@@ -1,8 +1,9 @@
 ﻿using Orchard.ContentManagement;
 using System.ComponentModel.DataAnnotations;
+using System;
 
 namespace OShop.Models {
-    public class StockPart : ContentPart<StockPartRecord> {
+    public class StockPart : ContentPart<StockPartRecord>, IStock {
         [Required]
         public bool EnableStockMgmt {
             get { return this.Retrieve(x => x.EnableStockMgmt); }
@@ -30,6 +31,14 @@ namespace OShop.Models {
         public bool AllowOutOfStock {
             get { return this.Retrieve(x => x.AllowOutOfStock); }
             set { this.Store(x => x.AllowOutOfStock, value); }
+        }
+
+        public int? AvailableQty {
+            get { return EnableStockMgmt ? (int?)(InStockQty - InOrderQty) : null; }
+        }
+
+        public int? MaxOrderQty {
+            get { return AllowOutOfStock ? null : AvailableQty; }
         }
     }
 }

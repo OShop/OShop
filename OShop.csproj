@@ -211,6 +211,7 @@
     <Content Include="Views\Parts\Payment.Providers.cshtml" />
     <Content Include="Views\OfflinePayment\Settings.cshtml" />
     <Content Include="Views\EditorTemplates\Parts\Stock.cshtml" />
+    <Content Include="Views\Parts\Stock.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Orchard.Core">
@@ -309,6 +310,7 @@
     <Compile Include="Models\IOrderAddress.cs" />
     <Compile Include="Models\IShippingInfo.cs" />
     <Compile Include="Models\IShopItem.cs" />
+    <Compile Include="Models\IStock.cs" />
     <Compile Include="Models\ITax.cs" />
     <Compile Include="Models\ItemShippingInfo.cs" />
     <Compile Include="Models\LocationsCountryRecord.cs" />

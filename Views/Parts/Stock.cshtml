@@ -1,0 +1,16 @@
+﻿@using OShop.Models
+@{
+    StockPart part = Model.ContentPart;
+}
+
+@if (part.EnableStockMgmt) {
+    if (part.AvailableQty > part.AlertQty) {
+        <span class="stock stock-ok">@T("In stock")</span>
+    }
+    else if (part.AvailableQty > 0) {
+        <span class="stock stock-warning">@T("Few remaining")</span>
+    }
+    else {
+        <span class="stock stock-alert">@T("Out of stock")</span>
+    }
+}

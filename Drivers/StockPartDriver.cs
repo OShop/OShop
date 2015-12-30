@@ -1,4 +1,5 @@
-﻿using Orchard.ContentManagement;
+﻿using System.Runtime.CompilerServices;
+using Orchard.ContentManagement;
 using Orchard.ContentManagement.Drivers;
 using Orchard.Environment.Extensions;
 using OShop.Models;
@@ -11,6 +12,10 @@ namespace OShop.Drivers {
         protected override string Prefix { get { return "Stock"; } }
 
         public StockPartDriver() { }
+
+        protected override DriverResult Display(StockPart part, string displayType, dynamic shapeHelper) {
+            return ContentShape("Parts_Stock", () => shapeHelper.Parts_Stock(ContentPart: part));
+        }
 
         // GET
         protected override DriverResult Editor(StockPart part, dynamic shapeHelper) {
