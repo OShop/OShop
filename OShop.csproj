@@ -400,6 +400,7 @@
     <Compile Include="Services\ShoppingCartResolvers\LocationResolver.cs" />
     <Compile Include="Services\ShoppingCartResolvers\ShippingZoneResolver.cs" />
     <Compile Include="Services\ShoppingCartResolvers\ItemsVatResolver.cs" />
+    <Compile Include="Services\ShoppingCartResolvers\StockResolver.cs" />
     <Compile Include="Services\ShoppingCartService.cs" />
     <Compile Include="Services\VatService.cs" />
     <Compile Include="Settings\LocationFieldEditorEvents.cs" />
