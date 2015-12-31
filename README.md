@@ -11,6 +11,7 @@ E-commerce module for Orchard CMS
 ## Project status :
 ####Available features
 * Products
+* Stock management
 * VAT
 * Locations
 * Shipping
@@ -20,8 +21,8 @@ E-commerce module for Orchard CMS
 * Payment methods
 
 ####Roadmap
-* Add stock management
 * Add US tax management
+* Add bundle support
 
 ## Contributions :
 Contributions and contributors are warmly welcome, it would be great if it becomes a community project !
