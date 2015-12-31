@@ -31,7 +31,7 @@
     <Place Parts_Common_Metadata_Summary="-"/>
   </Match>
   <!-- Stocks -->
-  <Place Parts_Stock_Edit="Content:3.2" />
+  <Place Parts_Stock_Edit="Content:3.3" />
   <Match DisplayType="Detail">
     <Place Parts_Stock="Content:3.2" />
   </Match>
