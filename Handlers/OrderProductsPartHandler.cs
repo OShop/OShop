@@ -2,17 +2,15 @@
 using Orchard.ContentManagement.Handlers;
 using Orchard.Environment.Extensions;
 using OShop.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace OShop.Handlers {
     [OrchardFeature("OShop.Products")]
     public class OrderProductsPartHandler : ContentHandler {
         public OrderProductsPartHandler() {
             OnActivated<OrderProductsPart>((context, part) => {
-                part._productDetails.Loader(shippingDetails => {
+                part._productDetails.Loader(productDetails => {
                     var orderPart = context.ContentItem.As<OrderPart>();
                     if (orderPart != null) {
                         return orderPart.Details.Where(d => d.DetailType == ProductPart.PartItemType);
