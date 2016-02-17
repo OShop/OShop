@@ -27,6 +27,9 @@ E-commerce module for Orchard CMS
 ## Contributions :
 Contributions and contributors are warmly welcome, it would be great if it becomes a community project !
 
+## Translation
+Translations available at [Orchard CMS Gallery Crowdin project](https://crowdin.com/project/orchard-cms-gallery)
+
 ## Current alternatives :
 * [Nwazet.Commerce](https://bitbucket.org/bleroy/nwazet.commerce) : Most advanced solution
 * [DarkSky.Commerce](https://darkskycommerce.codeplex.com/) : Very interesting, but not complete and quite outdated
