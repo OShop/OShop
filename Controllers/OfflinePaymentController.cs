@@ -49,7 +49,7 @@ namespace OShop.Controllers {
         [Admin]
         [HttpPost, ActionName("Settings")]
         public ActionResult SettingsPOST() {
-            if (!Services.Authorizer.Authorize(OShopPermissions.ManageShopSettings, T("Not allowed to manage Offline Payment Settings Settings")))
+            if (!Services.Authorizer.Authorize(OShopPermissions.ManageShopSettings, T("Not allowed to manage Offline Payment Settings")))
                 return new HttpUnauthorizedResult();
 
             var offlinePaymentSettings = Services.WorkContext.CurrentSite.As<OfflinePaymentSettingsPart>();
