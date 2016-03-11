@@ -13,10 +13,8 @@
         }*@
 
     @if (Model.Cart.IsValid && Model.CheckoutProviders != null) {
-        <div class="checkout">
-            @foreach (ICheckoutProvider provider in Model.CheckoutProviders) {
-                <button type="submit" name="Checkout" value="@provider.Name" class="@provider.Name.HtmlClassify()">@provider.Label</button>
-            }
-        </div>
+        foreach (ICheckoutProvider provider in Model.CheckoutProviders) {
+            <button type="submit" name="Checkout" value="@provider.Name" class="checkout @provider.Name.HtmlClassify()">@provider.Label</button>
+        }
     }
 </footer>
