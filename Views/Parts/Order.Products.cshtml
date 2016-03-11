@@ -9,22 +9,22 @@
 
 @foreach (var detail in part.ProductDetails) {
 <tr>
-    <td>
+    <td class="sku">
         @detail.SKU
     </td>
-    <td>
+    <td class="product">
         @detail.Designation
         @if (!String.IsNullOrWhiteSpace(detail.Description)) {
             <span class="description">@detail.Description</span>
         }
     </td>
-    <td>
+    <td class="price">
         @String.Format(numberFormat, "{0:C}", detail.UnitPrice)
     </td>
-    <td>
+    <td class="qty">
         @detail.Quantity
     </td>
-    <td>
+    <td class="total">
         @String.Format(numberFormat, "{0:C}", detail.Total)
     </td>
 </tr>

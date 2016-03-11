@@ -4,7 +4,7 @@
     var state = Model.Cart.Properties["ShippingState"] as LocationsStateRecord;
 }
 
-<fieldset>
+<fieldset class="shipping">
     <legend>@T("Shipping method :")</legend>
     @if (country != null) {
         <span class="hint">@T("Shipping options for {0}.", country.Name + (state != null ? " - " + state.Name : ""))</span>

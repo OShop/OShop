@@ -1,9 +1,9 @@
 ﻿@using OShop.Extensions
 <tr>
-    <td colspan="4">
+    <td colspan="4" class="sub-total">
         @Model.Label
     </td>
-    <td>
+    <td class="total">
         @String.Format(WorkContext.NumberFormat(), "{0:C}", Model.SubTotal)
     </td>
 </tr>

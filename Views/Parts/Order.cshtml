@@ -1,6 +1,7 @@
 ﻿@using OShop.Models
 
 @{
+    Html.AddPageClassNames("order");
     OrderPart order = Model.ContentPart;
     var title = T("Order {0}", order.Reference);
     Layout.Title = title;
