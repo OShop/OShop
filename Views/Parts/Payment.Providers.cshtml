@@ -9,13 +9,11 @@
 @if (providers.Any()) {
     <ul class="checkout-payments">
         @foreach (var provider in providers) {
+            var route = provider.GetPaymentRoute(part);
             <li class="@provider.Name.HtmlClassify()">
                 @provider.Label
                 @if (provider.Description != null) {
                     <span class="hint">@provider.Description</span>
-                }
-                @{
-                var route = provider.GetPaymentRoute(part);
                 }
                 @if (route != null) {
                     <a href="@Url.RouteUrl(route)" class="button">@T("Validate")</a>
