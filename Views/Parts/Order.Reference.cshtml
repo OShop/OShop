@@ -4,6 +4,8 @@
     OrderPart order = Model.ContentPart;
 }
 
-<span class="order-ref">
-    @T("Order number : {0}", order.Reference)
-</span>
+@if (!string.IsNullOrWhiteSpace(order.Reference)) {
+    <span class="order-ref">
+        @T("Order number : {0}", order.Reference)
+    </span>
+}
