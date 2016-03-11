@@ -5,6 +5,7 @@ using Orchard.Localization;
 using OShop.Models;
 using OShop.Services;
 using OShop.ViewModels;
+using System;
 
 namespace OShop.Drivers {
     [OrchardFeature("OShop.Shipping")]
@@ -32,7 +33,8 @@ namespace OShop.Drivers {
                     ContentPart: part,
                     Address: _locationsService.FormatAddress(part.ShippingAddress))),
                 ContentShape("Parts_Order_ShippingStatus", () => shapeHelper.Parts_Order_ShippingStatus(
-                    ContentPart: part)),
+                    ContentPart: part,
+                    Status: T(Enum.GetName(typeof(ShippingStatus), part.ShippingStatus)))),
                 ContentShape("Parts_Order_ShippingProvider", () => shapeHelper.Parts_Order_ShippingProvider(
                     ContentPart: part)),
                 ContentShape("Parts_Order_Shipping_SubTotal", () => shapeHelper.Parts_Order_SubTotal(

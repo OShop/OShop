@@ -6,6 +6,7 @@ using Orchard.Mvc;
 using OShop.Models;
 using OShop.Services;
 using OShop.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -32,16 +33,19 @@ namespace OShop.Drivers {
                 ContentShape("Parts_Order", () => shapeHelper.Parts_Order(
                     ContentPart: part)),
                 ContentShape("Parts_Order_Summary", () => shapeHelper.Parts_Order_Summary(
-                    ContentPart: part)),
+                    ContentPart: part,
+                    Status: T(Enum.GetName(typeof(OrderStatus), part.OrderStatus)))),
                 ContentShape("Parts_Order_SummaryAdmin", () => shapeHelper.Parts_Order_SummaryAdmin(
-                    ContentPart: part)),
+                    ContentPart: part,
+                    Status: T(Enum.GetName(typeof(OrderStatus), part.OrderStatus)))),
                 ContentShape("Parts_Order_Reference", () => shapeHelper.Parts_Order_Reference(
                     ContentPart: part)),
                 ContentShape("Parts_Order_BillingAddress", () => shapeHelper.Parts_Order_BillingAddress(
                     ContentPart: part,
                     Address: _locationsService.FormatAddress(part.BillingAddress))),
                 ContentShape("Parts_Order_Status", () => shapeHelper.Parts_Order_Status(
-                    ContentPart: part)),
+                    ContentPart: part,
+                    Status: T(Enum.GetName(typeof(OrderStatus), part.OrderStatus)))),
                 ContentShape("Parts_Order_Total", () => shapeHelper.Parts_Order_SubTotal(
                     Label: T("Order total"),
                     SubTotal: part.OrderTotal))

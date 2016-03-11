@@ -6,6 +6,6 @@
 }
 
 <span class="order">
-    @T("Order status") : @T(part.OrderStatus.ToString())&nbsp;&#124;&nbsp;
+    @T("Order status") : @(Model.Status)&nbsp;&#124;&nbsp;
     @T("Order total") : @String.Format(WorkContext.NumberFormat(), "{0:C}", part.OrderTotal)
 </span>

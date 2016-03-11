@@ -1,4 +1,5 @@
 ﻿@model OShop.ViewModels.OrderShippingPartEditViewModel
+@using OShop.Models
 @using Orchard.Utility.Extensions
 
 <div class="ordershipping-part">
@@ -6,7 +7,12 @@
         <legend>@T("Shipping")</legend>
         <div>
             <label for="@Html.FieldIdFor(m => m.ShippingStatus)" class="inline">@T("Status")</label>
-            @Html.EnumDropDownListFor(m => m.ShippingStatus)
+            <select id="@Html.FieldIdFor(m => m.ShippingStatus)" name="@Html.FieldNameFor(m => m.ShippingStatus)">
+                <option value="@((int)ShippingStatus.NotRequired)" @(Model.ShippingStatus == ShippingStatus.NotRequired ? "selected=\"selected\"" : "")>@T("Not required")</option>
+                <option value="@((int)ShippingStatus.Pending)" @(Model.ShippingStatus == ShippingStatus.Pending ? "selected=\"selected\"" : "")>@T("Pending")</option>
+                <option value="@((int)ShippingStatus.Shipped)" @(Model.ShippingStatus == ShippingStatus.Shipped ? "selected=\"selected\"" : "")>@T("Shipped")</option>
+                <option value="@((int)ShippingStatus.Delivered)" @(Model.ShippingStatus == ShippingStatus.Delivered ? "selected=\"selected\"" : "")>@T("Delivered")</option>
+            </select>
         </div>
     </fieldset>
     <fieldset>
