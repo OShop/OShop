@@ -1,25 +1,22 @@
 ﻿using Orchard.ContentManagement;
 using Orchard.ContentManagement.Utilities;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace OShop.Models {
     public class PaymentPart : ContentPart<PaymentPartRecord> {
+        internal readonly LazyField<decimal> _paid = new LazyField<decimal>();
+        internal readonly LazyField<decimal> _payable = new LazyField<decimal>();
+
         public IEnumerable<PaymentTransactionRecord> Transactions {
             get { return Record.Transactions; }
         }
 
         public decimal AmountPaid {
-            get { return Transactions.Where(t => t.Status >= TransactionStatus.Validated).Sum(t => t.Amount); }
+            get { return _paid.Value; }
         }
 
         public decimal PayableAmount {
-            get {
-                var payable = this.As<IPayable>();
-                return payable != null ? payable.PayableAmount : 0;
-            }
+            get { return _payable.Value; }
         }
 
         public string Reference {
