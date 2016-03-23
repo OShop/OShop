@@ -43,6 +43,9 @@ namespace OShop.Services {
         }
 
         public void DeleteCountry(LocationsCountryRecord record) {
+            foreach(var state in _stateRepository.Fetch(state => state.LocationsCountryRecord == record)) {
+                _stateRepository.Delete(state);
+            }
             _countryRepository.Delete(record);
         }
 
