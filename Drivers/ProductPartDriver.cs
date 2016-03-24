@@ -2,11 +2,6 @@
 using Orchard.ContentManagement.Drivers;
 using Orchard.Environment.Extensions;
 using OShop.Models;
-using OShop.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace OShop.Drivers {
     [OrchardFeature("OShop.Products")]

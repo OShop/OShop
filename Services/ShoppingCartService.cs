@@ -6,7 +6,6 @@ using Orchard.Environment.Extensions;
 using Orchard.Services;
 using OShop.Models;
 using OShop.Services.ShoppingCartResolvers;
-using OShop.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
