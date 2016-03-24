@@ -1,5 +1,6 @@
 ﻿@using OShop.Extensions
 @using OShop.Models
+@using Orchard.ContentManagement
 
 @{
     ShoppingCart cart = Model.Cart;
@@ -23,6 +24,8 @@
         int i = 0;
     }
     @foreach (var entry in cart.Items) {
+        var stock = entry.Item.As<IStock>();
+        int? maxQty = stock != null ? stock.MaxOrderQty : null;
         <tr>
             <td>
                 @if (entry.Item.ContentItem != null) {
@@ -38,11 +41,11 @@
                 }
             </td>
             <td>
-                @String.Format(Model.NumberFormat, "{0:C}", entry.Item.VatIncluded(entry.UnitPrice))
+                @String.Format(numberFormat, "{0:C}", entry.Item.VatIncluded(entry.UnitPrice))
             </td>
             <td>
                 <input type="hidden" name="@String.Format("CartItems[{0}].Id", i)" value="@entry.Id" />
-                <input type="number" name="@String.Format("CartItems[{0}].Quantity", i)" value="@entry.Quantity" class="quantity oshop-autoupdate" />
+                <input type="number" name="@String.Format("CartItems[{0}].Quantity", i)" value="@entry.Quantity" min="0" max="@maxQty" class="quantity oshop-autoupdate" />
                 <button type="submit" name="@String.Format("CartItems[{0}].IsRemoved", i)" class="oshop-confirm" data-msg="@T("Are you sure you want to remove this item from your cart ?")" value="true">@T("Remove")</button>
             </td>
             <td>

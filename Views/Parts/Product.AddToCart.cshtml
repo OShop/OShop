@@ -1,11 +1,19 @@
 ﻿@using OShop.Models
+@using Orchard.ContentManagement
 @{
     IShopItem item = Model.ContentPart;
+    var stock = item.As<IStock>();
+    int? maxQty = stock != null ? stock.MaxOrderQty : null;
 }
 
 @using (Html.BeginFormAntiForgeryPost(Url.Action("Add", "ShoppingCart", new { area = "OShop", id = item.Id, itemType = item.ItemType, returnUrl = Context.Request.RawUrl }), FormMethod.Post)) {
     <div class="addtocart">
-        <input name="quantity" value="1" type="number" min="0" />
-        <button type="submit">@T("Add to cart")</button>
+        <input name="quantity" value="1" type="number" min="0" max="@maxQty" />
+        @if (maxQty.HasValue && maxQty < 1) {
+            <button type="button" disabled>@T("Add to cart")</button>
+        }
+        else {
+            <button type="submit">@T("Add to cart")</button>
+        }
     </div>
 }
