@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Orchard.Tokens;
+using System.Xml.Linq;
 
 namespace OShop.Services {
     [OrchardFeature("OShop.Locations")]
@@ -130,6 +131,41 @@ namespace OShop.Services {
                     address.Country.AddressFormat,
                     new Dictionary<string, object> { { "OrderAddress", address } }
                 ).Trim(new char[]{' ', '-', '\r', '\n'});
+            }
+        }
+
+        public void Import(XDocument ImportedLocations) {
+            foreach (var xCountry in ImportedLocations.Root.Elements("country")) {
+                var countryIsoCode = xCountry.Attribute("iso_code").Value;
+                var country = _countryRepository.Get(c => c.IsoCode == countryIsoCode);
+                if(country == null) {
+                    country = new LocationsCountryRecord() {
+                        IsoCode = countryIsoCode,
+                        Name = xCountry.Element("name").Value,
+                        AddressFormat = xCountry.Element("address_format").Value
+                    };
+                    _countryRepository.Create(country);
+                }
+                else {
+                    country.Name = xCountry.Element("name").Value;
+                    country.AddressFormat = xCountry.Element("address_format").Value;
+                }
+                foreach(var xState in xCountry.Element("states").Elements("state")) {
+                    var stateIsoCode = xState.Attribute("iso_code").Value;
+                    var state = _stateRepository.Get(s => s.IsoCode == stateIsoCode && s.LocationsCountryRecord.Id == country.Id);
+                    if(state == null) {
+                        state = new LocationsStateRecord() {
+                            IsoCode = stateIsoCode,
+                            Name = xState.Element("name").Value,
+                            LocationsCountryRecord = country
+                        };
+                        _stateRepository.Create(state);
+                    }
+                    else {
+                        state.Name = xState.Element("name").Value;
+                        _stateRepository.Update(state);
+                    }
+                }
             }
         }
     }

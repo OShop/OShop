@@ -15,7 +15,9 @@ using OShop.Services;
 using OShop.ViewModels;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
+using System.Xml.Linq;
 
 namespace OShop.Controllers
 {
@@ -78,7 +80,7 @@ namespace OShop.Controllers
 
             var viewModel = new LocationsCountriesIndexViewModel() {
                 DefaultCountryId = _locationService.GetDefaultCountryId(),
-                Countries = countries.Skip(pager.GetStartIndex()).Take(pager.PageSize),
+                Countries = pager.PageSize > 0 ? countries.Skip(pager.GetStartIndex()).Take(pager.PageSize) : countries,
                 Pager = pagerShape,
                 BulkAction = LocationsBulkAction.None,
                 Filter = model.Filter,
@@ -356,7 +358,7 @@ namespace OShop.Controllers
 
             var viewModel = new LocationsStatesIndexViewModel() {
                 Countries = _locationService.GetCountries(),
-                States = states.Skip(pager.GetStartIndex()).Take(pager.PageSize),
+                States = pager.PageSize > 0 ? states.Skip(pager.GetStartIndex()).Take(pager.PageSize) : states,
                 Pager = pagerShape,
                 BulkAction = LocationsBulkAction.None,
                 Filter = model.Filter,
@@ -588,6 +590,36 @@ namespace OShop.Controllers
             Services.Notifier.Information(T("State {0} successfully deleted.", record.Name));
 
             return this.RedirectLocal(returnUrl, () => RedirectToAction("States"));
+        }
+
+        #endregion
+
+        #region Import
+        public ActionResult Import() {
+            if (!Services.Authorizer.Authorize(Permissions.OShopPermissions.ManageShopSettings, T("Not allowed to manage Locations")))
+                return new HttpUnauthorizedResult();
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Import(HttpPostedFileBase locationsFile) {
+            if (!Services.Authorizer.Authorize(Permissions.OShopPermissions.ManageShopSettings, T("Not allowed to manage Locations")))
+                return new HttpUnauthorizedResult();
+
+            if(locationsFile != null) {
+                try {
+                    XDocument xImport = XDocument.Load(locationsFile.InputStream);
+                    _locationService.Import(xImport);
+                    Services.Notifier.Information(T("Locations successfully imported."));
+                    return RedirectToAction("Index");
+                }
+                catch {
+                    Services.Notifier.Error(T("Error importing locations."));
+                }
+            }
+
+            return View();
         }
 
         #endregion

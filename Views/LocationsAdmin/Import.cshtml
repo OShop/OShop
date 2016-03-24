@@ -1,0 +1,18 @@
+﻿@{
+    Layout.Title = T("Import").ToString();
+}
+@using (Html.BeginFormAntiForgeryPost(Url.Action("Import", "LocationsAdmin", new { area = "OShop" }), FormMethod.Post, new { enctype = "multipart/form-data" })) {
+    @Html.ValidationSummary();
+
+    <fieldset>
+        <legend>@T("Locations import")</legend>
+        <div>
+            <input type="file" name="locationsFile" />
+            <div class="hint">@T("Select xml locations file to import.")</div>
+        </div>
+    </fieldset>
+    <div>
+        <button type="submit" class="primaryAction">@T("Import")</button>
+        @Html.ActionLink(T("Cancel").Text, "Index", "LocationsAdmin", new { area = "OShop" }, new { @class = "button primaryAction" })
+    </div>
+}

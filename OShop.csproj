@@ -212,6 +212,7 @@
     <Content Include="Views\OfflinePayment\Settings.cshtml" />
     <Content Include="Views\EditorTemplates\Parts\Stock.cshtml" />
     <Content Include="Views\Parts\Stock.cshtml" />
+    <Content Include="Views\LocationsAdmin\Import.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\OrderActivity.cs" />

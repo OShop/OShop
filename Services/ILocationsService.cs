@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace OShop.Services {
     public interface ILocationsService : IDependency {
@@ -34,5 +35,8 @@ namespace OShop.Services {
 
         // Addresses
         string FormatAddress(IOrderAddress address);
+
+        // Import
+        void Import(XDocument ImportedLocations);
     }
 }
