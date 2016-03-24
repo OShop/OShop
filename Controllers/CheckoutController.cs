@@ -49,9 +49,11 @@ namespace OShop.Controllers
         public IOrchardServices Services { get; set; }
 
         [Themed]
-        [Authorize]
-        public ActionResult Index()
-        {
+        public ActionResult Index() {
+            if(Services.WorkContext.CurrentUser == null) {
+                return RedirectToAction("LogOn", "Account", new { area = "Orchard.Users", ReturnUrl = Url.Action("Index", "Checkout", new { area = "OShop" }) });
+            }
+
             var customer = _customersService.GetCustomer();
             if(customer == null) {
                 return RedirectToAction("Create", "Customer", new { area = "OShop", ReturnUrl = Url.Action("Index", "Checkout", new { area = "OShop" }) });
