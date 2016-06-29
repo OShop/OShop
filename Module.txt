@@ -26,7 +26,7 @@ Features:
 		Name: OShop Shopping Cart
 		Category: Commerce
         Description: Provides shopping Cart service.
-		Dependencies: OShop, Orchard.jQuery
+		Dependencies: OShop, Orchard.Resources
 	OShop.Locations:
 		Name: OShop Locations
 		Category: Commerce
@@ -41,7 +41,7 @@ Features:
 		Name: OShop Customers
 		Category: Commerce
         Description: Provides customer management.
-		Dependencies: OShop.Locations, Orchard.Users, Orchard.jQuery
+		Dependencies: OShop.Locations, Orchard.Users, Orchard.Resources
 	OShop.Checkout:
 		Name: OShop customer check-out
 		Category: Commerce
