@@ -16,7 +16,7 @@ namespace OShop.Handlers {
             Filters.Add(StorageFilter.For(repository));
 
             OnActivated<OrderShippingPart>((context, part) => {
-                part._shippingDetails.Loader(shippingDetails => {
+                part._shippingDetails.Loader(() => {
                     var orderPart = context.ContentItem.As<OrderPart>();
                     if (orderPart != null) {
                         return orderPart.Details.Where(d => d.DetailType == "Shipping");
@@ -26,7 +26,7 @@ namespace OShop.Handlers {
                     }
                 });
 
-                part._shippingAddress.Loader(shippingAddress => orderAddressRepository.Get(part.ShippingAddressId));
+                part._shippingAddress.Loader(() => orderAddressRepository.Get(part.ShippingAddressId));
             });
 
             OnCreated<OrderShippingPart>((context, part) => {

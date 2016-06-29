@@ -17,11 +17,11 @@ namespace OShop.Handlers {
             Filters.Add(StorageFilter.For(repository));
 
             OnActivated<PaymentPart>((context, part) => {
-                part._payable.Loader(amount => {
+                part._payable.Loader(() => {
                     var payable = part.As<IPayable>();
                     return payable != null ? Math.Round(payable.PayableAmount, currencyProvider.NumberFormat.CurrencyDecimalDigits) : 0;
                 });
-                part._paid.Loader(amount => Math.Round(
+                part._paid.Loader(() => Math.Round(
                     part.Transactions.Where(t => t.Status >= TransactionStatus.Validated).Sum(t => t.Amount),
                     currencyProvider.NumberFormat.CurrencyDecimalDigits)
                 );

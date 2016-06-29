@@ -12,7 +12,7 @@ namespace OShop.Handlers {
             _contentManager = contentManager;
             Filters.Add(new ActivatingFilter<OfflinePaymentSettingsPart>("Site"));
 
-            OnLoading<OfflinePaymentSettingsPart>((context, part) => part._content.Loader(p => {
+            OnLoading<OfflinePaymentSettingsPart>((context, part) => part._content.Loader(() => {
                 if (part.ContentItemId != null) {
                     return contentManager.Get(part.ContentItemId.Value);
                 }

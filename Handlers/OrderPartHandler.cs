@@ -24,20 +24,20 @@ namespace OShop.Handlers {
 
             OnActivated<OrderPart>((context, part) => {
                 // Details
-                part._details.Loader(details => orderDetailsRepository.Fetch(d => d.OrderId == part.Id)
+                part._details.Loader(() => orderDetailsRepository.Fetch(d => d.OrderId == part.Id)
                     .Select(d => new OrderDetail(d))
                     .ToList());
 
                 // Order total
-                part._orderTotal.Loader(orderTotal => BuildOrderTotal(part));
+                part._orderTotal.Loader(() => BuildOrderTotal(part));
 
                 // BillingAddress
-                part._billingAddress.Loader(shippingAddress => orderAddressRepository.Get(part.BillingAddressId));
+                part._billingAddress.Loader(() => orderAddressRepository.Get(part.BillingAddressId));
             });
 
             OnLoading<OrderPart>((context, part) => {
                 // Order total
-                part._orderTotal.Loader(orderTotal => part.Retrieve(x => x.OrderTotal));
+                part._orderTotal.Loader(() => part.Retrieve(x => x.OrderTotal));
             });
 
             OnCreating<OrderPart>((context, part) => {

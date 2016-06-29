@@ -21,19 +21,19 @@ namespace OShop.Handlers {
             Filters.Add(StorageFilter.For(repository));
 
             OnActivated<CustomerAddressPart>((context, part) => {
-                part._customer.Loader(customer => _customersService.GetCustomer(part.CustomerId));
+                part._customer.Loader(() => _customersService.GetCustomer(part.CustomerId));
                 part._customer.Setter(customer => {
                     part.CustomerId = customer != null ? customer.Id : 0;
                     return customer;
                 });
 
-                part._country.Loader(country => _locationService.GetCountry(part.CountryId));
+                part._country.Loader(() => _locationService.GetCountry(part.CountryId));
                 part._country.Setter(country => {
                     part.CountryId = country != null ? country.Id : 0;
                     return country;
                 });
 
-                part._state.Loader(state => _locationService.GetState(part.StateId));
+                part._state.Loader(() => _locationService.GetState(part.StateId));
                 part._state.Setter(state => {
                     part.StateId = state != null ? state.Id : 0;
                     return state;

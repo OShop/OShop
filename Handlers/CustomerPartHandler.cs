@@ -19,21 +19,21 @@ namespace OShop.Handlers {
 
             OnActivated<CustomerPart>((context, part) => {
                 // User field
-                part._user.Loader(user => contentManager.Get<IUser>(part.UserId));
+                part._user.Loader(() => contentManager.Get<IUser>(part.UserId));
                 part._user.Setter(user => {
                     part.UserId = (user != null ? user.Id : 0);
                     return user;
                 });
 
                 // Default address field
-                part._defaultAddress.Loader(address => customersService.GetAddress(part.DefaultAddressId));
+                part._defaultAddress.Loader(() => customersService.GetAddress(part.DefaultAddressId));
                 part._defaultAddress.Setter(address => {
                     part.DefaultAddressId = (address != null ? address.Id : 0);
                     return address;
                 });
 
                 // Addresses field
-                part._addresses.Loader(addresses => customersService.GetAddressesForCustomer(part));
+                part._addresses.Loader(() => customersService.GetAddressesForCustomer(part));
             });
 
             OnRemoving<CustomerPart>((context, part) => {

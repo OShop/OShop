@@ -10,7 +10,7 @@ namespace OShop.Handlers {
     public class OrderProductsPartHandler : ContentHandler {
         public OrderProductsPartHandler() {
             OnActivated<OrderProductsPart>((context, part) => {
-                part._productDetails.Loader(productDetails => {
+                part._productDetails.Loader(() => {
                     var orderPart = context.ContentItem.As<OrderPart>();
                     if (orderPart != null) {
                         return orderPart.Details.Where(d => d.DetailType == ProductPart.PartItemType);

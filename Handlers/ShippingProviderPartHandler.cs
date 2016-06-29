@@ -19,7 +19,7 @@ namespace OShop.Handlers {
             _shippingService = shippingService;
 
             OnActivated<ShippingProviderPart>((context, part) => {
-                part._options.Loader(options => _shippingService.GetOptions(part));
+                part._options.Loader(() => _shippingService.GetOptions(part));
             });
 
             OnRemoved<ShippingProviderPart>((context, part) => {

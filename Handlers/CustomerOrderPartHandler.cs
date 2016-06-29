@@ -19,7 +19,7 @@ namespace OShop.Handlers {
             Filters.Add(StorageFilter.For(repository));
 
             OnActivated<CustomerOrderPart>((context, part) => {
-                part._customer.Loader(customer => _customersService.GetCustomer(part.CustomerId));
+                part._customer.Loader(() => _customersService.GetCustomer(part.CustomerId));
                 part._customer.Setter(customer => {
                     part.CustomerId = customer.Id;
                     return customer;

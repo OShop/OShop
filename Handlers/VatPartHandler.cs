@@ -22,7 +22,7 @@ namespace OShop.Handlers {
             Filters.Add(StorageFilter.For(repository));
 
             OnActivated<VatPart>((context, part) => {
-                part._vatRate.Loader(rate => part.VatRateId > 0 ? _vatService.GetVatRate(part.VatRateId) : null);
+                part._vatRate.Loader(() => part.VatRateId > 0 ? _vatService.GetVatRate(part.VatRateId) : null);
                 part._vatRate.Setter(rate => {
                     part.VatRateId = rate != null && rate.ContentItem != null ? rate.Id : 0;
                     return rate;

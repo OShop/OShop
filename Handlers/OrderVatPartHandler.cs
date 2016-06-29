@@ -13,7 +13,7 @@ namespace OShop.Handlers {
     public class OrderVatPartHandler : ContentHandler {
         public OrderVatPartHandler() {
             OnActivated<OrderVatPart>((context, part) => {
-                part._vatAmounts.Loader(vatAmounts => GetVatAmounts(part));
+                part._vatAmounts.Loader(() => GetVatAmounts(part));
             });
         }
 
