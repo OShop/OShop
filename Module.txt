@@ -3,7 +3,7 @@ AntiForgery: enabled
 Author: Codinlab
 Website: https://github.com/OShop/OShop
 Version: 1.0
-OrchardVersion: 1.9
+OrchardVersion: 1.10
 Category: Commerce
 Description: E-commerce module for Orchard CMS.
 Features:
