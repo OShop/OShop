@@ -213,6 +213,7 @@
     <Content Include="Views\EditorTemplates\Parts\Stock.cshtml" />
     <Content Include="Views\Parts\Stock.cshtml" />
     <Content Include="Views\LocationsAdmin\Import.cshtml" />
+    <Content Include="Views\Parts\Shipping.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\OrderActivity.cs" />

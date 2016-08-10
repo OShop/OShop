@@ -1,0 +1,9 @@
+﻿@using OShop.Models
+@{
+    ShippingPart part = Model.ContentPart;
+}
+
+@if (part.RequiresShipping)
+{
+    <span class="shipping">@part.Length x @part.Width x @part.Height (@part.Weight)</span>
+}

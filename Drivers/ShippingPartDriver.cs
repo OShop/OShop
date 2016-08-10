@@ -1,17 +1,23 @@
 ﻿using Orchard.ContentManagement.Drivers;
 using Orchard.Environment.Extensions;
 using OShop.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
-namespace OShop.Drivers {
+namespace OShop.Drivers
+{
     [OrchardFeature("OShop.Shipping")]
     public class ShippingPartDriver : ContentPartDriver<ShippingPart> {
         private const string TemplateName = "Parts/Shipping";
 
         protected override string Prefix { get { return "Shipping"; } }
+
+        protected override DriverResult Display(ShippingPart part, string displayType, dynamic shapeHelper)
+        {
+            return ContentShape("Parts_Shipping", () =>
+                shapeHelper.Parts_Shipping(
+                    ContentPart: part
+                )
+            );
+        }
 
         // GET
         protected override DriverResult Editor(ShippingPart part, dynamic shapeHelper) {
