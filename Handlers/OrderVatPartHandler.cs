@@ -1,12 +1,9 @@
-﻿using Orchard.ContentManagement;
+﻿using System.Collections.Generic;
+using Orchard.ContentManagement;
 using Orchard.ContentManagement.Handlers;
 using Orchard.Environment.Extensions;
-using OShop.Models;
 using OShop.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using OShop.Models;
 
 namespace OShop.Handlers {
     [OrchardFeature("OShop.VAT")]

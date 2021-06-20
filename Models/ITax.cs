@@ -1,5 +1,4 @@
-﻿using Orchard.ContentManagement;
-using System;
+﻿using System;
 
 namespace OShop.Models {
     public interface ITax {

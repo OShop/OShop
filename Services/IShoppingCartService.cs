@@ -1,8 +1,7 @@
-﻿using Orchard;
+﻿using System.Collections.Generic;
+using Orchard;
 using Orchard.ContentManagement;
 using OShop.Models;
-using OShop.ViewModels;
-using System.Collections.Generic;
 
 namespace OShop.Services {
     public interface IShoppingCartService : IDependency {
