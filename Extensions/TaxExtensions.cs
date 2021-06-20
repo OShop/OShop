@@ -1,9 +1,6 @@
-﻿using OShop.Models;
-using Orchard.ContentManagement;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using OShop.Models;
 
 namespace OShop.Extensions {
     public static class TaxExtensions {
@@ -16,8 +13,12 @@ namespace OShop.Extensions {
         }
 
         public static void AddTax(this IList<TaxAmount> amounts, ITax tax, decimal taxBase) {
+            if (taxBase == 0) {
+                return;
+            }
+
             var taxAmount = amounts.Where(ta => ta.Tax.Name == tax.Name && ta.Tax.Rate == tax.Rate).FirstOrDefault();
-            if (taxAmount == null && taxBase != 0) {
+            if (taxAmount == null) {
                 taxAmount = new TaxAmount(tax);
                 amounts.Add(taxAmount);
             }
