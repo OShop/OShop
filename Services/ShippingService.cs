@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Orchard.ContentManagement;
+using System.Diagnostics;
 
 namespace OShop.Services {
     [OrchardFeature("OShop.Shipping")]
@@ -103,11 +104,17 @@ namespace OShop.Services {
         }
 
         public IEnumerable<ShippingProviderOption> GetSuitableProviderOptions(ShippingZoneRecord Zone, IList<Tuple<int, IShippingInfo>> ShippingInfos, Decimal ItemsTotal = 0) {
-            var publishedProviders = _contentManager.Query<ShippingProviderPart>(VersionOptions.Published).List();
+            var options = _optionRepository
+                .Fetch(o => o.ShippingZoneRecord == Zone && o.Enabled);
 
             List<ShippingProviderOption> suitableProviders = new List<ShippingProviderOption>();
-            foreach (var provider in publishedProviders) {
-                var option = GetSuitableOption(provider.Id, Zone, ShippingInfos, ItemsTotal);
+            foreach (var optionGroup in options.GroupBy(o => o.ShippingProviderId)) {
+                var provider = _contentManager.Get<ShippingProviderPart>(optionGroup.Key, VersionOptions.Published);
+                if (provider == null) {
+                    continue;
+                }
+
+                var option = GetSuitableOption(optionGroup, Zone, ShippingInfos, ItemsTotal);
                 if (option != null) {
                     suitableProviders.Add(new ShippingProviderOption(provider, option));
                 }
@@ -118,13 +125,12 @@ namespace OShop.Services {
 
         #endregion
 
-        private ShippingOptionRecord GetSuitableOption(int ShippingProviderId, ShippingZoneRecord Zone, IList<Tuple<int, IShippingInfo>> ShippingInfos, Decimal ItemsTotal) {
+        private ShippingOptionRecord GetSuitableOption(IEnumerable<ShippingOptionRecord> options, ShippingZoneRecord Zone, IList<Tuple<int, IShippingInfo>> ShippingInfos, Decimal ItemsTotal) {
             if (Zone == null) {
                 return null;
             }
 
-            return _optionRepository
-                .Fetch(o => o.ShippingProviderId == ShippingProviderId && o.ShippingZoneRecord == Zone && o.Enabled)
+            return options
                 .OrderByDescending(o => o.Priority)
                 .Where(o => MeetsContraints(o, ShippingInfos, ItemsTotal))
                 .FirstOrDefault();
