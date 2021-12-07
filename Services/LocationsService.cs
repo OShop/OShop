@@ -122,9 +122,17 @@ namespace OShop.Services {
         }
 
         public string FormatAddress(IOrderAddress address) {
+            if (address == null) {
+                return string.Empty;
+            }
+
             if (address.Country == null || String.IsNullOrWhiteSpace(address.Country.AddressFormat)) {
-                // TODO : Provide default format
-                return "";
+                return @"{OrderAddress.FirstName} {OrderAddress.LastName}
+{OrderAddress.Company}
+{OrderAddress.Address1}
+{OrderAddress.Address2}
+{OrderAddress.Zipcode}
+{OrderAddress.City}";
             }
             else {
                 return _tokenizer.Replace(
