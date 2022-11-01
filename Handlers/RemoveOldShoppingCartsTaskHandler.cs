@@ -1,12 +1,14 @@
 ﻿using System.Linq;
 using Orchard.Data;
 using Orchard.Environment;
+using Orchard.Environment.Extensions;
 using Orchard.Logging;
 using Orchard.Services;
 using Orchard.Tasks.Scheduling;
 using OShop.Models;
 
 namespace OShop.Handlers {
+    [OrchardFeature("OShop.ShoppingCart")]
     public class RemoveOldShoppingCartsTaskHandler : IScheduledTaskHandler, IOrchardShellEvents {
         internal const string RemoveOldShoppingCartsTaskType = "RemoveOldShoppingCarts";
 
