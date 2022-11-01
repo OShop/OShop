@@ -17,6 +17,10 @@ namespace OShop.Extensions {
             return Cart.Items.Sum(ci => ci.SubTotal());
         }
 
+        public static decimal TaxIncludedItemsTotal(this ShoppingCart Cart) {
+            return Cart.Items.Sum(ci => ci.Item.VatIncluded(ci.SubTotal()));
+        }
+
         public static decimal TaxesTotal(this ShoppingCart Cart) {
             return Cart.Taxes.Sum(t => t.Tax.Rate * t.TaxBase);
         }
