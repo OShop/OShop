@@ -33,5 +33,12 @@ namespace OShop.Migrations {
             return 1;
         }
 
+        public int UpdateFrom1() {
+            SchemaBuilder.AlterTable("ShoppingCartRecord", table => table
+                .CreateIndex("IDX_ShoppingCartRecord_Guid", "Guid")
+            );
+
+            return 2;
+        }
     }
 }
