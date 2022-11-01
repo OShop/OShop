@@ -78,11 +78,9 @@ namespace OShop.Services {
 
         private ShoppingCartRecord GetUserCartRecord(int OwnerId) {
             var userCarts = _shoppingCartRepository
-                .Fetch(sc => sc.OwnerId.HasValue && sc.OwnerId == OwnerId)
-                .OrderByDescending(sc => sc.ModifiedUtc)
-                .ToList();
+                .Fetch(sc => sc.OwnerId.HasValue && sc.OwnerId == OwnerId, o => o.Desc(sc => sc.ModifiedUtc));
 
-            if (userCarts.Count > 1) {
+            if (userCarts.Count() > 1) {
                 // Remove old carts
                 foreach (var cart in userCarts.Skip(1)) {
                     _shoppingCartRepository.Delete(cart);
